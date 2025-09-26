@@ -3,7 +3,6 @@ import { getRequestContext } from "@/lib/request-context";
 import { getFooterCached } from "@/lib/footerpages/footer.cached";
 import { BridgeSlot } from "@/app/_ctx/ClientDataRegistry";
 
-
 export const viewport = {
     width: 'device-width',
     initialScale: 1,
@@ -11,7 +10,7 @@ export const viewport = {
     userScalable: 0,
 }
 
-export default async function AboutUsLayout({ children, params }: { children: React.ReactNode, params: { slug: string, data: any, lang: string } }) {
+export default async function AboutUsLayout({ children }: { children: React.ReactNode }) {
     const { lang, baseUrl, slugStr } = await getRequestContext();
     if (!slugStr) return null;
 
