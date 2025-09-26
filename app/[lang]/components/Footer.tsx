@@ -7,10 +7,12 @@ import { usePathname } from "next/navigation"
 import withReactContent from 'sweetalert2-react-content';
 import Swal from 'sweetalert2';
 import { post } from '../api/ApiCalls';
-import { useUserAgent } from 'next-useragent';
+import { postSubmitNewsLetter } from '@/lib/components/component.client';
 
 export default function Footer(props: any) {
     const path = usePathname();
+    const lang = props?.lang;
+    const origin = props?.origin;
     const [newslatter, setnewslatter] = useState(true);
     const [loader, setLoader] = useState(false);
     const [errorMsg, setErrorMsg] = useState('');
@@ -58,7 +60,7 @@ export default function Footer(props: any) {
         });
     };
 
-    const submitNewslatter = () => {
+    const submitNewslatter = async () => {
         var validRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
         var data = {
             email: email
@@ -77,35 +79,23 @@ export default function Footer(props: any) {
             return false;
         }
         setLoader(true)
-        post('submit-newslatter', data).then((responseJson: any) => {
-            if (responseJson?.success) {
-                setemail('')
-                topMessageAlartSuccess('Success! You have subscribed our newslatter successfully !')
-                setnewslatter(true)
-                setLoader(false)
+        const dataUpd = await postSubmitNewsLetter(data);
+        if (dataUpd?.newsLetterData?.success) {
+            setemail('')
+            topMessageAlartSuccess('Success! You have subscribed our newslatter successfully !')
+            setnewslatter(true)
+            setLoader(false)
+        }
+        else {
+            setLoader(false)
+            if (dataUpd?.newsLetterData?.message != '') {
+                topMessageAlartDanger(dataUpd?.newsLetterData?.message)
             }
             else {
-                setLoader(false)
-                if (responseJson?.message != '') {
-                    topMessageAlartDanger(responseJson?.message)
-                }
-                else {
-                    topMessageAlartDanger('Something Went Wrong. Please try again later')
-                }
+                topMessageAlartDanger('Something Went Wrong. Please try again later')
             }
-
-        })
+        }
     }
-
-    const userAgent: any =
-        typeof window !== 'undefined' && window.location.origin
-            ? useUserAgent(window.navigator.userAgent)
-            : false;
-
-    const origin =
-        typeof window !== 'undefined' && window.location.origin
-            ? window.location.origin
-            : '';
 
 
     const excludedPaths = [
@@ -121,7 +111,7 @@ export default function Footer(props: any) {
     ];
 
     const isExcludedPath = excludedPaths.some(pathSegment => path.includes(pathSegment));
-    const getLocalizedText = (arText: any, enText: any) => (props?.lang === 'ar' ? arText : enText);
+    const getLocalizedText = (arText: any, enText: any) => (lang === 'ar' ? arText : enText);
 
     const socialMediaLinks = [
         { href: "https://facebook.com/tamkeenstores/", iconId: "fi_3128208", label: "Facebook Tamkeen Stores" },
@@ -144,26 +134,26 @@ export default function Footer(props: any) {
             <>
                 {/* Subscription Section */}
                 <div className="bg-white block h-80">
-                    <div className={`${userAgent?.isMobile || userAgent?.isTablet ? 'container pt-3' : 'px-[4.8rem] grid grid-cols-2'} items-center`}>
+                    <div className={`container pt-3 items-center`}>
                         <div>
-                            <h3 className={`font-bold leading-tight text-primary ${userAgent?.isMobile || userAgent?.isTablet ? 'text-md' : 'text-xl'}`}>
+                            <h3 className={`font-bold leading-tight text-primary text-md`}>
                                 {getLocalizedText('النشرة الاخبارية', 'Unlock Premium Benefits Today!')}
                             </h3>
-                            <p className={`${userAgent?.isMobile || userAgent?.isTablet ? 'mt-1 text-[0.75rem]' : 'md:mt-2 text-sm'} text-[#4D545B] `}>
+                            <p className={`mt-1 text-[0.75rem] text-[#4D545B] `}>
                                 {getLocalizedText( 
                                     'اشترك في النشره الاخبارية للحصول علي كل ما هو جديد من العروض والتحديثات الخاصة بمتجر تمكين',
                                     'Enhance Your Home Appliance Experience with Our Subscription Service, Unveiling Exclusive discounts and cashback Rewards'
                                 )}
                             </p>
-                            <div className={`${userAgent?.isMobile || userAgent?.isTablet ? 'mt-5' : 'mt-14'} `}>
+                            <div className={`mt-5`}>
                                 <p className="text-xs text-[#585141]">
                                     {getLocalizedText('اكتب بريدك الالكتروني واشترك الان', 'Enter your E-mail ID')}
                                 </p>
-                                <div className={`mt-2 ${userAgent?.isMobile || userAgent?.isTablet ? 'w-full space-y-2' : 'flex gap-x-3'}`}>
+                                <div className={`mt-2 w-full space-y-2`}>
                                     <input
                                         type="email"
                                         name="shipping-charge"
-                                        className={`focus-visible:outline-none font-normal text-sm ${userAgent?.isMobile || userAgent?.isTablet ? 'w-full' : 'w-1/2'} border rounded-md p-3 border-[#4D545B30] active:border-primary focus-within:border-[#004B7A]`}
+                                        className={`focus-visible:outline-none font-normal text-sm w-full border rounded-md p-3 border-[#4D545B30] active:border-primary focus-within:border-[#004B7A]`}
                                         placeholder={getLocalizedText('اكتب البريد هنا...', 'Write your email here...')}
                                         onChange={(e) => {
                                             setemail(e.target.value);
@@ -174,7 +164,7 @@ export default function Footer(props: any) {
                                         value={email}
                                     />
                                     <button
-                                        className={`focus-visible:outline-none ${userAgent?.isMobile || userAgent?.isTablet ? 'w-full' : ''} btn btn-primary hover:text-white hover:bg-[#004B7A] border-[#004B7A] border text-primary py-2 rounded-md px-8 font-semibold text-sm`}
+                                        className={`focus-visible:outline-none w-full btn btn-primary hover:text-white hover:bg-[#004B7A] border-[#004B7A] border text-primary py-2 rounded-md px-8 font-semibold text-sm`}
                                         disabled={newslatter}
                                         onClick={submitNewslatter}
                                     >
@@ -195,24 +185,10 @@ export default function Footer(props: any) {
                                 </div>
                             </div>
                         </div>
-                        {!userAgent?.isMobile && !userAgent?.isTablet ?
-                            <div>
-                                <Image
-                                    src="/images/newsLetter.webp"
-                                    alt="newsletter"
-                                    title="News Letter"
-                                    height={0}
-                                    width={0}
-                                    loading="lazy"
-                                    className="mx-auto w-full h-full"
-                                    sizes='100vw'
-                                />
-                            </div>
-                            : null}
                     </div>
                 </div>
                 <div className="bg-primary py-8 hidden md:block">
-                    <div className={`${userAgent?.isMobile || userAgent?.isTablet ? 'container' : 'px-[4.8rem]'} grid grid-cols-5 gap-x-10`}>
+                    <div className={`container grid grid-cols-5 gap-x-10`}>
                         {/* Logo and Contact */}
                         <div>
                             <Image
@@ -243,30 +219,30 @@ export default function Footer(props: any) {
                             {
                                 title: getLocalizedText('الاقسام', 'Sections'),
                                 links: [
-                                    { href: `${origin}/${props?.lang}/category/air-conditioners`, text: getLocalizedText('المكيفات', 'Air Conditioners') },
-                                    { href: `${origin}/${props?.lang}/category/cooking`, text: getLocalizedText('الافران', 'Cookers') },
-                                    { href: `${origin}/${props?.lang}/category/washing-machine`, text: getLocalizedText('الغسالات', 'Washing Machines') },
-                                    { href: `${origin}/${props?.lang}/category/television`, text: getLocalizedText('الشاشات', 'Televisions') },
-                                    { href: `${origin}/${props?.lang}/category/refrigerators`, text: getLocalizedText('الثلاجات', 'Refrigerators') },
+                                    { href: `${origin}/${lang}/category/air-conditioners`, text: getLocalizedText('المكيفات', 'Air Conditioners') },
+                                    { href: `${origin}/${lang}/category/cooking`, text: getLocalizedText('الافران', 'Cookers') },
+                                    { href: `${origin}/${lang}/category/washing-machine`, text: getLocalizedText('الغسالات', 'Washing Machines') },
+                                    { href: `${origin}/${lang}/category/television`, text: getLocalizedText('الشاشات', 'Televisions') },
+                                    { href: `${origin}/${lang}/category/refrigerators`, text: getLocalizedText('الثلاجات', 'Refrigerators') },
                                 ],
                             },
                             {
                                 title: getLocalizedText('عــن تمكين', 'About Tamkeen'),
                                 links: [
-                                    { href: `${origin}/${props?.lang}/about-us`, text: getLocalizedText('عن شركة تمكين', 'About Tamkeen Stores') },
-                                    { href: `${origin}/${props?.lang}/store-locatore`, text: getLocalizedText('فروعنا', 'Our Branches') },
-                                    { href: `${origin}/${props?.lang}/contact-us`, text: getLocalizedText('تواصل معنا', 'Contact Us') },
-                                    { href: `${origin}/${props?.lang}/maintenance`, text: getLocalizedText('صيانة تمكين', 'Tamkeen Maintenance') },
+                                    { href: `${origin}/${lang}/about-us`, text: getLocalizedText('عن شركة تمكين', 'About Tamkeen Stores') },
+                                    { href: `${origin}/${lang}/store-locatore`, text: getLocalizedText('فروعنا', 'Our Branches') },
+                                    { href: `${origin}/${lang}/contact-us`, text: getLocalizedText('تواصل معنا', 'Contact Us') },
+                                    { href: `${origin}/${lang}/maintenance`, text: getLocalizedText('صيانة تمكين', 'Tamkeen Maintenance') },
                                 ],
                             },
                             {
                                 title: getLocalizedText('الدعم والتواصل', 'Support and Communication'),
                                 links: [
                                     { href: "https://forms.gle/ZLug14w6XVB7euju8", text: getLocalizedText('انضم إلينا', 'Join Us') },
-                                    { href: `${origin}/${props?.lang}/terms-and-conditions`, text: getLocalizedText('الشروط والاحكام', 'Terms & Conditions') },
-                                    { href: `${origin}/${props?.lang}/privacy-policy`, text: getLocalizedText('سياسة الخصوصة', 'Privacy Policies') },
-                                    { href: `${origin}/${props?.lang}/faqs`, text: getLocalizedText('الاسئلة والاجوبة', 'FAQs') },
-                                    { href: `${origin}/${props?.lang}/returnexchange`, text: getLocalizedText('سياسة الاستبدال والاسترجاع', 'Exchange & Return Policy') },
+                                    { href: `${origin}/${lang}/terms-and-conditions`, text: getLocalizedText('الشروط والاحكام', 'Terms & Conditions') },
+                                    { href: `${origin}/${lang}/privacy-policy`, text: getLocalizedText('سياسة الخصوصة', 'Privacy Policies') },
+                                    { href: `${origin}/${lang}/faqs`, text: getLocalizedText('الاسئلة والاجوبة', 'FAQs') },
+                                    { href: `${origin}/${lang}/returnexchange`, text: getLocalizedText('سياسة الاستبدال والاسترجاع', 'Exchange & Return Policy') },
                                 ],
                             },
                         ].map((section, index) => (
@@ -304,7 +280,7 @@ export default function Footer(props: any) {
                     </div>
 
                     {/* Footer Bottom */}
-                    <div className={userAgent?.isMobile || userAgent?.isTablet ? 'container' : 'px-[4.8rem]'}>
+                    <div className={'container'}>
                         <hr className="border-white my-8" />
                         <div className="grid grid-cols-2">
                             <div className="font-light text-xs text-white">{getLocalizedText('كل حقوق الملكية محفوظة إلى شركة تمكين الدولية للأجهزة المنزلية', 'All rights reserved to Tamkeen International For Home Appliances 2024')}</div>
