@@ -7,7 +7,11 @@ import { useRouter, usePathname } from 'next/navigation'
 import GlobalContext from '../GlobalContext'
 
 export default function AccountSidebar(props: any) {
+
+    const lang = props?.lang
+    const origin = props?.origin
     const router = useRouter()
+
     const path = usePathname();
     const [fullName, setFullName] = useState<any>(false)
     const [loyaltyCount, setLoyaltyCount] = useState<any>(false)
@@ -49,10 +53,7 @@ export default function AccountSidebar(props: any) {
         router.push('/' + props.lang + '/', { scroll: false })
         router.refresh()
     };
-    const origin =
-        typeof window !== 'undefined' && window.location.origin
-            ? window.location.origin
-            : '';
+    
     return (
         <>
             <div className="w-1/2 2xl:w-1/3">

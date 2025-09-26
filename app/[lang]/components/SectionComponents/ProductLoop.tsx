@@ -14,7 +14,7 @@ import { getProductExtraData } from "@/lib/components/component.client";
 
 
 const ProductComponent = dynamic(
-   () => import("../NewHomePageComp/product_component_updated_updated"),
+   () => import("../NewHomePageComp/product_component_updated"),
   { ssr: true }
 );
 

@@ -16,6 +16,7 @@ import Script from 'next/script';
 import ReloadRefresh from './components/ReloadRefresh';
 import ConnectionStatus from './components/ConnectionStatus';
 import { AppProvider } from '../_ctx/AppContext';
+import CityBootstrapper from '../(site)/CityBootstrapper';
 
 const MobileFooterNew = dynamic(() => import('./components/MobileFooterNew'), { ssr: true })
 const notoSans = Noto_Sans({
@@ -55,6 +56,7 @@ export default async function RootLayout(props: any) {
   } = await getRequestContext();
   const isArabic = lang === 'ar';
   const dict = await getDictionary(lang);
+  const googleApiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_BROWSER_KEY!;
   
   return (
     <html lang={lang} dir={isArabic ? "rtl" : "ltr"} className='nprogress-busy' data-scroll-behavior="smooth">
@@ -89,12 +91,15 @@ export default async function RootLayout(props: any) {
         {/* your existing tree */}
         <ReloadRefresh lang={lang} idleMs={30 * 60 * 1000} />
         <GlobalProvider>
-          <Providers>
-            <ReloadRefresh lang={lang} idleMs={30 * 60 * 1000} /> {/* 30 mins */}
+          <Providers> 
+            <div className="fixed top-0 w-full z-50">
+              <div className="h-1.5" id="loader-spin"></div>
+            </div>
             <LayoutWrapper>
               <LoginGuard />
+              <CityBootstrapper lang={lang} googleApiKey={googleApiKey} />
               {children}
-              <ConnectionStatus />
+              {/* <ConnectionStatus /> */}
             </LayoutWrapper>
           </Providers>
           <MobileFooterNew lang={lang} dict={dict} />
