@@ -909,6 +909,7 @@ export default function Homepage() {
           data={sec2SliderTopImage}
           lang={lang}
           origin={origin}
+          NewMedia2={NewMedia2}
         />
         <div className={containerClass}>
           <CategoriesHomeMobile
@@ -917,8 +918,8 @@ export default function Homepage() {
             userAgent={userAgent}
             devicetype={true}
             isArabic={isArabic}
-            NewMedia={NewMedia}
             origin={origin}
+            NewMedia={NewMedia}
           />
         </div>
       </section>
@@ -977,7 +978,7 @@ export default function Homepage() {
         </div>
       </section>
       {/* Section 2 End */}
-      <MainSliderMobile data={sec5Slider} lang={lang} origin={origin} />
+      <MainSliderMobile data={sec5Slider} lang={lang} origin={origin} NewMedia2={NewMedia2}/>
 
       {/* Section 4 Start */}
       <section
@@ -1231,6 +1232,7 @@ export default function Homepage() {
               origin={origin}
               gtmColumnItemListId={gtmNewItemListId}
               gtmColumnItemListName={gtmNewItemListName}
+              NewMedia={NewMedia}
             />
           </>
         ) : (
@@ -1264,6 +1266,7 @@ export default function Homepage() {
                     data={sec11Slider}
                     lang={lang}
                     origin={origin}
+                    NewMedia2={NewMedia2}
                   />
                 </div>
               </div>
@@ -1646,6 +1649,7 @@ export default function Homepage() {
                   data={sec14Slider}
                   lang={lang}
                   origin={origin}
+                  NewMedia2={NewMedia2}
                 />
               </div>
             </div>

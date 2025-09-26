@@ -9,14 +9,14 @@ import './scrollBar.css';
 import 'swiper/css/grid';
 import 'swiper/css/pagination';
 // import './styles.css';
-import { NewMedia } from '../../api/Api';
 
 export default function CategoriesHomeMobile(props: any) {
     const categories = props?.params?.sec_three_categories || [];
-    const isArabic = props?.lang == 'ar' ? true : false;
+    const isArabic = props?.isArabic;
+    const NewMedia = props?.NewMedia;
+    const origin = props?.origin;
     const renderCategoryName = (category: any) => (category.name ? category.name : '');
     const renderHeading = () => (props?.params?.sec_three_title ? props?.params?.sec_three_title : '');
-    const origin = typeof window !== 'undefined' ? window.location.origin : '';
 
     const showAllLink = props?.userAgent?.isMobile || props?.userAgent?.isTablet
         ? `${origin}/${isArabic ? "ar" : "en"}/categorieslisting`
@@ -66,7 +66,7 @@ export default function CategoriesHomeMobile(props: any) {
                                         <div className=''>
                                             <Link prefetch={false} scroll={false} href={`${origin}/${props?.lang}/category/${category?.slug}`} className="rounded-md">
                                                 <Image
-                                                    src={category?.image ? NewMedia + category?.image?.image : ''}
+                                                    src={category?.image ? `${NewMedia}${category?.image?.image}` : ''}
                                                     alt={`${renderCategoryName(category)}-${i + 11}`}
                                                     title={renderCategoryName(category)}
                                                     width={0}

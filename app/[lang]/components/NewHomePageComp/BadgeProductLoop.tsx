@@ -19,6 +19,7 @@ const ProductComponent = dynamic(
 export default function BadgeProductLoopComponent(props: any) {
     const origin = props?.origin;
     const isArabic = props?.isArabic;
+    const NewMedia = props?.NewMedia;
     const isMobileOrTablet = props?.isMobileOrTablet;
     const productDataSlider = props?.productDataSlider?.products?.data;
     const containerClass = isMobileOrTablet ? "container" : "px-[4.8rem]";
@@ -133,7 +134,7 @@ export default function BadgeProductLoopComponent(props: any) {
                 >
                     {productDataSlider?.map((productSlider: any, productSliderID: number) => (
                         <SwiperSlide key={productSliderID}>
-                            <ProductComponent productData={productSlider} lang={isArabic} isMobileOrTablet={isMobileOrTablet} origin={origin} ProExtraData={ProExtraData[productSlider?.id]} gtmColumnItemListId={gtmNewListId} gtmColumnItemListName={gtmNewListName}/>
+                            <ProductComponent NewMedia={NewMedia} productData={productSlider} lang={isArabic} isMobileOrTablet={isMobileOrTablet} origin={origin} ProExtraData={ProExtraData[productSlider?.id]} gtmColumnItemListId={gtmNewListId} gtmColumnItemListName={gtmNewListName}/>
                         </SwiperSlide>
                     ))}
                 </Swiper>

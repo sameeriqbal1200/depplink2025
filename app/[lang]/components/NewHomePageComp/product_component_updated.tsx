@@ -15,11 +15,11 @@ import {
   removeProductWishlistData,
 } from "@/lib/components/component.client";
 
-export default function product_component_updated_updated(props: any) {
+export default function product_component_updated(props: any) {
   const NewMedia = props?.NewMedia;
   const router = useRouter();
   const origin = props?.origin;
-  const isArabic = props?.isArabic;
+  const isArabic = props?.lang;
   const isMobileOrTablet = props?.isMobileOrTablet;
   var productData: any = props?.productData;
   const [isImageLoaded, setImageLoaded] = useState(false);

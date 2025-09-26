@@ -8,17 +8,16 @@ import { Autoplay, Pagination, Navigation } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
-import { NewMedia2 } from '../../api/Api';
-
 
 interface MainSliderMobileProps {
     data: any;
     lang: any;
     origin: any;
+    NewMedia2: any;
 }
 
 const MainSliderMobile: React.FC<MainSliderMobileProps> = ({
-    data, lang = 'ar', origin
+    data, lang = 'ar', origin, NewMedia2
 }) => {
     // const sortedData: any = data?.map((item: any) => ({ ...item, sorting: item?.sorting ?? 0, })).sort((a: any, b: any) => a.sorting - b.sorting);
     const [activeIndex, setActiveIndex] = useState(0);
@@ -44,7 +43,7 @@ const MainSliderMobile: React.FC<MainSliderMobileProps> = ({
                 className="swiperProductSlider"
             >
                 {(data || [])?.map((item: any, index: any) => {
-                    const sliderImage: any = item?.image ? NewMedia2 + item?.image : '';
+                    const sliderImage: any = item?.image ? `${NewMedia2}${item?.image}` : '';
                     const sliderLink: any = item?.redirection_link ? origin + '/' + lang + '/' + item?.redirection_link : '';
                     return (
                         <SwiperSlide key={index} className={index === activeIndex ? '' : 'mobileSwiperTransaction'}>
