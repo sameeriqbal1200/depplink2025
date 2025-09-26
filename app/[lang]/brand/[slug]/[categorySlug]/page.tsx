@@ -1,7 +1,6 @@
 "use client"; // This is a client component 👈🏽
 
 import React, { Fragment, useEffect, useState } from 'react'
-import Link from 'next/link'
 import Select from 'react-select'
 import Lottie from "lottie-react"
 import dynamic from 'next/dynamic'
@@ -19,6 +18,7 @@ export const fetchCache = 'force-no-store'
 export default function BrandCategory({ params, searchParams }: { params: { lang: string, categorySlug: string, data: any, devicetype: any }, searchParams: any }) {
   const [filterHide, setFilterHide] = useState<any>(false);
   const router = useRouter()
+  const NewMedia = process.env.NEXT_PUBLIC_NEW_MEDIA;
   const pathname = usePathname()
   const [BrandfilterHide, setBrandfilterHide] = useState<any>(false);
   const [RatingfilterHide, setRatingfilterHide] = useState<any>(false);
@@ -219,18 +219,13 @@ export default function BrandCategory({ params, searchParams }: { params: { lang
     { value: 'price-desc', label: params.lang == 'ar' ? 'السعر (من الأعلى إلى الأقل)' : 'Price (Hight to Low)' },
   ];
 
-  const origin =
-    typeof window !== 'undefined' && window.location.origin
-      ? window.location.origin
-      : '';
-
   return (
     <>
       <MobileHeader type="Secondary" lang={params.lang} dict={dict} pageTitle={params.lang === 'ar' ? CatData?.category?.name_arabic_app : CatData?.category?.name_app} onClick={() => setFilterMobile(true)} notifications={searchParams?.notifications} />
       <div className='container py-4 max-md:pt-20'>
         <div className='py-8 max-md:py-0'>
           <h2 className="text-sm font-bold pt-3 max-md:pt-0">{params.lang == 'ar' ? 'تصفية حسب العلامات التجارية' : `Filter's by Brands`}</h2>
-          <BrandSliderOther devicetype={params.devicetype} lang={params.lang} dict={dict?.products} data={CatData?.productData?.brands} BrandData={selectedbrands} setBrandData={(id: number, name: string) => {
+          <BrandSliderOther NewMedia={NewMedia} devicetype={params.devicetype} lang={params.lang} dict={dict?.products} data={CatData?.productData?.brands} BrandData={selectedbrands} setBrandData={(id: number, name: string) => {
             var bdata = selectedbrands
             if (!bdata[name]) {
               bdata[name] = true;

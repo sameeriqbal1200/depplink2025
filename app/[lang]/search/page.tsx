@@ -16,6 +16,7 @@ const BrandSliderOther = dynamic(() => import('../components/BrandSliderOther'),
 export const fetchCache = 'force-no-store'
 
 export default function Category({ params, searchParams }: { params: { lang: string, slug: string, data: any, devicetype: any }, searchParams: any }) {
+  const NewMedia = process.env.NEXT_PUBLIC_NEW_MEDIA;
   const [filterHide, setFilterHide] = useState<any>(false);
   const router = useRouter()
   const pathname = usePathname()
@@ -194,7 +195,7 @@ export default function Category({ params, searchParams }: { params: { lang: str
           {CatData?.brands?.length ?
           <>
           <h2 className="srh__302mainInnerSmHeading">{params.lang == 'ar' ? 'تصفية حسب العلامات التجارية' : `Filter's by Brands`}</h2>
-          <BrandSliderOther devicetype={params.devicetype} lang={params.lang} dict={dict?.products} data={CatData?.brands} BrandData={selectedbrands} setBrandData={(id: number, name: string) => {
+          <BrandSliderOther NewMedia={NewMedia} devicetype={params.devicetype} lang={params.lang} dict={dict?.products} data={CatData?.brands} BrandData={selectedbrands} setBrandData={(id: number, name: string) => {
             var bdata = selectedbrands
             if (!bdata[name]) {
               bdata[name] = true;
@@ -209,7 +210,7 @@ export default function Category({ params, searchParams }: { params: { lang: str
           {CatData?.cats?.length ?
           <>
           <h2 className="srh__302mainInnerSmHeading">{params.lang == 'ar' ? 'فلتر حسب الفئة' : `Filter's by Category`}</h2>
-          <BrandSliderOther devicetype={params.devicetype} lang={params.lang} dict={dict?.products} data={CatData?.cats} BrandData={selectedcats} setBrandData={(id: number, name: string) => {
+          <BrandSliderOther NewMedia={NewMedia} devicetype={params.devicetype} lang={params.lang} dict={dict?.products} data={CatData?.cats} BrandData={selectedcats} setBrandData={(id: number, name: string) => {
             var bdata = selectedcats
             if (!bdata[name]) {
               bdata[name] = true;

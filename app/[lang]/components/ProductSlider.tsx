@@ -22,7 +22,6 @@ import { Pagination, Navigation } from 'swiper/modules';
 import 'swiper/css/pagination';
 import dynamic from 'next/dynamic'
 import GlobalContext from '../GlobalContext';
-const BadgeComponent = dynamic(() => import('./ProductComponents/Badges'), { ssr: false })
 const RatingComponent = dynamic(() => import('./ProductComponents/Rating'), { ssr: false })
 
 export default function ProductSlider(props: any, request: any) {

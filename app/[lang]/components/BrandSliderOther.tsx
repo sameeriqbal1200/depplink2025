@@ -1,11 +1,10 @@
 'use client'
 
 import Image from 'next/image'
-import React, { useRef, useState, useEffect } from 'react'
-import { NewMedia } from '../api/Api';
-
+import React, { useState, useEffect } from 'react'
 
 export default function BrandSliderOther(props: any) {
+    const NewMedia = props.NewMedia;
     const [BrandData, setBrandData] = useState<any>([]);
     useEffect(() => {
         setBrandData(props?.data)
@@ -31,7 +30,7 @@ export default function BrandSliderOther(props: any) {
                                     }}
                                 >
                                     <Image
-                                        src={data?.brand_media_image ? NewMedia + data?.brand_media_image?.image : 'https://images.tamkeenstores.com.sa/assets/new-media/3f4a05b645bdf91af2a0d9598e9526181714129744.png'}
+                                        src={data?.brand_media_image ? `${NewMedia}${data?.brand_media_image?.image}` : 'https://images.tamkeenstores.com.sa/assets/new-media/3f4a05b645bdf91af2a0d9598e9526181714129744.png'}
                                         alt={(data?.brand_media_image?.alt_arabic && props?.lang == 'ar') ? data?.brand_media_image?.alt_arabic : (data?.brand_media_image?.alt && props?.lang == 'en') ? data?.brand_media_image?.alt : ''}
                                         title={(data?.brand_media_image?.title_arabic && props?.lang == 'ar') ? data?.brand_media_image?.title_arabic : (data?.brand_media_image?.title && props?.lang == 'en') ? data?.brand_media_image?.title : ''}
                                         height={0}
