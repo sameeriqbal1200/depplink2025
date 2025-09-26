@@ -18,7 +18,7 @@ import "swiper/css/pagination";
 import { getCookie } from "cookies-next";
 import { getProductExtraData } from "@/lib/components/component.client";
 
-const ProductComponent = dynamic(() => import("../NewHomePageComp/product_component_updated_updated"), { ssr: true });
+const ProductComponent = dynamic(() => import("../NewHomePageComp/product_component_updated"), { ssr: true });
 
 interface Product {
   id: number;
