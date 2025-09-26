@@ -890,6 +890,9 @@ export default function Homepage() {
         data={sec1SliderData}
         lang={lang}
         origin={origin}
+        NewMedia2={NewMedia2} 
+        deviceType={deviceType}
+        isMobileOrTablet={true}
       />
       <div className="sticky top-0 z-40 bg-white">
         <MobileHeaderNew
@@ -901,6 +904,7 @@ export default function Homepage() {
           city={city}
           origin={origin}
           slugStr={slugStr}
+          isMobileOrTablet={true}
         />
       </div>
       <div className="pt-4"></div>

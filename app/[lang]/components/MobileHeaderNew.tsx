@@ -2,12 +2,8 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { get } from "../api/ApiCalls";
-import { RWebShare } from "react-web-share";
-import { useUserAgent } from "next-useragent";
-import { usePathname, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import React, { useState, useEffect, Fragment, useContext } from "react";
-import { getCookie } from 'cookies-next';
 import {
   Dialog,
   Transition,
@@ -17,28 +13,22 @@ import {
 } from "@headlessui/react";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
-import { NewMedia } from "../api/Api";
 import { getCartCount } from "../cartstorage/cart";
 import dynamic from "next/dynamic";
 import GlobalContext from "../GlobalContext";
-import { any } from "prop-types";
+import { getAllCityData, getHeaderMenuData, getOnlyCityData, getSearchData } from "@/lib/components/component.client";
 const ProductLoop = dynamic(() => import("./NewHomePageComp/ProductLoop"), { ssr: false });
 
-declare global {
-  interface WindowEventMap {
-    cartDataChanged: CustomEvent;
-  }
-}
-
-export default function MobileHeaderNew(props: any) {
+export default function MobileHeaderNew(props:any) {
+  const NewMedia = props?.NewMedia;
+  const lang = props?.lang
+  const deviceType = props?.deviceType
+  const city = props?.city
+  const origin = props?.origin
+  const slugStr = props?.slugStr
+  const isArabic = props?.isArabic;
+  const isMobileOrTablet = props?.isMobileOrTablet;
   const router = useRouter();
-  const origin = typeof window !== "undefined" ? window.location.origin : "";
-  const isArabic = props?.lang === "ar" ? true : false;
-  const isMobileOrTablet =
-    props?.devicetype === "mobile" || props?.devicetype === "tablet"
-      ? true
-      : false;
-  const containerClass = isMobileOrTablet ? "container" : "px-[4.8rem]";
   const [appDrawer, setAppDrawer] = useState<boolean>(false);
   const [whatsappBtn, setWhatsappBtn] = useState<boolean>(false);
   const [menuData, setMenuData] = useState<any>([]);
@@ -66,52 +56,12 @@ export default function MobileHeaderNew(props: any) {
     } else {
       setSearchDialoug(true);
       var searchcity = await localStorage.getItem("city");
-
-      get(
-        `search-regional-new-updated?q=${e}&city=${searchcity}&lang=${props?.lang}`
-      ).then((responseJson: any) => {
-        setSearchResult(responseJson);
-      });
+      const getData = await getSearchData(e, searchcity, lang)
+      if(getData?.getUserSearchData){
+        setSearchResult(getData?.getUserSearchData)
+      }
     }
   };
-
-  var timerLoader: any = 0;
-  var interval: any;
-  useEffect(() => {
-    const handleVisibilityChange = () => {
-      if (document.visibilityState === 'hidden') {
-
-        interval = setInterval(() => {
-          timerLoader += 1;
-        }, 1000);
-
-      } else if (document.visibilityState === 'visible') {
-        if (interval) {
-          clearInterval(interval);
-        }
-
-        if (timerLoader >= 3600) {
-          const url = window.location.href;
-
-          if (url.includes('/cart') || url.includes('/checkout') ||
-            url.includes('/login') || url.includes('/signup')) {
-            window.location.href = `/${props.lang}`;
-          } else {
-            window.location.reload();
-          }
-        }
-        timerLoader = 0;
-      }
-    };
-    document.addEventListener('visibilitychange', handleVisibilityChange);
-
-    return () => {
-      if (interval) {
-        clearInterval(interval);
-      }
-      document.removeEventListener('visibilitychange', handleVisibilityChange);
-    };
-  }, []);
 
   useEffect(() => {
     DataLocalStorage();
@@ -124,7 +74,7 @@ export default function MobileHeaderNew(props: any) {
       }
     };
 
-    const handleCustomCartChange = (e: CustomEvent) => {
+    const handleCustomCartChange = (e: Event) => {
       setUpdateCart((prev: any) => (prev == 0 ? 1 : 0));
     };
 
@@ -138,138 +88,47 @@ export default function MobileHeaderNew(props: any) {
   }, []);
 
   useEffect(() => {
-    if (typeof window === 'undefined') return; // SSR guard
+    if (!localStorage.getItem("globalcity")) {
+      setTimeout(function () {
 
-    const ls = window.localStorage;
-    const hasGlobalCity = !!ls.getItem('globalcity');
-    const defaultAddressYes = ls.getItem('default_address') === 'yes';
-    const liveAllowed = ls.getItem('live_location') !== 'false';
-
-    // Sync fullAddress from localStorage if we don't already have it
-    const lsAddress = ls.getItem('fulladdress');
-    if (!fullAddress && lsAddress) {
-      setfullAddress(lsAddress);
+        if (localStorage.getItem("default_address") != "yes") {
+          var live = localStorage.getItem("live_location");
+          if (live != "false") {
+            if ("geolocation" in navigator) {
+              // Retrieve latitude & longitude coordinates from `navigator.geolocation` Web API
+              navigator.geolocation.getCurrentPosition(({ coords }) => {
+                setLatitude(coords.latitude);
+                setLongitude(coords.longitude);
+                const latitude = coords.latitude;
+                const longitude = coords.longitude;
+                // if (!localStorage.getItem("globalcity"))
+                fetchApiData({ latitude, longitude });
+              });
+            }
+          }
+        }
+      }, 5000);
     }
+    // DataLocalStorage()
 
-    // Decide whether we should try geolocation at all
-    const shouldGeo =
-      !defaultAddressYes && liveAllowed && !fullAddress; // don’t geolocate if user has a default address or already has a full address
+    // for address
+    if (!fullAddress) {
 
-    if (!shouldGeo) return;
-
-    let cancelled = false;
-    let timeoutId: number | undefined;
-    let watchId: number | undefined;
-
-    const doFetch = (coords: GeolocationCoordinates) => {
-      if (cancelled) return;
-      setLatitude(coords.latitude);
-      setLongitude(coords.longitude);
-      fetchApiData({ latitude: coords.latitude, longitude: coords.longitude });
-    };
-
-    const getOnce = () =>
-      new Promise<GeolocationCoordinates>((resolve, reject) => {
-        if (!('geolocation' in navigator)) return reject(new Error('No geolocation'));
-        navigator.geolocation.getCurrentPosition(
-          pos => resolve(pos.coords),
-          err => reject(err),
-          { timeout: 7000, maximumAge: 60_000, enableHighAccuracy: false }
-        );
-      });
-
-    const fallbackWatch = () => {
-      if (!('geolocation' in navigator)) return;
-      watchId = navigator.geolocation.watchPosition(
-        pos => {
-          if (watchId !== undefined) navigator.geolocation.clearWatch(watchId);
-          doFetch(pos.coords);
-        },
-        err => {
-          console.warn('Geolocation watch failed:', err);
-        },
-        { enableHighAccuracy: false, maximumAge: 0 }
-      );
-    };
-
-    // Strategy:
-    // - Try once (uses cache if fresh)
-    // - If POSITION_UNAVAILABLE/TIMEOUT, fall back to watch for first fix
-    const attempt = async () => {
-      try {
-        const coords = await getOnce();
-        doFetch(coords);
-      } catch (e: any) {
-        // 2: POSITION_UNAVAILABLE, 3: TIMEOUT
-        if (e?.code === 2 || e?.code === 3) fallbackWatch();
-        else console.warn('Geolocation failed:', e);
+      if ("geolocation" in navigator) {
+        // Retrieve latitude & longitude coordinates from `navigator.geolocation` Web API
+        navigator.geolocation.getCurrentPosition(({ coords }) => {
+          setLatitude(coords.latitude);
+          setLongitude(coords.longitude);
+          const latitude = coords.latitude;
+          const longitude = coords.longitude;
+          // if (!localStorage.getItem("globalcity"))
+          fetchApiData({ latitude, longitude });
+        });
       }
-    };
-
-    // If no global city set, delay first attempt (mirrors your original 5s delay)
-    if (!hasGlobalCity) {
-      timeoutId = window.setTimeout(attempt, 5000);
     } else {
-      attempt();
+      setfullAddress(localStorage.getItem("fulladdress"));
     }
-
-    return () => {
-      cancelled = true;
-      if (timeoutId) clearTimeout(timeoutId);
-      if (watchId !== undefined) navigator.geolocation.clearWatch(watchId);
-    };
-    // Only run on mount / fullAddress changes
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [fullAddress]); // removed [props]
-
-  // useEffect(() => {
-  //   if (typeof window === "undefined") return; // SSR guard
-
-  //   if (!localStorage.getItem("globalcity")) {
-  //     setTimeout(function () {
-  //       if (localStorage.getItem("default_address") !== "yes") {
-  //         const live = localStorage.getItem("live_location");
-  //         if (live !== "false" && "geolocation" in navigator) {
-  //           navigator.geolocation.getCurrentPosition(
-  //             ({ coords }) => {
-  //               setLatitude(coords.latitude);
-  //               setLongitude(coords.longitude);
-  //               const latitude = coords.latitude;
-  //               const longitude = coords.longitude;
-  //               fetchApiData({ latitude, longitude });
-  //             },
-  //             (err) => {
-  //               console.warn("Geolocation (initial) failed:", err);
-  //             },
-  //             { timeout: 7000, maximumAge: 60_000 }
-  //           );
-  //         }
-  //       }
-  //     }, 5000);
-  //   }
-
-  //   // for address
-  //   if (!fullAddress) {
-  //     if ("geolocation" in navigator) {
-  //       navigator.geolocation.getCurrentPosition(
-  //         ({ coords }) => {
-  //           setLatitude(coords.latitude);
-  //           setLongitude(coords.longitude);
-  //           const latitude = coords.latitude;
-  //           const longitude = coords.longitude;
-  //           fetchApiData({ latitude, longitude });
-  //         },
-  //         (err) => {
-  //           console.warn("Geolocation (address) failed:", err);
-  //         },
-  //         { timeout: 7000, maximumAge: 60_000 }
-  //       );
-  //     }
-  //   } else {
-  //     setfullAddress(localStorage.getItem("fulladdress") || "");
-  //   }
-  // }, [props]);
-
+  }, []);
 
   const fetchApiData = async ({
     latitude,
@@ -279,9 +138,16 @@ export default function MobileHeaderNew(props: any) {
     longitude: number;
   }) => {
     const res = await fetch(
-      `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&language=${props.lang}&sensor=true&key=AIzaSyB3ekz5eMwuRZGvFy2HUADZVhxAzTWV5Ok`
+      `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&language=${lang}&sensor=true&key=AIzaSyB3ekz5eMwuRZGvFy2HUADZVhxAzTWV5Ok`
     );
     const data = await res?.json();
+    if (data?.results[0]?.formatted_address) {
+      localStorage.setItem(
+        "fulladdress",
+        data?.results[0]?.formatted_address.toString()
+      );
+      setfullAddress(data?.results[0]?.formatted_address);
+    }
     for (var a = 0; a < data?.results[0]["address_components"]?.length; a++) {
       if (
         data?.results[0]["address_components"][a]?.types[0] ==
@@ -318,28 +184,27 @@ export default function MobileHeaderNew(props: any) {
       setuseraddress(localStorage.getItem("globaladdress"));
     }
   };
-  const getMenu = () => {
+  const getMenu = async () => {
     if (!menuData?.length) {
-      get(`menu`).then((responseJson: any) => {
-        setMenuData(responseJson?.menu);
-      });
+      const mData = await getHeaderMenuData();
+      setMenuData(mData?.menuDataUpd?.menu);
     }
   };
   const menuRedirection = (slug: any) => {
-    router.push(`/${props.lang}/category/${slug}`);
+    router.push(`/${lang}/category/${slug}`);
   };
-  const getCitiesData = () => {
-    get(`getcities/${props?.lang}`).then((responseJson: any) => {
-      setcitiesData(responseJson?.cities);
-    });
+  const getCitiesData = async () => {
+    const dataCities = await getAllCityData(lang);
+    setcitiesData(dataCities?.allCitiesData?.cities)
   };
+
   const filteredCities = citiesData.filter((city: { label: string }) =>
     city.label.toLowerCase().includes(citySearch.toLowerCase())
   );
   const setupCity = () => {
     if (!selectedCityData) {
       topMessageAlartDanger(
-        props?.lang == "ar"
+        lang == "ar"
           ? "خطأ! الرجاء اختيار المدينة"
           : "Error! Please select city"
       );
@@ -352,27 +217,26 @@ export default function MobileHeaderNew(props: any) {
     setCityList(false);
     router.refresh();
   };
-
-  const updateCity = () => {
-    var sCty: any = getCookie('selectedCity');
+  
+  const updateCity = async () => {
+    var sCty: any = localStorage?.getItem("globalcity");
     if (!sCty) {
       sCty = "Jeddah";
     }
-    get(`only-city/${sCty}?lang=${props?.lang}`).then((responseJson: any) => {
-      if (responseJson?.cities) {
+    const getData = await getOnlyCityData(sCty, lang)
+    if (getData?.getCityDataUpd?.cities) {
         var city = "Jeddah";
         if (isArabic) {
-          city = responseJson?.cities?.name_arabic;
+          city = getData?.getCityDataUpd?.cities?.name_arabic;
         }
         if (isArabic == false) {
-          city = responseJson?.cities?.name;
+          city = getData?.getCityDataUpd?.cities?.name;
         }
         localStorage?.setItem("globalcity", city);
         setglobalCity(city);
         setCityData(city);
         setselectedCityData(city);
       }
-    });
   };
 
   // Here is the issue
@@ -381,8 +245,7 @@ export default function MobileHeaderNew(props: any) {
     if (live == "false" || live == null) {
       updateCity();
     }
-  }, [props?.lang]);
-
+  }, [lang]);
   const MySwal = withReactContent(Swal);
   const topMessageAlartDanger = (title: any) => {
     MySwal.fire({
@@ -393,7 +256,7 @@ export default function MobileHeaderNew(props: any) {
         </div>
       ),
       toast: true,
-      position: props.lang == "ar" ? "top-start" : "top-end",
+      position: lang == "ar" ? "top-start" : "top-end",
       showConfirmButton: false,
       timer: 15000,
       showCloseButton: true,
@@ -443,7 +306,7 @@ export default function MobileHeaderNew(props: any) {
             <Link
               prefetch={false}
               scroll={false}
-              href={`${origin}/${props?.lang}`}
+              href={`${origin}/${lang}`}
               className="logo"
             >
               <svg
@@ -502,7 +365,7 @@ export default function MobileHeaderNew(props: any) {
               <input
                 type="text"
                 placeholder={
-                  props.lang === "ar" ? "ابحث هنا" : "What are you looking for?"
+                  lang === "ar" ? "ابحث هنا" : "What are you looking for?"
                 }
                 className="border-none outline-none w-full px-2 text-xs text-[#004B7A] placeholder:text-[#6B7280]"
                 onClick={() => setSearchPop(!searchPop)}
@@ -514,7 +377,7 @@ export default function MobileHeaderNew(props: any) {
               <Link
                 prefetch={false}
                 scroll={false}
-                href={`${origin}/${props.lang}/cart`}
+                href={`${origin}/${lang}/cart`}
                 className="cart_icon relative"
               >
                 {cartCount > 0 ? (
@@ -550,7 +413,7 @@ export default function MobileHeaderNew(props: any) {
               <Link
                 prefetch={false}
                 scroll={false}
-                href={`${origin}/${props.lang}/notifications`}
+                href={`${origin}/${lang}/notifications`}
                 className="bell_icon"
               >
                 <svg
@@ -678,15 +541,15 @@ export default function MobileHeaderNew(props: any) {
               as={Fragment}
               enter="transition ease-in-out duration-300 transform"
               enterFrom={
-                props.lang === "ar" ? "translate-x-full" : "-translate-x-full"
+                lang === "ar" ? "translate-x-full" : "-translate-x-full"
               }
-              enterTo={props.lang === "ar" ? "-translate-x-0" : "translate-x-0"}
+              enterTo={lang === "ar" ? "-translate-x-0" : "translate-x-0"}
               leave="transition ease-in-out duration-300 transform"
               leaveFrom={
-                props.lang === "ar" ? "-translate-x-0" : "translate-x-0"
+                lang === "ar" ? "-translate-x-0" : "translate-x-0"
               }
               leaveTo={
-                props.lang === "ar" ? "translate-x-full" : "-translate-x-full"
+                lang === "ar" ? "translate-x-full" : "-translate-x-full"
               }
             >
               <Dialog.Panel className="w-80 h-[-webkit-fill-available] ltr:mr-auto rtl:ml-auto transform overflow-hidden bg-white text-left align-middle shadow-xl transition-all">
@@ -696,7 +559,7 @@ export default function MobileHeaderNew(props: any) {
                       as="h4"
                       className="text-lg font-bold leading-6 text-gray-900"
                     >
-                      {props.lang == "ar" ? "فئات" : "Categories"}
+                      {lang == "ar" ? "فئات" : "Categories"}
                     </Dialog.Title>
                     <button
                       onClick={() => setAppDrawer(false)}
@@ -753,7 +616,7 @@ export default function MobileHeaderNew(props: any) {
                             className={`text-sm font-semibold ${parentCategory == data.id ? "text-[#219EBC]" : ""
                               }`}
                           >
-                            {props.lang === "ar"
+                            {lang === "ar"
                               ? data?.name_arabic
                               : data?.name}
                           </label>
@@ -779,7 +642,7 @@ export default function MobileHeaderNew(props: any) {
                                 viewBox="0 0 24 24"
                                 width="26"
                                 className={
-                                  props.lang === "ar" ? "" : "rotate-180"
+                                  lang === "ar" ? "" : "rotate-180"
                                 }
                                 xmlns="http://www.w3.org/2000/svg"
                                 id="fi_2722991"
@@ -836,7 +699,7 @@ export default function MobileHeaderNew(props: any) {
                                         : ""
                                         }`}
                                     >
-                                      {props.lang === "ar"
+                                      {lang === "ar"
                                         ? childcatgeory.name_arabic
                                         : childcatgeory.name}
                                     </label>
@@ -862,7 +725,7 @@ export default function MobileHeaderNew(props: any) {
                                           viewBox="0 0 24 24"
                                           width="26"
                                           className={
-                                            props.lang === "ar"
+                                            lang === "ar"
                                               ? ""
                                               : "rotate-180"
                                           }
@@ -908,7 +771,7 @@ export default function MobileHeaderNew(props: any) {
                                             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 100vw, 22px"
                                           />
                                           <label className="text-sm font-semibold">
-                                            {props.lang === "ar"
+                                            {lang === "ar"
                                               ? subcatgeory.name_arabic
                                               : subcatgeory.name}
                                           </label>
@@ -926,10 +789,10 @@ export default function MobileHeaderNew(props: any) {
                   ))}
                   <Link
                     className={`focus-visible:outline-none align__center py-3 border-b border-[#9CA4AB50] pl-4 pr-3 w-full`}
-                    href={`${origin}/${props?.lang}/category/bundles`}
+                    href={`${origin}/${lang}/category/bundles`}
                   >
                     <label className={`text-sm font-semibold`}>
-                      {props.lang === "ar" ? "مجموعات" : "Bundles"}
+                      {lang === "ar" ? "مجموعات" : "Bundles"}
                     </label>
                   </Link>
                 </div>
@@ -948,7 +811,7 @@ export default function MobileHeaderNew(props: any) {
             as={Fragment}
             enter="transition ease-in-out duration-300 transform"
             enterFrom={
-              props.lang === "ar" ? "-translate-y-full" : "translate-y-full"
+              lang === "ar" ? "-translate-y-full" : "translate-y-full"
             } // Start from bottom for 'ar', top for others
             enterTo="translate-y-0" // Transition to center
           >
@@ -959,7 +822,7 @@ export default function MobileHeaderNew(props: any) {
                     as="h4"
                     className="text-lg font-bold leading-6 text-gray-900"
                   >
-                    {props.lang == "ar" ? "اختر مدينة" : "Select City"}
+                    {lang == "ar" ? "اختر مدينة" : "Select City"}
                   </Dialog.Title>
                   <button
                     onClick={() => setCityList(false)}
@@ -987,7 +850,7 @@ export default function MobileHeaderNew(props: any) {
                               : ""
                               } flex items-center justify-center border-b-2 text-base border-transparent bg-transparent py-3 before:inline-block hover:border-primary hover:text-primary font-bold w-full`}
                           >
-                            {props?.lang == "ar" ? "التوصيل" : "Deliver here"}
+                            {lang == "ar" ? "التوصيل" : "Deliver here"}
                           </button>
                         )}
                       </Tab>
@@ -997,13 +860,13 @@ export default function MobileHeaderNew(props: any) {
                                                 className={`${selected ? '!border-primary text-primary !outline-none' : ''
                                                     } flex items-center justify-center border-b-2 text-base border-transparent bg-transparent py-3 before:inline-block hover:border-primary hover:text-primary font-bold w-1/2`}
                                             >
-                                                {props?.lang == 'ar' ? 'التوصيل' : 'Store Pickup'}
+                                                {lang == 'ar' ? 'التوصيل' : 'Store Pickup'}
                                             </button>
                                         )}
                                     </Tab> */}
                     </Tab.List>
                     <Tab.Panels>
-                      <Tab.Panel className="focus-visible:outline-none mt-3 px-4 bg-white">
+                      <Tab.Panel className="focus-visible:outline-none mt-3 px-4">
                         <div className="panel rounded-t-none">
                           <div className="border rounded px-2 flex items-center border-[#004B7A] focus::border-[#000] h-10 gap-2 relative z-20 bg-white">
                             <input
@@ -1012,7 +875,7 @@ export default function MobileHeaderNew(props: any) {
                               name="shipping-charge"
                               className="form-input focus-visible:outline-none text-sm h-9 border-none w-full"
                               placeholder={
-                                props.lang === "ar"
+                                lang === "ar"
                                   ? "مدينة البحث"
                                   : "Search City"
                               }
@@ -1024,11 +887,11 @@ export default function MobileHeaderNew(props: any) {
                                 className="focus-visible:outline-none underline text-xs text-[#DC4E4E] font-semibold"
                                 onClick={() => setCitySearch("")}
                               >
-                                {props.lang === "ar" ? "مسح" : "Clear"}
+                                {lang === "ar" ? "مسح" : "Clear"}
                               </button>
                             )}
                           </div>
-                          <div className="searchList overflow-y-auto h-[calc(100vh_-_220px)] px-2 ios-scroll">
+                          <div className="overflow-y-auto h-[calc(100vh_-_220px)] md:h-[543px] px-2 ios-scroll">
                             <RadioGroup
                               value={selectedCityData}
                               onChange={(e) => {
@@ -1113,7 +976,7 @@ export default function MobileHeaderNew(props: any) {
                               }}
                               className="focus-visible:outline-none btn border border-[#004B7A] bg-[#004B7A] p-2.5 rounded-md w-full text-white fill-white font-medium"
                             >
-                              {props.lang === "ar"
+                              {lang === "ar"
                                 ? "تغيير المدينة"
                                 : "Change City"}
                             </button>
@@ -1124,7 +987,7 @@ export default function MobileHeaderNew(props: any) {
                         <div className="panel rounded-t-none">
                           <div className="px-4">
                             <h5 className="font-semibold text-sm my-3 line-clamp-1">
-                              {props?.lang == "ar"
+                              {lang == "ar"
                                 ? "المدينة المختارة:"
                                 : "Selected City:"}{" "}
                               <span className="text-[#219EBC] font-bold uppercase">
@@ -1147,7 +1010,7 @@ export default function MobileHeaderNew(props: any) {
                               <span className="text-[#219EBC] font-bold uppercase">
                                 50
                               </span>{" "}
-                              {props?.lang == "ar"
+                              {lang == "ar"
                                 ? "المتاجر لديها توافر"
                                 : "Stores have availablity"}
                             </h5>
@@ -1165,17 +1028,17 @@ export default function MobileHeaderNew(props: any) {
                                       Jeddah - Old Airport
                                     </h6>
                                     <span className="border border-[#20831E] text-[#20831E] p-1 rounded text-[9px] font-semibold">
-                                      {props?.lang == "ar"
+                                      {lang == "ar"
                                         ? "في الأوراق المالية"
                                         : "IN STOCK"}
                                     </span>
                                   </div>
                                   <h6 className="text-sm font-semibold text-[#004B7A]">
-                                    {props?.lang == "ar" ? "يختار" : "Select"}
+                                    {lang == "ar" ? "يختار" : "Select"}
                                   </h6>
                                 </div>
                                 <p className="text-xs px-3 mb-2.5">
-                                  {props?.lang == "ar"
+                                  {lang == "ar"
                                     ? "شارع عبدالله سليمان منطقة المطار القديم 1"
                                     : "Abdullah Sulaiman Street Old Airport Area, 1"}
                                 </p>
@@ -1186,14 +1049,14 @@ export default function MobileHeaderNew(props: any) {
                                         <div className="flex gap-x-1 justify-start items-center">
                                           <span className="bg-[#20831E] h-2 w-2 rounded-full"></span>
                                           <p>
-                                            {props?.lang == "ar"
+                                            {lang == "ar"
                                               ? "يفتح"
                                               : "Open"}
                                           </p>
                                         </div>
                                         <div className="flex gap-x-1.5 justify-start items-center">
                                           <p className="text-[#004B7A]">
-                                            {props?.lang == "ar"
+                                            {lang == "ar"
                                               ? "تفاصيل"
                                               : "Details"}
                                           </p>
@@ -1228,12 +1091,12 @@ export default function MobileHeaderNew(props: any) {
                                             </svg>
                                             <div className="text-[#53616A] text-[10px]">
                                               <h6 className="p-0 text-xs mb-1">
-                                                {props?.lang == "ar"
+                                                {lang == "ar"
                                                   ? "ساعات العمل"
                                                   : "Business hours"}
                                               </h6>
                                               <p>
-                                                {props?.lang == "ar"
+                                                {lang == "ar"
                                                   ? "من السبت إلى الخميس"
                                                   : "Saturday to Thursday"}
                                               </p>
@@ -1254,12 +1117,12 @@ export default function MobileHeaderNew(props: any) {
                                             </svg>
                                             <div className="text-[#53616A] text-[10px]">
                                               <h6 className="p-0 text-xs mb-1">
-                                                {props?.lang == "ar"
+                                                {lang == "ar"
                                                   ? "ساعات العمل المسائية"
                                                   : "Evening Working Hours"}
                                               </h6>
                                               <p>
-                                                {props?.lang == "ar"
+                                                {lang == "ar"
                                                   ? "ساعات العمل المسائية"
                                                   : "friday 04:30 PM - 11:59 PM"}
                                               </p>
@@ -1289,12 +1152,12 @@ export default function MobileHeaderNew(props: any) {
                                             </svg>
                                             <div className="text-[#53616A] text-[10px]">
                                               <h6 className="p-0 text-xs mb-1">
-                                                {props?.lang == "ar"
+                                                {lang == "ar"
                                                   ? "ساعات العمل المسائية"
                                                   : "Address"}
                                               </h6>
                                               <p>
-                                                {props?.lang == "ar"
+                                                {lang == "ar"
                                                   ? "شارع عبدالله سليمان منطقة المطار القديم 1"
                                                   : "Abdullah Sulaiman Street Old Airport Area, 1"}
                                               </p>
@@ -1302,7 +1165,7 @@ export default function MobileHeaderNew(props: any) {
                                                 href=""
                                                 className="text-[#004B7A] text-xs"
                                               >
-                                                {props?.lang == "ar"
+                                                {lang == "ar"
                                                   ? "ساعات العمل المسائية"
                                                   : "Get Direction"}
                                               </a>
@@ -1336,12 +1199,12 @@ export default function MobileHeaderNew(props: any) {
                                             </svg>
                                             <div className="text-[#53616A] text-[10px]">
                                               <h6 className="p-0 text-xs mb-1">
-                                                {props?.lang == "ar"
+                                                {lang == "ar"
                                                   ? "اتصل بالمتجر"
                                                   : "Contact the store"}
                                               </h6>
                                               <p>
-                                                {props?.lang == "ar"
+                                                {lang == "ar"
                                                   ? "شارع عبدالله سليمان منطقة المطار القديم 1"
                                                   : "Abdullah Sulaiman Street Old Airport Area, 1"}
                                               </p>
@@ -1372,7 +1235,7 @@ export default function MobileHeaderNew(props: any) {
                                       Jeddah - Old Airport
                                     </h6>
                                     <span className="border border-[#20831E] text-[#20831E] p-1 rounded text-[9px] font-semibold">
-                                      {props?.lang == "ar"
+                                      {lang == "ar"
                                         ? "في الأوراق المالية"
                                         : "IN STOCK"}
                                     </span>
@@ -1415,12 +1278,12 @@ export default function MobileHeaderNew(props: any) {
                                       </g>
                                     </svg>
                                     <h6 className="text-sm font-semibold text-[#20831E]">
-                                      {props?.lang == "ar" ? "يختار" : "Select"}
+                                      {lang == "ar" ? "يختار" : "Select"}
                                     </h6>
                                   </div>
                                 </div>
                                 <p className="text-xs px-3 mb-2.5">
-                                  {props?.lang == "ar"
+                                  {lang == "ar"
                                     ? "شارع عبدالله سليمان منطقة المطار القديم 1"
                                     : "Abdullah Sulaiman Street Old Airport Area, 1"}
                                 </p>
@@ -1431,14 +1294,14 @@ export default function MobileHeaderNew(props: any) {
                                         <div className="flex gap-x-1 justify-start items-center">
                                           <span className="bg-[#20831E] h-2 w-2 rounded-full"></span>
                                           <p>
-                                            {props?.lang == "ar"
+                                            {lang == "ar"
                                               ? "يفتح"
                                               : "Open"}
                                           </p>
                                         </div>
                                         <div className="flex gap-x-1.5 justify-start items-center">
                                           <p className="text-[#004B7A]">
-                                            {props?.lang == "ar"
+                                            {lang == "ar"
                                               ? "تفاصيل"
                                               : "Details"}
                                           </p>
@@ -1473,12 +1336,12 @@ export default function MobileHeaderNew(props: any) {
                                             </svg>
                                             <div className="text-[#53616A] text-[10px]">
                                               <h6 className="p-0 text-xs mb-1">
-                                                {props?.lang == "ar"
+                                                {lang == "ar"
                                                   ? "ساعات العمل"
                                                   : "Business hours"}
                                               </h6>
                                               <p>
-                                                {props?.lang == "ar"
+                                                {lang == "ar"
                                                   ? "من السبت إلى الخميس"
                                                   : "Saturday to Thursday"}
                                               </p>
@@ -1499,12 +1362,12 @@ export default function MobileHeaderNew(props: any) {
                                             </svg>
                                             <div className="text-[#53616A] text-[10px]">
                                               <h6 className="p-0 text-xs mb-1">
-                                                {props?.lang == "ar"
+                                                {lang == "ar"
                                                   ? "ساعات العمل المسائية"
                                                   : "Evening Working Hours"}
                                               </h6>
                                               <p>
-                                                {props?.lang == "ar"
+                                                {lang == "ar"
                                                   ? "ساعات العمل المسائية"
                                                   : "friday 04:30 PM - 11:59 PM"}
                                               </p>
@@ -1534,12 +1397,12 @@ export default function MobileHeaderNew(props: any) {
                                             </svg>
                                             <div className="text-[#53616A] text-[10px]">
                                               <h6 className="p-0 text-xs mb-1">
-                                                {props?.lang == "ar"
+                                                {lang == "ar"
                                                   ? "ساعات العمل المسائية"
                                                   : "Address"}
                                               </h6>
                                               <p>
-                                                {props?.lang == "ar"
+                                                {lang == "ar"
                                                   ? "شارع عبدالله سليمان منطقة المطار القديم 1"
                                                   : "Abdullah Sulaiman Street Old Airport Area, 1"}
                                               </p>
@@ -1547,7 +1410,7 @@ export default function MobileHeaderNew(props: any) {
                                                 href=""
                                                 className="text-[#004B7A] text-xs"
                                               >
-                                                {props?.lang == "ar"
+                                                {lang == "ar"
                                                   ? "ساعات العمل المسائية"
                                                   : "Get Direction"}
                                               </a>
@@ -1581,12 +1444,12 @@ export default function MobileHeaderNew(props: any) {
                                             </svg>
                                             <div className="text-[#53616A] text-[10px]">
                                               <h6 className="p-0 text-xs mb-1">
-                                                {props?.lang == "ar"
+                                                {lang == "ar"
                                                   ? "اتصل بالمتجر"
                                                   : "Contact the store"}
                                               </h6>
                                               <p>
-                                                {props?.lang == "ar"
+                                                {lang == "ar"
                                                   ? "شارع عبدالله سليمان منطقة المطار القديم 1"
                                                   : "Abdullah Sulaiman Street Old Airport Area, 1"}
                                               </p>
@@ -1690,7 +1553,7 @@ export default function MobileHeaderNew(props: any) {
                     {searchResult?.cats?.map((d: any, i: any) => (
                       <button
                         onClick={() => {
-                          router.push(`/${props?.lang}/category/${d?.slug}`);
+                          router.push(`/${lang}/category/${d?.slug}`);
                           router.refresh();
                         }}
                         className="text-[#5D686F] text-xs font-medium bg-[#F0F5FA] py-2 px-3.5 rounded-full hover:bg-[#004B7A] hover:text-white"
@@ -1701,7 +1564,7 @@ export default function MobileHeaderNew(props: any) {
                     {searchResult?.brands?.map((d: any, i: any) => (
                       <button
                         onClick={() => {
-                          router.push(`/${props?.lang}/brand/${d?.slug}`);
+                          router.push(`/${lang}/brand/${d?.slug}`);
                           router.refresh();
                         }}
                         className="text-[#5D686F] text-xs font-medium bg-[#F0F5FA] py-2 px-3.5 rounded-full hover:bg-[#004B7A] hover:text-white"
@@ -1718,7 +1581,7 @@ export default function MobileHeaderNew(props: any) {
                       <div className="flex flex-wrap items-center gap-3">
                         {searchResult?.cats?.map((d: any, i: any) => (
                           <Link
-                            href={`${origin}/${props?.lang}/category/${d.slug}`}
+                            href={`${origin}/${lang}/category/${d.slug}`}
                             onClick={() => {
                               setSearchDialoug(false), setSearchInput("");
                             }}
@@ -1752,7 +1615,7 @@ export default function MobileHeaderNew(props: any) {
                           return (
                             <Link
                               key={data?.id}
-                              href={`${origin}/${props.lang}/brand/${data?.slug}`}
+                              href={`${origin}/${lang}/brand/${data?.slug}`}
                               onClick={() => {
                                 setSearchDialoug(false), setSearchInput("");
                               }}
@@ -1761,7 +1624,7 @@ export default function MobileHeaderNew(props: any) {
                               {data?.brand_media_image?.image ? (
                                 <Image
                                   src={
-                                    NewMedia + data?.brand_media_image?.image
+                                    `${NewMedia}${data?.brand_media_image?.image}`
                                   }
                                   alt={`${isArabic ? data?.name_arabic : data?.name
                                     }-${data?.id + 17}`}
@@ -1802,15 +1665,8 @@ export default function MobileHeaderNew(props: any) {
                             lang={isArabic}
                             isMobileOrTablet={isMobileOrTablet}
                             origin={origin}
+                            NewMedia={NewMedia}
                           />
-                          {/* <Product className="!min-w-44" lang={props?.lang} dict={params?.dict?.products} products={searchResult?.products} devicetype={userAgent?.isMobile || userAgent?.isTablet ? 'mobile' : 'dekstop'} /> */}
-                          {/* <Products
-                          grid={!isMobileOrTablet ? "4" : "2"}
-                          devicetype={isMobileOrTablet}
-                          lang={props?.lang}
-                          dict={props?.dict?.products}
-                          products={searchResult?.products}
-                        /> */}
                         </div>
                       </div>
                     </div>

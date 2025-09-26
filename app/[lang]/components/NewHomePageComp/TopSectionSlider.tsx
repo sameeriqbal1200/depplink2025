@@ -2,24 +2,25 @@
 
 import React from 'react';
 import Image from 'next/image';
-import Link from 'next/link';
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Pagination, Navigation } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
-import { NewMedia2 } from '../../api/Api';
 
 
 interface TopSectionSliderData {
   data: any;
   lang: any;
   origin: any;
+  NewMedia2: any;
+  deviceType: any;
+  isMobileOrTablet: any;
   // devicetype?: string; // Optional prop for device type
 }
 
 const TopSectionSlider: React.FC<TopSectionSliderData> = ({
-  data, lang = 'ar', origin
+  data, lang, origin, isMobileOrTablet, NewMedia2, deviceType
 }) => {
   // const sortedData: any = data?.map((item: any) => ({...item,sorting: item?.sorting ?? 0, })).sort((a: any, b: any) => a.sorting - b.sorting);
   return (
@@ -38,8 +39,8 @@ const TopSectionSlider: React.FC<TopSectionSliderData> = ({
         className="mySwiper cursor-grab active:cursor-grabbing"
       >
         {data?.map((item: any) => {
-          const sliderImage: any = item?.image ? NewMedia2 + item?.image : '';
-          const sliderLink: any = item?.redirection_link ? origin + '/' + lang + '/' + item?.redirection_link : '';
+          const sliderImage: any = item?.image ? `${NewMedia2}${item?.image}` : '';
+          const sliderLink: any = item?.redirection_link ? `${origin}/${lang}/${item?.redirection_link}` : '';
           return (
             <SwiperSlide key={item?.id}>
               {/* <Link

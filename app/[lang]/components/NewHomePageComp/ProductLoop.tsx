@@ -1,8 +1,9 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
-import { get } from "../../api/ApiCalls";
+import { getCookie } from "cookies-next";
+import { getProductExtraData } from "@/lib/components/component.client";
 
 
 const ProductComponent = dynamic(
@@ -11,6 +12,7 @@ const ProductComponent = dynamic(
 );
 
 export default function ProductLoopComponent(props: any) {
+    const NewMedia = props?.NewMedia;
     const origin = props?.origin;
     const isArabic = props?.lang;
     const isMobileOrTablet = props?.isMobileOrTablet;
@@ -29,18 +31,19 @@ export default function ProductLoopComponent(props: any) {
         productData.forEach((item: any) => {
             a.push(item.id)
         });
+        var city = getCookie('selectedCity')
         // localStorage.getItem("globalcity")
-        await get(`productextradatamulti-regional-new/${a?.join(",")}/${localStorage.getItem("globalcity")}`).then((responseJson: any) => {
-            const data = responseJson?.data;
-            setProExtraData(data)
-        })
+        if (a?.length >= 1) {
+            const dataExtra = await getProductExtraData(a?.join(","), city);
+            setProExtraData(dataExtra?.extraDataDetails?.data)
+        }
     }
 
 
     return (
         <>
             {productData?.map((productData: any, i: number) => (
-                <ProductComponent productImage="https://images.tamkeenstores.com.sa/assets/new-media/GT32Q69-1W.webp" productData={productData} key={i} lang={isArabic} isMobileOrTablet={isMobileOrTablet} origin={origin} ProExtraData={ProExtraData[productData?.id]} />
+                <ProductComponent NewMedia={NewMedia} productImage="https://images.tamkeenstores.com.sa/assets/new-media/GT32Q69-1W.webp" productData={productData} key={i} isArabic={isArabic} isMobileOrTablet={isMobileOrTablet} origin={origin} ProExtraData={ProExtraData?.[productData?.id]} />
             ))}
         </>
     );
