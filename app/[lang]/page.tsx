@@ -22,7 +22,6 @@ const Newsletter = dynamic(() => import("./components/NewHomePageComp/Newsletter
 const TopSectionSlider = dynamic(() => import("./components/NewHomePageComp/TopSectionSlider"), { ssr: false });
 // const Popup = dynamic(() => import("./components/NewHomePageComp/Popup"), { ssr: true })
 
-import { useHomepage } from "./context/HomepageContext";
 import { useApp } from "../_ctx/AppContext";
 import { getHomePages } from "@/lib/homepage/homepage.pages";
 
