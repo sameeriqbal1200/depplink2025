@@ -267,7 +267,12 @@ export default function NewCategory({ data,slug, lang, deviceType, origin, searc
 
       <section className={`${containerClass} bg-[#F3F9FC] border-t border-b border-primary py-3 relative`}>
         <div data-section="18">
-          <TamkeenServices isArabic={isArabic} userAgent={""} NewMedia={NewMedia} />
+          <TamkeenServices 
+            isArabic={isArabic}
+            NewMedia={NewMedia}
+            origin={origin}
+            deviceType={deviceType}
+          />
         </div>
       </section>
 

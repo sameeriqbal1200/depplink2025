@@ -663,7 +663,7 @@ export default function Homepage() {
     : "";
   const sec18Link1: any = homepagepartthreelatest?.twelve_seventeen_sec
     ?.sec_eighteen_link_one
-    ? homepagepartthreelatest?.twelve_seventeen_sec?.sec_eighteen_link_one
+    ? NewMedia2 + homepagepartthreelatest?.twelve_seventeen_sec?.sec_eighteen_link_one
     : "";
   const sec18Image2: any = homepagepartthreelatest?.twelve_seventeen_sec
     ?.sec_eighteen_image_two
@@ -672,7 +672,7 @@ export default function Homepage() {
     : "";
   const sec18Link2: any = homepagepartthreelatest?.twelve_seventeen_sec
     ?.sec_eighteen_link_two
-    ? homepagepartthreelatest?.twelve_seventeen_sec?.sec_eighteen_link_two
+    ? NewMedia2 + homepagepartthreelatest?.twelve_seventeen_sec?.sec_eighteen_link_two
     : "";
   const sec18Image3: any = homepagepartthreelatest?.twelve_seventeen_sec
     ?.sec_eighteen_image_three
@@ -1704,7 +1704,12 @@ export default function Homepage() {
         className={`${containerClass} bg-[#F3F9FC] border-t border-b border-primary py-3`}
       >
         <div data-section="18">
-          <TamkeenServices isArabic={isArabic} userAgent={""} />
+          <TamkeenServices 
+            isArabic={isArabic}
+            NewMedia={NewMedia}
+            origin={origin}
+            deviceType={deviceType}
+          />
         </div>
       </section>
       <Newsletter isMobileOrTablet={true} isArabic={isArabic} lang={lang} />

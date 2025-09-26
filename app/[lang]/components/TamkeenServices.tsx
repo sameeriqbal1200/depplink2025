@@ -1,8 +1,6 @@
 import React from 'react';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation'
 import Link from 'next/link';
-import { NewMedia } from '../api/Api';
 
 // interface TamkeenServicesProps {
 //     lang: any
@@ -12,11 +10,13 @@ import { NewMedia } from '../api/Api';
 // }
 
 const TamkeenServices = (props: any) => {
-    const isArabic = props?.isArabic
-    const router = useRouter();
-    const origin = typeof window !== 'undefined' ? window.location.origin : '';
+     const isArabic = props?.isArabic;
+    const NewMedia = props?.NewMedia;
+    const origin = props?.origin;
+    const deviceType = props?.deviceType;
+
     return (
-        <div className={`${props?.userAgent}`}>
+        <div className={deviceType}>
             <div className='grid grid-cols-2 sm:grid-cols-4 gap-4'>
                 {[
                     {
