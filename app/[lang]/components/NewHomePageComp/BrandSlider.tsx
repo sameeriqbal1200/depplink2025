@@ -13,11 +13,12 @@ import Link from "next/link";
 
 
 export default function BrandSlider(props: any) {
-    const NewMedia = props?.NewMedia;
     const brands = props?.data;
+    // const origin = props?.origin;
+    const NewMedia = props?.NewMedia;
     const origin = props?.origin;
     const isArabic = props?.isArabic;
-    // const productDataSlider = props?.productDataSlider?.products?.data;
+    const isMobileOrTablet = props?.isMobileOrTablet;
     const prevRef = useRef<HTMLButtonElement>(null);
     const nextRef = useRef<HTMLButtonElement>(null);
 
@@ -87,6 +88,21 @@ export default function BrandSlider(props: any) {
             el.removeEventListener("mousemove", handleMouseMove);
         };
     }, [isDragging, startX, scrollLeft]);
+
+    // Initialize accumulators
+
+    // brands.forEach((brand: any): any => {
+    //     const categoryCount = brand?.category?.length || 0;
+
+    //     // Add brand to the row with fewer total categories
+    //     if (firstRowCategoryCount <= secondRowCategoryCount) {
+    //         firstRowBrands.push(brand);
+    //         firstRowCategoryCount += categoryCount;
+    //     } else {
+    //         secondRowBrands.push(brand);
+    //         secondRowCategoryCount += categoryCount;
+    //     }
+    // });
 
     let firstRowBrands: any = [];
     let secondRowBrands: any = [];
@@ -167,7 +183,7 @@ export default function BrandSlider(props: any) {
         >
             {brands?.map((brand: any, i: number) => {
                 const brandCategoryCount = brand?.category?.length
-                const brandImage: any = brand?.brand_media_app_image?.image;
+                const brandImage: any = isMobileOrTablet ? brand?.brand_media_app_image?.image : brand?.brand_media_image?.image;
                 return (
                     <SwiperSlide className="" key={i}>
                         <div className="bg-white p-2 rounded-lg shadow-md w-full relative">
@@ -177,10 +193,10 @@ export default function BrandSlider(props: any) {
                                         src={`${NewMedia}/${brandImage}`}
                                         alt={brandImage}
                                         title={brandImage}
-                                        width={180}
-                                        height={45}
+                                        width={134}
+                                        height={42}
                                         quality={100}
-                                        style={{ maxWidth: "", height: "65px" }}
+                                        style={{ maxWidth: isMobileOrTablet ? "" : "134px", height: "42px" }}
                                         className="object-contain mx-auto"
                                         loading="lazy"
                                         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 100vw"
