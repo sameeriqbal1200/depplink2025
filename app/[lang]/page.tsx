@@ -972,7 +972,7 @@ export default function Homepage() {
           )}
           {/* New Price Section */}
           <div className="py-8">
-            <PriceSection data={homepagepartonelatest?.first_five_sec} isArabic={isArabic} isMobileOrTablet={true} origin={origin} />
+            <PriceSection NewMedia={NewMedia} data={homepagepartonelatest?.first_five_sec} isArabic={isArabic} lang={lang} origin={origin} isMobileOrTablet={true} />
           </div>
           {/* New Price Section */}
         </div>

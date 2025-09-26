@@ -1,7 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
-import dynamic from "next/dynamic";
+import React from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, FreeMode, Mousewheel, Navigation, Pagination, Scrollbar } from "swiper/modules";
 import 'swiper/css/free-mode';
@@ -10,32 +9,29 @@ import './scrollBar.css';
 import 'swiper/css/pagination';
 import Link from "next/link";
 import Image from "next/image";
-import { get } from "../../api/ApiCalls";
-import { NewMedia } from "../../api/Api";
 
 export default function PriceSectionComponent(props: any) {
     const origin = props?.origin;
-    const isArabic = props?.isArabic;
+    const NewMedia = props?.NewMedia;
     const isMobileOrTablet = props?.isMobileOrTablet;
-    const lang = isArabic ? "ar" : "en"
-
+    const lang = props?.lang;
     const sectionData: any = props?.data
     const priceHeading = sectionData?.sec_nineteen_title;
-    const ImageOne = sectionData?.sec_nineteen_image_one ? NewMedia + sectionData?.sec_nineteen_image_one : '';
+    const ImageOne = sectionData?.sec_nineteen_image_one ? `${NewMedia}${sectionData?.sec_nineteen_image_one}` : '';
     const ImageOneLink = sectionData?.sec_nineteen_image_one_link;
-    const ImageTwo = sectionData?.sec_nineteen_image_two ? NewMedia + sectionData?.sec_nineteen_image_two : '';
+    const ImageTwo = sectionData?.sec_nineteen_image_two ? `${NewMedia}${sectionData?.sec_nineteen_image_two}` : '';
     const ImageTwoLink = sectionData?.sec_nineteen_image_two_link;
-    const ImageThree = sectionData?.sec_nineteen_image_three ? NewMedia + sectionData?.sec_nineteen_image_three : '';
+    const ImageThree = sectionData?.sec_nineteen_image_three ? `${NewMedia}${sectionData?.sec_nineteen_image_three}` : '';
     const ImageThreeLink = sectionData?.sec_nineteen_image_three_link;
-    const ImageFour = sectionData?.sec_nineteen_image_four ? NewMedia + sectionData?.sec_nineteen_image_four : '';
+    const ImageFour = sectionData?.sec_nineteen_image_four ? `${NewMedia}${sectionData?.sec_nineteen_image_four}` : '';
     const ImageFourLink = sectionData?.sec_nineteen_image_four_link;
-    const ImageFive = sectionData?.sec_nineteen_image_five ? NewMedia + sectionData?.sec_nineteen_image_five : '';
+    const ImageFive = sectionData?.sec_nineteen_image_five ? `${NewMedia}${sectionData?.sec_nineteen_image_five}` : '';
     const ImageFiveLink = sectionData?.sec_nineteen_image_five_link;
-    const ImageSix = sectionData?.sec_nineteen_image_six ? NewMedia + sectionData?.sec_nineteen_image_six : '';
+    const ImageSix = sectionData?.sec_nineteen_image_six ? `${NewMedia}${sectionData?.sec_nineteen_image_six}` : '';
     const ImageSixLink = sectionData?.sec_nineteen_image_six_link;
-    const ImageSeven = sectionData?.sec_nineteen_image_seven ? NewMedia + sectionData?.sec_nineteen_image_seven : '';
+    const ImageSeven = sectionData?.sec_nineteen_image_seven ? `${NewMedia}${sectionData?.sec_nineteen_image_seven}` : '';
     const ImageSevenLink = sectionData?.sec_nineteen_image_seven_link;
-    const ImageEight = sectionData?.sec_nineteen_image_eight ? NewMedia + sectionData?.sec_nineteen_image_eight : '';
+    const ImageEight = sectionData?.sec_nineteen_image_eight ? `${NewMedia}${sectionData?.sec_nineteen_image_eight}` : '';
     const ImageEightLink = sectionData?.sec_nineteen_image_eight_link;
 
     return (
