@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState, useContext } from "react";
+import React from "react";
 
 export default function LoyaltyHistoryList(props: any) {
     const loyalData = props?.data;
