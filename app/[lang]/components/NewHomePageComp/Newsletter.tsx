@@ -3,13 +3,13 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import Swal from 'sweetalert2';
-import { post } from '../../api/ApiCalls';
 import withReactContent from 'sweetalert2-react-content';
+import { postSubmitNewsLetter } from "@/lib/components/component.client";
 
 
-export default function BrandSlider(props: any) {
+export default function NewsLetter(props: any) {
+    const lang = props?.lang;
     const isArabic = props?.isArabic;
-    const isMobileOrTablet = props?.isMobileOrTablet;
     const [newslatter, setnewslatter] = useState(true);
     const [loader, setLoader] = useState(false);
     const [errorMsg, setErrorMsg] = useState('');
@@ -26,7 +26,7 @@ export default function BrandSlider(props: any) {
                 </div>
             ,
             toast: true,
-            position: props.lang == 'ar' ? 'top-start' : 'top-end',
+            position: lang == 'ar' ? 'top-start' : 'top-end',
             showConfirmButton: false,
             timer: 5000,
             showCloseButton: false,
@@ -48,7 +48,7 @@ export default function BrandSlider(props: any) {
                 </div>
             ,
             toast: true,
-            position: props.lang == 'ar' ? 'top-start' : 'top-end',
+            position: lang == 'ar' ? 'top-start' : 'top-end',
             showConfirmButton: false,
             timer: 15000,
             showCloseButton: true,
@@ -57,7 +57,7 @@ export default function BrandSlider(props: any) {
             timerProgressBar: true,
         });
     };
-    const submitNewslatter = () => {
+    const submitNewslatter = async () => {
         var validRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
         var data = {
             email: email
@@ -76,24 +76,22 @@ export default function BrandSlider(props: any) {
             return false;
         }
         setLoader(true)
-        post('submit-newslatter', data).then((responseJson: any) => {
-            if (responseJson?.success) {
-                setemail('')
-                topMessageAlartSuccess('Success! You have subscribed our newslatter successfully !')
-                setnewslatter(true)
-                setLoader(false)
+        const dataUpd = await postSubmitNewsLetter(data);
+        if (dataUpd?.newsLetterData?.success) {
+            setemail('')
+            topMessageAlartSuccess('Success! You have subscribed our newslatter successfully !')
+            setnewslatter(true)
+            setLoader(false)
+        }
+        else {
+            setLoader(false)
+            if (dataUpd?.newsLetterData?.message != '') {
+                topMessageAlartDanger(dataUpd?.newsLetterData?.message)
             }
             else {
-                setLoader(false)
-                if (responseJson?.message != '') {
-                    topMessageAlartDanger(responseJson?.message)
-                }
-                else {
-                    topMessageAlartDanger('Something Went Wrong. Please try again later')
-                }
+                topMessageAlartDanger('Something Went Wrong. Please try again later')
             }
-
-        })
+        }
     }
     return (
         <>

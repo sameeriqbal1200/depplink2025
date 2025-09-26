@@ -10,6 +10,7 @@ import './scrollBar.css';
 import Link from "next/link";
 import { get } from "../../api/ApiCalls";
 import { getCookie } from "cookies-next";
+import { getProductExtraData } from "@/lib/components/component.client";
 
 const ProductComponent = dynamic(
     () => import("./product_component_updated"),
@@ -44,16 +45,15 @@ export default function BadgeProductLoopComponent(props: any) {
             a.push(item.id)
         });
         var city = getCookie('selectedCity')
-        await get(`productextradatamulti-regional-new/${a?.join(",")}/${city}`).then((responseJson: any) => {
-            const data = responseJson?.data;
-            setProExtraData(data)
-        })
+        // localStorage.getItem("globalcity")
+        const dataExtra = await getProductExtraData(a?.join(","), city);
+        setProExtraData(dataExtra?.extraDataDetails?.data)
     }
 
 
     return (
         <>
-            <div className={`${containerClass}`}>
+            <div className={containerClass}>
                 <div className="flex justify-between items-start pb-4">
                     <h2 className="headingHomeMain bg-white w-fit p-3 rounded-bl-lg rounded-br-lg">
                         {props?.sliderHeading}

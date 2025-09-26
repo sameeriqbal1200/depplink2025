@@ -6,6 +6,8 @@ import React, { useState, Fragment, useEffect } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 
 export default function Popup(props: any, request: any) {
+    const isMobileOrTablet = props?.isMobileOrTablet;
+    const lang = props?.lang;
     const [imgSrc, setImgSrc] = useState(
         '/images/TM50-mob-27July.webp'
     )

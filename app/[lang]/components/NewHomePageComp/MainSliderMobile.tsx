@@ -44,7 +44,7 @@ const MainSliderMobile: React.FC<MainSliderMobileProps> = ({
             >
                 {(data || [])?.map((item: any, index: any) => {
                     const sliderImage: any = item?.image ? `${NewMedia2}${item?.image}` : '';
-                    const sliderLink: any = item?.redirection_link ? origin + '/' + lang + '/' + item?.redirection_link : '';
+                    const sliderLink: any = item?.redirection_link ? `${origin}/${lang}/${item?.redirection_link}` : '';
                     return (
                         <SwiperSlide key={index} className={index === activeIndex ? '' : 'mobileSwiperTransaction'}>
                             <Link

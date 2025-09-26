@@ -1,12 +1,14 @@
 "use client";
 
-import React, { useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import { Autoplay, Navigation, Pagination, Scrollbar, Mousewheel, Grid, FreeMode } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import 'swiper/css/free-mode';
 import 'swiper/css/scrollbar';
 import './scrollBar.css';
+import { getCookie } from "cookies-next";
+import { getProductExtraData } from "@/lib/components/component.client";
 
 const ProductComponent = dynamic(
   () => import("./product_component_updated"),
@@ -14,15 +16,38 @@ const ProductComponent = dynamic(
 );
 
 export default function BadgeProductSlider(props: any) {
+  const NewMedia = props?.NewMedia;
   const origin = props?.origin;
   const isArabic = props?.isArabic;
   const isMobileOrTablet = props?.isMobileOrTablet;
   // const productDataSlider = props?.productDataSlider?.products?.data;
+  const gtmNewListId = props?.gtmColumnItemListId;
+  const gtmNewListName = props?.gtmColumnItemListName;
   const productDataSlider = props?.productDataSlider;
   const prevRef = useRef<HTMLButtonElement>(null);
   const nextRef = useRef<HTMLButtonElement>(null);
-  const gtmNewListId = props?.gtmColumnItemListId;
-  const gtmNewListName = props?.gtmColumnItemListName;
+
+  const [ProExtraData, setProExtraData] = useState<any>([])
+
+    useEffect(() => {
+        if (props?.productDataSlider) {
+            extraproductdata()
+        }
+    }, [props?.productDataSlider])
+
+    const extraproductdata = async () => {
+
+        var a: number[] = []
+        productDataSlider.forEach((item: any) => {
+            a.push(item.id)
+        });
+        var city = getCookie('selectedCity')
+        // localStorage.getItem("globalcity")
+        if (a?.length >= 1) {
+          const dataExtra = await getProductExtraData(a?.join(","), city);
+          setProExtraData(dataExtra?.extraDataDetails?.data)
+        }
+    }
 
   return (
     <>
@@ -85,7 +110,7 @@ export default function BadgeProductSlider(props: any) {
                   {productSliderID + 1}
                 </span>
               </div>
-              <ProductComponent productData={productSlider} lang={isArabic} isMobileOrTablet={isMobileOrTablet} origin={origin} gtmColumnItemListId={gtmNewListId} gtmColumnItemListName={gtmNewListName}/>
+              <ProductComponent NewMedia={NewMedia} productData={productSlider} isArabic={isArabic} isMobileOrTablet={isMobileOrTablet} origin={origin} ProExtraData={ProExtraData?.[productSlider?.id]} gtmColumnItemListId={gtmNewListId} gtmColumnItemListName={gtmNewListName}/>
             </div>
           </SwiperSlide>
         ))}

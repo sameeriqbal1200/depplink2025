@@ -88,8 +88,23 @@ export default function BrandSlider(props: any) {
         };
     }, [isDragging, startX, scrollLeft]);
 
-    const firstRowBrands = brands?.slice(0, Math.ceil(brands.length / 2));
-    const secondRowBrands = brands?.slice(Math.ceil(brands.length / 2));
+    let firstRowBrands: any = [];
+    let secondRowBrands: any = [];
+    let firstRowCategoryCount = 0;
+    let secondRowCategoryCount = 0;
+
+    // Distribute brands into two rows (7 in first)
+    brands?.forEach((brand: any, index: any) => {
+        const categoryCount = brand?.category?.length || 0;
+
+        if (index < 7) {  // First 8 brands go to first row
+            firstRowBrands.push(brand);
+            firstRowCategoryCount += categoryCount;
+        } else {  // Remaining brands go to second row
+            secondRowBrands.push(brand);
+            secondRowCategoryCount += categoryCount;
+        }
+    });
     return (
         <Swiper
             spaceBetween={16}

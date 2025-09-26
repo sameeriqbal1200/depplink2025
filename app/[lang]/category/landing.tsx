@@ -271,7 +271,7 @@ export default function NewCategory({ data,slug, lang, deviceType, origin, searc
         </div>
       </section>
 
-      <Newsletter isMobileOrTablet={isMobileOrTablet} isArabic={isArabic} />
+      <Newsletter isMobileOrTablet={isMobileOrTablet} isArabic={isArabic} lang={lang} />
       {/* <Popup isMobileOrTablet={isMobileOrTablet} lang={isArabic} /> */}
     </>
   );

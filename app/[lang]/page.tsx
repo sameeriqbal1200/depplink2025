@@ -1704,8 +1704,8 @@ export default function Homepage() {
           <TamkeenServices isArabic={isArabic} userAgent={""} />
         </div>
       </section>
-      <Newsletter isMobileOrTablet={true} isArabic={isArabic} />
-      {/* <Popup lang={isArabic} /> */}
+      <Newsletter isMobileOrTablet={true} isArabic={isArabic} lang={lang} />
+      {/* <Popup isMobileOrTablet={isMobileOrTablet} lang={isArabic} /> */}
       {/* <div className="pb-20 md:pb-0"></div> */}
     </>
   );
