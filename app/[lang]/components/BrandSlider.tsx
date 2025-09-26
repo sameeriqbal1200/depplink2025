@@ -5,20 +5,19 @@ import Image from 'next/image'
 import React from 'react'
 import 'swiper/css';
 import 'swiper/css/navigation';
-import { NewMedia } from '../api/Api';
 
 
 export default function BrandSlider(props: any) {
-    const origin =
-        typeof window !== 'undefined' && window.location.origin
-            ? window.location.origin
-            : '';
+    const origin = props?.origin;
+    const NewMedia = props?.NewMedia;
+    const brandData = props?.data;
+
     return (
         <>
             <div className="flex flex-col m-auto p-auto">
                 <div className="flex overflow-x-scroll hide-scroll-bar pb-1">
                     <div className="flex flex-nowrap items-center gap-x-3">
-                        {props?.data.map((data: any, i: number) => {
+                        {brandData.map((data: any, i: number) => {
                             return (
                                 <div className='bg-white h-auto relative p-2 rounded-lg shadow-md mb-1.5 text-sm w-32 md:w-44' key={i}>
                                     <Link
@@ -27,7 +26,7 @@ export default function BrandSlider(props: any) {
                                         className="h-[68px] relative"
                                     >
                                         <Image
-                                            src={data?.brand_media_image ? NewMedia + data?.brand_media_image?.image : ''}
+                                            src={data?.brand_media_image ? `${NewMedia}${data?.brand_media_image?.image}` : ''}
                                             alt={props.lang === 'ar' ? data?.name_arabic : data?.name}
                                             title={props.lang === 'ar' ? data?.name_arabic : data?.name}
                                             height={0}
