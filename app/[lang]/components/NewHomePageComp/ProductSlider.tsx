@@ -9,7 +9,8 @@ import 'swiper/css/scrollbar';
 import './scrollBar.css';
 import 'swiper/css/pagination';
 import Link from "next/link";
-import { get } from "../../api/ApiCalls";
+import { getCookie } from "cookies-next";
+import { getProductExtraData } from "@/lib/components/component.client";
 
 
 const ProductComponent = dynamic(
@@ -19,6 +20,7 @@ const ProductComponent = dynamic(
 
 export default function ProductSliderComponent(props: any) {
   const origin = props?.origin;
+  const NewMedia = props?.NewMedia;
   const isArabic = props?.isArabic;
   const isMobileOrTablet = props?.isMobileOrTablet;
   const productDataSlider = props?.productDataSlider?.products?.data;
@@ -40,14 +42,17 @@ export default function ProductSliderComponent(props: any) {
   const extraproductdata = async () => {
 
     var a: number[] = []
-    productDataSlider?.forEach((item: any) => {
-      a.push(item.id)
-    });
+    if (productDataSlider?.length >= 1) {
+      productDataSlider?.forEach((item: any) => {
+        a.push(item.id)
+      });
+    }
+    var city = getCookie('selectedCity')
     // localStorage.getItem("globalcity")
-    await get(`productextradatamulti-regional-new/${a?.join(",")}/${localStorage.getItem("globalcity")}`).then((responseJson: any) => {
-      const data = responseJson?.data;
-      setProExtraData(data)
-    })
+    if (a?.length >= 1) {
+      const dataExtra = await getProductExtraData(a?.join(","), city);
+      setProExtraData(dataExtra?.extraDataDetails?.data)
+    }
   }
 
 
@@ -132,7 +137,7 @@ export default function ProductSliderComponent(props: any) {
         >
           {productDataSlider?.map((productSlider: any, productSliderID: number) => (
             <SwiperSlide key={productSliderID}>
-              <ProductComponent productData={productSlider} lang={isArabic} isMobileOrTablet={isMobileOrTablet} origin={origin} ProExtraData={ProExtraData[productSlider?.id]} gtmColumnItemListId={gtmNewListId} gtmColumnItemListName={gtmNewListName}/>
+              <ProductComponent NewMedia={NewMedia} productData={productSlider} lang={isArabic} isMobileOrTablet={isMobileOrTablet} origin={origin} ProExtraData={ProExtraData[productSlider?.id]} gtmColumnItemListId={gtmNewListId} gtmColumnItemListName={gtmNewListName}/>
             </SwiperSlide>
           ))}
         </Swiper>

@@ -9,7 +9,6 @@ import { post } from "../../api/ApiCalls";
 import { useRouter } from "next-nprogress-bar";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
-import { NewMedia } from "../../api/Api";
 import { cacheKey } from "../../../GlobalVar";
 import { setCartItems } from "../../cartstorage/cart";
 import GlobalContext from "../../GlobalContext";
@@ -23,6 +22,7 @@ export default function product_component_updated({
   ProExtraData,
   gtmColumnItemListId = '50000',
   gtmColumnItemListName = 'direct',
+  NewMedia
 }: any) {
   const router = useRouter();
   const productSlug = `${origin}/${isArabic ? "ar" : "en"}/product/${
@@ -364,7 +364,7 @@ if (specs.length >= 4) {
         name: productData.name,
         name_arabic: productData.name_arabic,
         image: productData?.featured_image
-          ? NewMedia + productData?.featured_image?.image
+          ? `${NewMedia}${productData?.featured_image?.image}`
           : "https://images.tamkeenstores.com.sa/assets/new-media/3f4a05b645bdf91af2a0d9598e9526181714129744.png",
         price: flashCalc
           ? flashCalc
@@ -408,7 +408,7 @@ if (specs.length >= 4) {
             name: element.productdetail.name,
             name_arabic: element.productdetail.name_arabic,
             image: element.productdetail?.featured_image
-              ? NewMedia + element.productdetail?.featured_image?.image
+              ? `${NewMedia}${element.productdetail?.featured_image?.image}`
               : "https://images.tamkeenstores.com.sa/assets/new-media/3f4a05b645bdf91af2a0d9598e9526181714129744.png",
             price: element.productdetail.sale_price
               ? element.productdetail.sale_price
@@ -438,7 +438,7 @@ if (specs.length >= 4) {
             sku: element?.product_sku_data.sku,
             name: element?.product_sku_data.name,
             name_arabic: element?.product_sku_data.name_arabic,
-            image: element?.product_sku_data?.featured_image ? NewMedia + element?.product_sku_data?.featured_image?.image : 'https://images.tamkeenstores.com.sa/assets/new-media/3f4a05b645bdf91af2a0d9598e9526181714129744.png',
+            image: element?.product_sku_data?.featured_image ? `${NewMedia}${element?.product_sku_data?.featured_image?.image}` : 'https://images.tamkeenstores.com.sa/assets/new-media/3f4a05b645bdf91af2a0d9598e9526181714129744.png',
             price: element?.product_sku_data.price,
             regular_price: 0,
             quantity: 1 * element?.free_gift_qty,
@@ -495,7 +495,7 @@ if (specs.length >= 4) {
         name: productData.name,
         name_arabic: productData.name_arabic,
         image: productData?.featured_image
-          ? NewMedia + productData?.featured_image?.image
+          ? `${NewMedia}${productData?.featured_image?.image}`
           : "https://images.tamkeenstores.com.sa/assets/new-media/3f4a05b645bdf91af2a0d9598e9526181714129744.png",
         price: flashCalc
           ? flashCalc
@@ -544,7 +544,7 @@ if (specs.length >= 4) {
                 name: element.productdetail.name,
                 name_arabic: element.productdetail.name_arabic,
                 image: element.productdetail?.featured_image
-                  ? NewMedia + element.productdetail?.featured_image?.image
+                  ? `${NewMedia}${element.productdetail?.featured_image?.image}`
                   : "https://images.tamkeenstores.com.sa/assets/new-media/3f4a05b645bdf91af2a0d9598e9526181714129744.png",
                 price: element.productdetail.sale_price
                   ? element.productdetail.sale_price
@@ -576,7 +576,7 @@ if (specs.length >= 4) {
             sku: element?.product_sku_data.sku,
             name: element?.product_sku_data.name,
             name_arabic: element?.product_sku_data.name_arabic,
-            image: element?.product_sku_data?.featured_image ? NewMedia + element?.product_sku_data?.featured_image?.image : 'https://images.tamkeenstores.com.sa/assets/new-media/3f4a05b645bdf91af2a0d9598e9526181714129744.png',
+            image: element?.product_sku_data?.featured_image ? `${NewMedia}${element?.product_sku_data?.featured_image?.image}` : 'https://images.tamkeenstores.com.sa/assets/new-media/3f4a05b645bdf91af2a0d9598e9526181714129744.png',
             price: element?.product_sku_data.price,
             regular_price: 0,
             quantity: 1 * element?.free_gift_qty,

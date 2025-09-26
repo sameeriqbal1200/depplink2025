@@ -8,7 +8,8 @@ import 'swiper/css/free-mode';
 import 'swiper/css/scrollbar';
 import './scrollBar.css';
 import 'swiper/css/pagination';
-import { get } from "../../api/ApiCalls";
+import { getCookie } from "cookies-next";
+import { getProductExtraData } from "@/lib/components/component.client";
 
 
 const ProductComponent = dynamic(
@@ -17,12 +18,12 @@ const ProductComponent = dynamic(
 );
 
 export default function ProductLoopMobile(props: any) {
+    const NewMedia = props?.NewMedia;
     const origin = props?.origin;
     const isArabic = props?.lang;
     const isMobileOrTablet = props?.isMobileOrTablet;
     const productData = props?.productData;
     const [ProExtraData, setProExtraData] = useState<any>([])
-    const containerClass = isMobileOrTablet ? "container" : "px-[4.8rem]";
     const prevRef = useRef<HTMLButtonElement>(null);
     const nextRef = useRef<HTMLButtonElement>(null);
     const gtmNewListId = props?.gtmColumnItemListId;
@@ -40,11 +41,12 @@ export default function ProductLoopMobile(props: any) {
         productData.forEach((item: any) => {
             a.push(item.id)
         });
+        var city = getCookie('selectedCity')
         // localStorage.getItem("globalcity")
-        await get(`productextradatamulti-regional-new/${a?.join(",")}/${localStorage.getItem("globalcity")}`).then((responseJson: any) => {
-            const data = responseJson?.data;
-            setProExtraData(data)
-        })
+        if (a?.length >= 1) {
+            const dataExtra = await getProductExtraData(a?.join(","), city);
+            setProExtraData(dataExtra?.extraDataDetails?.data)
+        }
     }
     return (
         <>
@@ -114,7 +116,7 @@ export default function ProductLoopMobile(props: any) {
             >
                 {productData?.map((productData: any, i: number) => (
                     <SwiperSlide key={i}>
-                        <ProductComponent productData={productData} key={i} lang={isArabic} isMobileOrTablet={isMobileOrTablet} origin={origin} ProExtraData={ProExtraData[productData?.id]} gtmColumnItemListId={gtmNewListId} gtmColumnItemListName={gtmNewListName}/>
+                        <ProductComponent NewMedia={NewMedia} productData={productData} key={i} lang={isArabic} isMobileOrTablet={isMobileOrTablet} origin={origin} ProExtraData={ProExtraData[productData?.id]} gtmColumnItemListId={gtmNewListId} gtmColumnItemListName={gtmNewListName}/>
                     </SwiperSlide>
                 ))}
             </Swiper>
