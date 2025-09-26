@@ -15,6 +15,8 @@ import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import { Dialog, Transition, RadioGroup } from "@headlessui/react";
 import LoyaltyHistoryList from "../../components/LoyaltyHistoryList";
+import { useApp } from "@/app/_ctx/AppContext";
+import { getLoyaltyHistoryData } from "@/lib/accounts/loyaltyData.client";
 
 const MobileHeader = dynamic(() => import("../../components/MobileHeader"), {
   ssr: true,
@@ -30,6 +32,7 @@ export default function AddressDetails({
   params: { lang: string; data: any; slug: string; devicetype: any };
 }) {
   const router = useRouter();
+   const { t, lang, deviceType, origin } = useApp();
   const path = usePathname();
   const isArabic = params.lang === "ar";
   const isMobileOrTablet =
@@ -44,14 +47,19 @@ export default function AddressDetails({
   const [loyaltyData, setLoyalityData] = useState<any>([]);
 
   const getLoyalityHistory = async () => {
-    if (localStorage.getItem("userid")) {
-      await get(
-        `get-user-loyalty-data-history/${localStorage.getItem("userid")}`
-      ).then((responseJson: any) => {
-        setLoyalityData(responseJson?.data);
-      });
-    } else {
-      router.push(`/${params.lang}`);
+    try {
+      const userId = typeof window !== "undefined" ? localStorage.getItem("userid") : null;
+
+      if (!userId) {
+        router.push(`${origin}/${lang}`);
+        return;
+      }
+
+      const userLoyaltyData = await getLoyaltyHistoryData();
+      setLoyalityData(userLoyaltyData?.userLoyaltyData?.data ?? []);
+    } catch (err) {
+      console.error("Failed to fetch loyalty history:", err);
+      setLoyalityData([]); // fallback
     }
   };
 
@@ -77,7 +85,7 @@ export default function AddressDetails({
       <div className="container md:py-4 py-16">
         <div className="flex items-start my-4 gap-x-5">
           {params?.devicetype === "mobile" ? null : (
-            <AccountSidebar lang={params.lang} path={path} />
+            <AccountSidebar lang={lang} path={path} origin={origin} />
           )}
 
           <div className="w-full">
