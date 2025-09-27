@@ -5,7 +5,6 @@ import dynamic from 'next/dynamic'
 import { useRouter } from 'next-nprogress-bar'
 import GlobalContext from '../../GlobalContext'
 import { useApp } from '@/app/_ctx/AppContext';
-import PullToRefresh from "react-simple-pull-to-refresh";
 import { getWishlistDataAPI } from '@/lib/accounts/wishlist.client';
 import Link from 'next/link';
 const MobileHeader = dynamic(() => import('../../components/MobileHeader'), { ssr: true })
@@ -40,73 +39,20 @@ export default function Wishlist() {
     const isMobileOrTablet = true;
     const { updateWishlist, setUpdateWishlist } = useContext(GlobalContext);
 
-
-    // function IosSpinner({ size = 24 }: { size?: number }) {
-    //     return (
-    //         <div
-    //             className="rounded-full border-2 border-current border-t-transparent animate-spin"
-    //             style={{ width: size, height: size }}
-    //             aria-hidden
-    //         />
-    //     );
-    // }
-
-    // function PullIndicator({ state }: { state: "pulling" | "refreshing" }) {
-    //     // const { lang } = useApp();
-    //     return (
-    //         <div className="flex h-16 items-center justify-center gap-2 text-[#004B7A] my-22">
-    //             {state === "pulling" ? (
-    //                 // Arrow that hints "pull down"
-    //                 <svg viewBox="0 0 24 24" className="h-5 w-5" fill="currentColor" aria-hidden>
-    //                     <path d="M12 3a1 1 0 0 1 1 1v11.586l3.293-3.293a1 1 0 1 1 1.414 1.414l-5 5a1 1 0 0 1-1.414 0l-5-5A1 1 0 1 1 7.707 12.293L11 15.586V4a1 1 0 0 1 1-1z" />
-    //                 </svg>
-    //             ) : (
-    //                 // iOS-style spinner
-    //                 <IosSpinner size={22} />
-    //             )}
-    //             <span className="text-sm">
-    //                 {state === "pulling"
-    //                     ? lang === "ar"
-    //                         ? "اسحب للتحديث"
-    //                         : "Pull to refresh"
-    //                     : lang === "ar"
-    //                         ? "جارٍ التحديث…"
-    //                         : "Refreshing…"}
-    //             </span>
-    //         </div>
-    //     );
-    // }
-
-    const onRefresh = async () => {
-        router.refresh();        // App Router re-fetch
-        // or window.location.reload()
-    };
-    // const userAgent: UserAgent | null = typeof window !== 'undefined' ? useUserAgent(window.navigator.userAgent) : null;
-
-    // const HomePage = () => {
-    //     router.push(`/${lang}`);
-    // }
-
-    // const getWishlistData = () => {
-    //     if (localStorage.getItem("userid")) {
-    //         getWishlistDataAPI().then((wishlistDataCore: any) => {
-    //             const wishlistUserData = wishlistDataCore?.wishlistDataCore
-    //             setWishlistData(wishlistUserData)
-    //             setWishlistCount(wishlistUserData?.user?.products?.data?.length)
-    //             setLoading(false)
-    //         })
-    //     } else {
-    //         router.push(`/${lang}/login`);
-    //     }
-    // }
-
     const getWishlistData = async () => {
         try {
             setLoading(true);
-            const userId = typeof window !== "undefined" ? localStorage.getItem("userid") : null;
-            if (!userId) { router.push(`/${lang}/login`); return; }
-
-            const res: any = await getWishlistDataAPI();
+            await new Promise(resolve => setTimeout(resolve, 100));
+            
+            const userId = localStorage.getItem("userid");
+            if (!userId) { 
+                router.push(`/${lang}/login`); 
+                return; 
+            }
+            const city = localStorage.getItem("globalcity") || 'Jeddah';
+            const res: any = await getWishlistDataAPI(userId, city);
+            
+            console.log("Wishlist data:", res);
             const core = res?.wishlistDataCore ?? {};
             setWishlistData(core);
             setWishlistCount(core?.user?.products?.data?.length ?? 0);
@@ -121,7 +67,7 @@ export default function Wishlist() {
 
     useEffect(() => {
         getWishlistData()
-    }, [updateWishlist])
+    }, [])
 
     const items = wishlistData?.user?.products?.data ?? [];
     const count = items.length;
@@ -131,14 +77,14 @@ export default function Wishlist() {
     return (
         <div>
             <MobileHeader type="Third" lang={lang} pageTitle={lang === 'ar' ? 'اخر طلباتك' : 'Wishlist'} />
-            <PullToRefresh
+            {/* <PullToRefresh
                 onRefresh={onRefresh}
                 pullDownThreshold={64}       // distance to trigger
                 resistance={2.2}             // pull "feel" (higher = harder)
                 refreshingContent={<PullIndicator state="refreshing" lang={uiLang} />}
                 pullingContent={<PullIndicator state="pulling" lang={uiLang} />}
                 className="min-h-screen"
-            >
+            > */}
                 <div className="container md:py-4 py-16">
                     {loading ? (
                         // simple skeleton loader
@@ -161,6 +107,7 @@ export default function Wishlist() {
                                             lang={lang}                // or pass isArabic if ProductLoop expects boolean
                                             isMobileOrTablet={isMobileOrTablet}
                                             origin={origin}
+                                            NewMedia={process.env.NEXT_PUBLIC_NEW_MEDIA}
                                         />
                                     </div>
                                 ) : (
@@ -183,7 +130,7 @@ export default function Wishlist() {
                         </div>
                     )}
                 </div>
-            </PullToRefresh>
+            {/* </PullToRefresh> */}
         </div>
     )
 }

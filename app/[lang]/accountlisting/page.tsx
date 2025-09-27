@@ -8,7 +8,6 @@ import { useRouter, usePathname } from 'next/navigation'
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 import { Dialog, DialogPanel, Transition, TransitionChild } from '@headlessui/react'
-import { useSlot } from '@/app/_ctx/ClientDataRegistry';
 import { useApp } from '@/app/_ctx/AppContext';
 import { getUserProfileData } from '@/lib/accounts/profile.client';
 import { postDeleteUser } from '@/lib/accountListing/accountListing.client';
@@ -27,7 +26,7 @@ export default function AccountListing() {
 
     useEffect(() => {
         getUser()
-        userDataLocalStorage()
+        UserDataLocalStorage()
     }, [])
     // useEffect(() => {
     //     const loyaltyPointsDB: any = loyaltyData?.t_loyaltypoints || 0;
@@ -42,24 +41,7 @@ export default function AccountListing() {
         }
     }
 
-    // const UserDataLocalStorage = async () => {
-    //     if (localStorage.getItem("userid")) {
-    //         getUserProfileData().then((profileDataCore: any) => {
-    //             setfullName(profileDataCore?.profileDataCore?.userdata?.full_name)
-    //             var fullNameWord = profileDataCore?.profileDataCore?.userdata?.full_name?.split(' ');
-    //             if (fullNameWord) {
-    //                 if (fullNameWord[0]) {
-    //                     setFirstWord(fullNameWord[0].charAt(0))
-    //                 }
-    //                 if (fullNameWord[1]) {
-    //                     setSecondWord(fullNameWord[1].charAt(0))
-    //                 }
-    //             }
-    //         })
-    //     }
-    // }
-
-    const userDataLocalStorage = async () => {
+    const UserDataLocalStorage = async () => {
         try {
             if (typeof window === "undefined") return;
             const userId = localStorage.getItem("userid");
@@ -90,29 +72,11 @@ export default function AccountListing() {
         }
     };
 
-    // const deleteUser = () => {
-    //     var data = {
-    //         user_id: localStorage.getItem('userid')
-    //     }
-    //     postDeleteUser(data).then(async (deleteUserData: any) => {
-    //         console.log(deleteUserData)
-    //         if (deleteUserData?.deleteUserData?.success) {
-    //             setConfirmationPopup(false)
-    //             topMessageAlartDanger(lang === 'ar' ? "لقد تم حذف حسابك!" : "Your account has been deleted!")
-    //             handleLogout()
-    //         }
-    //         else {
-    //             setConfirmationPopup(false)
-    //             topMessageAlartDanger('Error! something went wrong!')
-    //         }
-    //     })
-    // }
-
     const deleteUser = async () => {
         try {
             if (typeof window === "undefined") return;
             const userId = localStorage.getItem("userid");
-            if (!userId) { router.push(`/${lang}`); return; }
+            if (!userId) { router.push(`${origin}/${lang}`); return; }
 
             const res: any = await postDeleteUser({ user_id: userId });
 
@@ -145,7 +109,7 @@ export default function AccountListing() {
         localStorage.removeItem('orderCount')
         localStorage.removeItem('userWishlist')
         setUserid(false)
-        userDataLocalStorage()
+        UserDataLocalStorage()
         router.push(path + '?refresh=' + Math.random(), { scroll: false })
         router.refresh()
     };
