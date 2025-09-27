@@ -76,7 +76,7 @@ export default function AddressDetails({
       {params.devicetype === "mobile" ? (
         <MobileHeader
           type="Third"
-          lang={params.lang}
+          lang={lang}
           pageTitle={
             params.lang === "ar" ? "سجل استخدام الولاء" : "Loyalty Usage History"
           }
