@@ -9,60 +9,74 @@ export default function MobileHeader(props: any) {
     const router = useRouter()
 
     var timerLoader: any = 0;
-    var interval:any;
+    var interval: any;
     useEffect(() => {
         const handleVisibilityChange = () => {
             if (document.visibilityState === 'hidden') {
-            
-            interval = setInterval(() => {
-                timerLoader += 1;
-            }, 1000);
-    
+
+                interval = setInterval(() => {
+                    timerLoader += 1;
+                }, 1000);
+
             } else if (document.visibilityState === 'visible') {
-            if (interval) {
-                clearInterval(interval);
-            }
-    
-            if (timerLoader >= 3600) {
-                const url = window.location.href;
-    
-                if (url.includes('/cart') || url.includes('/checkout') ||
-                url.includes('/login') || url.includes('/signup')) {
-                window.location.href = `/${props.lang}`;
-                } else {
-                window.location.reload();
+                if (interval) {
+                    clearInterval(interval);
                 }
-            }
-            timerLoader = 0;
+
+                if (timerLoader >= 3600) {
+                    const url = window.location.href;
+
+                    if (url.includes('/cart') || url.includes('/checkout') ||
+                        url.includes('/login') || url.includes('/signup')) {
+                        window.location.href = `/${props.lang}`;
+                    } else {
+                        window.location.reload();
+                    }
+                }
+                timerLoader = 0;
             }
         };
         document.addEventListener('visibilitychange', handleVisibilityChange);
-    
+
         return () => {
             if (interval) {
-            clearInterval(interval);
+                clearInterval(interval);
             }
             document.removeEventListener('visibilitychange', handleVisibilityChange);
         };
     }, []);
+    // const goBack = () => {
+    //     if (props.redirect) {
+    //         router.push(`/${props.lang}/${props.redirect}`);
+    //         router.refresh(); // Only refresh after push (optional, based on your needs)
+    //     } else {
+    //         const currentPath = window.location.pathname;
+    //         if (currentPath.includes('/category/')) {
+    //             router.push(`/${props.lang}`);
+    //             router.refresh()
+    //         } else {
+    //             router.back();
+    //             setTimeout(() => router.refresh(), 300);
+    //         }
+    //         // const returnTo = sessionStorage.getItem('preLoginRoute') || '/'
+    //         // router.push(returnTo, { scroll: false })
+    //         // router.refresh()
+    //     }
+    // }
     const goBack = () => {
         if (props.redirect) {
             router.push(`/${props.lang}/${props.redirect}`);
-            router.refresh(); // Only refresh after push (optional, based on your needs)
-        } else {
-            const currentPath = window.location.pathname;
-            if (currentPath.includes('/category/')) {
-                router.push(`/${props.lang}`);
-                router.refresh()
-            } else {
-                router.back();
-                setTimeout(() => router.refresh(), 300);
-            }
-            // const returnTo = sessionStorage.getItem('preLoginRoute') || '/'
-            // router.push(returnTo, { scroll: false })
-            // router.refresh()
+            return;
         }
-    }
+        const currentPath = window.location.pathname;
+        if (currentPath.includes('/category/')) {
+            router.push(`/${props.lang}`);
+        } else if (window.history.length > 2) {
+            router.back();
+        } else {
+            router.push(`/${props.lang}`);
+        }
+    };
     const BackIcon = () => (
         <button className="w-16" onClick={goBack}>
             <svg height="30" width="30" className={props.lang === 'ar' ? 'rotate-180' : ''} viewBox="0 0 24 24"><path d="m15 19a1 1 0 0 1 -.71-.29l-6-6a1 1 0 0 1 0-1.41l6-6a1 1 0 0 1 1.41 1.41l-5.29 5.29 5.29 5.29a1 1 0 0 1 -.7 1.71z" /></svg>

@@ -5,18 +5,16 @@ import 'dayjs/locale/ar'
 import dayjs from 'dayjs'
 import Link from 'next/link'
 import dynamic from 'next/dynamic'
-import { get } from "../../api/ApiCalls"
-import { getDictionary } from "../../dictionaries"
-import { usePathname } from "next/navigation"
 import { useRouter } from 'next-nprogress-bar'
+import { useApp } from '@/app/_ctx/AppContext';
+import { getOrderListingData } from '@/lib/accounts/orderListing.client';
 
 const MobileHeader = dynamic(() => import('../../components/MobileHeader'), { ssr: true })
 
-export default function OrderListing({ params }: { params: { lang: string, data: any, devicetype: any } }) {
-    const [dict, setDict] = useState<any>([]);
-    const [orderListing, setOrderListing] = useState<any>([])
+export default function OrderListing() {
     const router = useRouter();
-    const path = usePathname();
+    const { lang, origin } = useApp();
+    const [orderListing, setOrderListing] = useState<any>([])
 
     // CURRENCY SYMBOL //
     const currencySymbol = <svg className="riyal-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1124.14 1256.39" width="11" height="12">
@@ -25,104 +23,118 @@ export default function OrderListing({ params }: { params: { lang: string, data:
     </svg>;
 
     const getOrderListData = async () => {
-        if (localStorage.getItem('userid')) {
-            await get(`user-orders/${localStorage.getItem('userid')}`).then((responseJson: any) => {
-                setOrderListing(responseJson)
-            })
-        } else {
-            router.push(`/${params.lang}`)
+        try {
+            const userId =
+                typeof window !== "undefined" ? localStorage.getItem("userid") : null;
+
+            if (!userId) {
+                router.push(`/${lang}`);
+                return;
+            }
+
+            const res = await getOrderListingData();
+            setOrderListing(res?.orderListingData ?? []);
+        } catch (err) {
+            console.error("Failed to load order list:", err);
+            setOrderListing([]); // fallback
         }
-    }
+    };
 
     useEffect(() => {
-        (async () => {
-            const translationdata = await getDictionary(params.lang);
-            setDict(translationdata);
-        })();
         getOrderListData()
-    }, [params])
+    }, [])
 
-    const origin =
-        typeof window !== 'undefined' && window.location.origin
-            ? window.location.origin
-            : '';
+    const statusMap: Record<number, { ar: string; en: string; color: string }> = {
+        0: { ar: "تم الإستلام", en: "Received", color: "#20831E" },
+        1: { ar: "تم التأكيد", en: "Confirmed", color: "#219EBC" },
+        2: { ar: "قيد التنفيذ", en: "Processing", color: "#20831E" },
+        3: { ar: "خرج للتوصيل", en: "Out for Delivery", color: "#219EBC" },
+        4: { ar: "تم التوصيل", en: "Delivered", color: "#20831E" },
+        5: { ar: "ملغي", en: "Cancel", color: "#DC4E4E" },
+        6: { ar: "تم الإرجاع", en: "Refunded", color: "#DC4E4E" },
+        7: { ar: "فشل", en: "Failed", color: "#DC4E4E" },
+        8: { ar: "في انتظار الدفع", en: "Pending", color: "#00243c95" },
+    };
+
+    const fmt = (n: number) => Intl.NumberFormat("en-US").format(n);
+    const canTrack = (d: any) => !!d?.shipment_order && [0, 1, 2, 3, 4].includes(Number(d?.status));
+    const getTotal = (d: any) =>
+        d?.ordersummary?.find((x: any) => x?.name === "total")?.price ?? d?.ordersummary?.[0]?.price ?? 0;
 
     return (
         <>
 
-            <MobileHeader type="Third" lang={params.lang} pageTitle={params.lang === 'ar' ? 'قائـمة طلبــاتك' : 'List of Orders'} />
+            <MobileHeader type="Third" lang={lang} pageTitle={lang === 'ar' ? 'قائـمة طلبــاتك' : 'List of Orders'} />
             <div className="container md:py-4 py-16">
                 <div className="flex items-start my-4 gap-x-5">
                     <div className="w-full">
                         <div className='flex items-center justify-between font-bold text-base mb-4 max-md:hidden'>
-                            <h2>{params.lang == 'ar' ? 'قائـمة طلبــاتك' : 'List of Orders'}</h2>
+                            <h2>{lang == 'ar' ? 'قائـمة طلبــاتك' : 'List of Orders'}</h2>
                         </div>
-
                         <div>
-                            {orderListing?.orderdata?.orders_data?.map((data: any, i: React.Key | null | undefined) => {
+                            {orderListing?.orderdata?.orders_data?.map((d: any) => {
+                                const total = getTotal(d);
+                                const st = statusMap[Number(d?.status)] as typeof statusMap[keyof typeof statusMap] | undefined;
                                 return (
-                                    <div className="grid grid-cols-3 md:grid-cols-6 bg-white px-3 md:p-5 shadow-md rounded-md mb-3 text-sm" key={i}>
+                                    <div
+                                        className="grid grid-cols-3 md:grid-cols-6 bg-white px-3 md:p-5 shadow-md rounded-md mb-3 text-sm"
+                                        key={d?.id ?? d?.order_no}
+                                    >
                                         <div className="text-[#1C262D85] max-md:my-4">
-                                            <h4 className="font-medium text-xs mb-1">{params.lang == 'ar' ? 'رقم الطلب' : 'Order Number'}:</h4>
-                                            <p className="font-medium text-[#004B7A]">{data?.order_no}</p>
+                                            <h4 className="font-medium text-xs mb-1">{lang === "ar" ? "رقم الطلب" : "Order Number"}:</h4>
+                                            <p className="font-medium text-[#004B7A]">{d?.order_no}</p>
                                         </div>
+
                                         <div className="text-[#1C262D85] max-md:my-4">
-                                            <h4 className="font-medium text-xs mb-1">{params.lang == 'ar' ? 'تاريخ الطلب' : 'Order Date'}:</h4>
-                                            <p className="font-medium text-[#004B7A]">{dayjs(data?.created_at).locale(params.lang == 'ar' ? 'ar' : 'en').format("MMM  DD, YYYY")}</p>
+                                            <h4 className="font-medium text-xs mb-1">{lang === "ar" ? "تاريخ الطلب" : "Order Date"}:</h4>
+                                            <p className="font-medium text-[#004B7A]">
+                                                {dayjs(d?.created_at).locale(lang === "ar" ? "ar" : "en").format("MMM DD, YYYY")}
+                                            </p>
                                         </div>
+
                                         <div className="text-[#1C262D85] max-md:my-4">
-                                            <h4 className="font-medium text-xs mb-1">{params.lang == 'ar' ? 'عدد المنتجات' : 'No. of Products'}:</h4>
-                                            <p className="font-medium text-[#004B7A]">({data?.details_count}) {params.lang == 'ar' ? 'منتجات' : 'Items'}</p>
+                                            <h4 className="font-medium text-xs mb-1">{lang === "ar" ? "عدد المنتجات" : "No. of Products"}:</h4>
+                                            <p className="font-medium text-[#004B7A]">
+                                                ({d?.details_count}) {lang === "ar" ? "منتجات" : "Items"}
+                                            </p>
                                         </div>
+
                                         <div className="text-[#1C262D85] max-md:my-4">
-                                            <h4 className="font-medium text-xs mb-1">{params.lang == 'ar' ? 'إجمالي القيمة' : 'Total Value'}:</h4>
-                                            <p className="font-medium text-[#004B7A] flex items-center gap-1">{Intl.NumberFormat('en-US').format(data?.ordersummary[0]?.price)} {currencySymbol}</p>
+                                            <h4 className="font-medium text-xs mb-1">{lang === "ar" ? "إجمالي القيمة" : "Total Value"}:</h4>
+                                            <p className="font-medium text-[#004B7A] flex items-center gap-1">
+                                                {fmt(total)} {currencySymbol}
+                                            </p>
                                         </div>
+
                                         <div className="text-[#1C262D85] max-md:my-4">
-                                            <h4 className="font-medium text-xs mb-1">{params.lang == 'ar' ? 'حالة الطلب' : 'Order Status'}:</h4>
-                                            {data?.status === 0 ?
-                                                <p className="font-medium text-[#20831E]">{params.lang == 'ar' ? 'تم الإستلام' : 'Received'}</p>
-                                                :
-                                                data?.status === 1 ?
-                                                    <p className="font-medium text-[#219EBC]">{params.lang == 'ar' ? 'تم التأكيد' : 'Confirmed'}</p>
-                                                    :
-                                                    data?.status === 2 ?
-                                                        <p className="font-medium text-[#20831E]">{params.lang == 'ar' ? 'قيد التنفيذ' : 'Processing'}</p>
-                                                        :
-                                                        data?.status === 3 ?
-                                                            <p className="font-medium text-[#219EBC]">{params.lang == 'ar' ? 'خرج للتوصيل' : 'Out for Delivery'}</p>
-                                                            :
-                                                            data?.status === 4 ?
-                                                                <p className="font-medium text-[#20831E]">{params.lang == 'ar' ? 'تم التوصيل' : 'Delivered'}</p>
-                                                                :
-                                                                data?.status === 5 ?
-                                                                    <p className="font-medium text-[#DC4E4E]">{params.lang == 'ar' ? 'ملغي' : 'Cancel'}</p>
-                                                                    :
-                                                                    data?.status === 6 ?
-                                                                        <p className="font-medium text-[#DC4E4E]">{params.lang == 'ar' ? 'تم الإرجاع' : 'Refunded'}</p>
-                                                                        :
-                                                                        data?.status === 7 ?
-                                                                            <p className="font-medium text-[#DC4E4E]">{params.lang == 'ar' ? 'فشل' : 'Failed'}</p>
-                                                                            :
-                                                                            data?.status === 8 ?
-                                                                                <p className="font-medium text-[#00243c95]">{params.lang == 'ar' ? 'في انتظار الدفع' : 'Pending'}</p>
-                                                                                :
-                                                                                <p className="font-medium text-[#00243c95]">---</p>
-                                            }
+                                            <h4 className="font-medium text-xs mb-1">{lang === "ar" ? "حالة الطلب" : "Order Status"}:</h4>
+                                            <p className="font-medium" style={{ color: st?.color ?? "#00243c95" }}>
+                                                {st ? (lang === "ar" ? st.ar : st.en) : "---"}
+                                            </p>
                                         </div>
+
                                         <div className="flex items-center justify-center underline text-[#B15533]">
-                                            <Link href={`${origin}/${params.lang}/account/orderdetails/${data?.id}`} prefetch={true} replace={false}>{params.lang == 'ar' ? 'إظهار التفاصيل' : 'View Details'}</Link>
+                                            <Link href={`${origin}/${lang}/account/orderdetails/${d?.id}`} prefetch replace={false}>
+                                                {lang === "ar" ? "إظهار التفاصيل" : "View Details"}
+                                            </Link>
                                         </div>
-                                        {data?.shipment_order && (data?.status == 0 || data?.status == 1 || data?.status == 2 || data?.status == 3 || data?.status == 4) ?
-                                        <>
-                                            <hr className="opacity-10 mb-3 col-span-3"/>   
-                                            <div className="col-span-2 text-right underline text-[#004B7A] max-md:mb-4">
-                                                <Link prefetch={false} scroll={false} href={`${origin}/${params.lang}/shipmenttracking/${data?.shipment_order?.shipment_no}`} replace={false}>{params.lang == 'ar' ? 'تتبع حالة الشحنة' : 'Track Your Shipment'}</Link>
+                                        {canTrack(d) && (
+                                            <div className='col-span-3'>
+                                                <hr className="opacity-10 mb-3" />
+                                                <div className="text-center underline text-[#004B7A] max-md:mb-4">
+                                                    <Link
+                                                        prefetch={false}
+                                                        scroll={false}
+                                                        href={`${origin}/${lang}/shipmenttracking/${d?.shipment_order?.shipment_no}`}
+                                                        replace={false}
+                                                    >
+                                                        {lang === "ar" ? "تتبع حالة الشحنة" : "Track Your Shipment"}
+                                                    </Link>
+                                                </div>
                                             </div>
-                                        </>
-                                        : null}
+                                        )}
                                     </div>
-                                )
+                                );
                             })
                             }
                         </div>

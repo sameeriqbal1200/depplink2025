@@ -3,28 +3,25 @@
 import React, { useEffect, useState } from 'react'
 import dynamic from 'next/dynamic'
 import Select from 'react-select';
-import { getDictionary } from "../../dictionaries";
-import { usePathname } from "next/navigation"
 import { useRouter } from 'next-nprogress-bar';
 import { RadioGroup } from '@headlessui/react'
-import { get, post } from "../../api/ApiCalls";
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 import { useSearchParams } from 'next/navigation'
-
+import { useApp } from "@/app/_ctx/AppContext";
+import { getCitiesList, getUserAddress, getUserEditAddress, postAddAddress, postUpdateAddress, userDeleteAddress } from '@/lib/accounts/addressBook.client';
 
 const MobileHeader = dynamic(() => import('../../components/MobileHeader'), { ssr: true })
 
-export default function AddressBook({ params }: { params: { lang: any, dict: any, data: any } }) {
+export default function AddressBook() {
+    const { t, lang } = useApp();
     const searchParams = useSearchParams()
     const AddressShippingId = searchParams.get('AddressShippingId')
     const addAddressCheckout = searchParams.get('addAddressCheckout')
-    const [dict, setDict] = useState<any>([])
     const [typeHouse, setTypeHouse] = useState<String>('Home')
-    const [selected, setSelected] = useState(0)
     const [isactive, setActive] = useState(false)
     const [addAddress, setAddAddress] = useState(false)
-    const [regions, setRegions] = useState<any>([])
+    // const [regions, setRegions] = useState<any>([])
     const [selectedRegion, setSelectedRegion] = useState<any>([])
     const [cities, setCities] = useState<any>([])
     const [selectedCity, setSelectedCity] = useState<any>([])
@@ -50,7 +47,7 @@ export default function AddressBook({ params }: { params: { lang: any, dict: any
                 </div>
             ,
             toast: true,
-            position: params.lang == 'ar' ? 'top-start' : 'top-end',
+            position: lang === 'ar' ? 'top-start' : 'top-end',
             showConfirmButton: false,
             timer: 5000,
             showCloseButton: false,
@@ -72,7 +69,7 @@ export default function AddressBook({ params }: { params: { lang: any, dict: any
                 </div>
             ,
             toast: true,
-            position: params.lang == 'ar' ? 'top-start' : 'top-end',
+            position: lang === 'ar' ? 'top-start' : 'top-end',
             showConfirmButton: false,
             timer: 15000,
             showCloseButton: true,
@@ -83,43 +80,35 @@ export default function AddressBook({ params }: { params: { lang: any, dict: any
     };
 
     const getCustomerAddressData = async () => {
-        if (localStorage.getItem('userid')) {
-            await get(`user-addresses/${localStorage.getItem('userid')}`).then((responseJson: any) => {
-                setAddressData(responseJson)
-            })
+        try {
+            const userId = localStorage.getItem("userid");
+            if (!userId) {
+                router.push(`/${lang}`);
+                return;
+            }
+            const userAddressBook = await getUserAddress();
+            setAddressData(userAddressBook?.userAddressBook);
             if (AddressShippingId) {
-                setAddAddress(true)
-                EditAddress(AddressShippingId)
-                seteditdata(true)
+                setAddAddress(true);
+                EditAddress(AddressShippingId);
+                seteditdata(true);
+            } else if (addAddressCheckout) {
+                await getCities();
+                seteditdata(false);
+                setAddAddress(true);
             }
-            if (addAddressCheckout) {
-                // getRegions()
-                getCities(params.lang)
-                seteditdata(false)
-                setAddAddress(true)
-            }
-
-        } else {
-            router.push(`/${params.lang}`)
+        } catch (error) {
+            console.error("Failed to load customer address data:", error);
+            // optionally show toast or fallback UI
         }
-    }
+    };
 
     useEffect(() => {
-        (async () => {
-            const translationdata = await getDictionary(params.lang);
-            setDict(translationdata);
-        })();
         getCustomerAddressData()
-    }, [params])
-
-    const options = [
-        { value: 'orange', label: 'Select Region' },
-        { value: 'white', label: 'White' },
-        { value: 'purple', label: 'Purple' },
-    ];
+        getCities()
+    }, [])
 
     const router = useRouter();
-    const path = usePathname();
 
     const AddAddress = () => {
         if (isactive == true) {
@@ -139,21 +128,21 @@ export default function AddressBook({ params }: { params: { lang: any, dict: any
             setLoader(false)
             return false;
         }
-        post('addaddress', data).then((responseJson: any) => {
-            if (addAddressCheckout && responseJson?.success) {
+        postAddAddress(data).then((addNewAddress: any) => {
+            if (addAddressCheckout && addNewAddress?.addNewAddress?.success) {
                 setLoader(false)
                 setAddAddress(false)
                 DataGo()
                 getCustomerAddressData()
-                topMessageAlartSuccess(params?.dict?.address.AddAddress)
-                router.push(`/${params.lang}/checkout`)
+                topMessageAlartSuccess(t('address.AddAddress'))
+                router.push(`/${lang}/checkout`)
             }
-            if (responseJson?.success) {
+            if (addNewAddress?.addNewAddress?.success) {
                 setLoader(false)
                 DataGo()
                 setAddAddress(false)
                 getCustomerAddressData()
-                topMessageAlartSuccess(params?.dict?.address.AddAddress)
+                topMessageAlartSuccess(t('address.AddAddress'))
             }
             else {
                 setLoader(false)
@@ -181,20 +170,21 @@ export default function AddressBook({ params }: { params: { lang: any, dict: any
             setLoader(false)
             return false;
         }
-        post('updateaddress/' + dataid, data).then((responseJson: any) => {
-            if (AddressShippingId == dataid && responseJson?.success) {
+
+        postUpdateAddress(dataid, data).then((updateAddressPost: any) => {
+            if (AddressShippingId == dataid && updateAddressPost?.updateAddressPost?.success) {
                 setLoader(false)
                 getCustomerAddressData()
                 DataGo()
-                topMessageAlartSuccess(params?.dict?.address.UpdateAddress)
-                router.push(`/${params.lang}/checkout`)
+                topMessageAlartSuccess(t('address.UpdateAddress'))
+                router.push(`/${lang}/checkout`)
             }
-            if (responseJson?.success) {
+            if (updateAddressPost?.updateAddressPost?.success) {
                 setLoader(false)
                 setAddAddress(false)
                 getCustomerAddressData()
                 DataGo()
-                topMessageAlartSuccess(params?.dict?.address.UpdateAddress)
+                topMessageAlartSuccess(t('address.UpdateAddress'))
             }
             else {
                 setLoader(false)
@@ -205,39 +195,33 @@ export default function AddressBook({ params }: { params: { lang: any, dict: any
     }
 
     function EditAddress(id: any) {
-        get(`user-address/${id}`).then((responseJson: any) => {
-            setAddress(responseJson?.address?.address)
-            setShippingInstructions(responseJson?.address?.shippinginstractions)
-            setPrimaryAddress(responseJson?.address?.make_default)
-            if (responseJson?.address?.make_default == 1) {
+        getUserEditAddress(id).then((userEditAddress: any) => {
+            setAddress(userEditAddress?.userEditAddress?.address?.address)
+            setShippingInstructions(userEditAddress?.userEditAddress?.address?.shippinginstractions)
+            setPrimaryAddress(userEditAddress?.userEditAddress?.address?.make_default)
+            if (userEditAddress?.userEditAddress?.address?.make_default == 1) {
                 setActive(true)
             }
             else {
                 setActive(false)
             }
-            if (responseJson?.address?.address_label == 0) {
+            if (userEditAddress?.userEditAddress?.address?.address_label == 0) {
                 setTypeHouse("Home")
             } else {
                 setTypeHouse("Office")
             }
-            setId(responseJson?.address?.id)
-
-            if (params.lang == 'ar') {
-                const CityData = responseJson.arabiccities?.filter((item: { value: any; }) => item?.value === responseJson?.address?.state_id);
-                setSelectedCity(CityData[0])
-            }
-            else {
-                const CityData = responseJson.cities?.filter((item: { value: any; }) => item?.value === responseJson?.address?.state_id);
-                setSelectedCity(CityData[0])
-            }
+            setId(userEditAddress?.userEditAddress?.address?.id)
+            const citiesLanguage = lang === 'ar' ? userEditAddress?.userEditAddress?.arabiccities : userEditAddress?.userEditAddress?.cities
+            const CityData = citiesLanguage?.filter((item: { value: any }) => item?.value === userEditAddress?.userEditAddress?.address?.state_id);
+            setSelectedCity(CityData[0])
         })
     }
 
     function DeleteAddress(id: any) {
-        get('user-address-delete/' + id).then((responseJson: any) => {
-            if (responseJson?.success) {
+        userDeleteAddress(id).then((deleteAddress: any) => {
+            if (deleteAddress?.deleteAddress?.success) {
                 getCustomerAddressData()
-                topMessageAlartSuccess(params?.dict?.address.DeleteAddress)
+                topMessageAlartSuccess(t('address.DeleteAddress'))
             }
             else {
                 topMessageAlartDanger('Something Went Wrong')
@@ -245,10 +229,10 @@ export default function AddressBook({ params }: { params: { lang: any, dict: any
         })
     }
 
-    function getCities(lang: string) {
-        get('get-city-list-lang/' + lang).then((responseJson: any) => {
-            setCities(responseJson?.data)
-            var selectcity = responseJson?.data?.filter((item: { label: string | null; }) => item.label == localStorage.getItem('globalcity'))[0]
+    function getCities() {
+        getCitiesList(lang).then((listOfCities: any) => {
+            setCities(listOfCities?.listOfCities?.data)
+            var selectcity = listOfCities?.listOfCities?.data?.filter((item: { label: string | null; }) => item.label == localStorage.getItem('globalcity'))[0]
             if (selectcity) {
                 setCity(selectcity)
             }
@@ -264,10 +248,31 @@ export default function AddressBook({ params }: { params: { lang: any, dict: any
         setId('')
     }
 
+    async function handleSave() {
+        if (loader) return;              // debounce: ignore extra clicks while loading
+        setLoader(true);
+        try {
+            if (editdata) {
+                // EDIT FLOW
+                await UpdateAddress(dataid);
+            } else {
+                // ADD FLOW
+                // If AddAddress needs city list first, await it here:
+                await getCities();
+                await AddAddress();
+            }
+            // TODO: success toast / close modal / refresh data
+        } catch (err) {
+            console.error(err);
+            // TODO: show error toast
+        } finally {
+            setLoader(false);
+        }
+    }
 
     return (
         <>
-            <MobileHeader type="Third" lang={params.lang} pageTitle={params.lang === 'ar' ? 'عناويني' : 'Addresses'} />
+            <MobileHeader type="Third" lang={lang} pageTitle={lang === 'ar' ? 'عناويني' : 'Addresses'} />
             <div className="container md:py-4 py-16">
                 <div className="flex items-start my-4 gap-x-5">
                     <div className={`w-full ${addAddress == true ? 'block' : 'hidden'}`}>
@@ -275,7 +280,7 @@ export default function AddressBook({ params }: { params: { lang: any, dict: any
                             <div className="flex items-center rounded-md border border-[#dfdfdf] focus-visible:outline-[#00243c] fill-primary p-2.5 text-sm gap-x-3 w-full mb-3 bg-white">
                                 <svg id="fi_3514361" height="22" viewBox="0 0 256 256" width="22" xmlns="http://www.w3.org/2000/svg" data-name="Layer 1"><path d="m128 138.184a5 5 0 0 1 -3.607-1.538c-2.075-2.16-50.808-53.259-50.808-82.228a54.415 54.415 0 1 1 108.83 0c0 28.969-48.733 80.068-50.808 82.228a5 5 0 0 1 -3.607 1.538zm0-128.184a44.465 44.465 0 0 0 -44.415 44.418c0 19.07 29.312 54.978 44.414 71.451 15.1-16.478 44.416-52.4 44.416-71.451a44.465 44.465 0 0 0 -44.415-44.418z"></path><path d="m128 76.153a21.735 21.735 0 1 1 21.735-21.735 21.759 21.759 0 0 1 -21.735 21.735zm0-33.47a11.735 11.735 0 1 0 11.735 11.735 11.748 11.748 0 0 0 -11.735-11.735z"></path><path d="m128.126 256a4.992 4.992 0 0 1 -2.5-.67l-77.175-44.559a5 5 0 0 1 -2.5-4.331v-38.385a5 5 0 0 1 10 0v35.5l72.175 41.67 72.174-41.67v-35.88a5 5 0 0 1 10 0v38.765a5 5 0 0 1 -2.5 4.331l-77.174 44.556a4.992 4.992 0 0 1 -2.5.673z"></path><path d="m128.126 166.884a4.992 4.992 0 0 1 -2.5-.67l-77.175-44.557a5 5 0 1 1 5-8.66l74.675 43.113 74.674-43.11a5 5 0 1 1 5 8.66l-77.174 44.557a4.992 4.992 0 0 1 -2.5.667z"></path><path d="m160.933 198.291a5 5 0 0 1 -3.459-1.389l-32.806-31.402a5 5 0 0 1 6.916-7.224l30.1 28.813 68.154-39.349-27.558-26.382-27.359-15.744a5 5 0 1 1 4.988-8.667l27.885 16.047a4.988 4.988 0 0 1 .964.721l32.806 31.407a5 5 0 0 1 -.958 7.942l-77.174 44.557a4.993 4.993 0 0 1 -2.499.67z"></path><path d="m95.067 198.525a4.985 4.985 0 0 1 -2.5-.67l-77.173-44.555a5 5 0 0 1 -.957-7.942l33.057-31.642a4.967 4.967 0 0 1 .957-.718l27.634-15.955a5 5 0 1 1 5 8.66l-27.112 15.653-27.807 26.616 68.154 39.348 30.349-29.048a5 5 0 1 1 6.914 7.224l-33.058 31.641a4.991 4.991 0 0 1 -3.458 1.388z"></path></svg>
                                 <div className="h-5 w-[1px] bg-primary opacity-20" />
-                                <input id="iconLeft" value={address} type="text" placeholder={params.lang == 'ar' ? 'رقم الشقة / رقم المبنى / المنطقة أو أقرب معلم' : 'Flat Number / Building Number / Area or Nearest Land Mark'} className="focus-visible:outline-none w-full font-regular"
+                                <input id="iconLeft" value={address} type="text" placeholder={lang === 'ar' ? 'رقم الشقة / رقم المبنى / المنطقة أو أقرب معلم' : 'Flat Number / Building Number / Area or Nearest Land Mark'} className="focus-visible:outline-none w-full font-regular"
                                     onChange={(e: any) => {
                                         setAddress(e.target.value)
                                     }} />
@@ -318,7 +323,7 @@ export default function AddressBook({ params }: { params: { lang: any, dict: any
                                             height: '42px',
                                         }),
                                     }}
-                                    placeholder={params.lang == 'ar' ? 'اختر المنطقة' : 'Select City'}
+                                    placeholder={lang === 'ar' ? 'اختر المنطقة' : 'Select City'}
                                     options={cities}
                                     isSearchable={true}
                                     value={editdata ? selectedCity : city}
@@ -331,7 +336,7 @@ export default function AddressBook({ params }: { params: { lang: any, dict: any
                                 />
                             </div>
                             <div className="rounded-md border border-[#dfdfdf] focus-visible:outline-[#00243c] p-2.5 text-sm w-full mb-3 bg-white">
-                                <textarea id="iconLeft" rows={3} value={shippinginstructions} placeholder={params.lang == 'ar' ? 'تعليمات الشحن' : 'Shipping Instructions'} className="focus-visible:outline-none w-full font-regular"
+                                <textarea id="iconLeft" rows={3} value={shippinginstructions} placeholder={lang === 'ar' ? 'تعليمات الشحن' : 'Shipping Instructions'} className="focus-visible:outline-none w-full font-regular"
                                     onChange={(e: any) => {
                                         setShippingInstructions(e.target.value)
                                     }} />
@@ -357,7 +362,7 @@ export default function AddressBook({ params }: { params: { lang: any, dict: any
                                                         <circle cx={12} cy={12} r={12} fill="#5D686F60" opacity={0.2} />
                                                     </svg>
                                                 }
-                                                {params.lang == 'ar' ? 'الــمنـــزل' : 'Home'}
+                                                {lang === 'ar' ? 'الــمنـــزل' : 'Home'}
                                             </button>
                                         )
                                         }
@@ -381,7 +386,7 @@ export default function AddressBook({ params }: { params: { lang: any, dict: any
                                                         <circle cx={12} cy={12} r={12} fill="#5D686F60" opacity={0.2} />
                                                     </svg>
                                                 }
-                                                {params.lang == 'ar' ? 'مكتب' : 'Office'}
+                                                {lang === 'ar' ? 'مكتب' : 'Office'}
                                             </button>
                                         )
                                         }
@@ -393,7 +398,7 @@ export default function AddressBook({ params }: { params: { lang: any, dict: any
                     </div>
 
                     <div className={`w-full ${addAddress == true ? 'hidden' : 'block'}`}>
-                        <h2 className="font-bold text-base mb-4 max-md:hidden">{params.lang == 'ar' ? 'قائـمة العـناويـن الخاصـة بـك' : 'Address Book'}</h2>
+                        <h2 className="font-bold text-base mb-4 max-md:hidden">{lang === 'ar' ? 'قائـمة العـناويـن الخاصـة بـك' : 'Address Book'}</h2>
 
                         {addressData?.addresses?.map((data: any, i: any) => {
                             return (
@@ -412,20 +417,20 @@ export default function AddressBook({ params }: { params: { lang: any, dict: any
 
                                                 <div className="flex items-center justify-between w-full mb-3">
                                                     <p className={`text-[#004B7A] flex items-center gap-x-2 text-sm font-bold ${data?.make_default == 1 ? 'text-white' : ''}`}>
-                                                        {data?.address_label == 0 ? params.lang == 'ar' ? 'الــمنـــزل' : 'Home' : params.lang == 'ar' ? 'مكتب' : 'Office'}
+                                                        {data?.address_label == 0 ? lang === 'ar' ? 'الــمنـــزل' : 'Home' : lang === 'ar' ? 'مكتب' : 'Office'}
                                                         {data?.make_default == 1 ?
-                                                            <span className={`px-2 py-1 bg-[#219EBC30] text-xs rounded-sm text-[#219EBC] ${data?.make_default == 1 ? 'text-white bg-[#FFFFFF30]' : ''}`}>{params.lang == 'ar' ? 'العنوان الرئيسي' : 'Primary Address'} </span>
+                                                            <span className={`px-2 py-1 bg-[#219EBC30] text-xs rounded-sm text-[#219EBC] ${data?.make_default == 1 ? 'text-white bg-[#FFFFFF30]' : ''}`}>{lang === 'ar' ? 'العنوان الرئيسي' : 'Primary Address'} </span>
                                                             : null}
                                                     </p>
                                                     <button className={`focus-visible:outline-none btn text-sm underline absolute ltr:right-4 rtl:left-4 font-semibold ${data?.make_default == 1 ? 'text-[#004B7A]' : 'text-[#FF671F]'}`} onClick={() => { setAddAddress(true), EditAddress(data?.id), seteditdata(true) }}>
-                                                        {params.lang == 'ar' ? 'تغــيــيـر' : 'Edit'}
+                                                        {lang === 'ar' ? 'تغــيــيـر' : 'Edit'}
                                                     </button>
                                                 </div>
 
                                                 <p className={`mt-1 text-xs text-[#5D686F] ${data?.make_default == 1 ? 'text-white' : ''}`}>{data?.address}</p>
-                                                <p className={`mt-1.5 text-xs text-[#5D686F] font-bold ${data?.make_default == 1 ? 'text-white' : ''}`}>{params.lang == 'ar' ? data?.state_data?.region?.name_arabic : data?.state_data?.region?.name}, {params.lang == 'ar' ? data?.state_data?.name_arabic : data?.state_data?.name} | {params.lang == 'ar' ? 'المملكة العربية السعودية' : 'Saudi Arabia'}</p>
+                                                <p className={`mt-1.5 text-xs text-[#5D686F] font-bold ${data?.make_default == 1 ? 'text-white' : ''}`}>{lang === 'ar' ? data?.state_data?.region?.name_arabic : data?.state_data?.region?.name}, {lang === 'ar' ? data?.state_data?.name_arabic : data?.state_data?.name} | {lang === 'ar' ? 'المملكة العربية السعودية' : 'Saudi Arabia'}</p>
                                                 <div className="mt-3">
-                                                    <p className={`mt-3 text-xs text-[#5D686F] font-bold ${data?.make_default == 1 ? 'text-white' : ''}`}>{params.lang == 'ar' ? 'تعليمات الشحن' : 'Shipping Instructions'}:</p>
+                                                    <p className={`mt-3 text-xs text-[#5D686F] font-bold ${data?.make_default == 1 ? 'text-white' : ''}`}>{lang === 'ar' ? 'تعليمات الشحن' : 'Shipping Instructions'}:</p>
                                                     <p className={`mt-1 text-xs text-[#5D686F] font-light ${data?.make_default == 1 ? 'text-white' : ''}`}>{data?.shippinginstractions}</p>
                                                 </div>
                                             </div>
@@ -433,7 +438,7 @@ export default function AddressBook({ params }: { params: { lang: any, dict: any
                                         <div className="flex items-center gap-x-3">
                                             {data?.make_default == 1 ?
                                                 <button className={`focus-visible:outline-none btn ${data?.make_default == 1 ? 'fill-white' : 'fill-[#004B7A]'}`} onClick={() => { setAddAddress(true), EditAddress(data?.id), seteditdata(true) }}>
-                                                    <svg clipRule="evenodd" fillRule="evenodd" width="22" height="22" strokeLinejoin="round" stroke-miterlimit="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" id="fi_10426353"><g id="Icon"><path d="m22.099 6.429c-2.126 2.126-7.116 7.115-8.333 8.328-.263.262-.576.469-.912.604-.976.405-3.357 1.339-4.057 1.386-.417.028-.826-.126-1.122-.422s-.45-.705-.422-1.122c.047-.7.981-3.079 1.379-4.051.139-.345.346-.658.609-.92l8.33-8.331c.403-.403.951-.63 1.521-.63s1.118.227 1.521.63l1.486 1.486c.403.403.63.951.63 1.521s-.227 1.118-.63 1.521zm-13.343 8.815c.684-.086 2.683-.92 3.523-1.269.003-.001.006-.002.008-.003.157-.063.299-.157.418-.276l.001-.001c1.219-1.213 6.207-6.201 8.332-8.327.122-.122.191-.287.191-.46s-.069-.338-.191-.46l-1.486-1.486c-.122-.122-.287-.191-.46-.191s-.338.069-.46.191l-8.331 8.331c-.12.119-.214.262-.277.419l-.002.004c-.345.842-1.18 2.843-1.266 3.528z"></path><path d="m20.118 7.349c.292.293.292.768 0 1.061-.293.293-.768.293-1.061 0l-3.467-3.467c-.293-.293-.293-.768 0-1.061.293-.292.768-.292 1.061 0z"></path><path d="m13.997 13.47c.293.292.293.768 0 1.06-.292.293-.768.293-1.06 0l-3.467-3.467c-.293-.292-.293-.768 0-1.06.292-.293.768-.293 1.06 0z"></path><path d="m8.5 3.25c.414 0 .75.336.75.75s-.336.75-.75.75h-3.5c-1.243 0-2.25 1.007-2.25 2.25v12c0 .597.237 1.169.659 1.591s.994.659 1.591.659h13c.597 0 1.169-.237 1.591-.659s.659-.994.659-1.591v-3.5c0-.414.336-.75.75-.75s.75.336.75.75v3.5c0 .995-.395 1.948-1.098 2.652-.704.703-1.657 1.098-2.652 1.098h-13c-.995 0-1.948-.395-2.652-1.098-.703-.704-1.098-1.657-1.098-2.652v-12c0-2.071 1.679-3.75 3.75-3.75z"></path></g></svg>
+                                                    <svg clipRule="evenodd" fillRule="evenodd" width="22" height="22" strokeLinejoin="round" strokeMiterlimit="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" id="fi_10426353"><g id="Icon"><path d="m22.099 6.429c-2.126 2.126-7.116 7.115-8.333 8.328-.263.262-.576.469-.912.604-.976.405-3.357 1.339-4.057 1.386-.417.028-.826-.126-1.122-.422s-.45-.705-.422-1.122c.047-.7.981-3.079 1.379-4.051.139-.345.346-.658.609-.92l8.33-8.331c.403-.403.951-.63 1.521-.63s1.118.227 1.521.63l1.486 1.486c.403.403.63.951.63 1.521s-.227 1.118-.63 1.521zm-13.343 8.815c.684-.086 2.683-.92 3.523-1.269.003-.001.006-.002.008-.003.157-.063.299-.157.418-.276l.001-.001c1.219-1.213 6.207-6.201 8.332-8.327.122-.122.191-.287.191-.46s-.069-.338-.191-.46l-1.486-1.486c-.122-.122-.287-.191-.46-.191s-.338.069-.46.191l-8.331 8.331c-.12.119-.214.262-.277.419l-.002.004c-.345.842-1.18 2.843-1.266 3.528z"></path><path d="m20.118 7.349c.292.293.292.768 0 1.061-.293.293-.768.293-1.061 0l-3.467-3.467c-.293-.293-.293-.768 0-1.061.293-.292.768-.292 1.061 0z"></path><path d="m13.997 13.47c.293.292.293.768 0 1.06-.292.293-.768.293-1.06 0l-3.467-3.467c-.293-.292-.293-.768 0-1.06.292-.293.768-.293 1.06 0z"></path><path d="m8.5 3.25c.414 0 .75.336.75.75s-.336.75-.75.75h-3.5c-1.243 0-2.25 1.007-2.25 2.25v12c0 .597.237 1.169.659 1.591s.994.659 1.591.659h13c.597 0 1.169-.237 1.591-.659s.659-.994.659-1.591v-3.5c0-.414.336-.75.75-.75s.75.336.75.75v3.5c0 .995-.395 1.948-1.098 2.652-.704.703-1.657 1.098-2.652 1.098h-13c-.995 0-1.948-.395-2.652-1.098-.703-.704-1.098-1.657-1.098-2.652v-12c0-2.071 1.679-3.75 3.75-3.75z"></path></g></svg>
                                                 </button>
                                                 :
                                                 <>
@@ -454,13 +459,13 @@ export default function AddressBook({ params }: { params: { lang: any, dict: any
             <div className="fixed bottom-0 w-full p-3 bg-white shadow-md border-t border-[#5D686F26]">
                 <button
                     type="button"
-                    onClick={() => { seteditdata(false), getCities(params.lang), setAddAddress(true) }}
+                    onClick={() => { seteditdata(false), getCities(), setAddAddress(true) }}
                     className={`focus-visible:outline-none bg-[#004B7A] border border-[#004B7A] hover:bg-[#00446f] hover:border-[#00446f] text-white w-full rounded-md p-2.5 text-sm font-medium flex items-center justify-center ${addAddress == true ? 'hidden' : ''}`}>
-                    {params.lang == 'ar' ? 'اضـافـة عنوان جديد' : 'Add New Address'}
+                    {lang === 'ar' ? 'اضـافـة عنوان جديد' : 'Add New Address'}
                 </button>
             </div>
-            {addAddress === true ?
-                <>
+            {addAddress && (
+                <div>
                     <div className="fixed bottom-0 w-full p-3 bg-white shadow-md border-t border-[#5D686F26]">
                         <div className="flex items-center justify-between mb-3.5">
                             <label htmlFor="deafultAddress" className="focus-visible:outline-[#00243c] fill-primary text-sm w-full items-center flex gap-x-2">
@@ -468,9 +473,15 @@ export default function AddressBook({ params }: { params: { lang: any, dict: any
                                     onChange={(e: any) => {
                                         setPrimaryAddress(e.value)
                                     }} />
-                                {isactive == true ?
-                                    <svg viewBox="0 0 24 24" fill="none" className="h-5 w-5">
-                                        <circle cx={12} cy={12} r={12} fill="#219EBC" />
+                                <svg viewBox="0 0 24 24" className="h-5 w-5">
+                                    <circle
+                                        cx={12}
+                                        cy={12}
+                                        r={12}
+                                        fill={isactive ? "#219EBC" : "#5D686F60"}
+                                        opacity={isactive ? 1 : 0.2}
+                                    />
+                                    {isactive && (
                                         <path
                                             d="M7 13l3 3 7-7"
                                             stroke="#fff"
@@ -478,41 +489,39 @@ export default function AddressBook({ params }: { params: { lang: any, dict: any
                                             strokeLinecap="round"
                                             strokeLinejoin="round"
                                         />
-                                    </svg>
-                                    :
-                                    <svg viewBox="0 0 24 24" fill="#5D686F60" className="h-5 w-5">
-                                        <circle cx={12} cy={12} r={12} fill="#5D686F60" opacity={0.2} />
-                                    </svg>
-                                }
-                                {params.lang == 'ar' ? 'اجعله عنوانًا افتراضيًا' : 'Make as primary address'}
+                                    )}
+                                </svg>
+                                {lang === 'ar' ? 'اجعله عنوانًا افتراضيًا' : 'Make as primary address'}
                             </label>
-                            <button onClick={() => { setAddAddress(false) }} className='text-[#219EBC] hover:underline text-sm'>{params.lang == 'ar' ? 'خلف' : 'Back'}</button>
+                            <button onClick={() => { setAddAddress(false) }} className='text-[#219EBC] hover:underline text-sm'>{lang === 'ar' ? 'خلف' : 'Back'}</button>
                         </div>
-                        {editdata ?
-                            <button
-                                type="button"
-                                onClick={() => { setLoader(true), UpdateAddress(dataid) }}
-                                className={`focus-visible:outline-none bg-[#004B7A] border border-[#004B7A] hover:bg-[#00446f] hover:border-[#00446f] text-white w-full rounded-md p-2.5 text-sm font-medium flex items-center justify-center`}>
-                                {loader == true ?
-                                    <svg height="24" viewBox="0 0 24 24" className="animate-spin h-6 w-6 fill-white" width="24" xmlns="http://www.w3.org/2000/svg" id="fi_7235860"><path d="m12 22c5.421 0 10-4.579 10-10h-2c0 4.337-3.663 8-8 8s-8-3.663-8-8c0-4.336 3.663-8 8-8v-2c-5.421 0-10 4.58-10 10 0 5.421 4.579 10 10 10z"></path></svg>
-                                    : null}
-                                {params.lang == 'ar' ? 'استمرار' : 'Save'}
-                            </button>
-                            :
-                            <button
-                                type="button"
-                                onClick={() => { setLoader(true), getCities(params.lang), AddAddress() }}
-                                className={`focus-visible:outline-none bg-[#004B7A] border border-[#004B7A] hover:bg-[#00446f] hover:border-[#00446f] text-white w-full rounded-md p-2.5 text-sm font-medium flex items-center justify-center`}>
-                                {loader == true ?
-                                    <svg height="24" viewBox="0 0 24 24" className="animate-spin h-6 w-6 fill-white" width="24" xmlns="http://www.w3.org/2000/svg" id="fi_7235860"><path d="m12 22c5.421 0 10-4.579 10-10h-2c0 4.337-3.663 8-8 8s-8-3.663-8-8c0-4.336 3.663-8 8-8v-2c-5.421 0-10 4.58-10 10 0 5.421 4.579 10 10 10z"></path></svg>
-                                    : null}
-                                {params.lang == 'ar' ? 'استمرار' : 'Save'}
-                            </button>
-                        }
+                        <button
+                            type="button"
+                            onClick={handleSave}
+                            disabled={loader}
+                            aria-busy={loader}
+                            className={`focus-visible:outline-none bg-[#004B7A] border border-[#004B7A] 
+                hover:bg-[#00446f] hover:border-[#00446f] text-white w-full 
+                rounded-md p-2.5 text-sm font-medium flex items-center justify-center 
+                disabled:opacity-60 disabled:cursor-not-allowed`}
+                        >
+                            {loader ? (
+                                <svg
+                                    height="24"
+                                    width="24"
+                                    viewBox="0 0 24 24"
+                                    className="animate-spin h-6 w-6 fill-white mr-2"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    aria-hidden="true"
+                                >
+                                    <path d="m12 22c5.421 0 10-4.579 10-10h-2c0 4.337-3.663 8-8 8s-8-3.663-8-8c0-4.336 3.663-8 8-8v-2c-5.421 0-10 4.58-10 10 0 5.421 4.579 10 10 10z" />
+                                </svg>
+                            ) : null}
+                            {lang === "ar" ? "استمرار" : editdata ? "Save" : "Save"}
+                        </button>
                     </div>
-                </>
-                : null
-            }
+                </div>
+            )}
         </>
     )
 }

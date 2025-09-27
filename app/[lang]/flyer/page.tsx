@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { getDictionary } from "../dictionaries"
 import dynamic from 'next/dynamic';
-import { post } from "../api/ApiCalls"
+import { post } from "@/lib/api/apiCalls"
 
 const MobileHeader = dynamic(() => import('../components/MobileHeader'), { ssr: true })
 
@@ -14,7 +14,7 @@ export default function Flyer({ params, searchParams }: { params: { lang: string
 
     useEffect(() => {
         (async () => {
-            const translationdata = await getDictionary(params.lang);
+            const translationdata = await getDictionary(lang);
             setDict(translationdata);
         })();
 
@@ -39,20 +39,20 @@ export default function Flyer({ params, searchParams }: { params: { lang: string
     return (
         <>
             {params.devicetype === 'mobile' ?
-                <MobileHeader type="Third" lang={params.lang} pageTitle={params.lang == 'ar' ? 'النشرة الترويجية' : 'Flyer'} />
+                <MobileHeader type="Third" lang={lang} pageTitle={lang == 'ar' ? 'النشرة الترويجية' : 'Flyer'} />
                 : null}
             <div className="container py-16 md:py-4">
                 {/* BreadCrumbs */}
                 {params.devicetype === 'mobile' ? null :
                     <ol className="flex text-gray-500  font-semibold dark:text-white-dark">
-                        <li className="text-sm text-[#5D686F] font-semibold"><Link href={'/' + params.lang}>{params.lang == 'ar' ? 'الصفحة الرئيسي' : 'Home'}</Link></li>
-                        <li className="text-sm text-primary font-medium before:content-['/'] before:px-1.5">{params.lang == 'ar' ? 'النشرة الترويجية' : 'Flyer'}</li>
+                        <li className="text-sm text-[#5D686F] font-semibold"><Link href={'/' + lang}>{lang == 'ar' ? 'الصفحة الرئيسي' : 'Home'}</Link></li>
+                        <li className="text-sm text-primary font-medium before:content-['/'] before:px-1.5">{lang == 'ar' ? 'النشرة الترويجية' : 'Flyer'}</li>
                     </ol>
                 }
 
                 <div className="md:my-6 w-full">
                     <iframe src="https://player.flipsnack.com?hash=RkI2NkREQ0M1QTgrZHp1OHZvNGYwZw==" width="100%" height={params.devicetype === 'mobile' ? "560px" : "1200px"} seamless scrolling="no" frameBorder="0" allowFullScreen allow="autoplay; clipboard-read; clipboard-write"></iframe>
-                    {/* <div className="text-sm text-[#5D686F] mt-3" dangerouslySetInnerHTML={{ __html: params.lang == 'ar' ? data?.page_content_ar : data?.page_content_en }}></div> */}
+                    {/* <div className="text-sm text-[#5D686F] mt-3" dangerouslySetInnerHTML={{ __html: lang == 'ar' ? data?.page_content_ar : data?.page_content_en }}></div> */}
                 </div>
             </div>
         </>

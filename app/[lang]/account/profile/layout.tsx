@@ -1,107 +1,119 @@
+import type { Metadata } from "next";
+import { getRequestContext } from "@/lib/request-context";
+import { BridgeSlot } from "@/app/_ctx/ClientDataRegistry";
+import { getFooterCached } from "@/lib/footerpages/footer.cached";
 
-import type { Metadata, ResolvingMetadata } from 'next'
-import { get } from "../../api/ApiCalls";
-import { headers } from 'next/headers'
+export default async function ProfileLayout({ children }: { children: React.ReactNode }) {
+    const { slugStr } = await getRequestContext();
+    if (!slugStr) return null;
 
-// import Loading from './loading'
-type Props = {
-    params: { slug: string, lang: string, data: any }
+    const footer = await getFooterCached(slugStr);
+    const value = footer ? JSON.parse(JSON.stringify(footer)) : null;
+    return <BridgeSlot slot="footer" value={value}>{children}</BridgeSlot>;
 }
 
-const fetcher = async (params: any) => {
-    const slug = "profile";
-    var data;
-    await get(`footer_pages/${slug}`).then((responseJson: any) => {
-        data = responseJson
-    })
-    return data
-}
+// ---- SEO metadata ----
+export async function generateMetadata(): Promise<Metadata | null> {
+    const { slugParts, slugStr, lang, origin } = await getRequestContext();
+    if (!slugStr) return null;
 
-export const viewport = {
-    width: 'device-width',
-    initialScale: 1,
-    maximumScale: 1,
-    // userScalable: false,
-}
+    const footer = await getFooterCached(slugStr);
 
-export async function generateMetadata({ params }: Props, parent: ResolvingMetadata): Promise<Metadata> {
-    const profileData: any = await fetcher(params);
-    params.data = profileData
+    const metaTitle =
+        lang === "en"
+            ? footer?.data?.meta_title_en ?? "Tamkeen Stores Profile"
+            : footer?.data?.meta_title_ar ?? "الملف الشخصي | معارض تمكين";
+
+    const metaDescription =
+        lang === "en"
+            ? footer?.data?.meta_description_en ??
+            "Tamkeen Stores Profile"
+            : footer?.data?.meta_description_ar ??
+            "الملف الشخصي معارض تمكين";
+
+    // In /[lang]/profile/[...slug], slugParts are ONLY the [...slug] bits (not "profile")
+    const suffix = slugParts?.length ? `/${slugParts.join("/")}` : "";
+    const canonicalPath = `/${lang}${suffix}`;
+    const canonicalUrl = `${origin}${canonicalPath}`;
+
     return {
-        title: `${params.lang == 'ar' ? params?.data?.data?.meta_title_ar : params?.data?.data?.meta_title_en} | Tamkeen Stores`,
-        description: 'qaiser',
-        keywords: ['Next.js', 'React', 'JavaScript'],
-        referrer: 'origin-when-cross-origin',
+        metadataBase: new URL(origin),
+        title: metaTitle,
+        description: metaDescription,
+        keywords: [
+            "Tamkeen Stores",
+            "تمكين",
+            "Electronics Saudi Arabia",
+            "معارض تمكين",
+            "Profile",
+        ],
+
+        referrer: "origin-when-cross-origin",
         robots: {
-            index: false,
-            follow: false,
-            nocache: false,
+            index: true,
+            follow: true,
             googleBot: {
-                index: false,
-                follow: false,
-                noimageindex: false,
-                'max-video-preview': -1,
-                'max-image-preview': 'large',
-                'max-snippet': -1,
+                index: true,
+                follow: true,
+                "max-image-preview": "large",
+                "max-snippet": -1,
+                "max-video-preview": -1,
             },
         },
-        formatDetection: {
-            email: false,
-            address: false,
-            telephone: false,
-        },
+        formatDetection: { email: false, address: true, telephone: true },
+
         openGraph: {
-            siteName: `Profile | Tamkeen Stores`,
-            title: `Profile | Tamkeen Stores`,
-            description: '',
-            locale: params.lang,
-            type: 'website',
+            siteName: "Tamkeen Stores",
+            title: metaTitle,
+            description: metaDescription,
+            locale: lang,
+            type: "website",
             images: [
                 {
-                    url: '/images/metaLogo.jpg', // Must be an absolute URL
+                    url: `${origin}/images/metaLogo.jpg`,
                     width: 800,
                     height: 800,
-                    alt: 'logo',
+                    alt: "logo",
                 },
             ],
-            url: `https://tamkeenstores.com.sa/${params.lang}/contact-us`,
+            url: canonicalUrl,
         },
+
         alternates: {
-            canonical: `https://tamkeenstores.com.sa/${params.lang}/contact-us`, //This will be current link will come
+            canonical: canonicalUrl,
             languages: {
-                'en': 'https://tamkeenstores.com.sa/en/contact-us',
-                'ar': 'https://tamkeenstores.com.sa/ar/contact-us',
+                en: `${origin}/en${suffix}`,
+                ar: `${origin}/ar${suffix}`,
             },
         },
+
         appLinks: {
             ios: {
-                url: 'https://apps.apple.com/sa/app/tamkeen-stores-%D9%85%D8%B9%D8%A7%D8%B1%D8%B6-%D8%AA%D9%85%D9%83%D9%8A%D9%86/id1546482321',
-                app_store_id: 'com.tamkeen.tamkeenstore',
+                url: "https://apps.apple.com/sa/app/tamkeen-stores-%D9%85%D8%B9%D8%A7%D8%B1%D8%B6-%D8%AA%D9%85%D9%83%D9%8A%D9%86/id1546482321",
+                app_store_id: "com.tamkeen.tamkeenstore",
             },
             android: {
-                package: 'https://play.google.com/store/apps/details?id=com.tamkeen.tamkeenstores&hl=en&gl=US&pli=1',
-                app_name: 'com.tamkeen.tamkeenstores',
+                package:
+                    "https://play.google.com/store/apps/details?id=com.tamkeen.tamkeenstores",
+                app_name: "com.tamkeen.tamkeenstores",
             },
-            web: {
-                url: `https://tamkeenstores.com.sa/${params.lang}/contact-us`,
-                should_fallback: true,
-            },
+            web: { url: canonicalUrl, should_fallback: true },
         },
-        twitter: {
-            card: 'summary_large_image',
-            title: `Profile | Tamkeen Stores`,
-            description: '',
-            siteId: '@TamkeenStores',
-            creator: 'Muhammad Usman Siddiqui | usman@tamkeen-ksa.com',
-            images: ['/images/metaLogo.jpg'], // Must be an absolute URL
-        },
-    }
-}
 
-export default async function ProfileLayout({ children, params }: { children: React.ReactNode, params: { slug: string, data: any, lang: string} }) {
-    return (
-        <>
-            {children}
-        </>
-    )
+        twitter: {
+            card: "summary_large_image",
+            title: metaTitle,
+            description: metaDescription,
+            site: "@TamkeenStores",
+            creator: "@TamkeenStores",
+            images: [`${origin}/images/metaLogo.jpg`],
+        },
+
+        // ✅ Developer Info (will render as <meta name="developer:*">)
+        other: {
+            "developer:name": "Muhammad Usman Siddiqui",
+            "developer:email": "usman@tamkeen-ksa.com",
+            "developer:role": "E-commerce Applications Manager",
+        },
+    };
 }
