@@ -962,6 +962,7 @@ export default function Homepage() {
                 origin={origin}
                 gtmColumnItemListId={gtmNewItemListId}
                 gtmColumnItemListName={gtmNewItemListName}
+                NewMedia={NewMedia}
               />
             </>
           ) : (
@@ -1024,6 +1025,7 @@ export default function Homepage() {
                       origin={origin}
                       gtmColumnItemListId={gtmNewItemListId}
                       gtmColumnItemListName={gtmNewItemListName}
+                      NewMedia={NewMedia}
                     />
                   )}
                 </>
@@ -1200,6 +1202,7 @@ export default function Homepage() {
               origin={origin}
               gtmColumnItemListId={gtmNewItemListId}
               gtmColumnItemListName={gtmNewItemListName}
+              NewMedia={NewMedia}
             />
           </>
         ) : (
@@ -1302,6 +1305,7 @@ export default function Homepage() {
               origin={origin}
               gtmColumnItemListId={gtmNewItemListId}
               gtmColumnItemListName={gtmNewItemListName}
+              NewMedia={NewMedia}
             />
           </>
         ) : (
@@ -1453,6 +1457,7 @@ export default function Homepage() {
               origin={origin}
               gtmColumnItemListId={gtmNewItemListId}
               gtmColumnItemListName={gtmNewItemListName}
+              NewMedia={NewMedia}
             />
           </>
         ) : (
@@ -1620,6 +1625,7 @@ export default function Homepage() {
               origin={origin}
               gtmColumnItemListId={gtmNewItemListId}
               gtmColumnItemListName={gtmNewItemListName}
+              NewMedia={NewMedia}
             />
           </>
         ) : (
@@ -1684,6 +1690,7 @@ export default function Homepage() {
               origin={origin}
               gtmColumnItemListId={gtmNewItemListId}
               gtmColumnItemListName={gtmNewItemListName}
+              NewMedia={NewMedia}
             />
           </>
         ) : (

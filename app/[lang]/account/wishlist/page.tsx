@@ -20,6 +20,7 @@ interface UserAgent {
 export default function Wishlist({ params }: { params: { lang: string, data: any, devicetype: any } }) {
 
     const router = useRouter();
+    const NewMedia = process.env.NEXT_PUBLIC_NEW_MEDIA;
     const path = usePathname();
     const [wishlistData, setWishlistData] = useState<any>([])
     const [dict, setDict] = useState<any>([]);
@@ -71,7 +72,7 @@ export default function Wishlist({ params }: { params: { lang: string, data: any
                         </div>
                         {wishlistData?.user?.products?.data?.length ?
                             <div className="tamkeenSales_cardss relative grid xl:grid-cols-4 lg:grid-cols-4 md:grid-cols-3 grid-cols-2 xl:gap-x-3 gap-2 items-start justify-center">
-                                <ProductLoop productData={wishlistData?.user?.products?.data} lang={isArabic} isMobileOrTablet={isMobileOrTablet} origin={origin} />
+                                <ProductLoop NewMedia={NewMedia} productData={wishlistData?.user?.products?.data} lang={isArabic} isMobileOrTablet={isMobileOrTablet} origin={origin} />
                             </div>
                             :
                             <div className="container my-10 flex items-center justify-center">
