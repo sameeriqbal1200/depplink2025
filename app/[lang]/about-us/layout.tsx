@@ -11,14 +11,12 @@ export default async function AboutUsLayout({ children }: { children: React.Reac
     const value = footer ? JSON.parse(JSON.stringify(footer)) : null;
     return <BridgeSlot slot="footer" value={value}>{children}</BridgeSlot>;
 }
-
 // ---- SEO metadata ----
 export async function generateMetadata(): Promise<Metadata | null> {
     const { slugParts, slugStr, lang, origin } = await getRequestContext();
     if (!slugStr) return null;
 
     const footer = await getFooterCached(slugStr);
-
     const metaTitle =
         lang === "en"
             ? footer?.data?.meta_title_en ?? "Tamkeen Stores About Us"

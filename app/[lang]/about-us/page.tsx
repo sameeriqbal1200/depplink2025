@@ -10,12 +10,11 @@ const MobileHeader = dynamic(() => import('../components/MobileHeader'), { ssr: 
 export default function AboutUs() {
     const { lang } = useApp();
     const footer = useSlot<any>("footer");
-console.log(footer)
     return (
         <div>
             <MobileHeader type="Third" lang={lang} pageTitle={lang === 'ar' ? 'معلومات عنا' : 'About Us'} />
-            <div className="container py-16 md:py-4">
-                <div className="my-2">
+            <div className="container py-16">
+                <div className="mt-6 mb-12">
                     <h1 className=" font-semibold text-base 2xl:text-lg" dangerouslySetInnerHTML={{ __html: lang == 'ar' ? footer?.data?.meta_description_ar : footer?.data?.meta_description_en }}></h1>
                     <div className="text-sm text-[#5D686F]" dangerouslySetInnerHTML={{ __html: lang == 'ar' ? footer?.data?.page_content_ar : footer?.data?.page_content_en }}></div>
                 </div>
