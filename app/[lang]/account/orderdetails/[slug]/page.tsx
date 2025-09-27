@@ -751,8 +751,12 @@ export default function OrderDetails() {
                                                             </div>
                                                         </div>
                                                         <div className="pb-3.5 pt-3 px-3 bg-white rounded-md border flex items-center border-[#5D686F30] gap-x-2 mb-1.5">
-                                                            <input className="focus-visible:outline-none w-full text-xs font-normal" placeholder={lang === 'ar' ? 'المراجعات' : 'Subject'} type="text" value={productReviewData[data?.product_data?.sku] ? productReviewData[data?.product_data?.sku]?.title : addTitle[data?.product_data?.sku]} disabled={productReviewData[data?.product_data?.sku] ? true : false} onChange={(e) => {
-
+                                                            <input className="focus-visible:outline-none w-full text__txs" placeholder={lang === 'ar' ? 'المراجعات' : 'Subject'} type="text" value={
+                                                                    productReviewData[data?.product_data?.sku]
+                                                                    ? productReviewData[data?.product_data?.sku]?.title ?? ""
+                                                                    : addTitle[data?.product_data?.sku] ?? ""
+                                                                }
+                                                                disabled={productReviewData[data?.product_data?.sku] ? true : false} onChange={(e) => {
                                                                 var addtitle: any = addTitle
                                                                 addtitle[data?.product_data?.sku] = e.target.value;
                                                                 setAddTitle({ ...addtitle })
