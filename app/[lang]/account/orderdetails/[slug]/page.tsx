@@ -14,7 +14,7 @@ import withReactContent from 'sweetalert2-react-content'
 import { Dialog, Transition, RadioGroup, TransitionChild, DialogPanel, RadioGroupLabel } from '@headlessui/react'
 
 import { useApp } from "@/app/_ctx/AppContext";
-import { getCheckOutOrderReview, getOrderDetails, postProductReview, postUGCProduct } from '@/lib/accounts/orderDetails.client';
+import { getCheckOutOrderReview, getOrderDetails, postProductReview, postUGCProduct, uploadVideo } from '@/lib/accounts/orderDetails.client';
 
 const MobileHeader = dynamic(() => import('../../../components/MobileHeader'), { ssr: true })
 
@@ -35,6 +35,8 @@ export default function OrderDetails() {
     const [instagramLink, setInstagramLink] = useState<any>('');
     const [youtubeLink, setYoutubeLink] = useState<any>('');
     const [twitterLink, setTwitterLink] = useState<any>('');
+    const [selectedProduct, setSelectedProduct] = useState<any>(null);
+    const [videoIsLoading, setVideoIsLoading] = useState<any>(false);
 
     // CURRENCY SYMBOL //
     const currencySymbol = <svg className="riyal-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1124.14 1256.39" width="11" height="12">
@@ -105,27 +107,23 @@ export default function OrderDetails() {
         }
     };
 
-    const submitReview = async () => {
+    const SubmitReview = async () => {
         try {
             const userId = typeof window !== "undefined" ? localStorage.getItem("userid") : null;
-            if (!userId) { router.push(`/${lang}`); return; }
-            if (!addRating || !addTitle?.trim() || !addReview?.trim()) {
-                topMessageAlartDanger(t("product.errorreview")); return;
-            }
-
+            if (!userId) { router.push(`${origin}/${lang}`); return; }
             const payload = { user_id: userId, order_id: slugStr, addrating: addRating, addtitle: addTitle, addreview: addReview };
             const res = await postProductReview(payload);
 
             if (res?.productReviewData?.success) {
                 await getOrderDetailsData();
                 setAddReviewsPop(false);
-                topMessageAlartSuccess(t("product.addreview"));
+                topMessageAlartSuccess(t('products.addreview'));
             } else {
-                topMessageAlartDanger(t("product.errorreview"));
+                topMessageAlartDanger(t('products.errorreview'));
             }
         } catch (e) {
             console.error("submitReview failed:", e);
-            topMessageAlartDanger(t("product.errorreview"));
+            topMessageAlartDanger(t('products.errorreview'));
         }
     };
 
@@ -175,15 +173,21 @@ export default function OrderDetails() {
     const videoRef: any = useRef(null);
     const videoSectionRef: any = useRef(null);
 
-    const saveUGCData = async () => {
+    const saveUGCData = async (): Promise<boolean> => {
         try {
             const userId = typeof window !== "undefined" ? localStorage.getItem("userid") : null;
-            if (!userId) { router.push(`/${lang}`); return; }
+            if (!userId) { 
+                router.push(`/${lang}`); 
+                return false; 
+            }
 
-            const hasAny =
-                !!facebookLink || !!tiktokLink || !!instagramLink || !!twitterLink || !!youtubeLink || !!ugcVideo;
-            if (!hasAny) { topMessageAlartDanger("Please add data."); return; }
-            if (!validateLinks()) return;
+            const hasAny = !!facebookLink || !!tiktokLink || !!instagramLink || !!twitterLink || !!youtubeLink || !!ugcVideo;
+            if (!hasAny) { 
+                topMessageAlartDanger("Please add data."); 
+                return false; 
+            }
+            
+            if (!validateLinks()) return false;
 
             const payload = {
                 user_id: userId,
@@ -193,76 +197,46 @@ export default function OrderDetails() {
                 twitter_link: twitterLink || null,
                 youtube_link: youtubeLink || null,
                 video_link: ugcVideo ? extractImageName(ugcVideo) : null,
+                product_id: selectedProduct ? selectedProduct?.product_id : null,
+                order_detail_id: selectedProduct ? selectedProduct?.order_detail_id : null,
+                order_id: slugStr || null,
             };
-
+            
             const res = await postUGCProduct(payload);
-
             if (res?.productUGCData?.success ?? true) {
                 topMessageAlartSuccess("Success! Your UGC created successfully!");
-                // await getUGCData?.(); // uncomment if you want to refresh
+                await getOrderDetailsData();
+                
+                // Only reset state and close modal on success
+                setFacebookLink(""); 
+                setTiktokLink(""); 
+                setInstagramLink(""); 
+                setYoutubeLink(""); 
+                setTwitterLink("");
+                setErrors({ 
+                    facebook_link: null, 
+                    twitter_link: null, 
+                    tiktok_link: null, 
+                    instagram_link: null, 
+                    youtube_link: null 
+                });
+                setUgcVideo(null);
+                videoRef?.current && (videoRef.current = null);
+                videoSectionRef?.current && (videoSectionRef.current = null);
+                
+                return true; // Success - modal can close
             } else {
                 topMessageAlartDanger("Something went wrong. Please try again.");
+                return false; // Failure - keep modal open
             }
         } catch (e) {
             console.error("saveUGCData failed:", e);
             topMessageAlartDanger("Something went wrong. Please try again.");
+            return false; // Failure - keep modal open
         } finally {
-            setUploadModal(false);
-            setFacebookLink(""); setTiktokLink(""); setInstagramLink(""); setYoutubeLink(""); setTwitterLink("");
-            setErrors({ facebook_link: null, twitter_link: null, tiktok_link: null, instagram_link: null, youtube_link: null });
-            setUgcVideo(null);
-            videoRef?.current && (videoRef.current = null);
-            videoSectionRef?.current && (videoSectionRef.current = null);
+            // Remove setUploadModal(false) from here - we'll control it based on return value
         }
     };
-
-
-    // const saveUGCData = async () => {
-    //     if (localStorage.getItem('userid')) {
-    //         if (!facebookLink && !tiktokLink && !instagramLink && !twitterLink && !youtubeLink) {
-    //             topMessageAlartDanger('Please add data.')
-    //             return false;
-    //         }
-    //         if (!validateLinks()) return false;
-
-    //         var sendData = {
-    //             user_id: localStorage.getItem('userid'),
-    //             facebook_link: facebookLink,
-    //             tiktok_link: tiktokLink,
-    //             instagram_link: instagramLink,
-    //             twitter_link: twitterLink,
-    //             youtube_link: youtubeLink,
-    //             video_link: extractImageName(ugcVideo),
-    //         }
-    //         postUGCProduct(sendData).then((productUGCData: any) => {
-    //             topMessageAlartSuccess('Success! Your UGC Created successfully.!')
-    //             // getUGCData()
-    //             setUgcVideo(null)
-    //             if (videoRef) {
-    //                 videoRef.current = null;
-    //             }
-    //             if (videoSectionRef) {
-    //                 videoSectionRef.current = null;
-    //             }
-    //         }).finally(() => {
-    //             setUploadModal(false)
-    //             setFacebookLink('')
-    //             setTiktokLink('')
-    //             setInstagramLink('')
-    //             setYoutubeLink('')
-    //             setTwitterLink('')
-    //             setErrors({
-    //                 facebook_link: null,
-    //                 twitter_link: null,
-    //                 tiktok_link: null,
-    //                 instagram_link: null,
-    //                 youtube_link: null,
-    //             });
-    //         })
-    //     } else {
-    //         router.push(`/${lang}`)
-    //     }
-    // }
 
     const [errors, setErrors] = useState<any>({
         facebook_link: '',
@@ -278,57 +252,25 @@ export default function OrderDetails() {
         }
     }, [ugcVideo])
 
-    const handleVideoUpload = async (e: ChangeEvent<HTMLInputElement>) => {
+    const handleVideoUpload = async (event: any) => {
+        setVideoIsLoading(true);
+        const formData: any = new FormData();
+        formData.append('file', event.target.files[0]);
         try {
-            const file = e.target.files?.[0];
-            if (!file) return;
-
-            // ✅ basic validation
-            if (!file.type.startsWith("video/")) {
-                topMessageAlartDanger(isArabic ? "الملف ليس فيديو" : "Selected file is not a video");
-                e.target.value = "";
-                return;
+            const uploadedImage = await uploadVideo(formData);
+            if (uploadedImage.success === true) {
+                topMessageAlartSuccess(isArabic ? 'تم رفع الفيديو بنجاح' : 'Video uploaded successfully')
+                setUgcVideo(`${NewMedia}${uploadedImage?.id}`)
             }
-            const MAX_MB = 200; // adjust as needed
-            if (file.size > MAX_MB * 1024 * 1024) {
-                topMessageAlartDanger(
-                    isArabic ? `حجم الفيديو أكبر من ${MAX_MB}MB` : `Video exceeds ${MAX_MB}MB`
-                );
-                e.target.value = "";
-                return;
+            else {
+                console.log("Error Found");
             }
-
-            const formData = new FormData();
-            formData.append("file", file);
-
-            const res = await fetch(`${AdminApi}productmedia-video`, { method: "POST", body: formData });
-            if (!res.ok) {
-                // try to read server message if available
-                let message = isArabic ? "فشل الرفع" : "Upload failed";
-                try {
-                    const j = await res.json();
-                    if (j?.message) message = j.message;
-                } catch { }
-                topMessageAlartDanger((isArabic ? "خطأ: " : "Error: ") + message);
-                e.target.value = "";
-                return;
-            }
-
-            const json = await res.json();
-            if (json?.success) {
-                topMessageAlartSuccess(isArabic ? "تم رفع الفيديو بنجاح" : "Video uploaded successfully");
-                setUgcVideo(`${NewMedia}${json.id}`);
-            } else {
-                topMessageAlartDanger((isArabic ? "خطأ: " : "Error: ") + (json?.message ?? "Unknown error"));
-            }
-        } catch (err) {
-            console.error("handleVideoUpload error:", err);
-            topMessageAlartDanger(isArabic ? "حدث خطأ غير متوقع" : "Unexpected error");
+        } catch (error: any) {
+            topMessageAlartDanger((isArabic ? 'خطأ: ' : 'Error: ') + error?.message);
         } finally {
-            // allow re-uploading the same file again
-            e.target.value = "";
+            setVideoIsLoading(false);
         }
-    };
+    }
 
     const status = orderDetails?.orderdata?.status as any;
     const method = orderDetails?.orderdata?.paymentmethod as any;
@@ -837,7 +779,7 @@ export default function OrderDetails() {
                                     </div>
                                     <div className="py-4 text-right">
                                         <div className="fixed bottom-0 w-full px-4 py-3 bg-white shadow-md border-t border-[#5D686F26]">
-                                            <button onClick={() => submitReview()}
+                                            <button onClick={() => SubmitReview()}
                                                 className="focus-visible:outline-none btn border border-[#004B7A] bg-[#004B7A] p-2.5 rounded-md w-full text-white fill-white font-medium">
                                                 {lang == 'ar' ? 'الغاء الطلب' : "Add Review's"}
                                             </button>
