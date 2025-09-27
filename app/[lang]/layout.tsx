@@ -128,7 +128,7 @@ export default async function RootLayout({
               <div className="h-1.5" id="loader-spin"></div>
             </div>
 
-            <MobileFooterNew lang={lang} dict={dict} />
+            <MobileFooterNew lang={lang} dict={dict} origin={origin}/>
           </GlobalProvider>
         </AppProvider>
       </body>

@@ -9,15 +9,10 @@ import React, { useState, useEffect, useContext } from "react";
 export default function MobileFooterNew(props: any) {
   const router = useRouter();
   const path = usePathname();
-  const origin = typeof window !== "undefined" ? window.location.origin : "";
-  const isArabic = props?.lang == "ar" ? "ar" : "en";
+  const origin = props?.origin;
+  const lang = props?.lang;
   const [cartCount, setCartCount] = useState(0);
   const { updateCart, setUpdateCart } = useContext(GlobalContext);
-  const isMobileOrTablet =
-    props?.devicetype === "mobile" || props?.devicetype === "tablet"
-      ? true
-      : false;
-  const containerClass = isMobileOrTablet ? "container" : "px-[4.8rem]";
 
   //   Active Footer Nav Item
   const [activeIndex, setActiveIndex] = useState(0);
@@ -221,27 +216,27 @@ export default function MobileFooterNew(props: any) {
   const navItems = [
     {
       label: props?.lang == "ar" ? "الرئيسية" : "Home",
-      href: `${origin}/${isArabic}`,
+      href: `${origin}/${lang}`,
       icon: homeIcon,
     },
     {
       label: props?.lang == "ar" ? "الأقسام" : "Categories",
-      href: `${origin}/${isArabic}/categorieslisting`,
+      href: `${origin}/${lang}/categorieslisting`,
       icon: categoriesIcon,
     },
     {
       label: props?.lang == "ar" ? "جنرال سوبريم" : "General Supreme",
-      href: `${origin}/${isArabic}/brand/general-supreme`,
+      href: `${origin}/${lang}/brand/general-supreme`,
       icon: generalSupreme,
     },
     {
       label: props?.lang == "ar" ? "الحساب" : "Accounts",
-      href: `${origin}/${isArabic}/accountlisting`,
+      href: `${origin}/${lang}/accountlisting`,
       icon: profiletIcon,
     },
     {
       label: props?.lang == "ar" ? "العــربـة" : "Cart",
-      href: `${origin}/${isArabic}/cart`,
+      href: `${origin}/${lang}/cart`,
       icon: cartIcon,
     },
   ];
