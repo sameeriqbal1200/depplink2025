@@ -13,7 +13,7 @@ function buildKey() {
 }
 
 const KEY = process.env.CACHE_KEY || buildKey();
-const filePath = path.join(process.cwd(), 'app', '[lang]', 'GlobalVar.tsx');
+const filePath = path.join(process.cwd(), 'app', 'GlobalVar.tsx');
 
 let src = fs.readFileSync(filePath, 'utf8');
 // Replace the whole RHS of the const (string or env expression)
