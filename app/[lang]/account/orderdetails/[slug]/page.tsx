@@ -1,14 +1,12 @@
 "use client"; // This is a client component 👈🏽
 
-import React, { Fragment, useEffect, useRef, useState, ChangeEvent } from 'react'
+import React, { Fragment, useEffect, useRef, useState } from 'react'
 import 'dayjs/locale/ar'
 import dayjs from 'dayjs'
 import Link from 'next/link'
 import Image from 'next/image'
 import dynamic from 'next/dynamic'
 import { useRouter } from 'next-nprogress-bar';
-import { AdminApi, NewMedia } from "@/lib/api/apiLinks";
-import { get, post } from "@/lib/api/apiCalls";
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 import { Dialog, Transition, RadioGroup, TransitionChild, DialogPanel, RadioGroupLabel } from '@headlessui/react'
@@ -37,6 +35,7 @@ export default function OrderDetails() {
     const [twitterLink, setTwitterLink] = useState<any>('');
     const [selectedProduct, setSelectedProduct] = useState<any>(null);
     const [videoIsLoading, setVideoIsLoading] = useState<any>(false);
+    const NewMedia = process.env.NEXT_PUBLIC_NEW_MEDIA;
 
     // CURRENCY SYMBOL //
     const currencySymbol = <svg className="riyal-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1124.14 1256.39" width="11" height="12">
@@ -751,8 +750,12 @@ export default function OrderDetails() {
                                                             </div>
                                                         </div>
                                                         <div className="pb-3.5 pt-3 px-3 bg-white rounded-md border flex items-center border-[#5D686F30] gap-x-2 mb-1.5">
-                                                            <input className="focus-visible:outline-none w-full text-xs font-normal" placeholder={lang === 'ar' ? 'المراجعات' : 'Subject'} type="text" value={productReviewData[data?.product_data?.sku] ? productReviewData[data?.product_data?.sku]?.title : addTitle[data?.product_data?.sku]} disabled={productReviewData[data?.product_data?.sku] ? true : false} onChange={(e) => {
-
+                                                            <input className="focus-visible:outline-none w-full text__txs" placeholder={lang === 'ar' ? 'المراجعات' : 'Subject'} type="text" value={
+                                                                    productReviewData[data?.product_data?.sku]
+                                                                    ? productReviewData[data?.product_data?.sku]?.title ?? ""
+                                                                    : addTitle[data?.product_data?.sku] ?? ""
+                                                                }
+                                                                disabled={productReviewData[data?.product_data?.sku] ? true : false} onChange={(e) => {
                                                                 var addtitle: any = addTitle
                                                                 addtitle[data?.product_data?.sku] = e.target.value;
                                                                 setAddTitle({ ...addtitle })

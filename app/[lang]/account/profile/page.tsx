@@ -1,6 +1,6 @@
 "use client"; // This is a client component 👈🏽
 
-import React, { useEffect, useState, Fragment, useRef, ChangeEvent } from 'react'
+import React, { useEffect, useState, Fragment, useRef } from 'react'
 import 'dayjs/locale/ar'
 import dayjs from 'dayjs'
 import Link from 'next/link'
@@ -9,11 +9,10 @@ import Image from 'next/image'
 import dynamic from 'next/dynamic'
 import MaskedInput from 'react-text-mask'
 import { useRouter } from "next/navigation"
-import { Api, NewMedia } from "@/lib/api/apiLinks";
 import { useApp } from '@/app/_ctx/AppContext';
 import withReactContent from 'sweetalert2-react-content'
 import { Dialog, DialogPanel, Transition, TransitionChild } from '@headlessui/react'
-import { getUserProfileData, postUserProfileUpdate } from '@/lib/accounts/profile.client';
+import { getUserProfileData, postUserProfileUpdate, uploadImage } from '@/lib/accounts/profile.client';
 
 const MobileHeader = dynamic(() => import('../../components/MobileHeader'), { ssr: true })
 
@@ -37,6 +36,7 @@ export default function Profile() {
     const [ProfileImageStore, setProfileImageStore] = useState('')
     const [errormsg, setErrorMsg] = useState<any>('')
     const hiddenFileInput: any = useRef(null);
+    const UserImgMedia = process.env.NEXT_PUBLIC_USER_IMG_MEDIA
     const handleClick = (event: any) => {
         hiddenFileInput.current.click();
     };
@@ -49,7 +49,7 @@ export default function Profile() {
     const getUserProfile = async () => {
         try {
             const userId = typeof window !== "undefined" ? localStorage.getItem("userid") : null;
-            if (!userId) { router.push(`/ ${lang} `); return; }
+            if (!userId) { router.push(`${origin}/${lang}`); return; }
 
             const res: any = await getUserProfileData();
             const core = res?.profileDataCore;
@@ -62,7 +62,7 @@ export default function Profile() {
             setDateOfBirth(u.date_of_birth ?? "");
             setDateOfBirthDisabled(!!u.date_of_birth);
 
-            const profileImgUrl = u.profile_img ? NewMedia + u.profile_img : "/images/profile-image.png";
+            const profileImgUrl = u.profile_img ? UserImgMedia + u.profile_img : "/images/profile-image.png";
             setProfileImageStore(u.profile_image ?? null);
             setProfileImage(profileImgUrl);
 
@@ -71,7 +71,9 @@ export default function Profile() {
                 localStorage.setItem("fullName", fullName);
                 localStorage.setItem("profileImg", profileImgUrl);
             }
-
+            if(res?.profileDataCore?.user_webengage_data){
+                localStorage.setItem("userProfileData", JSON.stringify(res?.profileDataCore?.user_webengage_data));
+            }
             setProfileData(core);
             setimgUpload(true);
 
@@ -79,74 +81,43 @@ export default function Profile() {
             const li = (u.last_name ?? "").trim().charAt(0);
             if (fi) setFirstWord(fi);
             if (li) setSecondWord(li);
+            setDataLayerProfilData();
         } catch (err) {
             console.error("getUserProfile failed:", err);
             // optional: show toast / set error state
         }
     };
 
-    // const getUserProfile = async () => {
-    //     if (localStorage.getItem('userid')) {
-    //         getUserProfileData().then((profileDataCore: any) => {
-    //             const profileDataCoreConst = profileDataCore?.profileDataCore
-    //             setFirstName(profileDataCoreConst?.userdata?.first_name)
-    //             setLastName(profileDataCoreConst?.userdata?.last_name)
-    //             setEmail(profileDataCoreConst?.userdata?.email)
-    //             setGenderStatus(profileDataCoreConst?.userdata?.gender)
-    //             setDateOfBirth(profileDataCoreConst?.userdata?.date_of_birth)
-    //             if (profileDataCoreConst?.userdata?.date_of_birth) {
-    //                 setDateOfBirthDisabled(true)
-    //             }
-    //             setProfileImageStore(profileDataCoreConst?.userdata?.profile_image)
-    //             setProfileImage(profileDataCoreConst?.userdata?.profile_img != null ? NewMedia + profileDataCoreConst?.userdata?.profile_img : '/images/profile-image.png')
-    //             localStorage.setItem('fullName', profileDataCoreConst?.userdata?.first_name + ' ' + profileDataCoreConst?.userdata?.last_name)
-    //             localStorage.setItem('profileImg', profileDataCoreConst?.userdata?.profile_img != null ? NewMedia + profileDataCoreConst?.userdata?.profile_img : '/images/profile-image.png')
-    //             setProfileData(profileDataCoreConst)
-    //             setimgUpload(true)
-
-    //             var firstlNameWord = profileDataCoreConst?.userdata?.first_name?.split(' ');
-    //             if (firstlNameWord[0]) {
-    //                 if (firstlNameWord[0]) {
-    //                     setFirstWord(firstlNameWord[0].charAt(0))
-    //                 }
-    //             }
-
-    //             var secondNameWord = profileDataCoreConst?.userdata?.last_name?.split(' ');
-    //             if (secondNameWord[0]) {
-    //                 if (secondNameWord[0]) {
-    //                     setSecondWord(secondNameWord[0].charAt(0))
-    //                 }
-    //             }
-
-    //         })
-    //     } else {
-    //         router.push(`/${lang}`)
-    //     }
-    // }
-
-    const storedProfile = localStorage.getItem('userProfileData');
-    let userProfileAtt = storedProfile ? JSON.parse(storedProfile) : {};
-    const userEmail = localStorage.getItem('eMail') || '';
-    const userPhone: any = `966${localStorage.getItem('phoneNumber') || ''}`;
-    const userProfileAttributes = {
-        event: "global_variables",
-        platform: deviceType,
-        account_creation_date: dayjs(userProfileAtt?.account_creation_date, 'DD-MM-YYYY hh:mm A').isValid() ? dayjs(userProfileAtt.account_creation_date, 'DD-MM-YYYY hh:mm A').locale('en').format('DD-MM-YYYY hh:mm A') : '',
-        user_id: String(userProfileAtt?.backend_user_id ?? ''),
-        email: userEmail ?? '',
-        phone: userPhone ?? '',
-        last_purchase_date: dayjs(userProfileAtt?.last_purchase_date, 'DD-MM-YYYY hh:mm A').isValid() ? dayjs(userProfileAtt.last_purchase_date, 'DD-MM-YYYY hh:mm A').locale('en').format('DD-MM-YYYY hh:mm A') : '',
-        store_language: userProfileAtt?.store_language ?? 'ar',
-        total_purchases: Number(userProfileAtt?.total_purchases ?? 0),
-        total_revenue: Number(userProfileAtt?.total_revenue ?? 0),
-        user_data_source: deviceType,
-    };
-
     useEffect(() => {
         getUserProfile()
+    }, [])
+
+    const setDataLayerProfilData = () => {
+        let storedProfile = null;
+        let userEmail = null;
+        let userPhone: any = null;
+        storedProfile = localStorage.getItem('userProfileData');
+        userEmail = localStorage.getItem('eMail') || '';
+        userPhone = `966${localStorage.getItem('phoneNumber') || ''}`;
+
+        let userProfileAtt = storedProfile ? JSON.parse(storedProfile) : {};
+
+        const userProfileAttributes = {
+            event: "global_variables",
+            platform: deviceType,
+            account_creation_date: dayjs(userProfileAtt?.account_creation_date, 'DD-MM-YYYY hh:mm A').isValid() ? dayjs(userProfileAtt.account_creation_date, 'DD-MM-YYYY hh:mm A').locale('en').format('DD-MM-YYYY hh:mm A') : '',
+            user_id: String(userProfileAtt?.backend_user_id ?? ''),
+            email: userEmail ?? '',
+            phone: userPhone ?? '',
+            last_purchase_date: dayjs(userProfileAtt?.last_purchase_date, 'DD-MM-YYYY hh:mm A').isValid() ? dayjs(userProfileAtt.last_purchase_date, 'DD-MM-YYYY hh:mm A').locale('en').format('DD-MM-YYYY hh:mm A') : '',
+            store_language: userProfileAtt?.store_language ?? 'ar',
+            total_purchases: Number(userProfileAtt?.total_purchases ?? 0),
+            total_revenue: Number(userProfileAtt?.total_revenue ?? 0),
+            user_data_source: deviceType,
+        };
         window.dataLayer = window.dataLayer || [];
         window.dataLayer.push(userProfileAttributes);
-    }, [])
+    }
 
     const updateProfileData = async () => {
         try {
@@ -209,38 +180,6 @@ export default function Profile() {
         }
     };
 
-    // const updateProfileData = async () => {
-    //     var data = {
-    //         user_id: localStorage.getItem('userid'),
-    //         first_name: firstName,
-    //         last_name: lastName,
-    //         email: email,
-    //         date_of_birth: dateOfBirth,
-    //         gender: genderStatus,
-    //         profile_image: ProfileImageStore
-    //     }
-    //     setErrorMsg('Error! Please fill ' + (!firstName ? 'First Name, ' : '') + (!lastName ? 'Last Name, ' : '') + (!email ? 'Email, ' : '') + '!')
-    //     if (!firstName || !lastName || !email) {
-    //         topMessageAlartDanger(errormsg)
-    //         setLoginBtnLoading(false)
-    //         return false;
-    //     }
-    //     setLoginBtnLoading(true)
-    //     postUserProfileUpdate(data).then(async (postProfileUpdate: any) => {
-    //         if (postProfileUpdate?.postProfileUpdate?.success) {
-    //             setimgUpload(true)
-    //             topMessageAlartSuccess('Success! Your profile successfully updated.!')
-    //             getUserProfile()
-    //             setLoginBtnLoading(false)
-    //             setupdateProfile(false)
-    //         }
-    //         else {
-    //             topMessageAlartDanger('Error! something went wrong. Please check data and try again later.!')
-    //             setLoginBtnLoading(false)
-    //         }
-    //     })
-    // }
-
     const MySwal = withReactContent(Swal);
     const topMessageAlartSuccess = (title: any) => {
         MySwal.fire({
@@ -283,67 +222,26 @@ export default function Profile() {
         });
     };
 
-    const handleChange = async (e: ChangeEvent<HTMLInputElement>) => {
+    const handleChange = async (event: any) => {
         try {
             setimgUpload(false);
-
-            const file = e.target.files?.[0];
-            if (!file) return;
-
-            // basic validation
-            if (!file.type.startsWith("image/")) return;
-            const MAX_MB = 5;
-            if (file.size > MAX_MB * 1024 * 1024) return;
-
+            const fileUploaded = event.target.files[0];
             const formData = new FormData();
-            formData.append("file", file);
+            formData.append("file", fileUploaded);
 
-            const res = await fetch(`${Api}user-img`, { method: "POST", body: formData });
-            if (!res.ok) throw new Error("upload failed");
+            const uploadedImage = await uploadImage(formData);
 
-            const json = await res.json();
-            if (!json?.img) throw new Error("no image key in response");
-
-            const url = `${NewMedia}${json.img}`;
-            setProfileImage(url);
-            setProfileImageStore(json.img);
-
-            if (typeof window !== "undefined") {
-                localStorage.setItem("profileImg", url);
+            if (uploadedImage?.img) {
+                const imageUrl = `${UserImgMedia}${uploadedImage.img}`
+                setProfileImage(imageUrl);
+                localStorage.setItem('profileImg', imageUrl);
+                setProfileImageStore(uploadedImage.img);
             }
-        } catch (err) {
-            console.error("handleChange error:", err);
-        } finally {
-            setimgUpload(true);
-            // allow selecting the same file again
-            e.target.value = "";
+        } catch (error) {
+            console.error("Error uploading image:", error);
+            // Handle error appropriately (show user feedback)
         }
     };
-
-
-    // const handleChange = async (event: any) => {
-    //     setimgUpload(false)
-    //     const fileUploaded = event.target.files[0];
-    //     const formData = new FormData();
-    //     formData.append("file", fileUploaded);
-    //     const data = await fetch(Api + 'user-img', {
-    //         method: "post",
-    //         body: formData,
-    //     });
-    //     const uploadedImage = await data.json();
-    //     if (uploadedImage?.img) {
-    //         setProfileImage(NewMedia + uploadedImage?.img)
-    //         if (!localStorage.getItem('profileImg')) {
-    //             localStorage.setItem('profileImg', NewMedia + uploadedImage?.img)
-    //         } else {
-    //             localStorage.removeItem('profileImg')
-    //             localStorage.setItem('profileImg', NewMedia + uploadedImage?.img)
-    //         }
-    //         setProfileImageStore(uploadedImage?.img)
-    //     } else {
-    //         // console.log("Error Found");
-    //     }
-    // };
 
     const genderMap: Record<0 | 1, { ar: string; en: string }> = {
         1: { ar: "ذكر", en: "Male" },
