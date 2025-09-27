@@ -18,6 +18,7 @@ import { Disclosure } from '@headlessui/react'
 import GlobalContext from '../../GlobalContext'
 import PickupStorePopup from '../../components/PickupStorePopup';
 import { getCookie } from 'cookies-next';
+import { useApp } from '@/app/_ctx/AppContext';
 
 
 const LoginSingup = dynamic(() => import('../../components/LoginSignup'), { ssr: false })
@@ -26,6 +27,7 @@ const RatingComponent = dynamic(() => import('../../components/ProductComponents
 const ProductSliderComponent = dynamic(() => import("../../components/NewHomePageComp/ProductSlider"), { ssr: false });
 
 const NewMedia = process.env.NEXT_PUBLIC_NEW_MEDIA;
+const Media = process.env.NEXT_PUBLIC_MEDIA;
 
 type GTMEventType =
     | 'view_item_list'
@@ -54,6 +56,7 @@ export default function Product({ params, searchParams }: { params: { lang: stri
     const [direction, setDirection] = useState<"left-to-right" | "right-to-left">(
         "left-to-right"
     );
+    const { lang } = useApp();
     const isMobileOrTablet = true;
     const [isOpen, setIsOpen] = useState<any>(false)
     const [FbtisOpen, setFbtisOpen] = useState<any>(false)
@@ -1984,7 +1987,7 @@ export default function Product({ params, searchParams }: { params: { lang: stri
                     {upsaleproductdata?.products?.data?.length > 0 ?
                         <>
                             <div className='my-6 relative'>
-                                <ProductSliderComponent origin={origin} sliderHeading={isArabic ? 'المنتجات الموصى بها' : 'Recommended Products'} dict={dict.products} productDataSlider={upsaleproductdata} headingRequired={true} isMobileOrTablet={isMobileOrTablet} isArabic={isArabic} />
+                                <ProductSliderComponent NewMedia={NewMedia} Media={Media} lang={lang} origin={origin} sliderHeading={isArabic ? 'المنتجات الموصى بها' : 'Recommended Products'} dict={dict.products} productDataSlider={upsaleproductdata} headingRequired={true} isMobileOrTablet={isMobileOrTablet} isArabic={isArabic} />
                             </div>
                         </>
                         : null}

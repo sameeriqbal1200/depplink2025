@@ -38,6 +38,7 @@ export default function Homepage() {
     fullUrl,
     slug, slugStr, slugParts,
   } = useApp();
+  const Media = process.env.NEXT_PUBLIC_MEDIA;
   const NewMedia = process.env.NEXT_PUBLIC_NEW_MEDIA;
   const NewMedia2 = process.env.NEXT_PUBLIC_NEW_MEDIA2; 
   const [homepagepartonelatest, setHomepagePartOneLatest] = useState<any>(null);
@@ -1203,6 +1204,8 @@ export default function Homepage() {
               gtmColumnItemListId={gtmNewItemListId}
               gtmColumnItemListName={gtmNewItemListName}
               NewMedia={NewMedia}
+              Media={Media}
+              lang={lang}
             />
           </>
         ) : (

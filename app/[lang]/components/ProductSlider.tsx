@@ -5,28 +5,26 @@ import dayjs from 'dayjs'
 import Link from 'next/link'
 import Image from 'next/image'
 import Swal from 'sweetalert2'
-import { Media } from '../api/Api'
-import { NewMedia } from '../api/Api'
-import { get, post } from "../api/ApiCalls"
 import { setCartItems } from '../cartstorage/cart'
 import React, { useState, useEffect, Fragment, useContext } from 'react'
 import withReactContent from 'sweetalert2-react-content'
 import { usePathname } from "next/navigation"
 import { useRouter } from 'next-nprogress-bar'
 import { Dialog, Transition } from '@headlessui/react'
-import { useUserAgent } from 'next-useragent'
-// import { useDraggable } from "react-use-draggable-scroll";
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Pagination, Navigation } from 'swiper/modules';
-// import LazyImage from './LazyImage';
 import 'swiper/css/pagination';
 import dynamic from 'next/dynamic'
 import GlobalContext from '../GlobalContext';
+import { getProductExtraData, removeProductWishlistData } from '@/lib/components/component.client'
 const RatingComponent = dynamic(() => import('./ProductComponents/Rating'), { ssr: false })
 
-export default function ProductSlider(props: any, request: any) {
-
-    const router = useRouter()
+export default function ProductSlider(props: any) {
+    const origin = props?.origin;
+    const NewMedia = props?.NewMedia;
+    const Media = props?.Media;
+    const lang = props?.lang;
+    const router = useRouter()  
     const path = usePathname()
     const [isOpen, setIsOpen] = useState(false)
     const [loginPopup, setLoginPopup] = useState<any>(false)
@@ -42,7 +40,7 @@ export default function ProductSlider(props: any, request: any) {
     const [selectedProductId, setSelectedProductId] = useState<any>(false)
     const [selectedProductKey, setSelectedProductKey] = useState<any>(false)
     const [fbtProCheck, setfbtProCheck] = useState<any>({})
-    const isArabic = props?.lang === 'ar';
+    const isArabic = lang === 'ar';
     const { updateCompare, setUpdateCompare } = useContext(GlobalContext);
     const { updateWishlist, setUpdateWishlist } = useContext(GlobalContext);
 
@@ -90,31 +88,31 @@ export default function ProductSlider(props: any, request: any) {
         props.products.forEach((item: any) => {
             a.push(item.id)
         });
+        // localStorage.getItem("globalcity")
+        const city = localStorage.getItem("globalcity");
+        const dataExtra = await getProductExtraData(a?.join(","), city);
+        const data = dataExtra?.extraDataDetails?.data;
+        setProExtraData(data)
 
-        await get(`productextradatamulti-regional-new/${a?.join(",")}/${localStorage.getItem("globalcity")}`).then((responseJson: any) => {
-            const data = responseJson?.data;
-            setProExtraData(data)
-
-            if (data && typeof data === 'object') {
-                const entries: any = Object.entries(data);
-                const filteredEntries: any = entries.filter(([key, item]: any) => item.fbtdata !== false);
-                if (filteredEntries.length > 0) {
-                    const filteredData: any = filteredEntries.map(([key, item]: any) => ({ key, ...item }));
-                    for (let index = 0; index < filteredData.length; index++) {
-                        const element = filteredData[index];
-                        if (element?.fbtdata?.show_on_thumbnail === 1) {
-                            var newfbtdata = fbtProCheck
-                            newfbtdata[element?.key] = true
-                            setfbtProCheck({ ...newfbtdata })
-                        }
+        if (data && typeof data === 'object') {
+            const entries: any = Object.entries(data);
+            const filteredEntries: any = entries.filter(([key, item]: any) => item.fbtdata !== false);
+            if (filteredEntries.length > 0) {
+                const filteredData: any = filteredEntries.map(([key, item]: any) => ({ key, ...item }));
+                for (let index = 0; index < filteredData.length; index++) {
+                    const element = filteredData[index];
+                    if (element?.fbtdata?.show_on_thumbnail === 1) {
+                        var newfbtdata = fbtProCheck
+                        newfbtdata[element?.key] = true
+                        setfbtProCheck({ ...newfbtdata })
                     }
-                } else {
-                    console.log('No objects have fbtdata not equal to false.');
                 }
             } else {
-                console.log('No valid data found.');
+                console.log('No objects have fbtdata not equal to false.');
             }
-        })
+        } else {
+            console.log('No valid data found.');
+        }
 
         if (localStorage.getItem("userid")) {
             // get(`checkmultiwishlistproduct/${a.join(",")}/${localStorage.getItem("userid")}`).then((responseJson: any) => {
@@ -126,7 +124,7 @@ export default function ProductSlider(props: any, request: any) {
         }
     }
 
-    const WishlistProduct = (id: any, type: boolean) => {
+    const WishlistProduct = async (id: any, type: boolean) => {
         // var testing: any = ProWishlistData
         if (localStorage.getItem("userid")) {
             var data = {
@@ -134,39 +132,39 @@ export default function ProductSlider(props: any, request: any) {
                 product_id: id,
             }
             if (type) {
-                post('removewishlist', data).then((responseJson: any) => {
-                    if (responseJson?.success) {
-                        // testing[id].wishlist = !type;
-                        // setProWishlistData({ ...testing })
-                        topMessageAlartDanger(props.dict?.wishlistRemovedText)
-                        if (localStorage.getItem("wishlistCount")) {
-                            var wishlistlength: any = localStorage.getItem('wishlistCount');
-                            wishlistlength = parseInt(wishlistlength) - 1;
-                            localStorage.setItem('wishlistCount', wishlistlength);
-                        }
-                        localStorage.removeItem('userWishlist')
-                        setUpdateWishlist(updateWishlist == 0 ? 1 : 0)
+                const removeWishlist = await removeProductWishlistData(data);
+                if (removeWishlist?.removeWishlistData?.success) {
+                    // testing[id].wishlist = !type;
+                    // setProWishlistData({ ...testing })
+                    var wishlistRemovetext = props.dict?.wishlistRemovedText ? props.dict?.wishlistRemovedText : props?.dict?.products?.wishlistRemovedText
+                    topMessageAlartDanger(wishlistRemovetext)
+                    if (localStorage.getItem("wishlistCount")) {
+                        var wishlistlength: any = localStorage.getItem('wishlistCount');
+                        wishlistlength = parseInt(wishlistlength) - 1;
+                        localStorage.setItem('wishlistCount', wishlistlength);
                     }
-                })
+                    localStorage.removeItem('userWishlist')
+                    setUpdateWishlist(updateWishlist == 0 ? 1 : 0)
+                }
             } else {
-                post('addwishlist', data).then((responseJson: any) => {
-                    if (responseJson?.success) {
-                        // testing[id].wishlist = !type;
-                        // setProWishlistData({ ...testing })
-                        topMessageAlartSuccess(props.dict?.wishlistAddedText)
-                        if (localStorage.getItem("wishlistCount")) {
-                            var wishlistlength: any = localStorage.getItem('wishlistCount');
-                            wishlistlength = parseInt(wishlistlength) + 1;
-                            localStorage.setItem('wishlistCount', wishlistlength);
-                        }
-                        localStorage.removeItem('userWishlist')
-                        setUpdateWishlist(updateWishlist == 0 ? 1 : 0)
+                const addWishlist = await ProWishlistData(data);
+                if (addWishlist?.addWishlistData?.success) {
+                    // testing[id].wishlist = !type;
+                    // setProWishlistData({ ...testing })
+                    var wishlistAddtext = props.dict?.wishlistAddedText ? props.dict?.wishlistAddedText : props?.dict?.products?.wishlistAddedText
+                    topMessageAlartSuccess(wishlistAddtext)
+                    if (localStorage.getItem("wishlistCount")) {
+                        var wishlistlength: any = localStorage.getItem('wishlistCount');
+                        wishlistlength = parseInt(wishlistlength) + 1;
+                        localStorage.setItem('wishlistCount', wishlistlength);
                     }
-                })
+                    localStorage.removeItem('userWishlist')
+                    setUpdateWishlist(updateWishlist == 0 ? 1 : 0)
+                }
             }
 
         } else {
-            router.push(`/${props.lang}/login`);
+            router.push(`/${lang}/login`);
         }
     }
 
@@ -605,15 +603,6 @@ export default function ProductSlider(props: any, request: any) {
         topMessageAlartSuccess(props.dict?.productCart, true)
         setBuyNowLoading(0);
     }
-    const origin =
-        typeof window !== 'undefined' && window.location.origin
-            ? window.location.origin
-            : '';
-
-    const userAgent: any =
-        typeof window !== 'undefined' && window.location.origin
-            ? useUserAgent(window.navigator.userAgent)
-            : false;
 
 
     // const ref = useRef<HTMLDivElement>() as React.MutableRefObject<HTMLInputElement>;
@@ -721,7 +710,7 @@ export default function ProductSlider(props: any, request: any) {
                                         ProExtraData[data?.id]?.expressdeliveryData ?
                                             <div className="absolute z-10 top-1 ltr:left-3 rtl:right-3">
                                                 <Image
-                                                    src={props?.lang == 'ar' ? "/icons/express_logo/express_logo_ar.png" : "/icons/express_logo/express_logo_en.png"}
+                                                    src={lang == 'ar' ? "/icons/express_logo/express_logo_ar.png" : "/icons/express_logo/express_logo_en.png"}
                                                     width="65" height="0" alt="express_delivery" title='Express Delivery'
                                                 />
                                             </div>
@@ -740,7 +729,7 @@ export default function ProductSlider(props: any, request: any) {
                                     {data?.custom_badge_en || data?.custom_badge_ar ?
                                         <>
                                             <div className='text-[#EA4335] text-[0.55rem] md:text-xs absolute ltr:right-0 rtl:left-0 top-0 bg-[#EA433520] md:px-3.5 px-2 py-1 rtl:rounded-tl-lg rtl:rounded-br-lg ltr:rounded-bl-lg ltr:rounded-tr-lg z-20'>
-                                                {props?.lang == 'ar' ? data?.custom_badge_ar : data?.custom_badge_en}
+                                                {lang == 'ar' ? data?.custom_badge_ar : data?.custom_badge_en}
                                             </div>
 
                                         </>
@@ -761,8 +750,8 @@ export default function ProductSlider(props: any, request: any) {
                                     <div className='relative'>
                                         <Image
                                             src={data?.featured_image ? Media + data?.featured_image?.image : 'https://images.tamkeenstores.com.sa/assets/new-media/3f4a05b645bdf91af2a0d9598e9526181714129744.png'}
-                                            alt={props?.lang == 'ar' ? data?.name_arabic : data?.name}
-                                            title={props?.lang == 'ar' ? data?.name_arabic : data?.name}
+                                            alt={lang == 'ar' ? data?.name_arabic : data?.name}
+                                            title={lang == 'ar' ? data?.name_arabic : data?.name}
                                             height={props?.devicetype === 'mobile' ? 150 : 260}
                                             width={props?.devicetype === 'mobile' ? 150 : 260}
                                             loading='lazy'
@@ -770,21 +759,21 @@ export default function ProductSlider(props: any, request: any) {
                                         />
                                         <small className="text-xs line-clamp-1 ltr:text-left rtl:text-right">{data?.sku}</small>
                                     </div>
-                                    <h2 className='text-primary font-semibold md:text-sm line-clamp-2 text-xs'>{props?.lang == 'ar' ? data?.name_arabic : data?.name}</h2>
+                                    <h2 className='text-primary font-semibold md:text-sm line-clamp-2 text-xs'>{lang == 'ar' ? data?.name_arabic : data?.name}</h2>
                                     <div className='text-primary text-xs flex items-center gap-x-2 max-md:mt-1'>
                                         <span>{props.lang == 'ar' ? "العلامة" : "Brand"}:</span>
                                         {data?.brand?.brand_media_image ?
                                             <Image
                                                 src={data?.brand?.brand_media_image ? NewMedia + data?.brand?.brand_media_image?.image : 'https://images.tamkeenstores.com.sa/assets/new-media/3f4a05b645bdf91af2a0d9598e9526181714129744.png'}
-                                                alt={props?.lang == 'ar' ? data?.brand?.name_arabic : data?.brand?.name}
-                                                title={props?.lang == 'ar' ? data?.brand?.name_arabic : data?.brand?.name}
+                                                alt={lang == 'ar' ? data?.brand?.name_arabic : data?.brand?.name}
+                                                title={lang == 'ar' ? data?.brand?.name_arabic : data?.brand?.name}
                                                 height={0}
                                                 width={0}
                                                 loading='lazy'
                                                 className="h-auto w-14 sm:w-20"
                                             />
                                             :
-                                            <p className="text-[#004B7A] text-xs">{props?.lang == 'ar' ? data?.brand?.name_arabic : data?.brand?.name}</p>
+                                            <p className="text-[#004B7A] text-xs">{lang == 'ar' ? data?.brand?.name_arabic : data?.brand?.name}</p>
                                         }
                                     </div>
                                     <RatingComponent rating={data?.rating} totalRating={data?.totalrating} className={''} />
@@ -834,7 +823,7 @@ export default function ProductSlider(props: any, request: any) {
                                     {props?.devicetype === 'mobile' ?
                                         (ProExtraData[data?.id]?.expressdeliveryData ?
                                             <Image
-                                                src={props?.lang == 'ar' ? "/icons/express_logo/Express_ar_48.webp" : "/icons/express_logo/Express_en_48.webp"}
+                                                src={lang == 'ar' ? "/icons/express_logo/Express_ar_48.webp" : "/icons/express_logo/Express_en_48.webp"}
                                                 width='0' height="0" alt="express_delivery" title='Express Delivery' className='my-2 w-full'
                                             /> : null)
                                         : null}
@@ -866,8 +855,8 @@ export default function ProductSlider(props: any, request: any) {
                                     {ProExtraData[data?.id]?.badgeData ?
                                         <Image
                                             src={ProExtraData[data?.id]?.badgeData?.badge_slider ? NewMedia + ProExtraData[data?.id]?.badgeData?.badge_slider?.image : 'https://images.tamkeenstores.com.sa/assets/new-media/3f4a05b645bdf91af2a0d9598e9526181714129744.png'}
-                                            alt={props?.lang == 'ar' ? ProExtraData[data?.id]?.badgeData?.badge_slider?.title_arabic : ProExtraData[data?.id]?.badgeData?.badge_slider?.title}
-                                            title={props?.lang == 'ar' ? ProExtraData[data?.id]?.badgeData?.badge_slider?.title_arabic : ProExtraData[data?.id]?.badgeData?.badge_slider?.title}
+                                            alt={lang == 'ar' ? ProExtraData[data?.id]?.badgeData?.badge_slider?.title_arabic : ProExtraData[data?.id]?.badgeData?.badge_slider?.title}
+                                            title={lang == 'ar' ? ProExtraData[data?.id]?.badgeData?.badge_slider?.title_arabic : ProExtraData[data?.id]?.badgeData?.badge_slider?.title}
                                             height={0}
                                             width={0}
                                             loading='lazy'
