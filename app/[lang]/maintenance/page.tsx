@@ -1,32 +1,25 @@
 "use client"; // This is a client component 👈🏽
 
-import React, { useEffect, useState, Fragment } from 'react'
-import Link from 'next/link'
+import React, { useState, Fragment, useEffect, useCallback } from 'react'
 import Image from 'next/image'
 import dayjs from 'dayjs'
-import MaskedInput from 'react-text-mask'
-import { getDictionary } from "../dictionaries"
-import { Dialog, Transition, RadioGroup } from '@headlessui/react'
-import { get, post } from "../api/ApiCalls"
+import { Dialog, Transition, RadioGroup, TransitionChild, DialogPanel, DialogTitle } from '@headlessui/react'
+import { get, post } from "@/lib/api/apiCalls"
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 import dynamic from 'next/dynamic'
-import { usePathname } from "next/navigation"
 import { useRouter } from 'next-nprogress-bar'
-import { NewMedia } from '../api/Api';
-import { comment } from 'postcss';
+import { NewMedia } from '@/lib/api/apiLinks';
+import { useApp } from "@/app/_ctx/AppContext";
+import { useSlot } from '@/app/_ctx/ClientDataRegistry';
+import { getUserData, getUserOrderDetails, getMaintainanceProductDetails } from '@/lib/footerpages/maintainance.client';
 
 const MobileHeader = dynamic(() => import('../components/MobileHeader'), { ssr: true })
 
-export default function Maintenance({ params }: {
-    params: {
-        slug: any; lang: string, data: any, devicetype: any
-    }
-}) {
+export default function Maintenance() {
+    const { t, lang } = useApp();
+    const footer = useSlot<any>("footer");
     const router = useRouter()
-    const path = usePathname()
-    const [dict, setDict] = useState<any>([])
-    const [data, setData] = useState<any>(params?.data?.data)
     const [activeTab1, setActiveTab1] = useState<boolean>(true);
     const [activeTab2, setActiveTab2] = useState<boolean>(false);
     const [activeTab3, setActiveTab3] = useState<boolean>(false);
@@ -42,34 +35,26 @@ export default function Maintenance({ params }: {
     const [orderListing, setOrderListing] = useState<any>([])
     const [checkMaintenanceData, setCheckMaintenanceData] = useState<any>([])
 
-
-    const getOrderDetailsData = async (orderid: any) => {
-        await get(`order-detail/${orderid}`).then((responseJson: any) => {
-            setOrderDetails(responseJson)
-        })
-        await get(`checkmaintenance-product/${orderid}`).then((responseJson: any) => {
-            setCheckMaintenanceData(responseJson?.data)
-        })
-
-    }
-
     const checkUser = async () => {
         if (localStorage.getItem('userid')) {
-            await get(`user-orders/${localStorage.getItem('userid')}`).then((responseJson: any) => {
-                setOrderListing(responseJson)
+            getUserData().then((ordersData: any) => {
+                setOrderListing(ordersData?.userData)
                 setShow(true)
             })
         } else {
-            router.push(`/${params.lang}/login`)
+            router.push(`/${lang}/login`)
         }
     }
 
-    useEffect(() => {
-        (async () => {
-            const translationdata = await getDictionary(params?.lang);
-            setDict(translationdata);
-        })();
-    }, [params])
+    const getOrderDetailsData = async (orderid: string) => {
+        getUserOrderDetails(orderid).then((specificOrderDetails: any) => {
+            setOrderDetails(specificOrderDetails?.userOrderDetails)
+        })
+        getMaintainanceProductDetails(orderid).then((maintainanceProduct: any) => {
+            setCheckMaintenanceData(maintainanceProduct?.maintainanceProductDetails)
+            console.log(maintainanceProduct?.maintainanceProductDetails)
+        })
+    }
 
     const MySwal = withReactContent(Swal);
     const topMessageAlartSuccess = (title: any) => {
@@ -77,7 +62,7 @@ export default function Maintenance({ params }: {
             icon: "success",
             title: title,
             toast: true,
-            position: params.lang == 'ar' ? 'top-start' : 'top-end',
+            position: lang == 'ar' ? 'top-start' : 'top-end',
             showConfirmButton: false,
             timer: 5000,
             showCloseButton: false,
@@ -95,7 +80,7 @@ export default function Maintenance({ params }: {
             icon: "error",
             title: title,
             toast: true,
-            position: params.lang == 'ar' ? 'top-start' : 'top-end',
+            position: lang == 'ar' ? 'top-start' : 'top-end',
             showConfirmButton: false,
             timer: 15000,
             showCloseButton: true,
@@ -120,7 +105,7 @@ export default function Maintenance({ params }: {
         post('maintenance', data).then((responseJson: any) => {
             if (responseJson?.success === true) {
                 setShow(false)
-                topMessageAlartSuccess(dict?.maintenanceAdded)
+                topMessageAlartSuccess(t('maintenanceAdded'))
                 setOrderNo(false)
                 setSelected(false)
                 setSelectedProduct(false)
@@ -132,24 +117,19 @@ export default function Maintenance({ params }: {
                 setActiveTab2(false)
             }
             else {
-                topMessageAlartDanger(dict?.somethingwentwrong)
+                topMessageAlartDanger(t('somethingwentwrong'))
             }
         })
     }
-
-    const origin =
-        typeof window !== 'undefined' && window.location.origin
-            ? window.location.origin
-            : '';
     return (
         <>
-            <MobileHeader type="Third" lang={params.lang} pageTitle={params.lang == 'ar' ? 'صيانة تمكين' : 'Tamkeen Maintenance'} />
+            <MobileHeader type="Third" lang={lang} pageTitle={lang == 'ar' ? 'صيانة تمكين' : 'Tamkeen Maintenance'} />
 
             <div className="container md:py-4 py-16">
 
                 <div className="my-6">
-                    <h1 className="font-semibold text-lg 2xl:text-xl md:block hidden">{params.lang == 'ar' ? 'صيانة تمكين' : 'Tamkeen Maintenance'}</h1>
-                    <div className="text-sm text-[#5D686F] md:mt-3" dangerouslySetInnerHTML={{ __html: params.lang == 'ar' ? data?.page_content_ar : data?.page_content_en }}></div>
+                    <h1 className="font-semibold text-lg 2xl:text-xl md:block hidden">{lang == 'ar' ? 'صيانة تمكين' : 'Tamkeen Maintenance'}</h1>
+                    <div className="text-sm text-[#5D686F] md:mt-3" dangerouslySetInnerHTML={{ __html: lang == 'ar' ? footer?.data?.page_content_ar : footer?.data?.page_content_en }}></div>
 
                     <div className="my-6 text-[#515567] font-normal text-xs">
                         <h2 className="font-bold text-sm md:text-xl text-[#004B7A]">Maintenance and After-sales</h2>
@@ -161,18 +141,18 @@ export default function Maintenance({ params }: {
                 <div className="text-sm font-medium flex items-center gap-x-3 mb-10 md:mb-0">
                     <button
                         className="focus-visible:outline-none bg-[#219EBC] text-white border-[#219EBC] border py-3 px-9 rounded-md max-md:w-1/2"
-                        type="button" aria-label={params.lang == 'ar' ? 'فتح تذكرة' : 'Open Ticket'}
+                        type="button" aria-label={lang == 'ar' ? 'فتح تذكرة' : 'Open Ticket'}
                         onClick={() => {
                             checkUser()
                         }}
                     >
-                        {params.lang == 'ar' ? 'فتح تذكرة' : 'Open Ticket'}
+                        {lang == 'ar' ? 'فتح تذكرة' : 'Open Ticket'}
                     </button>
-                    <button className="focus-visible:outline-none border-[#219EBC] border text-[#219EBC] py-3 px-8 rounded-md hover:bg-[#219EBC] hover:text-white max-md:w-1/2" type="button" aria-label={params.lang == 'ar' ? 'تواصل معنا' : 'Contact with Us'}
+                    <button className="focus-visible:outline-none border-[#219EBC] border text-[#219EBC] py-3 px-8 rounded-md hover:bg-[#219EBC] hover:text-white max-md:w-1/2" type="button" aria-label={lang == 'ar' ? 'تواصل معنا' : 'Contact with Us'}
                         onClick={() => {
-                            router.push(`${origin}${params.lang}/contact-us`)
+                            router.push(`${origin}${lang}/contact-us`)
                         }}
-                    >{params.lang == 'ar' ? 'تواصل معنا' : 'Contact with Us'}</button>
+                    >{lang == 'ar' ? 'تواصل معنا' : 'Contact with Us'}</button>
                 </div>
             </div>
             <Transition appear show={show} as={Fragment}>
@@ -180,7 +160,7 @@ export default function Maintenance({ params }: {
                     <div className="fixed inset-0 bg-dark/40" aria-hidden="true" />
                     <div className="fixed inset-0 overflow-y-auto">
                         <div className="flex md:min-h-full h-full items-center justify-center md:p-4 text-center">
-                            <Transition.Child
+                            <TransitionChild
                                 as={Fragment}
                                 enter="ease-out duration-300"
                                 enterFrom="opacity-0 scale-95"
@@ -189,25 +169,25 @@ export default function Maintenance({ params }: {
                                 leaveFrom="opacity-100 scale-100"
                                 leaveTo="opacity-0 scale-95"
                             >
-                                <Dialog.Panel className="w-full max-w-3xl max-md:h-[-webkit-fill-available] h-full transform overflow-hidden rounded-md bg-white text-left align-middle shadow-xl transition-all">
-                                    <Dialog.Title
+                                <DialogPanel className="w-full max-w-3xl max-md:h-[-webkit-fill-available] h-full transform overflow-hidden rounded-md bg-white text-left align-middle shadow-xl transition-all">
+                                    <DialogTitle
                                         as="h3"
                                         className="text-lg font-medium leading-6 text-gray-900 container"
                                     >
                                         <div className="py-3.5 border-b mb-3 border-[#9CA4AB50]">
                                             <div className="flex items-center justify-between ">
-                                                <Dialog.Title
+                                                <DialogTitle
                                                     as="h4"
                                                     className="text-lg font-bold leading-6 text-gray-900"
                                                 >
-                                                    {params.lang == 'ar' ? "اختر طلبا" : "Select Order"}
-                                                </Dialog.Title>
+                                                    {lang == 'ar' ? "اختر طلبا" : "Select Order"}
+                                                </DialogTitle>
                                                 <button onClick={() => setShow(false)} className="focus-visible:outline-none">
                                                     <svg height="16" viewBox="0 0 329.26933 329" width="16" xmlns="http://www.w3.org/2000/svg" id="fi_1828778"><path d="m194.800781 164.769531 128.210938-128.214843c8.34375-8.339844 8.34375-21.824219 0-30.164063-8.339844-8.339844-21.824219-8.339844-30.164063 0l-128.214844 128.214844-128.210937-128.214844c-8.34375-8.339844-21.824219-8.339844-30.164063 0-8.34375 8.339844-8.34375 21.824219 0 30.164063l128.210938 128.214843-128.210938 128.214844c-8.34375 8.339844-8.34375 21.824219 0 30.164063 4.15625 4.160156 9.621094 6.25 15.082032 6.25 5.460937 0 10.921875-2.089844 15.082031-6.25l128.210937-128.214844 128.214844 128.214844c4.160156 4.160156 9.621094 6.25 15.082032 6.25 5.460937 0 10.921874-2.089844 15.082031-6.25 8.34375-8.339844 8.34375-21.824219 0-30.164063zm0 0"></path></svg>
                                                 </button>
                                             </div>
                                         </div>
-                                    </Dialog.Title>
+                                    </DialogTitle>
 
 
                                     <div className="mt-2 overflow-y-auto h-full pb-40">
@@ -218,27 +198,27 @@ export default function Maintenance({ params }: {
                                                         return (
                                                             <div className="grid grid-cols-3 md:grid-cols-6 bg-white px-3 md:p-5 shadow-md rounded-md mb-3 text-sm" key={i}>
                                                                 <div className="text-[#1C262D85] max-md:my-4">
-                                                                    <h4 className="font-medium text-xs mb-1">{params.lang == 'ar' ? 'رقم الطلب' : 'Order Number'}:</h4>
+                                                                    <h4 className="font-medium text-xs mb-1">{lang == 'ar' ? 'رقم الطلب' : 'Order Number'}:</h4>
                                                                     <p className="font-medium text-[#004B7A]">{data?.order_no}</p>
                                                                 </div>
                                                                 <div className="text-[#1C262D85] max-md:my-4">
-                                                                    <h4 className="font-medium text-xs mb-1">{params.lang == 'ar' ? 'تاريخ الطلب' : 'Order Date'}:</h4>
-                                                                    <p className="font-medium text-[#004B7A]">{dayjs(data?.created_at).locale(params.lang == 'ar' ? 'ar' : 'en').format("MMM  DD, YYYY")}</p>
+                                                                    <h4 className="font-medium text-xs mb-1">{lang == 'ar' ? 'تاريخ الطلب' : 'Order Date'}:</h4>
+                                                                    <p className="font-medium text-[#004B7A]">{dayjs(data?.created_at).locale(lang == 'ar' ? 'ar' : 'en').format("MMM  DD, YYYY")}</p>
                                                                 </div>
                                                                 <div className="text-[#1C262D85] max-md:my-4">
-                                                                    <h4 className="font-medium text-xs mb-1">{params.lang == 'ar' ? 'عدد المنتجات' : 'No. of Products'}:</h4>
-                                                                    <p className="font-medium text-[#004B7A]">({data?.details_count}) {params.lang == 'ar' ? 'منتجات' : 'Items'}</p>
+                                                                    <h4 className="font-medium text-xs mb-1">{lang == 'ar' ? 'عدد المنتجات' : 'No. of Products'}:</h4>
+                                                                    <p className="font-medium text-[#004B7A]">({data?.details_count}) {lang == 'ar' ? 'منتجات' : 'Items'}</p>
                                                                 </div>
                                                                 <div className="text-[#1C262D85] max-md:my-4">
-                                                                    <h4 className="font-medium text-xs mb-1">{params.lang == 'ar' ? 'إجمالي القيمة' : 'Total Value'}:</h4>
-                                                                    <p className="font-medium text-[#004B7A]">{params.lang == 'ar' ? '' : 'SR'} {Intl.NumberFormat('en-US').format(data?.ordersummary[0]?.price)} {params.lang == 'ar' ? 'ريال' : ''}</p>
+                                                                    <h4 className="font-medium text-xs mb-1">{lang == 'ar' ? 'إجمالي القيمة' : 'Total Value'}:</h4>
+                                                                    <p className="font-medium text-[#004B7A]">{lang == 'ar' ? '' : 'SR'} {Intl.NumberFormat('en-US').format(data?.ordersummary[0]?.price)} {lang == 'ar' ? 'ريال' : ''}</p>
                                                                 </div>
                                                                 <div className="text-[#1C262D85] max-md:my-4">
-                                                                    <h4 className="font-medium text-xs mb-1">{params.lang == 'ar' ? 'رقم الهاتف' : 'Order Status'}:</h4>
-                                                                    <p className="font-medium text-[#20831E]">{params.lang == 'ar' ? 'أجل تسليم' : 'Delivered'}</p>
+                                                                    <h4 className="font-medium text-xs mb-1">{lang == 'ar' ? 'رقم الهاتف' : 'Order Status'}:</h4>
+                                                                    <p className="font-medium text-[#20831E]">{lang == 'ar' ? 'أجل تسليم' : 'Delivered'}</p>
                                                                 </div>
                                                                 <div className="flex items-center justify-center underline text-[#B15533]">
-                                                                    <button className="focus-visible:overflow-hidden" onClick={() => { setActiveTab2(true), setActiveTab1(false), getOrderDetailsData(data?.id) }}>{params.lang == 'ar' ? 'رقم الهاتف' : 'View Details'}</button>
+                                                                    <button className="focus-visible:overflow-hidden" onClick={() => { setActiveTab2(true), setActiveTab1(false), getOrderDetailsData(data?.id) }}>{lang == 'ar' ? 'رقم الهاتف' : 'View Details'}</button>
                                                                 </div>
                                                             </div>
                                                         )
@@ -252,33 +232,30 @@ export default function Maintenance({ params }: {
                                                     {orderDetails?.orderdata?.status ?
                                                         <div className="grid grid-cols-3 md:grid-cols-5 bg-white px-3 md:p-5 shadow-md rounded-md mb-3 text-sm">
                                                             <div className="text-[#1C262D85] max-md:my-4">
-                                                                <h4 className="font-medium text-xs mb-1">{params.lang == 'ar' ? 'رقم الطلب' : 'Order Number'}:</h4>
+                                                                <h4 className="font-medium text-xs mb-1">{lang == 'ar' ? 'رقم الطلب' : 'Order Number'}:</h4>
                                                                 <p className="font-medium text-[#004B7A]">{orderDetails?.orderdata?.order_no}</p>
                                                             </div>
                                                             <div className="text-[#1C262D85] max-md:my-4">
-                                                                <h4 className="font-medium text-xs mb-1">{params.lang == 'ar' ? 'تاريخ الطلب' : 'Order Date'}:</h4>
-                                                                <p className="font-medium text-[#004B7A]">{dayjs(orderDetails?.orderdata?.created_at).locale(params.lang == 'ar' ? 'ar' : 'en').format("MMM  DD, YYYY")}</p>
+                                                                <h4 className="font-medium text-xs mb-1">{lang == 'ar' ? 'تاريخ الطلب' : 'Order Date'}:</h4>
+                                                                <p className="font-medium text-[#004B7A]">{dayjs(orderDetails?.orderdata?.created_at).locale(lang == 'ar' ? 'ar' : 'en').format("MMM  DD, YYYY")}</p>
                                                             </div>
                                                             <div className="text-[#1C262D85] max-md:my-4">
-                                                                <h4 className="font-medium text-xs mb-1">{params.lang == 'ar' ? 'عدد المنتجات' : 'No. of Products'}:</h4>
-                                                                <p className="font-medium text-[#004B7A]">({orderDetails?.orderdata?.details_count}) {params.lang == 'ar' ? 'منتجات' : 'Items'}</p>
+                                                                <h4 className="font-medium text-xs mb-1">{lang == 'ar' ? 'عدد المنتجات' : 'No. of Products'}:</h4>
+                                                                <p className="font-medium text-[#004B7A]">({orderDetails?.orderdata?.details_count}) {lang == 'ar' ? 'منتجات' : 'Items'}</p>
                                                             </div>
                                                             <div className="text-[#1C262D85] max-md:my-4">
-                                                                <h4 className="font-medium text-xs mb-1">{params.lang == 'ar' ? 'إجمالي القيمة' : 'Total Value'}:</h4>
-                                                                <p className="font-medium text-[#004B7A]">{params.lang == 'ar' ? '' : 'SR'} {Intl.NumberFormat('en-US').format(orderDetails?.orderdata?.ordersummary[0]?.price)} {params.lang == 'ar' ? 'ريال' : ''}</p>
+                                                                <h4 className="font-medium text-xs mb-1">{lang == 'ar' ? 'إجمالي القيمة' : 'Total Value'}:</h4>
+                                                                <p className="font-medium text-[#004B7A]">{lang == 'ar' ? '' : 'SR'} {Intl.NumberFormat('en-US').format(orderDetails?.orderdata?.ordersummary[0]?.price)} {lang == 'ar' ? 'ريال' : ''}</p>
                                                             </div>
                                                             <div className="text-[#1C262D85] max-md:my-4">
-                                                                <h4 className="font-medium text-xs mb-1">{params.lang == 'ar' ? 'رقم الهاتف' : 'Order Status'}:</h4>
-                                                                <p className="font-medium text-[#20831E]">{params.lang == 'ar' ? 'أجل تسليم' : 'Delivered'}</p>
+                                                                <h4 className="font-medium text-xs mb-1">{lang == 'ar' ? 'رقم الهاتف' : 'Order Status'}:</h4>
+                                                                <p className="font-medium text-[#20831E]">{lang == 'ar' ? 'أجل تسليم' : 'Delivered'}</p>
                                                             </div>
                                                         </div>
                                                         : null
                                                     }
                                                     <div className="flex items-center justify-between">
-                                                        <h2 className="font-bold text-base">{params.lang == 'ar' ? 'محتوي الطلب' : 'Products'}</h2>
-                                                        {/* <button className="text-sm font-semibold underline text-[#004B7A]">
-                                                            {params.lang === 'ar' ? 'اختر الكل' : 'Select All'}
-                                                        </button> */}
+                                                        <h2 className="font-bold text-base">{lang == 'ar' ? 'محتوي الطلب' : 'Products'}</h2>
                                                     </div>
                                                     <div className="mt-1 max-md:pb-32">
                                                         <RadioGroup value={selected} onChange={(e) => {
@@ -320,8 +297,8 @@ export default function Maintenance({ params }: {
                                                                                                 }
                                                                                                 <Image
                                                                                                     src={data?.product_data?.featured_image?.image ? NewMedia + data?.product_data?.featured_image?.image : 'https://partners.tamkeenstores.com.sa/public/assets/new-media/3f4a05b645bdf91af2a0d9598e9526181714129744.png'}
-                                                                                                    alt={params.lang == 'ar' ? data?.product_data?.name_arabic : data?.product_data?.name}
-                                                                                                    title={params.lang == 'ar' ? data?.product_data?.name_arabic : data?.product_data?.name}
+                                                                                                    alt={lang == 'ar' ? data?.product_data?.name_arabic : data?.product_data?.name}
+                                                                                                    title={lang == 'ar' ? data?.product_data?.name_arabic : data?.product_data?.name}
                                                                                                     height='40'
                                                                                                     width='40'
                                                                                                     loading='lazy'
@@ -329,14 +306,14 @@ export default function Maintenance({ params }: {
                                                                                                 />
                                                                                             </div>
                                                                                             <div className="p-3 w-full">
-                                                                                                <h4 className="text-primary text-xs md:text-sm">{params.lang == 'ar' ? data?.product_data?.name_arabic : data?.product_data?.name}</h4>
+                                                                                                <h4 className="text-primary text-xs md:text-sm">{lang == 'ar' ? data?.product_data?.name_arabic : data?.product_data?.name}</h4>
                                                                                                 <div className="text-[#5D686F] text-sm flex items-center gap-x-2 mt-2 justify-between">
-                                                                                                    <h2 className="text-sm md:text-base font-semibold text-dark">{params.lang == 'ar' ? `${Intl.NumberFormat('en-US').format(data?.product_data?.sale_price)} ر.س` : `SR ${Intl.NumberFormat('en-US').format(data?.product_data?.sale_price)}`}{'  '}<span className="text-xs text-[#DC4E4E] line-through decoration-[#DC4E4E] decoration-2 font-medium">{params.lang == 'ar' ? `${Intl.NumberFormat('en-US').format(data?.product_data?.price)} ر.س` : `SR ${Intl.NumberFormat('en-US').format(data?.product_data?.price)}`}</span></h2>
-                                                                                                    <p className="font-bold text-xs">{params.lang == 'ar' ? 'عدد' : 'Qty'} {data?.quantity}</p>
+                                                                                                    <h2 className="text-sm md:text-base font-semibold text-dark">{lang == 'ar' ? `${Intl.NumberFormat('en-US').format(data?.product_data?.sale_price)} ر.س` : `SR ${Intl.NumberFormat('en-US').format(data?.product_data?.sale_price)}`}{'  '}<span className="text-xs text-[#DC4E4E] line-through decoration-[#DC4E4E] decoration-2 font-medium">{lang == 'ar' ? `${Intl.NumberFormat('en-US').format(data?.product_data?.price)} ر.س` : `SR ${Intl.NumberFormat('en-US').format(data?.product_data?.price)}`}</span></h2>
+                                                                                                    <p className="font-bold text-xs">{lang == 'ar' ? 'عدد' : 'Qty'} {data?.quantity}</p>
                                                                                                 </div>
                                                                                                 <div className="mt-3">
                                                                                                     <div className="pb-3 pt-2.5 px-3 bg-white rounded-md border flex items-center border-[#5D686F30] gap-x-2 mb-1.5">
-                                                                                                        <input disabled={selected == data?.id ? false : true} className="focus-visible:outline-none w-full text-xs font-normal" placeholder={params.lang === 'ar' ? '' : 'Subject'} type="text"
+                                                                                                        <input disabled={selected == data?.id ? false : true} className="focus-visible:outline-none w-full text-xs font-normal" placeholder={lang === 'ar' ? '' : 'Subject'} type="text"
                                                                                                             value={checkMaintenanceData[data?.id] ? checkMaintenanceData[data?.id].subject : selected == data?.id ? subjectData : ''}
 
                                                                                                             onChange={(e) => {
@@ -346,7 +323,7 @@ export default function Maintenance({ params }: {
                                                                                                             }} />
                                                                                                     </div>
                                                                                                     <div className="pb-3 pt-2.5 px-3 bg-white rounded-md border flex items-center border-[#5D686F30] gap-x-2 w-full">
-                                                                                                        <textarea className="focus-visible:outline-none w-full text-xs font-normal" placeholder={params.lang === 'ar' ? '' : 'Describe the problem of product...'}
+                                                                                                        <textarea className="focus-visible:outline-none w-full text-xs font-normal" placeholder={lang === 'ar' ? '' : 'Describe the problem of product...'}
                                                                                                             value={checkMaintenanceData[data?.id] ? checkMaintenanceData[data?.id].comment : selected == data?.id ? commentData : ''}
                                                                                                             onChange={(e) => {
                                                                                                                 setCommentData(e.target.value)
@@ -371,16 +348,16 @@ export default function Maintenance({ params }: {
                                                 :
                                                 activeTab3 === true ?
                                                     <div className="container">
-                                                        <p className="text-xs font-medium mt-1 text-[#5D686F]">{params.lang == 'ar' ? 'يرجي اختيار اليوم والوقت المناسب من الجدول التالي حيث سيتم التواصل معكم وتحديد الوقت المتاح لديكم' : 'Please choose the appropriate day and time from the following table, where we will contact you and determine the time you have available.'}</p>
+                                                        <p className="text-xs font-medium mt-1 text-[#5D686F]">{lang == 'ar' ? 'يرجي اختيار اليوم والوقت المناسب من الجدول التالي حيث سيتم التواصل معكم وتحديد الوقت المتاح لديكم' : 'Please choose the appropriate day and time from the following table, where we will contact you and determine the time you have available.'}</p>
                                                         <div className="grid grid-cols-5 mt-4 w-full">
                                                             <div className="text-xs text-[#004B7A] font-medium text-center">
-                                                                <p className="p-4 bg-[#D9D9D960]">{params.lang == 'ar' ? 'السبت' : 'Saturday'}</p>
-                                                                <p className="p-4">{params.lang == 'ar' ? 'الاحد' : 'Sunday'}</p>
-                                                                <p className="p-4 bg-[#D9D9D960]">{params.lang == 'ar' ? 'الاثنين' : 'Monday'}</p>
-                                                                <p className="p-4">{params.lang == 'ar' ? 'الثلاثاء' : 'Tuesday'}</p>
-                                                                <p className="p-4 bg-[#D9D9D960]">{params.lang == 'ar' ? 'الثلاثاء' : 'Wednesday'}</p>
-                                                                <p className="p-4">{params.lang == 'ar' ? 'الخميس' : 'Thursday'}</p>
-                                                                <p className="p-4 bg-[#D9D9D960]">{params.lang == 'ar' ? 'الجمعة' : 'Friday'}</p>
+                                                                <p className="p-4 bg-[#D9D9D960]">{lang == 'ar' ? 'السبت' : 'Saturday'}</p>
+                                                                <p className="p-4">{lang == 'ar' ? 'الاحد' : 'Sunday'}</p>
+                                                                <p className="p-4 bg-[#D9D9D960]">{lang == 'ar' ? 'الاثنين' : 'Monday'}</p>
+                                                                <p className="p-4">{lang == 'ar' ? 'الثلاثاء' : 'Tuesday'}</p>
+                                                                <p className="p-4 bg-[#D9D9D960]">{lang == 'ar' ? 'الثلاثاء' : 'Wednesday'}</p>
+                                                                <p className="p-4">{lang == 'ar' ? 'الخميس' : 'Thursday'}</p>
+                                                                <p className="p-4 bg-[#D9D9D960]">{lang == 'ar' ? 'الجمعة' : 'Friday'}</p>
                                                             </div>
                                                             <div className="col-span-4 text-xs text-[#5D686F] font-medium">
                                                                 <div className="p-4 bg-[#D9D9D960] grid grid-cols-2">
@@ -390,7 +367,7 @@ export default function Maintenance({ params }: {
                                                                                 setRadioVal(e.target.value)
                                                                                 setSelectedTime(e.target.value)
                                                                             }} />
-                                                                        <span>{params.lang == 'ar' ? 'مـن 09:00 صباحا - الـي 05:00 مسـاءا' : 'From 09:00 AM - to 05:00 PM'}</span>
+                                                                        <span>{lang == 'ar' ? 'مـن 09:00 صباحا - الـي 05:00 مسـاءا' : 'From 09:00 AM - to 05:00 PM'}</span>
                                                                     </label>
                                                                     <label className="inline-flex gap-x-2">
                                                                         <input type="radio" name="default_radio" className="form-radio" value="Sat 5PM to 12PM" checked={radioval === 'Sat 5PM to 12PM'}
@@ -398,7 +375,7 @@ export default function Maintenance({ params }: {
                                                                                 setRadioVal(e.target.value)
                                                                                 setSelectedTime(e.target.value)
                                                                             }} />
-                                                                        <span>{params.lang == 'ar' ? 'مـن 05:00 مساءا - الـي 12:00 مسـاءا' : 'From 05:00 pm - to 12:00 pm'}</span>
+                                                                        <span>{lang == 'ar' ? 'مـن 05:00 مساءا - الـي 12:00 مسـاءا' : 'From 05:00 pm - to 12:00 pm'}</span>
                                                                     </label>
                                                                 </div>
                                                                 <div className="p-4 grid grid-cols-2">
@@ -408,7 +385,7 @@ export default function Maintenance({ params }: {
                                                                                 setRadioVal(e.target.value)
                                                                                 setSelectedTime(e.target.value)
                                                                             }} />
-                                                                        <span>{params.lang == 'ar' ? 'مـن 09:00 صباحا - الـي 05:00 مسـاءا' : 'From 09:00 AM - to 05:00 PM'}</span>
+                                                                        <span>{lang == 'ar' ? 'مـن 09:00 صباحا - الـي 05:00 مسـاءا' : 'From 09:00 AM - to 05:00 PM'}</span>
                                                                     </label>
                                                                     <label className="inline-flex gap-x-2">
                                                                         <input type="radio" name="default_radio" className="form-radio" value="Sun 5PM to 12PM" checked={radioval === 'Sun 5PM to 12PM'}
@@ -416,7 +393,7 @@ export default function Maintenance({ params }: {
                                                                                 setRadioVal(e.target.value)
                                                                                 setSelectedTime(e.target.value)
                                                                             }} />
-                                                                        <span>{params.lang == 'ar' ? 'مـن 05:00 مساءا - الـي 12:00 مسـاءا' : 'From 05:00 pm - to 12:00 pm'}</span>
+                                                                        <span>{lang == 'ar' ? 'مـن 05:00 مساءا - الـي 12:00 مسـاءا' : 'From 05:00 pm - to 12:00 pm'}</span>
                                                                     </label>
                                                                 </div>
                                                                 <div className="p-4 bg-[#D9D9D960] grid grid-cols-2">
@@ -426,7 +403,7 @@ export default function Maintenance({ params }: {
                                                                                 setRadioVal(e.target.value)
                                                                                 setSelectedTime(e.target.value)
                                                                             }} />
-                                                                        <span>{params.lang == 'ar' ? 'مـن 09:00 صباحا - الـي 05:00 مسـاءا' : 'From 09:00 AM - to 05:00 PM'}</span>
+                                                                        <span>{lang == 'ar' ? 'مـن 09:00 صباحا - الـي 05:00 مسـاءا' : 'From 09:00 AM - to 05:00 PM'}</span>
                                                                     </label>
                                                                     <label className="inline-flex gap-x-2">
                                                                         <input type="radio" name="default_radio" className="form-radio" value="Mon 5PM to 12PM" checked={radioval === 'Mon 5PM to 12PM'}
@@ -434,7 +411,7 @@ export default function Maintenance({ params }: {
                                                                                 setRadioVal(e.target.value)
                                                                                 setSelectedTime(e.target.value)
                                                                             }} />
-                                                                        <span>{params.lang == 'ar' ? 'مـن 05:00 مساءا - الـي 12:00 مسـاءا' : 'From 05:00 pm - to 12:00 pm'}</span>
+                                                                        <span>{lang == 'ar' ? 'مـن 05:00 مساءا - الـي 12:00 مسـاءا' : 'From 05:00 pm - to 12:00 pm'}</span>
                                                                     </label>
                                                                 </div>
                                                                 <div className="p-4 grid grid-cols-2">
@@ -444,7 +421,7 @@ export default function Maintenance({ params }: {
                                                                                 setRadioVal(e.target.value)
                                                                                 setSelectedTime(e.target.value)
                                                                             }} />
-                                                                        <span>{params.lang == 'ar' ? 'مـن 09:00 صباحا - الـي 05:00 مسـاءا' : 'From 09:00 AM - to 05:00 PM'}</span>
+                                                                        <span>{lang == 'ar' ? 'مـن 09:00 صباحا - الـي 05:00 مسـاءا' : 'From 09:00 AM - to 05:00 PM'}</span>
                                                                     </label>
                                                                     <label className="inline-flex gap-x-2">
                                                                         <input type="radio" name="default_radio" className="form-radio" value="Tue 5PM to 12PM" checked={radioval === 'Tue 5PM to 12PM'}
@@ -452,7 +429,7 @@ export default function Maintenance({ params }: {
                                                                                 setRadioVal(e.target.value)
                                                                                 setSelectedTime(e.target.value)
                                                                             }} />
-                                                                        <span>{params.lang == 'ar' ? 'مـن 05:00 مساءا - الـي 12:00 مسـاءا' : 'From 05:00 pm - to 12:00 pm'}</span>
+                                                                        <span>{lang == 'ar' ? 'مـن 05:00 مساءا - الـي 12:00 مسـاءا' : 'From 05:00 pm - to 12:00 pm'}</span>
                                                                     </label>
                                                                 </div>
                                                                 <div className="p-4 bg-[#D9D9D960] grid grid-cols-2">
@@ -462,7 +439,7 @@ export default function Maintenance({ params }: {
                                                                                 setRadioVal(e.target.value)
                                                                                 setSelectedTime(e.target.value)
                                                                             }} />
-                                                                        <span>{params.lang == 'ar' ? 'مـن 09:00 صباحا - الـي 05:00 مسـاءا' : 'From 09:00 AM - to 05:00 PM'}</span>
+                                                                        <span>{lang == 'ar' ? 'مـن 09:00 صباحا - الـي 05:00 مسـاءا' : 'From 09:00 AM - to 05:00 PM'}</span>
                                                                     </label>
                                                                     <label className="inline-flex gap-x-2">
                                                                         <input type="radio" name="default_radio" className="form-radio" value="Wed 5PM to 12PM" checked={radioval === 'Wed 5PM to 12PM'}
@@ -470,7 +447,7 @@ export default function Maintenance({ params }: {
                                                                                 setRadioVal(e.target.value)
                                                                                 setSelectedTime(e.target.value)
                                                                             }} />
-                                                                        <span>{params.lang == 'ar' ? 'مـن 05:00 مساءا - الـي 12:00 مسـاءا' : 'From 05:00 pm - to 12:00 pm'}</span>
+                                                                        <span>{lang == 'ar' ? 'مـن 05:00 مساءا - الـي 12:00 مسـاءا' : 'From 05:00 pm - to 12:00 pm'}</span>
                                                                     </label>
                                                                 </div>
                                                                 <div className="p-4 grid grid-cols-2">
@@ -480,7 +457,7 @@ export default function Maintenance({ params }: {
                                                                                 setRadioVal(e.target.value)
                                                                                 setSelectedTime(e.target.value)
                                                                             }} />
-                                                                        <span>{params.lang == 'ar' ? 'مـن 09:00 صباحا - الـي 05:00 مسـاءا' : 'From 09:00 AM - to 05:00 PM'}</span>
+                                                                        <span>{lang == 'ar' ? 'مـن 09:00 صباحا - الـي 05:00 مسـاءا' : 'From 09:00 AM - to 05:00 PM'}</span>
                                                                     </label>
                                                                     <label className="inline-flex gap-x-2">
                                                                         <input type="radio" name="default_radio" className="form-radio" value="Thu 5PM to 12PM" checked={radioval === 'Thu 5PM to 12PM'}
@@ -488,7 +465,7 @@ export default function Maintenance({ params }: {
                                                                                 setRadioVal(e.target.value)
                                                                                 setSelectedTime(e.target.value)
                                                                             }} />
-                                                                        <span>{params.lang == 'ar' ? 'مـن 05:00 مساءا - الـي 12:00 مسـاءا' : 'From 05:00 pm - to 12:00 pm'}</span>
+                                                                        <span>{lang == 'ar' ? 'مـن 05:00 مساءا - الـي 12:00 مسـاءا' : 'From 05:00 pm - to 12:00 pm'}</span>
                                                                     </label>
                                                                 </div>
                                                                 <div className="p-4 bg-[#D9D9D960] grid grid-cols-2">
@@ -498,7 +475,7 @@ export default function Maintenance({ params }: {
                                                                                 setRadioVal(e.target.value)
                                                                                 setSelectedTime(e.target.value)
                                                                             }} />
-                                                                        <span>{params.lang == 'ar' ? 'مـن 09:00 صباحا - الـي 05:00 مسـاءا' : 'From 09:00 AM - to 05:00 PM'}</span>
+                                                                        <span>{lang == 'ar' ? 'مـن 09:00 صباحا - الـي 05:00 مسـاءا' : 'From 09:00 AM - to 05:00 PM'}</span>
                                                                     </label>
                                                                     <label className="inline-flex gap-x-2">
                                                                         <input type="radio" name="default_radio" className="form-radio" value="Fri 5PM to 12PM" checked={radioval === 'Fri 5PM to 12PM'}
@@ -506,7 +483,7 @@ export default function Maintenance({ params }: {
                                                                                 setRadioVal(e.target.value)
                                                                                 setSelectedTime(e.target.value)
                                                                             }} />
-                                                                        <span>{params.lang == 'ar' ? 'مـن 05:00 مساءا - الـي 12:00 مسـاءا' : 'From 05:00 pm - to 12:00 pm'}</span>
+                                                                        <span>{lang == 'ar' ? 'مـن 05:00 مساءا - الـي 12:00 مسـاءا' : 'From 05:00 pm - to 12:00 pm'}</span>
                                                                     </label>
                                                                 </div>
                                                             </div>
@@ -532,7 +509,7 @@ export default function Maintenance({ params }: {
                                                     }}
                                                     className="w-1/4 focus-visible:outline-none border border-[#004B7A] hover:bg-[#004B7A] hover:text-white text-[#004B7A] text-xs font-semibold px-3.5 py-3 rounded-md shadow-md hover:shadow-none"
                                                 >
-                                                    {params.lang == 'ar' ? 'الغاء الطلب' : "Back"}
+                                                    {lang == 'ar' ? 'الغاء الطلب' : "Back"}
                                                 </button>
                                                 : null}
                                             <button
@@ -540,13 +517,13 @@ export default function Maintenance({ params }: {
                                                 onClick={() => {
                                                     if (activeTab2 === true) {
                                                         if (subjectData == '' || commentData == '') {
-                                                            return topMessageAlartDanger(params.lang === 'ar' ? "الرجاء إضافة بيانات الحقول!" : "please add fields data!")
+                                                            return topMessageAlartDanger(lang === 'ar' ? "الرجاء إضافة بيانات الحقول!" : "please add fields data!")
                                                         }
                                                         setActiveTab3(true)
                                                         setActiveTab2(false)
                                                     } if (activeTab3 === true) {
                                                         if (selectedTime === false) {
-                                                            return topMessageAlartDanger(params.lang === 'ar' ? "يرجى تحديد الوقت!" : "please select time!")
+                                                            return topMessageAlartDanger(lang === 'ar' ? "يرجى تحديد الوقت!" : "please select time!")
                                                         }
                                                         SubmitData()
                                                         // setShow(false)
@@ -555,16 +532,16 @@ export default function Maintenance({ params }: {
                                                 disabled={selected == false ? true : false}
                                                 className={`${selected == false ? 'border-[#219EBC] bg-[#219EBC] text-white' : 'border-[#004B7A] bg-[#004B7A] text-white'} w-1/3 focus-visible:outline-none border text-xs font-semibold px-3.5 py-3 rounded-md shadow-md hover:shadow-none`}
                                             >
-                                                {params.lang == 'ar' ? 'الغاء الطلب' : "Proceed to Next Step"}
+                                                {lang == 'ar' ? 'الغاء الطلب' : "Proceed to Next Step"}
                                             </button>
                                         </div>
                                     }
-                                </Dialog.Panel>
-                            </Transition.Child>
+                                </DialogPanel>
+                            </TransitionChild>
                         </div>
                     </div>
                 </Dialog>
-            </Transition >
+            </Transition>
 
         </>
     )

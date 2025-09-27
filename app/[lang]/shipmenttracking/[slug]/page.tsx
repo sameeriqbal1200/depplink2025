@@ -1,6 +1,6 @@
 "use client"; // This is a client component 👈🏽
 import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
-import { Api } from '../../api/Api';
+import { Api } from "@/lib/api/apiLinks";
 import React, { useState, useRef, useEffect, Fragment } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
@@ -49,7 +49,7 @@ export default function ShipmentTracking({ params }: { params: { lang: string, d
 
     useEffect(() => {
         (async () => {
-            const translationdata = await getDictionary(params.lang);
+            const translationdata = await getDictionary(lang);
             setDict(translationdata);
         })();
         if (params?.data?.data) {
@@ -112,7 +112,7 @@ export default function ShipmentTracking({ params }: { params: { lang: string, d
                 </div>
             ,
             toast: true,
-            position: params.lang == 'ar' ? 'top-start' : 'top-end',
+            position: lang == 'ar' ? 'top-start' : 'top-end',
             showConfirmButton: false,
             timer: 5000,
             showCloseButton: false,
@@ -134,7 +134,7 @@ export default function ShipmentTracking({ params }: { params: { lang: string, d
                 </div>
             ,
             toast: true,
-            position: params.lang == 'ar' ? 'top-start' : 'top-end',
+            position: lang == 'ar' ? 'top-start' : 'top-end',
             showConfirmButton: false,
             timer: 15000,
             showCloseButton: true,
@@ -165,13 +165,13 @@ export default function ShipmentTracking({ params }: { params: { lang: string, d
                     throw new Error('Failed to update location');
                 }
 
-                topMessageAlartSuccess(params.lang === 'ar' ? 'تمت إضافة الموقع بنجاح!' : 'Location Added successfully!');
+                topMessageAlartSuccess(lang === 'ar' ? 'تمت إضافة الموقع بنجاح!' : 'Location Added successfully!');
                 setisOpen(false);
                 setButtonHide(true);
                 router.refresh()
             } catch (err) {
                 console.error('Error saving location:', err);
-                topMessageAlartDanger(params.lang === 'ar' ? 'خطأ في حفظ الموقع' : 'Error Saving Location!');
+                topMessageAlartDanger(lang === 'ar' ? 'خطأ في حفظ الموقع' : 'Error Saving Location!');
             } finally {
                 setLoadingSave(false);
             }
@@ -202,10 +202,10 @@ export default function ShipmentTracking({ params }: { params: { lang: string, d
                         }
 
                         const data = await response.json();
-                        topMessageAlartSuccess(params.lang === 'ar' ? 'تمت إضافة الموقع بنجاح!' : 'Location Added successfully!');
+                        topMessageAlartSuccess(lang === 'ar' ? 'تمت إضافة الموقع بنجاح!' : 'Location Added successfully!');
                     } catch (err) {
                         console.error('Error saving location:', err);
-                        topMessageAlartDanger(params.lang === 'ar' ? 'خطأ في حفظ الموقع' : 'Error Saving Location!');
+                        topMessageAlartDanger(lang === 'ar' ? 'خطأ في حفظ الموقع' : 'Error Saving Location!');
                         setError('Error saving location');
                     }
                 },
@@ -270,7 +270,7 @@ export default function ShipmentTracking({ params }: { params: { lang: string, d
                                     />
                                 </Link>
                                 <Link prefetch={false} scroll={false} href={`${origin}/${params?.lang}`} as={`${origin}/${params?.lang}`} className="btn sht_303mainContinueShopBtn">
-                                    {params.lang == 'ar' ? 'متابعة التسوق' : 'Continue Shopping'}
+                                    {lang == 'ar' ? 'متابعة التسوق' : 'Continue Shopping'}
                                 </Link>
                             </div>
                             {!shipmentFound ?
@@ -281,7 +281,7 @@ export default function ShipmentTracking({ params }: { params: { lang: string, d
                                             <path d="M7.50626 15.2647C7.61657 15.6639 8.02965 15.8982 8.4289 15.7879C8.82816 15.6776 9.06241 15.2645 8.9521 14.8652L7.50626 15.2647ZM6.07692 7.27442L6.79984 7.0747V7.0747L6.07692 7.27442ZM4.7037 5.91995L4.50319 6.64265L4.7037 5.91995ZM3.20051 4.72457C2.80138 4.61383 2.38804 4.84762 2.2773 5.24675C2.16656 5.64589 2.40035 6.05923 2.79949 6.16997L3.20051 4.72457ZM20.1886 15.7254C20.5895 15.6213 20.8301 15.2118 20.7259 14.8109C20.6217 14.41 20.2123 14.1695 19.8114 14.2737L20.1886 15.7254ZM10.1978 17.5588C10.5074 18.6795 9.82778 19.8618 8.62389 20.1747L9.00118 21.6265C10.9782 21.1127 12.1863 19.1239 11.6436 17.1594L10.1978 17.5588ZM8.62389 20.1747C7.41216 20.4896 6.19622 19.7863 5.88401 18.6562L4.43817 19.0556C4.97829 21.0107 7.03196 22.1383 9.00118 21.6265L8.62389 20.1747ZM5.88401 18.6562C5.57441 17.5355 6.254 16.3532 7.4579 16.0403L7.08061 14.5885C5.10356 15.1023 3.89544 17.0911 4.43817 19.0556L5.88401 18.6562ZM7.4579 16.0403C8.66962 15.7254 9.88556 16.4287 10.1978 17.5588L11.6436 17.1594C11.1035 15.2043 9.04982 14.0768 7.08061 14.5885L7.4579 16.0403ZM8.9521 14.8652L6.79984 7.0747L5.354 7.47414L7.50626 15.2647L8.9521 14.8652ZM4.90421 5.19725L3.20051 4.72457L2.79949 6.16997L4.50319 6.64265L4.90421 5.19725ZM6.79984 7.0747C6.54671 6.15847 5.8211 5.45164 4.90421 5.19725L4.50319 6.64265C4.92878 6.76073 5.24573 7.08223 5.354 7.47414L6.79984 7.0747ZM11.1093 18.085L20.1886 15.7254L19.8114 14.2737L10.732 16.6332L11.1093 18.085Z" fill="#1C274C" />
                                             <path opacity="0.5" d="M9.56541 8.73049C9.0804 6.97492 8.8379 6.09714 9.24954 5.40562C9.66119 4.71409 10.5662 4.47889 12.3763 4.00849L14.2962 3.50955C16.1062 3.03915 17.0113 2.80394 17.7242 3.20319C18.4372 3.60244 18.6797 4.48023 19.1647 6.2358L19.6792 8.09786C20.1642 9.85343 20.4067 10.7312 19.995 11.4227C19.5834 12.1143 18.6784 12.3495 16.8683 12.8199L14.9484 13.3188C13.1384 13.7892 12.2333 14.0244 11.5203 13.6252C10.8073 13.2259 10.5648 12.3481 10.0798 10.5926L9.56541 8.73049Z" stroke="#1C274C" strokeWidth="1.5" />
                                         </svg>
-                                        <h1 className="sht_303mainInnerFirstXsHeading">{params.lang == 'ar' ? 'طلبك محدد للتسليم بحلول' : 'Your order is schedule for delivery by '}<span className="sht_303mainInnerSpan">{params.lang == 'ar' ? 'تمكين متاجر' : 'Tamkeen Stores'}</span> {params.lang == 'ar' ? 'شحنتك لا' : 'your shipment number is '} <span className="sht_303mainInnerSpan">{shipmentnumber}</span></h1>
+                                        <h1 className="sht_303mainInnerFirstXsHeading">{lang == 'ar' ? 'طلبك محدد للتسليم بحلول' : 'Your order is schedule for delivery by '}<span className="sht_303mainInnerSpan">{lang == 'ar' ? 'تمكين متاجر' : 'Tamkeen Stores'}</span> {lang == 'ar' ? 'شحنتك لا' : 'your shipment number is '} <span className="sht_303mainInnerSpan">{shipmentnumber}</span></h1>
                                     </div>
                                 </>
                                 : null}
@@ -293,7 +293,7 @@ export default function ShipmentTracking({ params }: { params: { lang: string, d
                             <div className="sht_303mainInnerFourthDiv">
                                 <div className="container">
                                     <div>
-                                        <h2 className="sht_303mainInnerSecXsHeading">{params.lang == 'ar' ? 'الشحنات تفاصيل التوصيل' : 'Shipment Delivery Details'}</h2>
+                                        <h2 className="sht_303mainInnerSecXsHeading">{lang == 'ar' ? 'الشحنات تفاصيل التوصيل' : 'Shipment Delivery Details'}</h2>
                                         <div className="sht_303mainInnerSeventhDiv">
                                             <p className="sht_303mainInnerPara text-sm">
                                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -351,7 +351,7 @@ export default function ShipmentTracking({ params }: { params: { lang: string, d
                                                         <>
                                                             {phonenumber ? (
                                                                 <>
-                                                                    {params.lang === 'ar' ? (
+                                                                    {lang === 'ar' ? (
                                                                         <span>{phonenumber} 966+</span>
                                                                     ) : (
                                                                         <span>+966 {phonenumber}</span>
@@ -365,7 +365,7 @@ export default function ShipmentTracking({ params }: { params: { lang: string, d
                                                         <>
                                                             {onlinePhoneNumber ? (
                                                                 <>
-                                                                    {params.lang === 'ar' ? (
+                                                                    {lang === 'ar' ? (
                                                                         <span>{onlinePhoneNumber} 966+</span>
                                                                     ) : (
                                                                         <span>+966 {onlinePhoneNumber}</span>
@@ -390,7 +390,7 @@ export default function ShipmentTracking({ params }: { params: { lang: string, d
                                                     <>
                                                         {statecity ? (
                                                             <>
-                                                                {params.lang === 'ar' ? (
+                                                                {lang === 'ar' ? (
                                                                     <span>{statecityArabic}, المملكة العربية السعودية</span>
                                                                 ) : (
                                                                     <span>{statecity}, Saudi Arabia</span>
@@ -404,7 +404,7 @@ export default function ShipmentTracking({ params }: { params: { lang: string, d
                                                     <>
                                                         {onlineCity ? (
                                                             <>
-                                                                {params.lang === 'ar' ? (
+                                                                {lang === 'ar' ? (
                                                                     <span>{onlineCityArabic}, المملكة العربية السعودية</span>
                                                                 ) : (
                                                                     <span>{onlineCity}, Saudi Arabia</span>
@@ -418,7 +418,7 @@ export default function ShipmentTracking({ params }: { params: { lang: string, d
                                             </p>
                                             {currentLocation || buttonhide === true ? (
                                                 <p className="sht_303mainInnerAddressPara">
-                                                    {params.lang == 'ar' ? 'لقد أضفت عنوانًا' : 'You Added Address'}
+                                                    {lang == 'ar' ? 'لقد أضفت عنوانًا' : 'You Added Address'}
                                                 </p>
                                             ) : null}
                                         </div>
@@ -446,7 +446,7 @@ export default function ShipmentTracking({ params }: { params: { lang: string, d
                                             <>
                                                 <button className="bg-secondary flex items-center justify-center text-white text-sm w-full p-2.5 rounded-md mx-auto" onClick={handleCurrentLocation}>
                                                     <i className="fas fa-map-marker-alt mr-2"></i>
-                                                    {params.lang == 'ar' ? 'الموقع الحالي' : 'Current Location'}
+                                                    {lang == 'ar' ? 'الموقع الحالي' : 'Current Location'}
                                                     {error && <p className="text-red-500">{error}</p>}
                                                     {isLocationAllowed === false && <p className="text-red-500">{params?.lang == 'ar' ? "الطلب مرفوض او العنوان غير متاح" : "Permission denied or location not available."}</p>}
                                                 </button>
@@ -456,20 +456,20 @@ export default function ShipmentTracking({ params }: { params: { lang: string, d
                                                     onClick={() => setisOpen(true)}
                                                 >
                                                     <i className="fas fa-cog mr-2"></i>
-                                                    {params.lang == 'ar' ? 'موقع الإعداد' : 'Setup Location'}
+                                                    {lang == 'ar' ? 'موقع الإعداد' : 'Setup Location'}
                                                 </button>
                                             </>
                                         ) : null}
                                     </div>
                                     {/* <hr className="sht_303mainInnerHr" />
                             <div className="sht_303mainInnerNineDiv">
-                                <p className="font-normal">{params.lang == 'ar' ? 'تريد تغيير التسليم الخاص بك' : 'You want to change your delivery'} <span className="font-bold">{params.lang == 'ar' ? 'وقت' : 'Time'}</span> & <span className="font-bold">{params.lang == 'ar' ? 'تاريخ' : 'date'}</span>?</p>
-                                <button className="sht_303mainInnerXsTextBtn">{params.lang == 'ar' ? 'اختر وقت التسليم والتاريخ المفضل' : 'Choose Preferred Delivery Time and Date'}</button>
+                                <p className="font-normal">{lang == 'ar' ? 'تريد تغيير التسليم الخاص بك' : 'You want to change your delivery'} <span className="font-bold">{lang == 'ar' ? 'وقت' : 'Time'}</span> & <span className="font-bold">{lang == 'ar' ? 'تاريخ' : 'date'}</span>?</p>
+                                <button className="sht_303mainInnerXsTextBtn">{lang == 'ar' ? 'اختر وقت التسليم والتاريخ المفضل' : 'Choose Preferred Delivery Time and Date'}</button>
                             </div>
                             <hr className="sht_303mainInnerHr" />
                             <div className="sht_303mainInnerTenDiv">
-                                <p className="font-normal">{params.lang == 'ar' ? 'للتحقق من هويتك، قم بإعطاء' : 'To verify your identity, give the'} <span className="font-bold capitalize">{params.lang == 'ar' ? 'شفرة' : 'code'} </span>{params.lang == 'ar' ? 'إلى موظف التسليم لدينا:' : 'to our delivery associate:'}</p>
-                                <button className="sht_303mainInnerXsTextBtn">{params.lang == 'ar' ? 'إظهار الرمز' : 'Show Code'}</button>
+                                <p className="font-normal">{lang == 'ar' ? 'للتحقق من هويتك، قم بإعطاء' : 'To verify your identity, give the'} <span className="font-bold capitalize">{lang == 'ar' ? 'شفرة' : 'code'} </span>{lang == 'ar' ? 'إلى موظف التسليم لدينا:' : 'to our delivery associate:'}</p>
+                                <button className="sht_303mainInnerXsTextBtn">{lang == 'ar' ? 'إظهار الرمز' : 'Show Code'}</button>
                             </div> */}
                                 </div>
                             </div>
@@ -481,7 +481,7 @@ export default function ShipmentTracking({ params }: { params: { lang: string, d
                                             <div className={`sht_303mainInnenSSTDiv bg-primary absolute top-[14px] left-1/2 -translate-x-1/2`}></div>
                                         </div>
                                         <div className="self-center p-4 ltr:ml-2.5 rtl:ml-2.5 rtl:ltr:mr-2.5">
-                                            <p className="text-[13px] font-semibold text-[#3b3f5c] dark:text-white-light">{params.lang === 'ar' ? 'يعالج' : 'Processing'}</p>
+                                            <p className="text-[13px] font-semibold text-[#3b3f5c] dark:text-white-light">{lang === 'ar' ? 'يعالج' : 'Processing'}</p>
                                         </div>
                                     </div>
                                     <div className="flex">
@@ -489,7 +489,7 @@ export default function ShipmentTracking({ params }: { params: { lang: string, d
                                             <div className={`sht_303mainInnenSSTDiv bg-primary absolute top-[14px] left-1/2 -translate-x-1/2`}></div>
                                         </div>
                                         <div className="self-center p-4 ltr:ml-2.5 rtl:ml-2.5 rtl:ltr:mr-2.5">
-                                            <p className="text-[13px] font-semibold text-[#3b3f5c] dark:text-white-light">{params.lang === 'ar' ? 'تلقى' : 'Received'}</p>
+                                            <p className="text-[13px] font-semibold text-[#3b3f5c] dark:text-white-light">{lang === 'ar' ? 'تلقى' : 'Received'}</p>
                                         </div>
                                     </div>
                                     {/* <div className="flex">
@@ -497,7 +497,7 @@ export default function ShipmentTracking({ params }: { params: { lang: string, d
                                             <div className={`sht_303mainInnenSSTDiv bg-primary absolute top-[14px] left-1/2 -translate-x-1/2 `}></div>
                                         </div>
                                         <div className="self-center p-4 ltr:ml-2.5 rtl:ml-2.5 rtl:ltr:mr-2.5">
-                                            <p className="text-[13px] font-semibold text-[#3b3f5c] dark:text-white-light">{params.lang === 'ar' ? 'تم إنشاء الشحنة' : 'Shipment Created'}</p>
+                                            <p className="text-[13px] font-semibold text-[#3b3f5c] dark:text-white-light">{lang === 'ar' ? 'تم إنشاء الشحنة' : 'Shipment Created'}</p>
                                         </div>
                                     </div>
                                     <div className="flex">
@@ -505,7 +505,7 @@ export default function ShipmentTracking({ params }: { params: { lang: string, d
                                             <div className={`sht_303mainInnenSSTDiv absolute top-[14px] left-1/2 -translate-x-1/2 ${status >= 2 ? 'bg-primary' : 'bg-[#D9D9D9]'}`}></div>
                                         </div>
                                         <div className="self-center p-4 ltr:ml-2.5 rtl:ml-2.5 rtl:ltr:mr-2.5">
-                                            <p className="text-[13px] font-semibold text-[#3b3f5c] dark:text-white-light">{params.lang === 'ar' ? 'في العبور' : '⁠In Transit'}</p>
+                                            <p className="text-[13px] font-semibold text-[#3b3f5c] dark:text-white-light">{lang === 'ar' ? 'في العبور' : '⁠In Transit'}</p>
                                         </div>
                                     </div> */}
                                     <div className="flex">
@@ -513,7 +513,7 @@ export default function ShipmentTracking({ params }: { params: { lang: string, d
                                             <div className={`sht_303mainInnenSSTDiv absolute top-[14px] left-1/2 -translate-x-1/2 ${status >= 3 ? 'bg-primary' : 'bg-[#D9D9D9]'}`}></div>
                                         </div>
                                         <div className="self-center p-4 ltr:ml-2.5 rtl:ml-2.5 rtl:ltr:mr-2.5">
-                                            <p className="text-[13px] font-semibold text-[#3b3f5c] dark:text-white-light">{params.lang === 'ar' ? 'خارج للتسليم' : 'Out for delivery'}</p>
+                                            <p className="text-[13px] font-semibold text-[#3b3f5c] dark:text-white-light">{lang === 'ar' ? 'خارج للتسليم' : 'Out for delivery'}</p>
                                         </div>
                                     </div>
                                     <div className="flex">
@@ -521,7 +521,7 @@ export default function ShipmentTracking({ params }: { params: { lang: string, d
                                             <div className={`sht_303mainInnenSSTDiv absolute top-[14px] left-1/2 -translate-x-1/2 ${status >= 4 ? 'bg-primary' : 'bg-[#D9D9D9]'}`}></div>
                                         </div>
                                         <div className="self-center p-4 ltr:ml-2.5 rtl:ml-2.5 rtl:ltr:mr-2.5">
-                                            <p className="text-[13px] font-semibold text-[#3b3f5c] dark:text-white-light">{params.lang === 'ar' ? 'تم التوصيل' : 'Delivered'}</p>
+                                            <p className="text-[13px] font-semibold text-[#3b3f5c] dark:text-white-light">{lang === 'ar' ? 'تم التوصيل' : 'Delivered'}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -531,7 +531,7 @@ export default function ShipmentTracking({ params }: { params: { lang: string, d
                                     <div className="sht_303mainInnerFourthDiv">
                                         <div className="container">
                                             <div>
-                                                <h2 className="sht_303mainInnerSecXsHeading">{params.lang == 'ar' ? 'تفاصيل الراكب' : 'Rider Details'}</h2>
+                                                <h2 className="sht_303mainInnerSecXsHeading">{lang == 'ar' ? 'تفاصيل الراكب' : 'Rider Details'}</h2>
                                                 <div className="sht_303mainInnerSeventhDiv">
                                                     <p className="sht_303mainInnerPara !text-sm">
                                                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -541,7 +541,7 @@ export default function ShipmentTracking({ params }: { params: { lang: string, d
                                                         {riderName ? (
                                                             `${riderName} ${riderlastName}`
                                                         ) : (
-                                                            params.lang === 'ar' ? 'لم يتم تعيين متسابق' : 'No Rider Assigned'
+                                                            lang === 'ar' ? 'لم يتم تعيين متسابق' : 'No Rider Assigned'
                                                         )}
                                                     </p>
                                                     <p className="sht_303mainInnerSecPara text-sm">
@@ -550,7 +550,7 @@ export default function ShipmentTracking({ params }: { params: { lang: string, d
                                                             <path d="M5 15.2161C4.35254 13.5622 4 11.8013 4 10.1433C4 5.64588 7.58172 2 12 2C16.4183 2 20 5.64588 20 10.1433C20 14.6055 17.4467 19.8124 13.4629 21.6744C12.5343 22.1085 11.4657 22.1085 10.5371 21.6744C9.26474 21.0797 8.13831 20.1439 7.19438 19" stroke="#1C274C" strokeWidth="1.5" strokeLinecap="round" />
                                                         </svg>
                                                         {pickup ? (
-                                                            params.lang === 'ar' ? (
+                                                            lang === 'ar' ? (
                                                                 `${pickupArabic}`
                                                             ) : (
                                                                 `${pickup}`
@@ -587,7 +587,7 @@ export default function ShipmentTracking({ params }: { params: { lang: string, d
                                 <div className="container">
                                     <div className="sht_303mainInnenFifteenDiv">
                                         <div>
-                                            <h2 className="sht_303mainInnerSecXsHeading">{params.lang == 'ar' ? 'تفاصيل المنتج' : 'Product Details'}</h2>
+                                            <h2 className="sht_303mainInnerSecXsHeading">{lang == 'ar' ? 'تفاصيل المنتج' : 'Product Details'}</h2>
                                             {ordertype == 1 ? (
                                                 products.map((product, index) => (
                                                     <div key={index} className="sht_303mainInnenSixteenDiv">
@@ -604,7 +604,7 @@ export default function ShipmentTracking({ params }: { params: { lang: string, d
                                                         <div>
                                                             <p className="font-semibold">{product.sku || 'N/A'}</p>
                                                             <p className="mt-0.5">{product.product_name || 'No product name available'}</p>
-                                                            <p className="mt-3 font-semibold">{params.lang == 'ar' ? 'الكمية:' : 'QTY:'}  {product.quantity || 1}</p>
+                                                            <p className="mt-3 font-semibold">{lang == 'ar' ? 'الكمية:' : 'QTY:'}  {product.quantity || 1}</p>
                                                         </div>
                                                     </div>
                                                 ))
@@ -613,7 +613,7 @@ export default function ShipmentTracking({ params }: { params: { lang: string, d
                                                     <div key={index} className="sht_303mainInnenSixteenDiv">
                                                         <Image
                                                             alt="Product Image"
-                                                            title={params.lang === 'ar' ? product.product_data.name_arabic : product.product_data.name}
+                                                            title={lang === 'ar' ? product.product_data.name_arabic : product.product_data.name}
                                                             loading="lazy"
                                                             width={80}
                                                             height={80}
@@ -623,13 +623,13 @@ export default function ShipmentTracking({ params }: { params: { lang: string, d
                                                         />
                                                         <div>
                                                             <p className="font-semibold">{product.product_data?.sku || 'N/A'}</p>
-                                                            <p className="mt-0.5">{params.lang === 'ar' ? product.product_data.name_arabic : product.product_data.name}</p>
-                                                            <p className="mt-3 font-semibold">{params.lang == 'ar' ? 'الكمية:' : 'QTY:'}  {product.quantity || 1}</p>
+                                                            <p className="mt-0.5">{lang === 'ar' ? product.product_data.name_arabic : product.product_data.name}</p>
+                                                            <p className="mt-3 font-semibold">{lang == 'ar' ? 'الكمية:' : 'QTY:'}  {product.quantity || 1}</p>
                                                             {product?.expressproduct == 1 ?
                                                             <Image
-                                                                src={params.lang === 'ar' ? `/icons/express_logo/express_logo_ar.png` : `/icons/express_logo/express_logo_en.png`}
-                                                                alt={params.lang === 'ar' ? "express delivery" : "express delivery"}
-                                                                title={params.lang === 'ar' ? "express delivery" : "express delivery"}
+                                                                src={lang === 'ar' ? `/icons/express_logo/express_logo_ar.png` : `/icons/express_logo/express_logo_en.png`}
+                                                                alt={lang === 'ar' ? "express delivery" : "express delivery"}
+                                                                title={lang === 'ar' ? "express delivery" : "express delivery"}
                                                                 height={65}
                                                                 width={65}
                                                                 loading='lazy'
@@ -674,7 +674,7 @@ export default function ShipmentTracking({ params }: { params: { lang: string, d
                                     />
                                 </Link>
                                 <Link prefetch={false} scroll={false} href={`${origin}/${params?.lang}`} as={`${origin}/${params?.lang}`} className="btn bg-primary text-xs font-semibold p-3 rounded-md text-white shadow-md hover:shadow-none">
-                                    {params.lang == 'ar' ? 'متابعة التسوق' : 'Continue Shopping'}
+                                    {lang == 'ar' ? 'متابعة التسوق' : 'Continue Shopping'}
                                 </Link>
                             </div>
                             {!shipmentFound ?
@@ -686,7 +686,7 @@ export default function ShipmentTracking({ params }: { params: { lang: string, d
                                             <path opacity="0.5" d="M9.56541 8.73049C9.0804 6.97492 8.8379 6.09714 9.24954 5.40562C9.66119 4.71409 10.5662 4.47889 12.3763 4.00849L14.2962 3.50955C16.1062 3.03915 17.0113 2.80394 17.7242 3.20319C18.4372 3.60244 18.6797 4.48023 19.1647 6.2358L19.6792 8.09786C20.1642 9.85343 20.4067 10.7312 19.995 11.4227C19.5834 12.1143 18.6784 12.3495 16.8683 12.8199L14.9484 13.3188C13.1384 13.7892 12.2333 14.0244 11.5203 13.6252C10.8073 13.2259 10.5648 12.3481 10.0798 10.5926L9.56541 8.73049Z" stroke="#1C274C" strokeWidth="1.5" />
                                         </svg>
                                         {/* <h1 className="text__txs text-dark">Your order is schedule for delivery by <span className="sht_303mainInnerSpan">Tamkeen Stores</span> your shipment number is <span className="sht_303mainInnerSpan">{shipmentnumber}</span></h1> */}
-                                        <h1 className="text__txs text-dark">{params.lang == 'ar' ? 'طلبك محدد للتسليم بحلول' : 'Your order is schedule for delivery by '}<span className="sht_303mainInnerSpan">{params.lang == 'ar' ? 'تمكين متاجر' : 'Tamkeen Stores'}</span> {params.lang == 'ar' ? 'شحنتك لا' : 'your shipment number is '} <span className="sht_303mainInnerSpan">{shipmentnumber}</span></h1>
+                                        <h1 className="text__txs text-dark">{lang == 'ar' ? 'طلبك محدد للتسليم بحلول' : 'Your order is schedule for delivery by '}<span className="sht_303mainInnerSpan">{lang == 'ar' ? 'تمكين متاجر' : 'Tamkeen Stores'}</span> {lang == 'ar' ? 'شحنتك لا' : 'your shipment number is '} <span className="sht_303mainInnerSpan">{shipmentnumber}</span></h1>
                                     </div>
                                 </>
                                 : null}
@@ -698,7 +698,7 @@ export default function ShipmentTracking({ params }: { params: { lang: string, d
                                 <div className="container">
                                     <div className="sht_303mainInnenFifteenDiv">
                                         <div>
-                                            <h2 className="sht_303mainInnerSecXsHeading">{params.lang == 'ar' ? 'الشحنات تفاصيل التوصيل' : 'Shipment Delivery Details'}</h2>
+                                            <h2 className="sht_303mainInnerSecXsHeading">{lang == 'ar' ? 'الشحنات تفاصيل التوصيل' : 'Shipment Delivery Details'}</h2>
                                             <div className="sht_303mainInnerSeventhDiv">
                                                 <p className="sht_303mainInnerPara !text-sm">
                                                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -756,7 +756,7 @@ export default function ShipmentTracking({ params }: { params: { lang: string, d
                                                             <>
                                                                 {phonenumber ? (
                                                                     <>
-                                                                        {params.lang === 'ar' ? (
+                                                                        {lang === 'ar' ? (
                                                                             <span>{phonenumber} 966+</span>
                                                                         ) : (
                                                                             <span>+966 {phonenumber}</span>
@@ -770,7 +770,7 @@ export default function ShipmentTracking({ params }: { params: { lang: string, d
                                                             <>
                                                                 {onlinePhoneNumber ? (
                                                                     <>
-                                                                        {params.lang === 'ar' ? (
+                                                                        {lang === 'ar' ? (
                                                                             <span>{onlinePhoneNumber} 966+</span>
                                                                         ) : (
                                                                             <span>+966 {onlinePhoneNumber}</span>
@@ -795,7 +795,7 @@ export default function ShipmentTracking({ params }: { params: { lang: string, d
                                                         <>
                                                             {statecity ? (
                                                                 <>
-                                                                    {params.lang === 'ar' ? (
+                                                                    {lang === 'ar' ? (
                                                                         <span>{statecityArabic}, المملكة العربية السعودية</span>
                                                                     ) : (
                                                                         <span>{statecity}, Saudi Arabia</span>
@@ -809,7 +809,7 @@ export default function ShipmentTracking({ params }: { params: { lang: string, d
                                                         <>
                                                             {onlineCity ? (
                                                                 <>
-                                                                    {params.lang === 'ar' ? (
+                                                                    {lang === 'ar' ? (
                                                                         <span>{onlineCityArabic}, المملكة العربية السعودية</span>
                                                                     ) : (
                                                                         <span>{onlineCity}, Saudi Arabia</span>
@@ -823,7 +823,7 @@ export default function ShipmentTracking({ params }: { params: { lang: string, d
                                                 </p>
                                                 {currentLocation || buttonhide === true ? (
                                                     <p className="sht_303mainInnerAddressPara">
-                                                        {params.lang == 'ar' ? 'لقد أضفت عنوانًا' : 'You Added Address'}
+                                                        {lang == 'ar' ? 'لقد أضفت عنوانًا' : 'You Added Address'}
                                                     </p>
                                                 ) : null}
                                             </div>
@@ -851,7 +851,7 @@ export default function ShipmentTracking({ params }: { params: { lang: string, d
                                                     <>
                                                         <button disabled={status == 4} className="w-full mt-3 underline text-sm disabled:text-gray" onClick={handleCurrentLocation}>
                                                             <i className="fas fa-map-marker-alt mr-2"></i>
-                                                            {params.lang == 'ar' ? 'الموقع الحالي' : 'Current Location'}
+                                                            {lang == 'ar' ? 'الموقع الحالي' : 'Current Location'}
                                                             {error && <p className="text-red-500">{error}</p>}
                                                             {isLocationAllowed === false && <p className="text-red-500">{params?.lang == 'ar' ? "الطلب مرفوض او العنوان غير متاح" : "Permission denied or location not available."}</p>}
                                                         </button>
@@ -861,7 +861,7 @@ export default function ShipmentTracking({ params }: { params: { lang: string, d
                                                             onClick={() => setisOpen(true)}
                                                         >
                                                             <i className="fas fa-cog mr-2"></i>
-                                                            {params.lang == 'ar' ? 'موقع الإعداد' : 'Setup Location'}
+                                                            {lang == 'ar' ? 'موقع الإعداد' : 'Setup Location'}
                                                         </button>
                                                     </>
                                                 ) : null}
@@ -870,28 +870,28 @@ export default function ShipmentTracking({ params }: { params: { lang: string, d
                                     </div>
                                     {/* <hr className="sht_303mainInnerHr" />
                             <div className="sht_303mainInnenParaBtnDiv">
-                                <p className="font-normal">{params.lang == 'ar' ? 'تريد تغيير التسليم الخاص بك' : 'You want to change your delivery'} <span className="font-bold">{params.lang == 'ar' ? 'وقت' : 'Time'}</span> & <span className="font-bold">{params.lang == 'ar' ? 'تاريخ' : 'date'}</span>?</p>
-                                <button className="sht_303mainInnerXsTextBtn">{params.lang == 'ar' ? 'اختر وقت التسليم والتاريخ المفضل' : 'Choose Preferred Delivery Time and Date'}</button>
+                                <p className="font-normal">{lang == 'ar' ? 'تريد تغيير التسليم الخاص بك' : 'You want to change your delivery'} <span className="font-bold">{lang == 'ar' ? 'وقت' : 'Time'}</span> & <span className="font-bold">{lang == 'ar' ? 'تاريخ' : 'date'}</span>?</p>
+                                <button className="sht_303mainInnerXsTextBtn">{lang == 'ar' ? 'اختر وقت التسليم والتاريخ المفضل' : 'Choose Preferred Delivery Time and Date'}</button>
                             </div>
                             <hr className="sht_303mainInnerHr" />
                             <div className="sht_303mainInnenParaBtnSecDiv">
-                                <p className="font-normal">{params.lang == 'ar' ? 'للتحقق من هويتك، قم بإعطاء' : 'To verify your identity, give the'} <span className="font-bold capitalize">{params.lang == 'ar' ? 'شفرة' : 'code'} </span>{params.lang == 'ar' ? 'إلى موظف التسليم لدينا:' : 'to our delivery associate:'}</p>
-                                <button className="sht_303mainInnerXsTextBtn">{params.lang == 'ar' ? 'إظهار الرمز' : 'Show Code'}</button>
+                                <p className="font-normal">{lang == 'ar' ? 'للتحقق من هويتك، قم بإعطاء' : 'To verify your identity, give the'} <span className="font-bold capitalize">{lang == 'ar' ? 'شفرة' : 'code'} </span>{lang == 'ar' ? 'إلى موظف التسليم لدينا:' : 'to our delivery associate:'}</p>
+                                <button className="sht_303mainInnerXsTextBtn">{lang == 'ar' ? 'إظهار الرمز' : 'Show Code'}</button>
                             </div> */}
                                 </div>
                             </div>
 
                             <div className="sht_303mainInnerElevenDiv">
                                 <div className="sht_303mainInnerTwelveDiv">
-                                    <div className={`sht_303mainInnenStatusDiv ${params.lang === 'ar' ? 'rtl-progress' : ''}`}>
-                                        <div className={`p-[1px] ${params.lang === 'ar' ? 'mr-auto w-[50%]' : 'ml-auto w-[50%]'} bg-primary`}></div>
+                                    <div className={`sht_303mainInnenStatusDiv ${lang === 'ar' ? 'rtl-progress' : ''}`}>
+                                        <div className={`p-[1px] ${lang === 'ar' ? 'mr-auto w-[50%]' : 'ml-auto w-[50%]'} bg-primary`}></div>
                                         <div className={`sht_303mainInnenFSTDiv bg-primary`}></div>
                                         <div className={`sht_303mainInnenFSTDiv ${status >= 3 ? 'bg-primary' : 'bg-[#D9D9D9]'}`}></div>
                                         {/* <div className={`sht_303mainInnenFSTDiv ${status >= 2 ? 'bg-primary' : 'bg-[#D9D9D9]'}`}></div>
                                         <div className={`sht_303mainInnenFSTDiv ${status >= 3 ? 'bg-primary' : 'bg-[#D9D9D9]'}`}></div> */}
-                                        <div className={`p-[1px] ${params.lang === 'ar' ? 'ml-auto w-[43%]' : 'mr-auto w-[43%]'} ${status == 4 ? 'bg-primary' : 'bg-[#D9D9D9]'}`}></div>
+                                        <div className={`p-[1px] ${lang === 'ar' ? 'ml-auto w-[43%]' : 'mr-auto w-[43%]'} ${status == 4 ? 'bg-primary' : 'bg-[#D9D9D9]'}`}></div>
                                     </div>
-                                    <div className={`sht_303mainInnerFStatusDiv ${params.lang === 'ar' ? 'flex-row-reverse' : ''}`}>
+                                    <div className={`sht_303mainInnerFStatusDiv ${lang === 'ar' ? 'flex-row-reverse' : ''}`}>
                                         <div className={`sht_303mainInnenSSTDiv bg-primary`}></div>
                                         <div className={`sht_303mainInnenSSTDiv bg-primary`}></div>
                                         <div className={`sht_303mainInnenSSTDiv ${status >= 3 ? 'bg-primary' : 'bg-[#D9D9D9]'}`}></div>
@@ -900,12 +900,12 @@ export default function ShipmentTracking({ params }: { params: { lang: string, d
                                         <div className={`sht_303mainInnenSSTDiv ${status == 4 ? 'bg-primary' : 'bg-[#D9D9D9]'}`}></div>
                                     </div>
                                     <div className="sht_303mainInnerSStatusDiv">
-                                        <div className={`m-auto text-primary`}>{params.lang === 'ar' ? 'جاري معالجة طلبك' : 'Your Order Processing'}</div>
-                                        <div className={`m-auto text-primary`}>{params.lang === 'ar' ? 'تم استلام طلبك' : 'Your Order Received'}</div>
-                                        {/* <div className={`m-auto text-primary`}>{params.lang === 'ar' ? 'تم إنشاء الشحنة' : 'Shipment Created'}</div> */}
-                                        {/* <div className={`m-auto ${status >= 2 ? 'text-primary' : 'text-[#D9D9D9]'}`}>{params.lang === 'ar' ? 'في العبور' : '⁠In Transit'}</div> */}
-                                        <div className={`m-auto ${status >= 3 ? 'text-primary' : 'text-[#D9D9D9]'}`}>{params.lang === 'ar' ? 'طلبك خارج للتوصيل' : 'Out of Delivery'}</div>
-                                        <div className={`m-auto ${status == 4 ? 'text-primary' : 'text-[#D9D9D9]'}`}>{params.lang === 'ar' ? 'تم التسليم' : 'Delivered'}</div>
+                                        <div className={`m-auto text-primary`}>{lang === 'ar' ? 'جاري معالجة طلبك' : 'Your Order Processing'}</div>
+                                        <div className={`m-auto text-primary`}>{lang === 'ar' ? 'تم استلام طلبك' : 'Your Order Received'}</div>
+                                        {/* <div className={`m-auto text-primary`}>{lang === 'ar' ? 'تم إنشاء الشحنة' : 'Shipment Created'}</div> */}
+                                        {/* <div className={`m-auto ${status >= 2 ? 'text-primary' : 'text-[#D9D9D9]'}`}>{lang === 'ar' ? 'في العبور' : '⁠In Transit'}</div> */}
+                                        <div className={`m-auto ${status >= 3 ? 'text-primary' : 'text-[#D9D9D9]'}`}>{lang === 'ar' ? 'طلبك خارج للتوصيل' : 'Out of Delivery'}</div>
+                                        <div className={`m-auto ${status == 4 ? 'text-primary' : 'text-[#D9D9D9]'}`}>{lang === 'ar' ? 'تم التسليم' : 'Delivered'}</div>
                                     </div>
                                 </div>
                             </div>
@@ -915,7 +915,7 @@ export default function ShipmentTracking({ params }: { params: { lang: string, d
                                     <div className="container">
                                         <div className="sht_303mainInnenFifteenDiv">
                                             <div>
-                                                <h2 className="sht_303mainInnerSecXsHeading">{params.lang == 'ar' ? 'تفاصيل الراكب' : 'Rider Details'}</h2>
+                                                <h2 className="sht_303mainInnerSecXsHeading">{lang == 'ar' ? 'تفاصيل الراكب' : 'Rider Details'}</h2>
                                                 <div className="sht_303mainInnerSeventhDiv">
                                                     <p className="sht_303mainInnerPara text-sm">
                                                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -925,7 +925,7 @@ export default function ShipmentTracking({ params }: { params: { lang: string, d
                                                         {riderName ? (
                                                             `${riderName} ${riderlastName}`
                                                         ) : (
-                                                            params.lang === 'ar' ? 'لم يتم تعيين متسابق' : 'No Rider Assigned'
+                                                            lang === 'ar' ? 'لم يتم تعيين متسابق' : 'No Rider Assigned'
                                                         )}
                                                     </p>
                                                     <p className="sht_303mainInnerSecPara text-sm">
@@ -934,7 +934,7 @@ export default function ShipmentTracking({ params }: { params: { lang: string, d
                                                             <path d="M5 15.2161C4.35254 13.5622 4 11.8013 4 10.1433C4 5.64588 7.58172 2 12 2C16.4183 2 20 5.64588 20 10.1433C20 14.6055 17.4467 19.8124 13.4629 21.6744C12.5343 22.1085 11.4657 22.1085 10.5371 21.6744C9.26474 21.0797 8.13831 20.1439 7.19438 19" stroke="#1C274C" strokeWidth="1.5" strokeLinecap="round" />
                                                         </svg>
                                                         {pickup ? (
-                                                            params.lang === 'ar' ? (
+                                                            lang === 'ar' ? (
                                                                 `${pickupArabic}`
                                                             ) : (
                                                                 `${pickup}`
@@ -970,7 +970,7 @@ export default function ShipmentTracking({ params }: { params: { lang: string, d
                                 <div className="container">
                                     <div className="sht_303mainInnenFifteenDiv">
                                         <div>
-                                            <h2 className="sht_303mainInnerSecXsHeading">{params.lang == 'ar' ? 'تفاصيل المنتج' : 'Product Details'}</h2>
+                                            <h2 className="sht_303mainInnerSecXsHeading">{lang == 'ar' ? 'تفاصيل المنتج' : 'Product Details'}</h2>
                                             {ordertype == 1 ? (
                                                 products.map((product, index) => (
                                                     <div key={index} className="sht_303mainInnenSixteenDiv">
@@ -986,8 +986,8 @@ export default function ShipmentTracking({ params }: { params: { lang: string, d
                                                         />
                                                         <div>
                                                             <p className="font-semibold">{product.sku || 'N/A'}</p>
-                                                            <p className="mt-0.5">{params.lang === 'ar' ? product.product_data.name_arabic : product.product_data.name}</p>
-                                                            <p className="mt-2">{params.lang == 'ar' ? 'الكمية:' : 'QTY:'} {product.quantity || 1}</p>
+                                                            <p className="mt-0.5">{lang === 'ar' ? product.product_data.name_arabic : product.product_data.name}</p>
+                                                            <p className="mt-2">{lang == 'ar' ? 'الكمية:' : 'QTY:'} {product.quantity || 1}</p>
                                                         </div>
                                                     </div>
                                                 ))
@@ -996,7 +996,7 @@ export default function ShipmentTracking({ params }: { params: { lang: string, d
                                                     <div key={index} className="sht_303mainInnenSixteenDiv">
                                                         <Image
                                                             alt="Product Image"
-                                                            title={params.lang === 'ar' ? product.product_data.name_arabic : product.product_data.name}
+                                                            title={lang === 'ar' ? product.product_data.name_arabic : product.product_data.name}
                                                             loading="lazy"
                                                             width={100}
                                                             height={100}
@@ -1006,13 +1006,13 @@ export default function ShipmentTracking({ params }: { params: { lang: string, d
                                                         />
                                                         <div>
                                                             <p className="font-semibold">{product.product_data?.sku || 'N/A'}</p>
-                                                            <p className="mt-0.5">{params.lang === 'ar' ? product.product_data.name_arabic : product.product_data.name}</p>
-                                                            <p className="mt-2">{params.lang == 'ar' ? 'الكمية:' : 'QTY:'} {product.quantity || 1}</p>
+                                                            <p className="mt-0.5">{lang === 'ar' ? product.product_data.name_arabic : product.product_data.name}</p>
+                                                            <p className="mt-2">{lang == 'ar' ? 'الكمية:' : 'QTY:'} {product.quantity || 1}</p>
                                                             {product?.expressproduct == 1 ?
                                                             <Image
-                                                                src={params.lang === 'ar' ? `/icons/express_logo/express_logo_ar.png` : `/icons/express_logo/express_logo_en.png`}
-                                                                alt={params.lang === 'ar' ? "express delivery" : "express delivery"}
-                                                                title={params.lang === 'ar' ? "express delivery" : "express delivery"}
+                                                                src={lang === 'ar' ? `/icons/express_logo/express_logo_ar.png` : `/icons/express_logo/express_logo_en.png`}
+                                                                alt={lang === 'ar' ? "express delivery" : "express delivery"}
+                                                                title={lang === 'ar' ? "express delivery" : "express delivery"}
                                                                 height={65}
                                                                 width={65}
                                                                 loading='lazy'
@@ -1062,7 +1062,7 @@ export default function ShipmentTracking({ params }: { params: { lang: string, d
                                         >
                                             <Dialog.Panel className="sht_303mainDialogPanelDiv">
                                                 <div className="sht_303mainModalThirdDiv">
-                                                    <h5 className="sht_303mainLgHeading">{params.lang == 'ar' ? 'رسم خريطة' : 'Map'}</h5>
+                                                    <h5 className="sht_303mainLgHeading">{lang == 'ar' ? 'رسم خريطة' : 'Map'}</h5>
                                                     <button
                                                         onClick={() => setisOpen(false)}
                                                         type="button"
@@ -1118,12 +1118,12 @@ export default function ShipmentTracking({ params }: { params: { lang: string, d
                                                                     <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="#E5E7EB" />
                                                                     <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentColor" />
                                                                 </svg>
-                                                                {params.lang == 'ar' ? '...توفير' : 'Saving...'}
+                                                                {lang == 'ar' ? '...توفير' : 'Saving...'}
                                                             </button>
                                                         ) : (
                                                             <>
                                                                 <i className="fas fa-save mr-2"></i>
-                                                                {params.lang == 'ar' ? 'حفظ الموقع' : 'Save Location'}
+                                                                {lang == 'ar' ? 'حفظ الموقع' : 'Save Location'}
                                                             </>
                                                         )}
                                                     </button>

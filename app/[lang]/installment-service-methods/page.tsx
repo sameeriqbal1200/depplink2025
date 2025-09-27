@@ -1,55 +1,39 @@
 "use client"; // This is a client component 👈🏽
 
-import React, { useEffect, useState } from 'react'
-import Link from 'next/link'
+import React from 'react'
 import Image from 'next/image';
 import dynamic from 'next/dynamic'
-import { Disclosure } from '@headlessui/react'
-import { getDictionary } from "../dictionaries"
+import { useApp } from "@/app/_ctx/AppContext";
+import { useSlot } from '@/app/_ctx/ClientDataRegistry';
+import { Disclosure, DisclosureButton } from "@headlessui/react";
 
 const MobileHeader = dynamic(() => import('../components/MobileHeader'), { ssr: true })
 
-export default function InstallmentServiceMethods({ params }: { params: { lang: string, data: any, devicetype: any } }) {
-    const [dict, setDict] = useState<any>([]);
-    const [data, setData] = useState<any>(params?.data?.data);
-
-    useEffect(() => {
-        (async () => {
-            const translationdata = await getDictionary(params?.lang);
-            setDict(translationdata);
-        })();
-    })
+export default function InstallmentServiceMethods() {
+    const { lang } = useApp();
+    const footer = useSlot<any>("footer");
 
     return (
         <>
-
-            {params.devicetype === 'mobile' ?
-                <MobileHeader type="Third" lang={params.lang} pageTitle={params.lang === 'ar' ? 'اختر مزود خدمة التقسيط' : 'Installment Service'} />
-                : null}
+            <MobileHeader type="Third" lang={lang} pageTitle={lang === 'ar' ? 'اختر مزود خدمة التقسيط' : 'Installment Service'} />
             <div className="container py-16 md:py-4">
-                {params.devicetype === 'mobile' ? null :
-                    <ol className="flex text-gray-500  font-semibold dark:text-white-dark">
-                        <li className="text-sm text-[#5D686F] font-semibold"><Link href={'/' + params.lang}>{params.lang == 'ar' ? 'الصفحة الرئيسي' : 'Home'}</Link></li>
-                        <li className="text-sm text-primary font-medium before:content-['/'] before:px-1.5">{params.lang === 'ar' ? 'اختر مزود خدمة التقسيط' : 'Installment Service'}</li>
-                    </ol>
-                }
                 <div className="my-2">
-                    <div className="text-sm text-[#5D686F] mt-3" dangerouslySetInnerHTML={{ __html: params.lang == 'ar' ? data?.page_content_ar : data?.page_content_en }}></div>
-                    <h1 className=" font-semibold text-base 2xl:text-lg">{params.lang === 'ar' ? 'اختر مزود خدمة التقسيط' : 'Choose Installment Service Provider'}</h1>
+                    <div className="text-sm text-[#5D686F] mt-3" dangerouslySetInnerHTML={{ __html: lang == 'ar' ? footer?.data?.page_content_ar : footer?.data?.page_content_en }}></div>
+                    <h1 className=" font-semibold text-base 2xl:text-lg">{lang === 'ar' ? 'اختر مزود خدمة التقسيط' : 'Choose Installment Service Provider'}</h1>
                     <div className="text-sm text-[#5D686F] my-4 space-y-3">
-                    <Disclosure>
+                        <Disclosure as="div">
                             {({ open }) => (
                                 <>
-                                    <Disclosure.Button>
+                                    <DisclosureButton>
                                         <Image src="/images/mispaybanner.webp" alt='Mispay' title='Mispay' height={0} width={0} className="h-full w-full rounded-t-md" />
                                         <div className="flex w-full justify-between items-center rounded-b-md text-left text-lg font-medium ocus-visible:outline-none bg-[#EEF8FC] px-2 py-4 md:p-3 mb-3 text-[#004B7A]">
                                             <div className="gap-2 md:gap-10 flex">
-                                                <span>{params?.lang === "ar" ? "Mispay" : "Mispay"}</span>
-                                                <span>{params?.lang === "ar" ? "تقسيط اربع اشهر" : "4 Months Installment"}</span>
+                                                <span>{lang === "ar" ? "Mispay" : "Mispay"}</span>
+                                                <span>{lang === "ar" ? "تقسيط اربع اشهر" : "4 Months Installment"}</span>
                                             </div>
                                         </div>
-                                    </Disclosure.Button>
-                                    {params?.lang === 'ar' ?
+                                    </DisclosureButton>
+                                    {lang === "ar" ?
                                         <Image src="/images/mispayAr.webp" alt='BaseetaAr' title='Baseeta-Ar' height={0} width={0} className="h-full w-full rounded-t-md" />
                                         :
                                         <Image src="/images/mispayEng.webp" alt='BaseetaAr' title='Baseeta-Ar' height={0} width={0} className="h-full w-full rounded-t-md" />
@@ -57,19 +41,19 @@ export default function InstallmentServiceMethods({ params }: { params: { lang: 
                                 </>
                             )}
                         </Disclosure>
-                        <Disclosure>
+                        <Disclosure as="div">
                             {({ open }) => (
                                 <>
-                                    <Disclosure.Button>
+                                    <DisclosureButton>
                                         <Image src="/images/Madfu banner.webp" alt='Madfu' title='Madfu' height={0} width={0} className="h-full w-full rounded-t-md" />
                                         <div className="flex w-full justify-between items-center rounded-b-md text-left text-lg font-medium ocus-visible:outline-none bg-[#EEF8FC] px-2 py-4 md:p-3 mb-3 text-[#004B7A]">
                                             <div className="gap-2 md:gap-10 flex">
-                                                <span>{params?.lang === "ar" ? "مدفوع" : "Madfu"}</span>
-                                                <span>{params?.lang === "ar" ? "تقسيط اربع اشهر" : "4 Months Installment"}</span>
+                                                <span>{lang === "ar" ? "مدفوع" : "Madfu"}</span>
+                                                <span>{lang === "ar" ? "تقسيط اربع اشهر" : "4 Months Installment"}</span>
                                             </div>
                                         </div>
-                                    </Disclosure.Button>
-                                    {params?.lang === 'ar' ?
+                                    </DisclosureButton>
+                                    {lang === "ar" ?
                                         <Image src="/images/MadfuTC_Arabic.webp" alt='BaseetaAr' title='Baseeta-Ar' height={0} width={0} className="h-full w-full rounded-t-md" />
                                         :
                                         <Image src="/images/MadfuTC_Eng.webp" alt='BaseetaAr' title='Baseeta-Ar' height={0} width={0} className="h-full w-full rounded-t-md" />
@@ -77,19 +61,19 @@ export default function InstallmentServiceMethods({ params }: { params: { lang: 
                                 </>
                             )}
                         </Disclosure>
-                        <Disclosure>
+                        <Disclosure as="div">
                             {({ open }) => (
                                 <>
-                                    <Disclosure.Button>
+                                    <DisclosureButton>
                                         <Image src="https://partners.tamkeenstores.com.sa/public/assets/new-media/c441dffe5d6d6d30a26c0253b282da6c1716289368.webp" alt='Tamara' title='Tamara' height={0} width={0} className="h-full w-full rounded-t-md" />
                                         <div className="flex w-full justify-between items-center rounded-b-md text-left text-lg font-medium ocus-visible:outline-none bg-[#EEF8FC] px-2 py-4 md:p-3 mb-3 text-[#004B7A]">
                                             <div className="gap-2 md:gap-8 flex">
-                                                <span>{params?.lang === "ar" ? "تمارا" : "Tamara"}</span>
-                                                <span>{params?.lang === "ar" ? "تقسيط اربع اشهر" : "4 Months Installment"}</span>
+                                                <span>{lang === "ar" ? "تمارا" : "Tamara"}</span>
+                                                <span>{lang === "ar" ? "تقسيط اربع اشهر" : "4 Months Installment"}</span>
                                             </div>
                                         </div>
-                                    </Disclosure.Button>
-                                    {params?.lang === 'ar' ?
+                                    </DisclosureButton>
+                                    {lang === "ar" ?
                                         <div className="py-2">
                                             <ul className="text-xs text-dark">
                                                 <li className="my-2">- الدفع باستخدام تمارا متاح بجميع معارض  وعلى موقع  الإلكتروني وتطبيق  بالمملكة العربية السعودية.</li>
@@ -195,19 +179,19 @@ export default function InstallmentServiceMethods({ params }: { params: { lang: 
                                 </>
                             )}
                         </Disclosure>
-                        <Disclosure>
+                        <Disclosure as="div">
                             {({ open }) => (
                                 <>
-                                    <Disclosure.Button>
+                                    <DisclosureButton>
                                         <Image src="https://partners.tamkeenstores.com.sa/public/assets/new-media/fe4736f61bc0caab22719078aeffac4a1716289368.webp" alt='Tabby' title='Tabby' height={0} width={0} className="h-full w-full rounded-t-md" />
                                         <div className="flex w-full justify-between items-center rounded-b-md text-left text-lg font-medium ocus-visible:outline-none bg-[#EEF8FC] px-2 py-4 md:p-3 mb-3 text-[#004B7A]">
                                             <div className="gap-2 md:gap-10 flex">
-                                                <span>{params?.lang === "ar" ? "تابي" : "Tabby"}</span>
-                                                <span>{params?.lang === "ar" ? "تقسيط اربع اشهر" : "4 Months Installment"}</span>
+                                                <span>{lang === "ar" ? "تابي" : "Tabby"}</span>
+                                                <span>{lang === "ar" ? "تقسيط اربع اشهر" : "4 Months Installment"}</span>
                                             </div>
                                         </div>
-                                    </Disclosure.Button>
-                                    {params?.lang === 'ar' ?
+                                    </DisclosureButton>
+                                    {lang === "ar" ?
                                         <div className="py-2">
                                             <ul className="text-xs text-dark">
                                                 <li className="my-2">- الدفع باستخدام تابي متاح بجميع معارض تمكين وعلى موقع معارض تمكين الإلكتروني وتطبيق معارض تمكين بالمملكة العربية السعودية.</li>
@@ -251,19 +235,19 @@ export default function InstallmentServiceMethods({ params }: { params: { lang: 
                                 </>
                             )}
                         </Disclosure>
-                        <Disclosure>
+                        <Disclosure as="div">
                             {({ open }) => (
                                 <>
-                                    <Disclosure.Button>
+                                    <DisclosureButton>
                                         <Image src="https://partners.tamkeenstores.com.sa/public/assets/new-media/7df3b6cf7ed89268ed3b605dbd9d2dac1716289368.webp" alt='Baseeta' title='Baseeta' height={0} width={0} className="h-full w-full rounded-t-md" />
                                         <div className="flex w-full justify-between items-center rounded-b-md text-left text-lg font-medium ocus-visible:outline-none bg-[#EEF8FC] px-2 py-4 md:p-3 mb-3 text-[#004B7A]">
                                             <div className="gap-2 md:gap-10 flex">
-                                                <span>{params?.lang === "ar" ? "بسيطة" : "Baseeta"}</span>
-                                                <span>{params?.lang === "ar" ? "تقسيط على 36 شهر" : "36 Months Installment"}</span>
+                                                <span>{lang === "ar" ? "بسيطة" : "Baseeta"}</span>
+                                                <span>{lang === "ar" ? "تقسيط على 36 شهر" : "36 Months Installment"}</span>
                                             </div>
                                         </div>
-                                    </Disclosure.Button>
-                                    {params?.lang === 'ar' ?
+                                    </DisclosureButton>
+                                    {lang === "ar" ?
                                         <Image src="https://images.tamkeenstores.com.sa/public/assets/new-media/baseeta_ar.webp" alt='BaseetaAr' title='Baseeta-Ar' height={0} width={0} className="h-full w-full rounded-t-md" />
                                         :
                                         <Image src="https://images.tamkeenstores.com.sa/public/assets/new-media/1a59ef48ac2e95e6dabb768c1b8278cb1717486312.webp" alt='BaseetaAr' title='Baseeta-Ar' height={0} width={0} className="h-full w-full rounded-t-md" />

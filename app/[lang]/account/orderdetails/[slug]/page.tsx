@@ -1,26 +1,27 @@
 "use client"; // This is a client component 👈🏽
 
-import React, { Fragment, useEffect, useRef, useState } from 'react'
+import React, { Fragment, useEffect, useRef, useState, ChangeEvent } from 'react'
 import 'dayjs/locale/ar'
 import dayjs from 'dayjs'
 import Link from 'next/link'
 import Image from 'next/image'
 import dynamic from 'next/dynamic'
-import { getDictionary } from "../../../dictionaries";
-import { usePathname } from "next/navigation"
 import { useRouter } from 'next-nprogress-bar';
-import { AdminApi, NewMedia } from '../../../api/Api';
-import { get, post } from "../../../api/ApiCalls";
+import { AdminApi, NewMedia } from "@/lib/api/apiLinks";
+import { get, post } from "@/lib/api/apiCalls";
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
-import { Dialog, Transition, RadioGroup } from '@headlessui/react'
+import { Dialog, Transition, RadioGroup, TransitionChild, DialogPanel, RadioGroupLabel } from '@headlessui/react'
+
+import { useApp } from "@/app/_ctx/AppContext";
+import { getCheckOutOrderReview, getOrderDetails, postProductReview, postUGCProduct, uploadVideo } from '@/lib/accounts/orderDetails.client';
 
 const MobileHeader = dynamic(() => import('../../../components/MobileHeader'), { ssr: true })
 
-export default function AddressDetails({ params }: { params: { lang: string, data: any, slug: string } }) {
+export default function OrderDetails() {
+    const { t, lang, slugStr, origin } = useApp();
+    const isArabic = lang === 'ar'
     const router = useRouter();
-    const path = usePathname();
-    const [dict, setDict] = useState<any>([])
     const [selected, setSelected] = useState('0')
     const [orderDetails, setOrderDetails] = useState<any>([])
     const [addReviewsPop, setAddReviewsPop] = useState<boolean>(false)
@@ -29,17 +30,13 @@ export default function AddressDetails({ params }: { params: { lang: string, dat
     const [addTitle, setAddTitle] = useState<any>([]);
     const [addReview, setAddReview] = useState<any>([]);
     const [uploadModal, setUploadModal] = useState<any>(false);
-    const isArabic = params.lang === 'ar';
-    const lang = params?.lang ?? 'ar';
-    const [userData, setUserData] = useState<any>([]);
     const [facebookLink, setFacebookLink] = useState<any>('');
     const [tiktokLink, setTiktokLink] = useState<any>('');
     const [instagramLink, setInstagramLink] = useState<any>('');
     const [youtubeLink, setYoutubeLink] = useState<any>('');
     const [twitterLink, setTwitterLink] = useState<any>('');
-    const [categoryData, setCategoryData] = useState<any>([]);
-    const [filteredUsers, setFilteredUsers] = useState<any>([]);
-    const [selectedCategoryId, setSelectedCategoryId] = useState<any>(null);
+    const [selectedProduct, setSelectedProduct] = useState<any>(null);
+    const [videoIsLoading, setVideoIsLoading] = useState<any>(false);
 
     // CURRENCY SYMBOL //
     const currencySymbol = <svg className="riyal-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1124.14 1256.39" width="11" height="12">
@@ -47,46 +44,7 @@ export default function AddressDetails({ params }: { params: { lang: string, dat
         <path fill="currentColor" d="M1085.73,895.8c20.06-44.47,33.32-92.75,38.4-143.37l-330.68,70.33v-135.2l292.27-62.11c20.06-44.47,33.32-92.75,38.4-143.37l-330.68,70.27V66.13c-50.67,28.45-95.67,66.32-132.25,110.99v403.35l-132.25,28.11V0c-50.67,28.44-95.67,66.32-132.25,110.99v525.69l-295.91,62.88c-20.06,44.47-33.33,92.75-38.42,143.37l334.33-71.05v170.26l-358.3,76.14c-20.06,44.47-33.32,92.75-38.4,143.37l375.04-79.7c30.53-6.35,56.77-24.4,73.83-49.24l68.78-101.97v-.02c7.14-10.55,11.3-23.27,11.3-36.97v-149.98l132.25-28.11v270.4l424.53-90.28Z"></path>
     </svg>;
 
-    const getOrderDetailsData = async () => {
-        if (localStorage.getItem('userid')) {
-            await get(`order-detail/${params.slug}`).then((responseJson: any) => {
-                setOrderDetails(responseJson)
-            })
-            await get(`checkorder-review/${params.slug}/${localStorage.getItem('userid')}`).then((responseJson: any) => {
-                setProductReviewData(responseJson?.data)
-            })
-        } else {
-            router.push(`/${params.lang}`)
-        }
-    }
 
-    useEffect(() => {
-        (async () => {
-            const translationdata = await getDictionary(params.lang);
-            setDict(translationdata);
-        })();
-        getOrderDetailsData()
-    }, [params])
-
-    const SubmitReview = () => {
-        var data = {
-            user_id: localStorage.getItem('userid'),
-            order_id: params.slug,
-            addrating: addRating,
-            addtitle: addTitle,
-            addreview: addReview,
-        }
-        post('addproductreview', data).then(async (responseJson: any) => {
-            if (responseJson?.success) {
-                getOrderDetailsData()
-                setAddReviewsPop(false)
-                topMessageAlartSuccess(dict?.product?.addreview)
-            }
-            else {
-                topMessageAlartDanger(dict?.product?.errorreview)
-            }
-        })
-    }
 
     const MySwal = withReactContent(Swal);
     const topMessageAlartSuccess = (title: any) => {
@@ -98,7 +56,7 @@ export default function AddressDetails({ params }: { params: { lang: string, dat
                 </div>
             ,
             toast: true,
-            position: params.lang == 'ar' ? 'top-start' : 'top-end',
+            position: lang == 'ar' ? 'top-start' : 'top-end',
             showConfirmButton: false,
             timer: 5000,
             showCloseButton: false,
@@ -120,7 +78,7 @@ export default function AddressDetails({ params }: { params: { lang: string, dat
                 </div>
             ,
             toast: true,
-            position: params.lang == 'ar' ? 'top-start' : 'top-end',
+            position: lang == 'ar' ? 'top-start' : 'top-end',
             showConfirmButton: false,
             timer: 15000,
             showCloseButton: true,
@@ -130,13 +88,51 @@ export default function AddressDetails({ params }: { params: { lang: string, dat
         });
     };
 
-    const origin =
-        typeof window !== 'undefined' && window.location.origin
-            ? window.location.origin
-            : '';
+    const getOrderDetailsData = async () => {
+        try {
+            const userId = typeof window !== "undefined" ? localStorage.getItem("userid") : null;
+            if (!userId) { router.push(`/${lang}`); return; }
+
+            const [orderSlugData, checkOrderReview] = await Promise.all([
+                getOrderDetails(slugStr),
+                getCheckOutOrderReview(slugStr),
+            ]);
+
+            setOrderDetails(orderSlugData?.orderSlugData ?? null);
+            setProductReviewData(checkOrderReview?.checkOrderReview?.data ?? []);
+        } catch (err) {
+            console.error("getOrderDetailsData failed:", err);
+            setOrderDetails(null);
+            setProductReviewData([]);
+        }
+    };
+
+    const SubmitReview = async () => {
+        try {
+            const userId = typeof window !== "undefined" ? localStorage.getItem("userid") : null;
+            if (!userId) { router.push(`${origin}/${lang}`); return; }
+            const payload = { user_id: userId, order_id: slugStr, addrating: addRating, addtitle: addTitle, addreview: addReview };
+            const res = await postProductReview(payload);
+
+            if (res?.productReviewData?.success) {
+                await getOrderDetailsData();
+                setAddReviewsPop(false);
+                topMessageAlartSuccess(t('products.addreview'));
+            } else {
+                topMessageAlartDanger(t('products.errorreview'));
+            }
+        } catch (e) {
+            console.error("submitReview failed:", e);
+            topMessageAlartDanger(t('products.errorreview'));
+        }
+    };
+
+    useEffect(() => {
+        getOrderDetailsData()
+    }, [])
 
     const validateLinks = (): boolean => {
-        const newErrors: any = {};           
+        const newErrors: any = {};
 
         if (facebookLink && (!facebookLink.includes('facebook.com'))) {
             newErrors.facebook_link = isArabic
@@ -177,52 +173,70 @@ export default function AddressDetails({ params }: { params: { lang: string, dat
     const videoRef: any = useRef(null);
     const videoSectionRef: any = useRef(null);
 
-    const saveUGCData = async () => {
-        if (localStorage.getItem('userid')) {
-            if (!facebookLink && !tiktokLink && !instagramLink && !twitterLink && !youtubeLink) {
-                topMessageAlartDanger('Please add data.')
-                return false;
+    const saveUGCData = async (): Promise<boolean> => {
+        try {
+            const userId = typeof window !== "undefined" ? localStorage.getItem("userid") : null;
+            if (!userId) { 
+                router.push(`/${lang}`); 
+                return false; 
             }
+
+            const hasAny = !!facebookLink || !!tiktokLink || !!instagramLink || !!twitterLink || !!youtubeLink || !!ugcVideo;
+            if (!hasAny) { 
+                topMessageAlartDanger("Please add data."); 
+                return false; 
+            }
+            
             if (!validateLinks()) return false;
 
-            var sendData = {
-                user_id: localStorage.getItem('userid'),
-                facebook_link: facebookLink,
-                tiktok_link: tiktokLink,
-                instagram_link: instagramLink,
-                twitter_link: twitterLink,
-                youtube_link: youtubeLink,
-                video_link: extractImageName(ugcVideo),
-            }
-            await post(`marketing/ugc-store`, sendData).then((responseJson: any) => {
-                topMessageAlartSuccess('Success! Your UGC Created successfully.!')
-                // getUGCData()
-                setUgcVideo(null)
-                if (videoRef) {
-                    videoRef.current = null;
-                }
-                if (videoSectionRef) {
-                    videoSectionRef.current = null;
-                }
-            }).finally(() => {
-                setUploadModal(false)
-                setFacebookLink('')
-                setTiktokLink('')
-                setInstagramLink('')
-                setYoutubeLink('')
-                setTwitterLink('')
-                setErrors({
-                    facebook_link: null,
-                    twitter_link: null,
-                    tiktok_link: null,
-                    instagram_link: null,
-                    youtube_link: null,
+            const payload = {
+                user_id: userId,
+                facebook_link: facebookLink || null,
+                tiktok_link: tiktokLink || null,
+                instagram_link: instagramLink || null,
+                twitter_link: twitterLink || null,
+                youtube_link: youtubeLink || null,
+                video_link: ugcVideo ? extractImageName(ugcVideo) : null,
+                product_id: selectedProduct ? selectedProduct?.product_id : null,
+                order_detail_id: selectedProduct ? selectedProduct?.order_detail_id : null,
+                order_id: slugStr || null,
+            };
+            
+            const res = await postUGCProduct(payload);
+            if (res?.productUGCData?.success ?? true) {
+                topMessageAlartSuccess("Success! Your UGC created successfully!");
+                await getOrderDetailsData();
+                
+                // Only reset state and close modal on success
+                setFacebookLink(""); 
+                setTiktokLink(""); 
+                setInstagramLink(""); 
+                setYoutubeLink(""); 
+                setTwitterLink("");
+                setErrors({ 
+                    facebook_link: null, 
+                    twitter_link: null, 
+                    tiktok_link: null, 
+                    instagram_link: null, 
+                    youtube_link: null 
                 });
-            })
-        } else {
-            router.push(`/${params.lang}`)
+                setUgcVideo(null);
+                videoRef?.current && (videoRef.current = null);
+                videoSectionRef?.current && (videoSectionRef.current = null);
+                
+                return true; // Success - modal can close
+            } else {
+                topMessageAlartDanger("Something went wrong. Please try again.");
+                return false; // Failure - keep modal open
+            }
+        } catch (e) {
+            console.error("saveUGCData failed:", e);
+            topMessageAlartDanger("Something went wrong. Please try again.");
+            return false; // Failure - keep modal open
+        } finally {
+            // Remove setUploadModal(false) from here - we'll control it based on return value
         }
-    }
+    };
 
     const [errors, setErrors] = useState<any>({
         facebook_link: '',
@@ -239,98 +253,166 @@ export default function AddressDetails({ params }: { params: { lang: string, dat
     }, [ugcVideo])
 
     const handleVideoUpload = async (event: any) => {
+        setVideoIsLoading(true);
         const formData: any = new FormData();
-        var head:{
-            'Content-Type': 'multipart/form-data'
-        }
         formData.append('file', event.target.files[0]);
-        const data = await fetch(AdminApi + 'productmedia-video', {
-            method: "post",
-            // headers: head,
-            body: formData,
-        });
-        const uploadedImage = await data.json();
-        if (uploadedImage.success === true) {
-            topMessageAlartSuccess(isArabic ? 'تم رفع الفيديو بنجاح' : 'Video uploaded successfully')
-            setUgcVideo(NewMedia + uploadedImage?.id)
-        } 
-        else if(uploadedImage.success === false && uploadedImage.message) { 
-            topMessageAlartDanger((isArabic ? 'خطأ: ' : 'Error: ') + uploadedImage.message)
+        try {
+            const uploadedImage = await uploadVideo(formData);
+            if (uploadedImage.success === true) {
+                topMessageAlartSuccess(isArabic ? 'تم رفع الفيديو بنجاح' : 'Video uploaded successfully')
+                setUgcVideo(`${NewMedia}${uploadedImage?.id}`)
+            }
+            else {
+                console.log("Error Found");
+            }
+        } catch (error: any) {
+            topMessageAlartDanger((isArabic ? 'خطأ: ' : 'Error: ') + error?.message);
+        } finally {
+            setVideoIsLoading(false);
         }
-        else {
-            console.log("Error Found");
+    }
+
+    const status = orderDetails?.orderdata?.status as any;
+    const method = orderDetails?.orderdata?.paymentmethod as any;
+
+    const paymentLogos: Record<string, { ar: string; en: string }> = {
+        hyperpay: { ar: "/images/master.webp", en: "/images/master.webp" },
+        madapay: { ar: "/images/mada.webp", en: "/images/mada.webp" },
+        applepay: { ar: "/images/applepay.webp", en: "/images/applepay.webp" },
+        cod: { ar: "/images/cod.webp", en: "/images/cod.webp" },
+        tabby: { ar: "/images/tabby-ar.webp", en: "/images/tabby-en.webp" },
+        tamara: { ar: "/images/tamara-ar.webp", en: "/images/tamara-en.webp" },
+        tasheel: { ar: "/images/baseeta.webp", en: "/images/baseeta.webp" },
+    };
+
+    const logo = method ? paymentLogos[method] : null;
+    if (!logo) return null;
+
+    const statusMap: Record<
+        number,
+        { ar: string; en: string; color: string }
+    > = {
+        0: { ar: "تم الإستلام", en: "Received", color: "#20831E" },
+        1: { ar: "تم التأكيد", en: "Confirmed", color: "#219EBC" },
+        2: { ar: "قيد التنفيذ", en: "Processing", color: "#20831E" },
+        3: { ar: "خرج للتوصيل", en: "Out for Delivery", color: "#219EBC" },
+        4: { ar: "تم التوصيل", en: "Delivered", color: "#20831E" },
+        5: { ar: "ملغي", en: "Cancel", color: "#DC4E4E" },
+        6: { ar: "تم الإرجاع", en: "Refunded", color: "#DC4E4E" },
+        7: { ar: "فشل", en: "Failed", color: "#DC4E4E" },
+        8: { ar: "في انتظار الدفع", en: "Pending For Payment", color: "#004B7A95" },
+    };
+
+    const item = statusMap[status ?? -1];
+
+    const paymentNames: Record<
+        string,
+        { ar: string; en: string }
+    > = {
+        tamara: { ar: "تمارا", en: "Tamara" },
+        tabby: { ar: "تابي", en: "Tabby" },
+        tasheel: { ar: "بسيطه", en: "Baseeta" },
+        madapay: { ar: "بطاقات مدى", en: "Mada Card" },
+        applepay: { ar: "آبل باي", en: "Apple Pay" },
+        hyperpay: { ar: "البطاقات الإئتمانية", en: "Debit & Credit Card" },
+        cod: { ar: "الدفع عند الاستلام", en: "Cash on Delivery" },
+    };
+    const paymentLabel = method ? (lang === "ar" ? paymentNames[method]?.ar : paymentNames[method]?.en) : null;
+
+    const total =
+        orderDetails?.orderdata?.ordersummary?.find((e: any) => e?.name === "total")?.price ?? 0;
+    const fmt = (n: number) => Intl.NumberFormat("en-US").format(n);
+
+    const statusText: Record<number, { ar: string; en: string }> = {
+        5: { ar: "إلغاء الأمر", en: "Order Has been Canceled" },
+        6: { ar: "تم رد الطلب", en: "Refunded" },
+        7: { ar: "فشل الطلب", en: "Failed" },
+        8: { ar: "في انتظار الدفع", en: "Pending For Payment" },
+    };
+
+    let text: string | null = null;
+
+    if (status !== undefined && statusText[status]) {
+        text = lang === "ar" ? statusText[status].ar : statusText[status].en;
+    } else {
+        switch (method) {
+            case "tamara":
+            case "tabby": {
+                const months = 4;
+                const per = fmt(total / months);
+                text =
+                    lang === "ar"
+                        ? `غدا تقسيط علي ${months} شهور بمبلغ ${per} ريال في الشهر`
+                        : `Installments for ${months} months at an amount of ${per} per month`;
+                break;
+            }
+            case "tasheel": {
+                const months = 36;
+                const per = fmt(total / months);
+                text =
+                    lang === "ar"
+                        ? `غدا تقسيط علي ${months} شهور بمبلغ ${per} ريال في الشهر`
+                        : `Installments for ${months} months at an amount of ${per} per month`;
+                break;
+            }
+            case "cod":
+                text =
+                    lang === "ar"
+                        ? `الدفع عند الاستلام ${fmt(total)}`
+                        : `Paid upon delivery ${fmt(total)}`;
+                break;
+            case "madapay":
+            case "applepay":
+            case "hyperpay":
+            default:
+                text =
+                    lang === "ar"
+                        ? `الدفع النقدي ${fmt(total)}`
+                        : `Instant pay ${fmt(total)}`;
         }
     }
 
     return (
         <>
-            <MobileHeader type="Third" lang={params.lang} pageTitle={orderDetails?.orderdata?.order_no} />
-
+            <MobileHeader type="Third" lang={lang} pageTitle={orderDetails?.orderdata?.order_no} />
             <div className="container md:py-4 py-16">
                 <div className="flex items-start my-4 gap-x-5">
-
                     <div className="w-full">
                         <div className='font-bold text-base mb-4 flex items-center justify-between max-md:hidden'>
-                            <h2>{params.lang == 'ar' ? 'تفاصيل الطلب' : 'Order Details'}</h2>
-                            <Link href={`${origin}/${params.lang}/account/orderlisting`} className='text-[#219EBC] hover:underline text-sm'>{params.lang == 'ar' ? 'الـرجـوع' : 'Back'}</Link>
+                            <h2>{lang == 'ar' ? 'تفاصيل الطلب' : 'Order Details'}</h2>
+                            <Link href={`${origin}/${lang}/account/orderlisting`} className='text-[#219EBC] hover:underline text-sm'>{lang == 'ar' ? 'الـرجـوع' : 'Back'}</Link>
                         </div>
 
                         <div className="grid grid-cols-3 md:grid-cols-6 bg-white px-3 md:p-5 shadow-md rounded-md mb-3 text-sm">
                             <div className="text-[#1C262D85] max-md:my-4">
-                                <h4 className="font-medium text-xs mb-1">{params.lang == 'ar' ? 'رقم الهاتف' : 'Order Number'}:</h4>
+                                <h4 className="font-medium text-xs mb-1">{lang == 'ar' ? 'رقم الهاتف' : 'Order Number'}:</h4>
                                 <p className="font-medium text-[#004B7A]">{orderDetails?.orderdata?.order_no}</p>
                             </div>
                             <div className="text-[#1C262D85] max-md:my-4">
-                                <h4 className="font-medium text-xs mb-1">{params.lang == 'ar' ? 'تاريخ الطلب' : 'Order Date'}:</h4>
-                                <p className="font-medium text-[#004B7A]">{dayjs(orderDetails?.orderdata?.created_at).locale(params.lang == 'ar' ? 'ar' : 'en').format("MMM  DD, YYYY")}</p>
+                                <h4 className="font-medium text-xs mb-1">{lang == 'ar' ? 'تاريخ الطلب' : 'Order Date'}:</h4>
+                                <p className="font-medium text-[#004B7A]">{dayjs(orderDetails?.orderdata?.created_at).locale(lang == 'ar' ? 'ar' : 'en').format("MMM  DD, YYYY")}</p>
                             </div>
                             <div className="text-[#1C262D85] max-md:my-4">
-                                <h4 className="font-medium text-xs mb-1">{params.lang == 'ar' ? 'تاريخ التوصيل' : 'Date of Delivery'}:</h4>
-                                <p className="font-medium text-[#004B7A]">{orderDetails?.orderdata?.delivery_date ? dayjs(orderDetails?.orderdata?.delivery_date).locale(params.lang == 'ar' ? 'ar' : 'en').format("MMM  DD, YYYY") : ''}</p>
+                                <h4 className="font-medium text-xs mb-1">{lang == 'ar' ? 'تاريخ التوصيل' : 'Date of Delivery'}:</h4>
+                                <p className="font-medium text-[#004B7A]">{orderDetails?.orderdata?.delivery_date ? dayjs(orderDetails?.orderdata?.delivery_date).locale(lang == 'ar' ? 'ar' : 'en').format("MMM  DD, YYYY") : ''}</p>
                             </div>
                             <div className="text-[#1C262D85] max-md:my-4">
-                                <h4 className="font-medium text-xs mb-1">{params.lang == 'ar' ? 'عدد المنتجات' : 'No. of Products'}:</h4>
-                                <p className="font-medium text-[#004B7A]">({orderDetails?.orderdata?.details_count}) {params.lang == 'ar' ? 'منتجات' : 'Items'}</p>
+                                <h4 className="font-medium text-xs mb-1">{lang == 'ar' ? 'عدد المنتجات' : 'No. of Products'}:</h4>
+                                <p className="font-medium text-[#004B7A]">({orderDetails?.orderdata?.details_count}) {lang == 'ar' ? 'منتجات' : 'Items'}</p>
                             </div>
                             <div className="text-[#1C262D85] max-md:my-4 col-span-2">
-                                <h4 className="font-medium text-xs mb-1">{params.lang == 'ar' ? 'حالة الطلب' : 'Order Status'}:</h4>
-                                {orderDetails?.orderdata?.status === 0 ?
-                                    <p className="font-medium text-[#20831E]">{params.lang == 'ar' ? 'تم الإستلام' : 'Received'}</p>
-                                    :
-                                    orderDetails?.orderdata?.status === 1 ?
-                                        <p className="font-medium text-[#219EBC]">{params.lang == 'ar' ? 'تم التأكيد' : 'Confirmed'}</p>
-                                        :
-                                        orderDetails?.orderdata?.status === 2 ?
-                                            <p className="font-medium text-[#20831E]">{params.lang == 'ar' ? 'قيد التنفيذ' : 'Processing'}</p>
-                                            :
-                                            orderDetails?.orderdata?.status === 3 ?
-                                                <p className="font-medium text-[#219EBC]">{params.lang == 'ar' ? 'خرج للتوصيل' : 'Out for Delivery'}</p>
-                                                :
-                                                orderDetails?.orderdata?.status === 4 ?
-                                                    <p className="font-medium text-[#20831E]">{params.lang == 'ar' ? 'تم التوصيل' : 'Delivered'}</p>
-                                                    :
-                                                    orderDetails?.orderdata?.status === 5 ?
-                                                        <p className="font-medium text-[#DC4E4E]">{params.lang == 'ar' ? 'ملغي' : 'Cancel'}</p>
-                                                        :
-                                                        orderDetails?.orderdata?.status === 6 ?
-                                                            <p className="font-medium text-[#DC4E4E]">{params.lang == 'ar' ? 'تم الإرجاع' : 'Refunded'}</p>
-                                                            :
-                                                            orderDetails?.orderdata?.status === 7 ?
-                                                                <p className="font-medium text-[#DC4E4E]">{params.lang == 'ar' ? 'فشل' : 'Failed'}</p>
-                                                                :
-                                                                orderDetails?.orderdata?.status === 8 ?
-                                                                    <p className="font-medium text-[#004B7A95]">{params.lang == 'ar' ? 'في انتظار الدفع' : 'Pending For Payment'}</p>
-                                                                    :
-                                                                    <p className="font-medium text-[#004B7A95]">---</p>
-                                }
+                                <h4 className="font-medium text-xs mb-1">{lang == 'ar' ? 'حالة الطلب' : 'Order Status'}:</h4>
+                                <p className="font-medium" style={{ color: item?.color ?? "#004B7A95" }}>
+                                    {item ? (lang === "ar" ? item.ar : item.en) : "---"}
+                                </p>
                             </div>
                         </div>
 
                         <div className='my-4'>
-                            <h2 className="font-bold text-base">{params.lang == 'ar' ? 'بيانات التواصل والدفع' : 'Contact & Payment Information'}</h2>
+                            <h2 className="font-bold text-base">{lang == 'ar' ? 'بيانات التواصل والدفع' : 'Contact & Payment Information'}</h2>
                             <div className="border bg-white border-[#219EBC] rounded-md p-3 mt-2">
                                 <div>
-                                    <label className="font-regular text-[#5D686F] text-sm">{params.lang == 'ar' ? 'التواصل' : 'Communication'}</label>
+                                    <label className="font-regular text-[#5D686F] text-sm">{lang == 'ar' ? 'التواصل' : 'Communication'}</label>
                                     <div className="flex items-center gap-x-2 mt-1 rtl:mt-2 text-[#004B7A] font-regular text-sm">
                                         <label className="">{orderDetails?.orderdata?.address?.user_data?.email}</label>
                                         <label className="">-</label>
@@ -339,27 +421,22 @@ export default function AddressDetails({ params }: { params: { lang: string, dat
                                     <hr className="opacity-10 my-3" />
                                 </div>
                                 <div>
-                                    <label className="font-regular text-[#5D686F] text-sm">{params.lang == 'ar' ? 'العنوان' : 'Address'}</label>
+                                    <label className="font-regular text-[#5D686F] text-sm">{lang == 'ar' ? 'العنوان' : 'Address'}</label>
                                     <div className="flex items-center gap-x-2 mt-1 rtl:mt-2 text-[#004B7A] fill-[#004B7A] font-regular text-sm">
                                         <svg id="fi_3514361" height="28" viewBox="0 0 256 256" width="28" xmlns="http://www.w3.org/2000/svg" data-name="Layer 1"><path d="m128 138.184a5 5 0 0 1 -3.607-1.538c-2.075-2.16-50.808-53.259-50.808-82.228a54.415 54.415 0 1 1 108.83 0c0 28.969-48.733 80.068-50.808 82.228a5 5 0 0 1 -3.607 1.538zm0-128.184a44.465 44.465 0 0 0 -44.415 44.418c0 19.07 29.312 54.978 44.414 71.451 15.1-16.478 44.416-52.4 44.416-71.451a44.465 44.465 0 0 0 -44.415-44.418z"></path><path d="m128 76.153a21.735 21.735 0 1 1 21.735-21.735 21.759 21.759 0 0 1 -21.735 21.735zm0-33.47a11.735 11.735 0 1 0 11.735 11.735 11.748 11.748 0 0 0 -11.735-11.735z"></path><path d="m128.126 256a4.992 4.992 0 0 1 -2.5-.67l-77.175-44.559a5 5 0 0 1 -2.5-4.331v-38.385a5 5 0 0 1 10 0v35.5l72.175 41.67 72.174-41.67v-35.88a5 5 0 0 1 10 0v38.765a5 5 0 0 1 -2.5 4.331l-77.174 44.556a4.992 4.992 0 0 1 -2.5.673z"></path><path d="m128.126 166.884a4.992 4.992 0 0 1 -2.5-.67l-77.175-44.557a5 5 0 1 1 5-8.66l74.675 43.113 74.674-43.11a5 5 0 1 1 5 8.66l-77.174 44.557a4.992 4.992 0 0 1 -2.5.667z"></path><path d="m160.933 198.291a5 5 0 0 1 -3.459-1.389l-32.806-31.402a5 5 0 0 1 6.916-7.224l30.1 28.813 68.154-39.349-27.558-26.382-27.359-15.744a5 5 0 1 1 4.988-8.667l27.885 16.047a4.988 4.988 0 0 1 .964.721l32.806 31.407a5 5 0 0 1 -.958 7.942l-77.174 44.557a4.993 4.993 0 0 1 -2.499.67z"></path><path d="m95.067 198.525a4.985 4.985 0 0 1 -2.5-.67l-77.173-44.555a5 5 0 0 1 -.957-7.942l33.057-31.642a4.967 4.967 0 0 1 .957-.718l27.634-15.955a5 5 0 1 1 5 8.66l-27.112 15.653-27.807 26.616 68.154 39.348 30.349-29.048a5 5 0 1 1 6.914 7.224l-33.058 31.641a4.991 4.991 0 0 1 -3.458 1.388z"></path></svg>
                                         <div>
-                                            <p className="font-bold">{orderDetails?.orderdata?.address?.address_label === 0 ? params.lang == 'ar' ? 'الــمنـــزل' : 'Home' : params.lang == 'ar' ? 'مكتب' : 'Office'}</p>
-                                            <label className="">{orderDetails?.orderdata?.address?.address}, {params.lang == 'ar' ? orderDetails?.orderdata?.address?.state_data?.name_arabic : orderDetails?.orderdata?.address?.state_data?.name}, {params.lang == 'ar' ? 'المملكة العربية السعودية' : 'Saudi Arabia'}</label>
+                                            <p className="font-bold">{orderDetails?.orderdata?.address?.address_label === 0 ? lang == 'ar' ? 'الــمنـــزل' : 'Home' : lang == 'ar' ? 'مكتب' : 'Office'}</p>
+                                            <label className="">{orderDetails?.orderdata?.address?.address}, {lang == 'ar' ? orderDetails?.orderdata?.address?.state_data?.name_arabic : orderDetails?.orderdata?.address?.state_data?.name}, {lang == 'ar' ? 'المملكة العربية السعودية' : 'Saudi Arabia'}</label>
                                         </div>
                                     </div>
                                     <hr className="opacity-10 my-3" />
                                 </div>
                                 <div className="text-sm font-medium">
-                                    <label className="font-regular text-[#5D686F]">{params.lang == 'ar' ? 'الوقت المتوقع للتوصيل' : 'Expected time for delivery'}</label>
-                                    {/* <div className="flex items-center gap-x-2 mt-1 rtl:mt-2 text-[#004B7A] font-regular text-sm">
-                                        <label className="">{params.lang == 'ar' ? 'غدا' : 'Tomorrow'} 12/11/2023</label>
-                                        <label className="">-</label>
-                                        <label className=""> {params.lang == 'ar' ? 'الاثنين' : 'Monday'} 13/11/2023</label>
-                                    </div> */}
+                                    <label className="font-regular text-[#5D686F]">{lang == 'ar' ? 'الوقت المتوقع للتوصيل' : 'Expected time for delivery'}</label>
                                     <hr className="opacity-10 my-3" />
                                 </div>
                                 <div className="text-sm font-medium">
-                                    <label className="font-regular text-[#5D686F]">{params.lang == 'ar' ? 'السعر الجزئي' : 'Sub Total'}</label>
+                                    <label className="font-regular text-[#5D686F]">{lang == 'ar' ? 'السعر الجزئي' : 'Sub Total'}</label>
                                     <div className="gap-x-2 mt-1 rtl:mt-2 text-[#004B7A]">
                                         <label className="flex gap-x-1 items-center">{Intl.NumberFormat('en-US').format(orderDetails?.orderdata?.ordersummary?.filter((e: any) => e.name == 'subtotal')[0]?.price)}{' '}{currencySymbol}</label>
                                     </div>
@@ -367,15 +444,15 @@ export default function AddressDetails({ params }: { params: { lang: string, dat
                                 </div>
                                 {orderDetails?.orderdata?.ordersummary?.filter((e: any) => e.name == 'shipping').length ?
                                     <div className="text-sm font-medium">
-                                        <label className="font-regular text-[#5D686F]">{params.lang == 'ar' ? 'سعر التوصيل' : 'Shipping Charges'}</label>
+                                        <label className="font-regular text-[#5D686F]">{lang == 'ar' ? 'سعر التوصيل' : 'Shipping Charges'}</label>
                                         <div className="gap-x-2 mt-1 rtl:mt-2 text-[#004B7A]">
-                                            <label className="flex gap-x-1 items-center">{orderDetails?.orderdata?.ordersummary?.filter((e: any) => e.name == 'shipping')[0]?.price == 0 ? params.lang == 'ar' ? 'مـجـاني' : `Free` : `${Intl.NumberFormat('en-US').format(orderDetails?.orderdata?.ordersummary?.filter((e: any) => e.name == 'shipping')[0]?.price)} `}{currencySymbol}</label>
+                                            <label className="flex gap-x-1 items-center">{orderDetails?.orderdata?.ordersummary?.filter((e: any) => e.name == 'shipping')[0]?.price == 0 ? lang == 'ar' ? 'مـجـاني' : `Free` : `${Intl.NumberFormat('en-US').format(orderDetails?.orderdata?.ordersummary?.filter((e: any) => e.name == 'shipping')[0]?.price)} `}{currencySymbol}</label>
                                         </div>
                                         <hr className="opacity-10 my-3" />
                                     </div>
                                     : null}
                                 <div className="text-sm font-medium">
-                                    <label className="font-regular text-[#5D686F]">{params.lang == 'ar' ? 'إجمالي القيمة' : 'Total Value'}</label>
+                                    <label className="font-regular text-[#5D686F]">{lang == 'ar' ? 'إجمالي القيمة' : 'Total Value'}</label>
                                     <div className="gap-x-2 mt-1 rtl:mt-2 text-[#004B7A]">
                                         <label className="flex gap-x-1 items-center">{Intl.NumberFormat('en-US').format(orderDetails?.orderdata?.ordersummary?.filter((e: any) => e.name == 'total')[0]?.price)}{' '}{currencySymbol}</label>
                                     </div>
@@ -384,126 +461,24 @@ export default function AddressDetails({ params }: { params: { lang: string, dat
                                 <div className="text-sm font-medium">
                                     <div className='text-sm font-medium flex items-center justify-between'>
                                         <div>
-                                            <label className="font-regular text-[#5D686F]">{params.lang == 'ar' ? 'الدفع عن طريق' : 'Payment via'}{' '}
+                                            <label className="font-regular text-[#5D686F]">{lang == 'ar' ? 'الدفع عن طريق' : 'Payment via'}{' '}
                                                 <span className="font-bold text-[#004B7A]">
-                                                    {
-                                                        orderDetails?.orderdata?.paymentmethod == 'tamara' ? params.lang == 'ar' ? 'تمارا' : 'Tamara'
-                                                            : orderDetails?.orderdata?.paymentmethod == 'tabby' ? params.lang == 'ar' ? 'تابي' : 'Tabby'
-                                                                : orderDetails?.orderdata?.paymentmethod == 'tasheel' ? params.lang == 'ar' ? 'بسيطه' : 'Baseeta'
-                                                                    : orderDetails?.orderdata?.paymentmethod == 'madapay' ? params.lang == 'ar' ? 'بطاقات مدى' : 'Mada Card'
-                                                                        : orderDetails?.orderdata?.paymentmethod == 'applepay' ? params.lang == 'ar' ? 'آبل باي' : 'Apple Pay'
-                                                                            : orderDetails?.orderdata?.paymentmethod == 'hyperpay' ? params.lang == 'ar' ? 'البطاقات الإئتمانية' : 'Debit & Credit Card'
-                                                                                : orderDetails?.orderdata?.paymentmethod == 'cod' ? params.lang == 'ar' ? 'الدفع عند الاستلام' : 'Cash on Delivery'
-                                                                                    : null
-                                                    }
+                                                    {paymentLabel ?? "---"}
                                                 </span>
                                             </label>
                                             <div className="gap-x-2 mt-1 rtl:mt-2 text-[#004B7A]">
-                                                {orderDetails?.orderdata?.status === 5 ?
-                                                    <label>{params.lang == 'ar' ? 'إلغاء الأمر' : 'Order Has been Canceled'}</label>
-                                                    :
-                                                    orderDetails?.orderdata?.status === 6 ?
-                                                        <label>{params.lang == 'ar' ? 'تم رد الطلب' : 'Refunded'}</label>
-                                                        :
-                                                        orderDetails?.orderdata?.status === 7 ?
-                                                            <label>{params.lang == 'ar' ? 'فشل الطلب' : 'Failed'}</label>
-                                                            :
-                                                            orderDetails?.orderdata?.status === 8 ?
-                                                                <label>{params.lang == 'ar' ? 'في انتظار الدفع' : 'Pending For Payment'}</label>
-                                                                :
-                                                                <label>
-                                                                    {
-                                                                        orderDetails?.orderdata?.paymentmethod == 'tamara' ? params.lang == 'ar' ? `غدا تقسيط علي 4 شهور بمبلغ ${Intl.NumberFormat('en-US').format(orderDetails?.orderdata?.ordersummary.filter((element: any) => element.name == 'total')[0]?.price / 4)} ريال في الشهر` : `Installments for 4 months at an amount of ${Intl.NumberFormat('en-US').format(orderDetails?.orderdata?.ordersummary.filter((element: any) => element.name == 'total')[0]?.price / 4)} per month`
-                                                                            : orderDetails?.orderdata?.paymentmethod == 'tabby' ? params.lang == 'ar' ? `غدا تقسيط علي 4 شهور بمبلغ ${Intl.NumberFormat('en-US').format(orderDetails?.orderdata?.ordersummary.filter((element: any) => element.name == 'total')[0]?.price / 4)} ريال في الشهر` : `Installments for 4 months at an amount of ${Intl.NumberFormat('en-US').format(orderDetails?.orderdata?.ordersummary.filter((element: any) => element.name == 'total')[0]?.price / 4)} per month`
-                                                                                : orderDetails?.orderdata?.paymentmethod == 'tasheel' ? params.lang == 'ar' ? `غدا تقسيط علي 36 شهور بمبلغ ${Intl.NumberFormat('en-US').format(orderDetails?.orderdata?.ordersummary.filter((element: any) => element.name == 'total')[0]?.price / 36)} ريال في الشهر` : `Installments for 36 months at an amount of ${Intl.NumberFormat('en-US').format(orderDetails?.orderdata?.ordersummary.filter((element: any) => element.name == 'total')[0]?.price / 36)} per month`
-                                                                                    : orderDetails?.orderdata?.paymentmethod == 'madapay' ? params.lang == 'ar' ? `الدفع النقدي ${Intl.NumberFormat('en-US').format(orderDetails?.orderdata?.ordersummary.filter((element: any) => element.name == 'total')[0]?.price)}` : `Instant pay ${Intl.NumberFormat('en-US').format(orderDetails?.orderdata?.ordersummary.filter((element: any) => element.name == 'total')[0]?.price)}`
-                                                                                        : orderDetails?.orderdata?.paymentmethod == 'applepay' ? params.lang == 'ar' ? `الدفع النقدي ${Intl.NumberFormat('en-US').format(orderDetails?.orderdata?.ordersummary.filter((element: any) => element.name == 'total')[0]?.price)}` : `Instant pay ${Intl.NumberFormat('en-US').format(orderDetails?.orderdata?.ordersummary.filter((element: any) => element.name == 'total')[0]?.price)}`
-                                                                                            : orderDetails?.orderdata?.paymentmethod == 'hyperpay' ? params.lang == 'ar' ? `الدفع النقدي ${Intl.NumberFormat('en-US').format(orderDetails?.orderdata?.ordersummary.filter((element: any) => element.name == 'total')[0]?.price)}` : `Instant pay ${Intl.NumberFormat('en-US').format(orderDetails?.orderdata?.ordersummary.filter((element: any) => element.name == 'total')[0]?.price)}`
-                                                                                                : orderDetails?.orderdata?.paymentmethod == 'cod' ? params.lang == 'ar' ? `الدفع عند الاستلام ${Intl.NumberFormat('en-US').format(orderDetails?.orderdata?.ordersummary.filter((element: any) => element.name == 'total')[0]?.price)}` : `Paid upon delivery ${Intl.NumberFormat('en-US').format(orderDetails?.orderdata?.ordersummary.filter((element: any) => element.name == 'total')[0]?.price)}`
-                                                                                                    : null
-                                                                    }
-                                                                    {currencySymbol}
-                                                                </label>
-                                                }
+                                                <label>{text ? `${text} ${currencySymbol}` : "---"}</label>
                                             </div>
                                         </div>
-                                        {orderDetails?.orderdata?.paymentmethod == 'hyperpay' ?
-                                            <Image
-                                                src={params.lang == 'ar' ? '/images/master.webp' : '/images/master.webp'}
-                                                alt={orderDetails?.orderdata?.paymentmethod}
-                                                title={orderDetails?.orderdata?.paymentmethod}
-                                                height={60}
-                                                width={60}
-                                                loading='lazy'
-                                                className="rounded-md"
-                                            />
-                                            : null}
-                                        {orderDetails?.orderdata?.paymentmethod == 'madapay' ?
-                                            <Image
-                                                src={params.lang == 'ar' ? '/images/mada.webp' : '/images/mada.webp'}
-                                                alt={orderDetails?.orderdata?.paymentmethod}
-                                                title={orderDetails?.orderdata?.paymentmethod}
-                                                height={60}
-                                                width={60}
-                                                loading='lazy'
-                                                className="rounded-md"
-                                            />
-                                            : null}
-                                        {orderDetails?.orderdata?.paymentmethod == 'applepay' ?
-                                            <Image
-                                                src={params.lang == 'ar' ? '/images/applepay.webp' : '/images/applepay.webp'}
-                                                alt={orderDetails?.orderdata?.paymentmethod}
-                                                title={orderDetails?.orderdata?.paymentmethod}
-                                                height={60}
-                                                width={60}
-                                                loading='lazy'
-                                                className="rounded-md"
-                                            />
-                                            : null}
-                                        {orderDetails?.orderdata?.paymentmethod == 'cod' ?
-                                            <Image
-                                                src={params.lang == 'ar' ? '/images/cod.webp' : '/images/cod.webp'}
-                                                alt={orderDetails?.orderdata?.paymentmethod}
-                                                title={orderDetails?.orderdata?.paymentmethod}
-                                                height={60}
-                                                width={60}
-                                                loading='lazy'
-                                                className="rounded-md"
-                                            />
-                                            : null}
-                                        {orderDetails?.orderdata?.paymentmethod == 'tabby' ?
-                                            <Image
-                                                src={params.lang == 'ar' ? '/images/tabby-ar.webp' : '/images/tabby-en.webp'}
-                                                alt={orderDetails?.orderdata?.paymentmethod}
-                                                title={orderDetails?.orderdata?.paymentmethod}
-                                                height={60}
-                                                width={60}
-                                                loading='lazy'
-                                                className="rounded-md"
-                                            />
-                                            : null}
-                                        {orderDetails?.orderdata?.paymentmethod == 'tamara' ?
-                                            <Image
-                                                src={params.lang == 'ar' ? '/images/tamara-ar.webp' : '/images/tamara-en.webp'}
-                                                alt={orderDetails?.orderdata?.paymentmethod}
-                                                title={orderDetails?.orderdata?.paymentmethod}
-                                                height={60}
-                                                width={60}
-                                                loading='lazy'
-                                                className="rounded-md"
-                                            />
-                                            : null}
-                                        {orderDetails?.orderdata?.paymentmethod == 'tasheel' ?
-                                            <Image
-                                                src={params.lang == 'ar' ? '/images/baseeta.webp' : '/images/baseeta.webp'}
-                                                alt={orderDetails?.orderdata?.paymentmethod}
-                                                title={orderDetails?.orderdata?.paymentmethod}
-                                                height={60}
-                                                width={60}
-                                                loading='lazy'
-                                                className="rounded-md"
-                                            />
-                                            : null}
+                                        <Image
+                                            src={lang === "ar" ? logo.ar : logo.en}
+                                            alt={method}
+                                            title={method}
+                                            width={60}
+                                            height={60}
+                                            loading="lazy"
+                                            className="rounded-md"
+                                        />
                                     </div>
                                 </div>
                             </div>
@@ -511,14 +486,14 @@ export default function AddressDetails({ params }: { params: { lang: string, dat
 
                         <div className='my-4'>
                             <div className="flex items-center justify-between">
-                                <h2 className="font-bold text-base">{params.lang == 'ar' ? 'محتوي الطلب' : 'Products'}</h2>
+                                <h2 className="font-bold text-base">{lang == 'ar' ? 'محتوي الطلب' : 'Products'}</h2>
                                 <button className="text-sm font-semibold underline text-[#004B7A]">
-                                    {params.lang === 'ar' ? 'اختر الكل' : 'Select All'}
+                                    {lang === 'ar' ? 'اختر الكل' : 'Select All'}
                                 </button>
                             </div>
                             <div className="mt-1 max-md:pb-32">
                                 <RadioGroup value={selected} onChange={setSelected}>
-                                    <RadioGroup.Label className="sr-only">{params.lang == 'ar' ? 'منتجات' : 'Server size'}</RadioGroup.Label>
+                                    <RadioGroupLabel className="sr-only">{lang == 'ar' ? 'منتجات' : 'Server size'}</RadioGroupLabel>
                                     <div className="space-y-2">
                                         {orderDetails?.orderdata?.details?.map((data: any, i: React.Key | null | undefined) => {
                                             return (
@@ -528,72 +503,70 @@ export default function AddressDetails({ params }: { params: { lang: string, dat
                                                     className={({ active, checked }) => ` ${checked ? '' : ''} relative focus:outline-none`}
                                                 >
                                                     {({ active, checked }) => (
-                                                        <>
-                                                            <div className={`bg-white rounded-md shadow-md flex items-center gap-x-4 mb-4 p-2 max-md:relative border ${checked ? 'border-[#219EBC]' : 'border-transparent'}`} key={i}>
-                                                                <div className="md:relative md:w-44 flex items-center">
-                                                                    {checked ?
-                                                                        <svg viewBox="0 0 24 24" fill="none" className="h-6 w-6 max-md:absolute max-md:top-2 right-2">
-                                                                            <circle cx={12} cy={12} r={12} fill="#219EBC" opacity="0.2" />
-                                                                            <path
-                                                                                d="M7 13l3 3 7-7"
-                                                                                stroke="#219EBC"
-                                                                                strokeWidth={2}
-                                                                                strokeLinecap="round"
-                                                                                strokeLinejoin="round"
+                                                        <div className={`bg-white rounded-md shadow-md flex items-center gap-x-4 mb-4 p-2 max-md:relative border ${checked ? 'border-[#219EBC]' : 'border-transparent'}`} key={i}>
+                                                            <div className="md:relative md:w-44 flex items-center">
+                                                                {checked ?
+                                                                    <svg viewBox="0 0 24 24" fill="none" className="h-6 w-6 max-md:absolute max-md:top-2 right-2">
+                                                                        <circle cx={12} cy={12} r={12} fill="#219EBC" opacity="0.2" />
+                                                                        <path
+                                                                            d="M7 13l3 3 7-7"
+                                                                            stroke="#219EBC"
+                                                                            strokeWidth={2}
+                                                                            strokeLinecap="round"
+                                                                            strokeLinejoin="round"
+                                                                        />
+                                                                    </svg>
+                                                                    :
+                                                                    <svg viewBox="0 0 24 24" fill="#219EBC60" className="h-6 w-6 max-md:absolute max-md:top-2 right-2">
+                                                                        <circle cx={12} cy={12} r={12} fill="#219EBC60" opacity={0.2} />
+                                                                    </svg>
+                                                                }
+                                                                <Image
+                                                                    src={data?.product_data?.featured_image?.image ? NewMedia + data?.product_data?.featured_image?.image : 'https://partners.tamkeenstores.com.sa/public/assets/new-media/3f4a05b645bdf91af2a0d9598e9526181714129744.png'}
+                                                                    alt={lang == 'ar' ? data?.product_data?.name_arabic : data?.product_data?.name}
+                                                                    title={lang == 'ar' ? data?.product_data?.name_arabic : data?.product_data?.name}
+                                                                    height={50}
+                                                                    width={50}
+                                                                    loading='lazy'
+                                                                    className="mx-auto"
+                                                                />
+                                                            </div>
+                                                            <div className="p-3 w-full">
+                                                                <h4 className="text-primary text-xs md:text-sm">{lang == 'ar' ? data?.product_data?.name_arabic : data?.product_data?.name}</h4>
+                                                                <h2 className="text-base md:text-xl font-semibold text-dark mt-2 flex gap-x-1 items-center">
+                                                                    <div className='flex gap-x-1 items-center'>
+                                                                        {Intl.NumberFormat('en-US').format(data?.product_data?.sale_price)}{'  '}{currencySymbol}
+                                                                    </div>
+                                                                    <span className="text-xs md:text-sm text-[#DC4E4E] line-through decoration-[#DC4E4E] decoration-2 font-medium">{Intl.NumberFormat('en-US').format(data?.product_data?.price)}</span></h2>
+                                                                <div className="text-[#5D686F] text-sm flex items-center gap-x-2 mt-4 justify-between">
+                                                                    <div className="flex items-center gap-x-2">
+                                                                        <p>{lang == 'ar' ? 'العلامة' : 'Brand'}:</p>
+                                                                        {data?.product_data?.brand?.brand_media_image?.image ?
+                                                                            <Image
+                                                                                src={data?.product_data?.brand?.brand_media_image?.image ? NewMedia + data?.product_data?.brand?.brand_media_image?.image : 'https://partners.tamkeenstores.com.sa/public/assets/new-media/3f4a05b645bdf91af2a0d9598e9526181714129744.png'}
+                                                                                alt={lang == 'ar' ? data?.product_data?.brand?.name_arabic : data?.product_data?.brand?.name}
+                                                                                title={lang == 'ar' ? data?.product_data?.brand?.name_arabic : data?.product_data?.brand?.name}
+                                                                                height={60}
+                                                                                width={60}
+                                                                                className="h-full"
+                                                                                loading='lazy'
                                                                             />
-                                                                        </svg>
-                                                                        :
-                                                                        <svg viewBox="0 0 24 24" fill="#219EBC60" className="h-6 w-6 max-md:absolute max-md:top-2 right-2">
-                                                                            <circle cx={12} cy={12} r={12} fill="#219EBC60" opacity={0.2} />
-                                                                        </svg>
-                                                                    }
-                                                                    <Image
-                                                                        src={data?.product_data?.featured_image?.image ? NewMedia + data?.product_data?.featured_image?.image : 'https://partners.tamkeenstores.com.sa/public/assets/new-media/3f4a05b645bdf91af2a0d9598e9526181714129744.png'}
-                                                                        alt={params.lang == 'ar' ? data?.product_data?.name_arabic : data?.product_data?.name}
-                                                                        title={params.lang == 'ar' ? data?.product_data?.name_arabic : data?.product_data?.name}
-                                                                        height={50}
-                                                                        width={50}
-                                                                        loading='lazy'
-                                                                        className="mx-auto"
-                                                                    />
-                                                                </div>
-                                                                <div className="p-3 w-full">
-                                                                    <h4 className="text-primary text-xs md:text-sm">{params.lang == 'ar' ? data?.product_data?.name_arabic : data?.product_data?.name}</h4>
-                                                                    <h2 className="text-base md:text-xl font-semibold text-dark mt-2 flex gap-x-1 items-center">
-                                                                        <div className='flex gap-x-1 items-center'>
-                                                                            {Intl.NumberFormat('en-US').format(data?.product_data?.sale_price)}{'  '}{currencySymbol}
-                                                                        </div>
-                                                                        <span className="text-xs md:text-sm text-[#DC4E4E] line-through decoration-[#DC4E4E] decoration-2 font-medium">{Intl.NumberFormat('en-US').format(data?.product_data?.price)}</span></h2>
-                                                                    <div className="text-[#5D686F] text-sm flex items-center gap-x-2 mt-4 justify-between">
-                                                                        <div className="flex items-center gap-x-2">
-                                                                            <p>{params.lang == 'ar' ? 'العلامة' : 'Brand'}:</p>
-                                                                            {data?.product_data?.brand?.brand_media_image?.image ?
-                                                                                <Image
-                                                                                    src={data?.product_data?.brand?.brand_media_image?.image ? NewMedia + data?.product_data?.brand?.brand_media_image?.image : 'https://partners.tamkeenstores.com.sa/public/assets/new-media/3f4a05b645bdf91af2a0d9598e9526181714129744.png'}
-                                                                                    alt={params.lang == 'ar' ? data?.product_data?.brand?.name_arabic : data?.product_data?.brand?.name}
-                                                                                    title={params.lang == 'ar' ? data?.product_data?.brand?.name_arabic : data?.product_data?.brand?.name}
-                                                                                    height={60}
-                                                                                    width={60}
-                                                                                    className="h-full"
-                                                                                    loading='lazy'
-                                                                                />
-                                                                                :
-                                                                                <p className="font-bold text-xs">{params.lang == 'ar' ? data?.product_data?.brand?.name_arabic : data?.product_data?.brand?.name}</p>
-                                                                            }
-                                                                        </div>
-                                                                        <div>
-                                                                            {data?.expressproduct == 1 ? 
-                                                                                <Image
-                                                                                    src={params?.lang == 'ar' ? "/icons/express_logo/express_logo_ar.png" : "/icons/express_logo/express_logo_en.png"}
-                                                                                    width="55" height="0" alt="express_delivery" title='Express Delivery'
-                                                                                /> 
-                                                                            :null}
-                                                                            <p className="font-bold">{params.lang == 'ar' ? 'عدد' : 'Qty'} {data?.quantity}</p>
-                                                                        </div>
+                                                                            :
+                                                                            <p className="font-bold text-xs">{lang == 'ar' ? data?.product_data?.brand?.name_arabic : data?.product_data?.brand?.name}</p>
+                                                                        }
+                                                                    </div>
+                                                                    <div>
+                                                                        {data?.expressproduct == 1 ?
+                                                                            <Image
+                                                                                src={lang === 'ar' ? "/icons/express_logo/express_logo_ar.png" : "/icons/express_logo/express_logo_en.png"}
+                                                                                width="55" height="0" alt="express_delivery" title='Express Delivery'
+                                                                            />
+                                                                            : null}
+                                                                        <p className="font-bold">{lang == 'ar' ? 'عدد' : 'Qty'} {data?.quantity}</p>
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                        </>
+                                                        </div>
                                                     )}
                                                 </RadioGroup.Option>
                                             )
@@ -613,20 +586,20 @@ export default function AddressDetails({ params }: { params: { lang: string, dat
                         onClick={() => setAddReviewsPop(true)}
                         className="focus-visible:outline-none border border-[#004B7A] bg-[#004B7A] text-white text-xs font-semibold px-5 py-3 rounded-md shadow-md hover:shadow-none w-1/2"
                     >
-                        {params.lang == 'ar' ? 'إضافة التقييم على المنتج' : "Add Product Review's"}
+                        {lang == 'ar' ? 'إضافة التقييم على المنتج' : "Add Product Review's"}
                     </button>
                     <button
                         type="button"
                         className="focus-visible:outline-none border border-[#004B7A] bg-[#004B7A] text-white text-xs font-semibold px-5 py-3 rounded-md shadow-md hover:shadow-none w-1/2"
                     >
-                        {params.lang == 'ar' ? 'إنشاء طلب صيانة' : "Create Maintainance Request"}
+                        {lang == 'ar' ? 'إنشاء طلب صيانة' : "Create Maintainance Request"}
                     </button>
                 </div>
                 <button
                     type="button"
                     className="w-full focus-visible:outline-none border border-[#DC4E4E] bg-[#DC4E4E] text-white text-xs font-semibold px-3.5 py-3 rounded-md shadow-md hover:shadow-none"
                 >
-                    {params.lang == 'ar' ? 'إلغاء طلب' : 'Cancel Order'}
+                    {lang == 'ar' ? 'إلغاء طلب' : 'Cancel Order'}
                 </button>
             </div>
             {/* Order Rating */}
@@ -635,7 +608,7 @@ export default function AddressDetails({ params }: { params: { lang: string, dat
                     <div className="fixed inset-0 bg-dark/40" aria-hidden="true" />
                     <div className="fixed inset-0 overflow-y-auto">
                         <div className="flex md:min-h-full h-full items-center justify-center md:p-4 text-center">
-                            <Transition.Child
+                            <TransitionChild
                                 as={Fragment}
                                 enter="ease-out duration-300"
                                 enterFrom="opacity-0 scale-95"
@@ -644,7 +617,7 @@ export default function AddressDetails({ params }: { params: { lang: string, dat
                                 leaveFrom="opacity-100 scale-100"
                                 leaveTo="opacity-0 scale-95"
                             >
-                                <Dialog.Panel className="w-full max-w-md max-md:h-[-webkit-fill-available] transform overflow-hidden rounded-md bg-white text-left align-middle shadow-xl transition-all">
+                                <DialogPanel className="w-full max-w-md max-md:h-[-webkit-fill-available] transform overflow-hidden rounded-md bg-white text-left align-middle shadow-xl transition-all">
                                     <Dialog.Title
                                         as="h3"
                                         className="text-lg font-medium leading-6 text-gray-900 container"
@@ -655,7 +628,7 @@ export default function AddressDetails({ params }: { params: { lang: string, dat
                                                     as="h4"
                                                     className="text-lg font-bold leading-6 text-gray-900"
                                                 >
-                                                    {params.lang == 'ar' ? "تعليقات المنتج" : "Product Review's"}
+                                                    {lang == 'ar' ? "تعليقات المنتج" : "Product Review's"}
                                                 </Dialog.Title>
                                                 <button onClick={() => setAddReviewsPop(false)} className="focus-visible:outline-none">
                                                     <svg height="16" viewBox="0 0 329.26933 329" width="16" xmlns="http://www.w3.org/2000/svg" id="fi_1828778"><path d="m194.800781 164.769531 128.210938-128.214843c8.34375-8.339844 8.34375-21.824219 0-30.164063-8.339844-8.339844-21.824219-8.339844-30.164063 0l-128.214844 128.214844-128.210937-128.214844c-8.34375-8.339844-21.824219-8.339844-30.164063 0-8.34375 8.339844-8.34375 21.824219 0 30.164063l128.210938 128.214843-128.210938 128.214844c-8.34375 8.339844-8.34375 21.824219 0 30.164063 4.15625 4.160156 9.621094 6.25 15.082032 6.25 5.460937 0 10.921875-2.089844 15.082031-6.25l128.210937-128.214844 128.214844 128.214844c4.160156 4.160156 9.621094 6.25 15.082032 6.25 5.460937 0 10.921874-2.089844 15.082031-6.25 8.34375-8.339844 8.34375-21.824219 0-30.164063zm0 0"></path></svg>
@@ -670,8 +643,8 @@ export default function AddressDetails({ params }: { params: { lang: string, dat
                                                     <div className="flex items-center mb-2 gap-2">
                                                         <Image
                                                             src={data?.product_data?.featured_image?.image ? NewMedia + data?.product_data?.featured_image?.image : 'https://partners.tamkeenstores.com.sa/public/assets/new-media/3f4a05b645bdf91af2a0d9598e9526181714129744.png'}
-                                                            alt={params.lang == 'ar' ? data?.product_data?.name_arabic : data?.product_data?.name}
-                                                            title={params.lang == 'ar' ? data?.product_data?.name_arabic : data?.product_data?.name}
+                                                            alt={lang == 'ar' ? data?.product_data?.name_arabic : data?.product_data?.name}
+                                                            title={lang == 'ar' ? data?.product_data?.name_arabic : data?.product_data?.name}
                                                             height={50}
                                                             width={50}
                                                             loading='lazy'
@@ -679,30 +652,30 @@ export default function AddressDetails({ params }: { params: { lang: string, dat
                                                         />
                                                         <div>
                                                             {/* {data?.expressproduct == 1 ? 
-                                                            <h4 className="text-[#DC4E4E] font-semibold text-xs md:text-sm line-clamp-1">{params.lang == 'ar' ? data?.express_qty + 'x المنتج السريع' : data?.express_qty + 'x Express Product'}</h4>
+                                                            <h4 className="text-[#DC4E4E] font-semibold text-xs md:text-sm line-clamp-1">{lang == 'ar' ? data?.express_qty + 'x المنتج السريع' : data?.express_qty + 'x Express Product'}</h4>
                                                             :null} */}
-                                                            <h4 className="text-primary text-xs font-semibold line-clamp-1">{params.lang == 'ar' ? data?.product_data?.name_arabic : data?.product_data?.name}</h4>
+                                                            <h4 className="text-primary text-xs font-semibold line-clamp-1">{lang == 'ar' ? data?.product_data?.name_arabic : data?.product_data?.name}</h4>
                                                             <div className="flex items-center gap-x-2 text-xs">
-                                                                <p className='text-xs'>{params.lang == 'ar' ? 'العلامة' : 'Brand'}:</p>
+                                                                <p className='text-xs'>{lang == 'ar' ? 'العلامة' : 'Brand'}:</p>
                                                                 {data?.product_data?.brand?.brand_media_image?.image ?
                                                                     <Image
                                                                         src={data?.product_data?.brand?.brand_media_image?.image ? NewMedia + data?.product_data?.brand?.brand_media_image?.image : 'https://partners.tamkeenstores.com.sa/public/assets/new-media/3f4a05b645bdf91af2a0d9598e9526181714129744.png'}
-                                                                        alt={params.lang == 'ar' ? data?.product_data?.brand?.name_arabic : data?.product_data?.brand?.name}
-                                                                        title={params.lang == 'ar' ? data?.product_data?.brand?.name_arabic : data?.product_data?.brand?.name}
+                                                                        alt={lang == 'ar' ? data?.product_data?.brand?.name_arabic : data?.product_data?.brand?.name}
+                                                                        title={lang == 'ar' ? data?.product_data?.brand?.name_arabic : data?.product_data?.brand?.name}
                                                                         height={40}
                                                                         width={40}
                                                                         className="h-full"
                                                                         loading='lazy'
                                                                     />
                                                                     :
-                                                                    <p className="font-bold text-xs">{params.lang == 'ar' ? data?.product_data?.brand?.name_arabic : data?.product_data?.brand?.name}</p>
+                                                                    <p className="font-bold text-xs">{lang == 'ar' ? data?.product_data?.brand?.name_arabic : data?.product_data?.brand?.name}</p>
                                                                 }
                                                             </div>
                                                         </div>
                                                     </div>
                                                     <div className="w-full">
                                                         <div className="flex items-center gap-2">
-                                                            <label className="text-xs font-semibold">{params.lang === 'ar' ? 'حدد التقييم' : 'Select Rating'}:</label>
+                                                            <label className="text-xs font-semibold">{lang === 'ar' ? 'حدد التقييم' : 'Select Rating'}:</label>
                                                             <div className="flex items-center gap-1 my-2.5">
                                                                 {productReviewData[data?.product_data?.sku]?.rating >= 1 ?
                                                                     <button className="focus-visible:outline-none fill-[#f36c32]">
@@ -778,7 +751,7 @@ export default function AddressDetails({ params }: { params: { lang: string, dat
                                                             </div>
                                                         </div>
                                                         <div className="pb-3.5 pt-3 px-3 bg-white rounded-md border flex items-center border-[#5D686F30] gap-x-2 mb-1.5">
-                                                            <input className="focus-visible:outline-none w-full text-xs font-normal" placeholder={params.lang === 'ar' ? 'المراجعات' : 'Subject'} type="text" value={productReviewData[data?.product_data?.sku] ? productReviewData[data?.product_data?.sku]?.title : addTitle[data?.product_data?.sku]} disabled={productReviewData[data?.product_data?.sku] ? true : false} onChange={(e) => {
+                                                            <input className="focus-visible:outline-none w-full text-xs font-normal" placeholder={lang === 'ar' ? 'المراجعات' : 'Subject'} type="text" value={productReviewData[data?.product_data?.sku] ? productReviewData[data?.product_data?.sku]?.title : addTitle[data?.product_data?.sku]} disabled={productReviewData[data?.product_data?.sku] ? true : false} onChange={(e) => {
 
                                                                 var addtitle: any = addTitle
                                                                 addtitle[data?.product_data?.sku] = e.target.value;
@@ -786,7 +759,7 @@ export default function AddressDetails({ params }: { params: { lang: string, dat
                                                             }} />
                                                         </div>
                                                         <div className="pb-3.5 pt-3 px-3 bg-white rounded-md border flex items-center border-[#5D686F30] gap-x-2 w-full">
-                                                            <textarea className="focus-visible:outline-none w-full text-xs font-normal" placeholder={params.lang === 'ar' ? 'العنوان' : 'Reviews'} value={productReviewData[data?.product_data?.sku] ? productReviewData[data?.product_data?.sku]?.review : addReview[data?.product_data?.sku]} disabled={productReviewData[data?.product_data?.sku] ? true : false} onChange={(e) => {
+                                                            <textarea className="focus-visible:outline-none w-full text-xs font-normal" placeholder={lang === 'ar' ? 'العنوان' : 'Reviews'} value={productReviewData[data?.product_data?.sku] ? productReviewData[data?.product_data?.sku]?.review : addReview[data?.product_data?.sku]} disabled={productReviewData[data?.product_data?.sku] ? true : false} onChange={(e) => {
 
                                                                 var addreview: any = addReview
                                                                 addreview[data?.product_data?.sku] = e.target.value;
@@ -808,12 +781,12 @@ export default function AddressDetails({ params }: { params: { lang: string, dat
                                         <div className="fixed bottom-0 w-full px-4 py-3 bg-white shadow-md border-t border-[#5D686F26]">
                                             <button onClick={() => SubmitReview()}
                                                 className="focus-visible:outline-none btn border border-[#004B7A] bg-[#004B7A] p-2.5 rounded-md w-full text-white fill-white font-medium">
-                                                {params.lang == 'ar' ? 'الغاء الطلب' : "Add Review's"}
+                                                {lang == 'ar' ? 'الغاء الطلب' : "Add Review's"}
                                             </button>
                                         </div>
                                     </div>
-                                </Dialog.Panel>
-                            </Transition.Child>
+                                </DialogPanel>
+                            </TransitionChild>
                         </div>
                     </div>
                 </Dialog>
@@ -821,7 +794,7 @@ export default function AddressDetails({ params }: { params: { lang: string, dat
             {/* UGC Modal */}
             <Transition appear show={uploadModal} as={Fragment}>
                 <Dialog as="div" open={uploadModal} onClose={() => setUploadModal(false)}>
-                    <Transition.Child
+                    <TransitionChild
                         as={Fragment}
                         enter="ease-out duration-300"
                         enterFrom="opacity-0"
@@ -831,10 +804,10 @@ export default function AddressDetails({ params }: { params: { lang: string, dat
                         leaveTo="opacity-0"
                     >
                         <div className="fixed inset-0" />
-                    </Transition.Child>
+                    </TransitionChild>
                     <div className="fixed inset-0 bg-[black]/60 z-[999] overflow-y-auto">
                         <div className="flex items-start justify-center min-h-screen px-4">
-                            <Transition.Child
+                            <TransitionChild
                                 as={Fragment}
                                 enter="ease-out duration-300"
                                 enterFrom="opacity-0 scale-95"
@@ -843,7 +816,7 @@ export default function AddressDetails({ params }: { params: { lang: string, dat
                                 leaveFrom="opacity-100 scale-100"
                                 leaveTo="opacity-0 scale-95"
                             >
-                                <Dialog.Panel as="div" className="panel bg-white border-0 p-0 rounded-lg overflow-hidden my-20 w-full max-w-2xl text-black">
+                                <DialogPanel as="div" className="panel bg-white border-0 p-0 rounded-lg overflow-hidden my-20 w-full max-w-2xl text-black">
                                     <div className="flex bg-[#fbfbfb] items-center justify-between px-5 py-3">
                                         <h5 className="font-bold text-base">{isArabic ? 'رفع فيديو جديد' : 'Upload New Video'}</h5>
                                         <button onClick={() => setUploadModal(false)} type="button" className="text-white-dark hover:text-dark">
@@ -864,14 +837,15 @@ export default function AddressDetails({ params }: { params: { lang: string, dat
                                         </button>
                                     </div>
                                     <div className="p-5 space-y-4">
-                                    {ugcVideo &&
-                                    <video ref={videoRef} controls={false} muted autoPlay loop className="w-full h-60 rounded-md">
-                                        <source src={ugcVideo} />
-                                    </video> }
+                                        {ugcVideo && (
+                                            <video ref={videoRef} controls={false} muted autoPlay loop className="w-full h-60 rounded-md">
+                                                <source src={ugcVideo} />
+                                            </video>
+                                        )}
                                         <div className='bg-gray/30 p-10 rounded-md'>
                                             <div className='text-center p-2 rounded-md w-64 mx-auto'>
                                                 <button className="btn_primaryCustomXS"
-                                                onClick={() => videoSectionRef.current?.click()}
+                                                    onClick={() => videoSectionRef.current?.click()}
                                                 >
                                                     <input
                                                         type="file"
@@ -882,7 +856,7 @@ export default function AddressDetails({ params }: { params: { lang: string, dat
                                                     />
                                                     {isArabic ? 'رفع فيديو' : 'Update Video'}
                                                 </button>
-                                                </div>
+                                            </div>
                                         </div>
                                         <div className="grid grid-cols-2 gap-3">
                                             <div>
@@ -902,7 +876,7 @@ export default function AddressDetails({ params }: { params: { lang: string, dat
                                                         />
                                                     </div>
                                                 </div>
-                                                {errors.facebook_link && <p className="text-[#ff0000] text-xs mt-1">{errors.facebook_link}</p>}
+                                                {errors.facebook_link && (<p className="text-[#ff0000] text-xs mt-1">{errors.facebook_link}</p>)}
                                             </div>
 
                                             <div>
@@ -911,7 +885,6 @@ export default function AddressDetails({ params }: { params: { lang: string, dat
                                                         <svg id="fi_3046120" enableBackground="new 0 0 512 512" height="20" viewBox="0 0 512 512" width="20" xmlns="http://www.w3.org/2000/svg" className="fill-white hover:fill-secondary"><g><path d="m480.32 128.39c-29.22 0-56.18-9.68-77.83-26.01-24.83-18.72-42.67-46.18-48.97-77.83-1.56-7.82-2.4-15.89-2.48-24.16h-83.47v228.08l-.1 124.93c0 33.4-21.75 61.72-51.9 71.68-8.75 2.89-18.2 4.26-28.04 3.72-12.56-.69-24.33-4.48-34.56-10.6-21.77-13.02-36.53-36.64-36.93-63.66-.63-42.23 33.51-76.66 75.71-76.66 8.33 0 16.33 1.36 23.82 3.83v-62.34-22.41c-7.9-1.17-15.94-1.78-24.07-1.78-46.19 0-89.39 19.2-120.27 53.79-23.34 26.14-37.34 59.49-39.5 94.46-2.83 45.94 13.98 89.61 46.58 121.83 4.79 4.73 9.82 9.12 15.08 13.17 27.95 21.51 62.12 33.17 98.11 33.17 8.13 0 16.17-.6 24.07-1.77 33.62-4.98 64.64-20.37 89.12-44.57 30.08-29.73 46.7-69.2 46.88-111.21l-.43-186.56c14.35 11.07 30.04 20.23 46.88 27.34 26.19 11.05 53.96 16.65 82.54 16.64v-60.61-22.49c.02.02-.22.02-.24.02z"></path></g></svg>
                                                     </div>
                                                     <div className='w-full p-2'>
-                                                        {/* <label>{isArabic ? 'فيسبوك' : 'Facebook'}</label> */}
                                                         <input
                                                             value={tiktokLink}
                                                             placeholder={isArabic ? 'فيسبوك' : 'Enter link here...'}
@@ -922,7 +895,7 @@ export default function AddressDetails({ params }: { params: { lang: string, dat
                                                         />
                                                     </div>
                                                 </div>
-                                                {errors.tiktok_link && <p className="text-[#ff0000] text-xs mt-1">{errors.tiktok_link}</p>}
+                                                {errors.tiktok_link && (<p className="text-[#ff0000] text-xs mt-1">{errors.tiktok_link}</p>)}
                                             </div>
 
                                             <div>
@@ -997,8 +970,8 @@ export default function AddressDetails({ params }: { params: { lang: string, dat
                                             </button>
                                         </div>
                                     </div>
-                                </Dialog.Panel>
-                            </Transition.Child>
+                                </DialogPanel>
+                            </TransitionChild>
                         </div>
                     </div>
                 </Dialog>

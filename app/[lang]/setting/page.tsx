@@ -1,183 +1,119 @@
 "use client"; // This is a client component 👈🏽
 
-import React, { useEffect, useState } from 'react'
-import Link from 'next/link'
-import dynamic from 'next/dynamic'
-import { getDictionary } from "../dictionaries"
-import { Switch, RadioGroup } from '@headlessui/react'
-import { useRouter } from 'next/navigation'
-import { usePathname } from 'next/navigation';
 import dayjs from 'dayjs';
+import React, { useState } from 'react'
+import dynamic from 'next/dynamic'
+import { useRouter } from 'next/navigation'
+import { RadioGroup } from '@headlessui/react';
+import { useApp } from "@/app/_ctx/AppContext";
 
 const MobileHeader = dynamic(() => import('../components/MobileHeader'), { ssr: true })
 
-export default function Setting({ params }: { params: { lang: string, data: any, devicetype: any } }) {
-    const [dict, setDict] = useState<any>([])
+export default function Setting() {
     const router = useRouter()
-    const [selected, setSelected] = useState(params?.lang)
-    const [data, setData] = useState<any>(params?.data?.data)
-    const [notificationEnabled, setNotificationEnabled] = useState<any>(true)
-    const path = usePathname();
-    const [latitude, setLatitude] = useState<number>(0);
-    const [longitude, setLongitude] = useState<number>(0);
-    const [cityData, setCityData] = useState<any>('')
-    const [location, setLocation] = useState();
-    const [BtnLoader, setBtnLoader] = useState(false)
+    const { lang, deviceType } = useApp();
+    const [selected, setSelected] = useState(lang)
+    // const [notificationEnabled, setNotificationEnabled] = useState<any>(true)
+    // const path = usePathname();
+    // const [latitude, setLatitude] = useState<number>(0);
+    // const [longitude, setLongitude] = useState<number>(0);
+    // const [cityData, setCityData] = useState<any>('')
+    // const [location, setLocation] = useState();
+    // const [BtnLoader, setBtnLoader] = useState(false)
 
 
     const changeLang = (lang: string) => {
-        var url = path.replace(`/${params.lang}`, `/${lang}`);
+        // var url = path.replace(`/${lang}`, `/${lang}`);
         setGtmUserProfileAttr(lang)
         router.push(`/${lang}`)
         router.refresh()
     };
 
-    useEffect(() => {
-        (async () => {
-            const translationdata = await getDictionary(params.lang);
-            setDict(translationdata);
-        })();
+    // useEffect(() => {
+    //     if (localStorage.getItem('globalcity')) {
+    //         setCityData(localStorage.getItem('globalcity'))
+    //     }
+    //     if (localStorage.getItem('globalNotification')) {
+    //         setNotificationEnabled(localStorage.getItem('globalNotification') == '1' ? true : false)
+    //     }
+    // }, [])
 
-        if (localStorage.getItem('globalcity')) {
-            setCityData(localStorage.getItem('globalcity'))
-        }
-        if (localStorage.getItem('globalNotification')) {
-            setNotificationEnabled(localStorage.getItem('globalNotification') == '1' ? true : false)
-        }
+    // const getLocation = () => {
+    //     setBtnLoader(true)
+    //     if ('geolocation' in navigator) {
+    //         // Retrieve latitude & longitude coordinates from `navigator.geolocation` Web API
+    //         navigator.geolocation.getCurrentPosition(({ coords }) => {
+    //             setLatitude(coords.latitude)
+    //             setLongitude(coords.longitude)
+    //             const latitude = coords.latitude;
+    //             const longitude = coords.longitude;
+    //             fetchApiData({ latitude, longitude })
+    //         })
+    //     }
+    //     if (location) {
+    //         fetchApiData(location);
+    //     }
+    // }
 
-        
-        // if(typeof window !== 'undefined'){
-        //     Notification.requestPermission().then(function (permission) {
-        //         // console.log('permission', permission)
-        //         if (permission === "granted") {
-        //             fetchToken()
-        //             onMessageListener()
-        //             return true;
-        //         }
+    // const fetchApiData = async ({ latitude, longitude }: { latitude: number, longitude: number }) => {
+    //     const res = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&language=${lang}&sensor=true&key=AIzaSyB3ekz5eMwuRZGvFy2HUADZVhxAzTWV5Ok`);
+    //     const data = await res?.json();
 
-        //     });
-        // }
-    }, [params])
-
-    const getLocation = () => {
-
-        setBtnLoader(true)
-        if ('geolocation' in navigator) {
-            // Retrieve latitude & longitude coordinates from `navigator.geolocation` Web API
-            navigator.geolocation.getCurrentPosition(({ coords }) => {
-                setLatitude(coords.latitude)
-                setLongitude(coords.longitude)
-                const latitude = coords.latitude;
-                const longitude = coords.longitude;
-                fetchApiData({ latitude, longitude })
-            })
-        }
-        if (location) {
-            fetchApiData(location);
-        }
-    }
-
-    const fetchApiData = async ({ latitude, longitude }: { latitude: number, longitude: number }) => {
-        const res = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&language=${params.lang}&sensor=true&key=AIzaSyB3ekz5eMwuRZGvFy2HUADZVhxAzTWV5Ok`);
-        const data = await res?.json();
-
-        for (var a = 0; a < data?.results[0]["address_components"]?.length; a++) {
-            if (
-                data?.results[0]["address_components"][a]?.types[0] ==
-                "administrative_area_level_2" &&
-                data?.results[0]["address_components"][a]?.types[1] == "political"
-            ) {
-                setCityData(data?.results[0]["address_components"][a]["long_name"]);
-                localStorage.setItem("globalcity", data?.results[0]["address_components"][a]["long_name"].toString());
-            }
-        };
-        setBtnLoader(false)
-    };
-
-    function CheckIcon(params: any) {
-        return (
-            <svg viewBox="0 0 24 24" fill="none" {...params}>
-                <circle cx={12} cy={12} r={12} fill="#00243c" opacity="0.2" />
-                <path
-                    d="M7 13l3 3 7-7"
-                    stroke="#00243c"
-                    strokeWidth={1.5}
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                />
-            </svg>
-        )
-    }
-
-    function detectPlatform() {
-        if (window.Android) return "Android";
-        if (window.webkit?.messageHandlers?.iosBridge) return "iOS";
-        var userAgent = navigator.userAgent || navigator.vendor || window.opera;
-        if (/android/i.test(userAgent)) return "Android";
-        if (/iPad|iPhone|iPod/.test(userAgent)) return "iOS";
-        return "Web";
-    }
+    //     for (var a = 0; a < data?.results[0]["address_components"]?.length; a++) {
+    //         if (
+    //             data?.results[0]["address_components"][a]?.types[0] ==
+    //             "administrative_area_level_2" &&
+    //             data?.results[0]["address_components"][a]?.types[1] == "political"
+    //         ) {
+    //             setCityData(data?.results[0]["address_components"][a]["long_name"]);
+    //             localStorage.setItem("globalcity", data?.results[0]["address_components"][a]["long_name"].toString());
+    //         }
+    //     };
+    //     setBtnLoader(false)
+    // };
 
     const setGtmUserProfileAttr = (lang: any) => {
-    var wind: any = typeof window !== "undefined" ? window.dataLayer : "";
-    wind = wind || [];
+        var wind: any = typeof window !== "undefined" ? window.dataLayer : "";
+        wind = wind || [];
 
-    try {
-        const storedProfile = localStorage.getItem('userProfileData');
-        let userProfileAtt = storedProfile ? JSON.parse(storedProfile) : {};
-        const newLanguage = lang || 'ar'; // Default to 'ar' if lang is not provided
-        userProfileAtt = {
-        ...userProfileAtt,
-        store_language: newLanguage
-        };
-        const fullName = localStorage.getItem('fullName');
-        const userEmail = localStorage.getItem('eMail');
-        const userPhone: any = `966${localStorage.getItem('phoneNumber')}`;
-        const [firstname, ...lastname] = fullName?.trim().split(' ') || [];
-        const platform = detectPlatform()
-        localStorage.setItem('userProfileData', JSON.stringify(userProfileAtt));
-        wind.push({
-            event: "global_variables",
-            account_creation_date: dayjs(userProfileAtt?.account_creation_date, 'DD-MM-YYYY hh:mm A').isValid() ? dayjs(userProfileAtt.account_creation_date, 'DD-MM-YYYY hh:mm A').locale('en').format('DD-MM-YYYY hh:mm A') : '',
-            user_id : String(userProfileAtt?.backend_user_id ?? ''),
-            email : userEmail ?? '',
-            phone : userPhone ?? '',
-            last_purchase_date: dayjs(userProfileAtt?.last_purchase_date, 'DD-MM-YYYY hh:mm A').isValid() ? dayjs(userProfileAtt.last_purchase_date, 'DD-MM-YYYY hh:mm A').locale('en').format('DD-MM-YYYY hh:mm A') : '',
-            store_language: userProfileAtt?.store_language ?? 'ar',
-            total_purchases: userProfileAtt?.total_purchases ?? 0,
-            total_revenue : userProfileAtt?.total_revenue ?? 0,
-            user_data_source : platform,
-            platform: platform
-        });
-    } catch (error) {
-        console.error('Error updating user profile:', error);
-    }
+        try {
+            const storedProfile = localStorage.getItem('userProfileData');
+            let userProfileAtt = storedProfile ? JSON.parse(storedProfile) : {};
+            const newLanguage = lang || 'ar'; // Default to 'ar' if lang is not provided
+            userProfileAtt = {
+                ...userProfileAtt,
+                store_language: newLanguage
+            };
+            const fullName = localStorage.getItem('fullName');
+            const userEmail = localStorage.getItem('eMail');
+            const userPhone: any = `966${localStorage.getItem('phoneNumber')}`;
+            const [firstname, ...lastname] = fullName?.trim().split(' ') || [];
+            const platform = deviceType
+            localStorage.setItem('userProfileData', JSON.stringify(userProfileAtt));
+            wind.push({
+                event: "global_variables",
+                account_creation_date: dayjs(userProfileAtt?.account_creation_date, 'DD-MM-YYYY hh:mm A').isValid() ? dayjs(userProfileAtt.account_creation_date, 'DD-MM-YYYY hh:mm A').locale('en').format('DD-MM-YYYY hh:mm A') : '',
+                user_id: String(userProfileAtt?.backend_user_id ?? ''),
+                email: userEmail ?? '',
+                phone: userPhone ?? '',
+                last_purchase_date: dayjs(userProfileAtt?.last_purchase_date, 'DD-MM-YYYY hh:mm A').isValid() ? dayjs(userProfileAtt.last_purchase_date, 'DD-MM-YYYY hh:mm A').locale('en').format('DD-MM-YYYY hh:mm A') : '',
+                store_language: userProfileAtt?.store_language ?? 'ar',
+                total_purchases: userProfileAtt?.total_purchases ?? 0,
+                total_revenue: userProfileAtt?.total_revenue ?? 0,
+                user_data_source: platform,
+                platform: platform
+            });
+        } catch (error) {
+            console.error('Error updating user profile:', error);
+        }
     };
 
     return (
-        <>
-                <MobileHeader type="Third" pageTitle={params.lang == 'ar' ? 'شحن إلى' : 'Setting'} lang={params.lang} />
+        <div>
+            <MobileHeader type="Third" pageTitle={lang == 'ar' ? 'شحن إلى' : 'Setting'} lang={lang} />
             <div className="container py-16 md:py-4">
-                {/* <div>
-                    <h1 className="font-semibold text-base">{params.lang === 'ar' ? 'إشعارات' : 'Notifications'}</h1>
-                    <div className="bg-white rounded-md px-3 py-4 shadow-md mt-1.5 flex items-center justify-between">
-                        <label htmlFor="four" className="text-sm font-semibold">{params.lang === 'ar' ? 'إشعارات' : 'Notifications'}</label>
-                        <Switch
-                            checked={notificationEnabled}
-                            onChange={(e: any) => {
-                                setNotificationEnabled(e)
-                                localStorage.setItem('globalNotification', e ? '1' : '0')
-                            }}
-                            className={`${notificationEnabled ? 'bg-primary' : 'bg-primary/10'
-                                } relative inline-flex h-6 w-11 items-center rounded-full`}
-                        >
-                            <span className="sr-only">{params?.lang === 'ar' ? 'تفعيل الاشعارات' : 'Enable Notifications'}</span>
-                            <span className={`${notificationEnabled ? params.lang === 'ar' ? '-translate-x-6' : 'translate-x-6' : params.lang === 'ar' ? '-translate-x-1' : 'translate-x-1'} inline-block h-4 w-4 transform rounded-full bg-white transition`} />
-                        </Switch>
-                    </div>
-                </div> */}
                 <div className="mt-4">
-                    <h2 className="font-semibold text-base">{params.lang === 'ar' ? 'لغة' : 'Language'}</h2>
+                    <h2 className="font-semibold text-base">{lang === 'ar' ? 'لغة' : 'Language'}</h2>
                     <RadioGroup value={selected} onChange={(e) => {
                         changeLang(e)
                         setSelected(e)
@@ -247,20 +183,20 @@ export default function Setting({ params }: { params: { lang: string, data: any,
                         </div>
                     </RadioGroup>
                 </div>
-                <div className="mt-8">
-                    <h3 className="font-semibold text-base">{params.lang === 'ar' ? 'تحديد المكان' : 'Set Location'}</h3>
-                    <p className="text-xs mb-3 text-[#5D686F]">{params.lang === 'ar' ? 'المدينة الحالية' : 'Current City'}: {cityData}</p>
+                {/* <div className="mt-8">
+                    <h3 className="font-semibold text-sm">{lang === 'ar' ? 'تحديد المكان' : 'Set Location'}</h3>
+                    <p className="text-xs my-2 text-[#5D686F]">{lang === 'ar' ? 'المدينة الحالية' : 'Current City'}: <span className='font-bold'>{cityData}</span></p>
                     {BtnLoader ?
                         <button disabled={BtnLoader} className="btn border border-[#004B7A] bg-[#004B7A] p-2.5 rounded-md w-full text-white fill-white flex items-center justify-center font-medium gap-x-2">
-                            {params.lang === 'ar' ? 'تحميل...' : 'Loading...'}
+                            {lang === 'ar' ? 'تحميل...' : 'Loading...'}
                         </button>
                         :
                         <button onClick={() => { getLocation() }} className="btn border border-[#004B7A] bg-[#004B7A] p-2.5 rounded-md w-full text-white fill-white flex items-center justify-center font-medium gap-x-2">
-                            {params.lang === 'ar' ? 'احصل على الموقع' : 'Get Location'}
+                            {lang === 'ar' ? 'احصل على الموقع' : 'Get Location'}
                         </button>
                     }
-                </div>
+                </div> */}
             </div>
-        </>
+        </div>
     )
 }
