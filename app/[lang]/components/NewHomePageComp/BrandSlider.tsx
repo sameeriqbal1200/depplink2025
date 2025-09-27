@@ -191,7 +191,7 @@ export default function BrandSlider(props: any) {
                                 <div className="brand_logo px-1 col-span-2">
                                     <Image
                                         src={`${NewMedia}/${brandImage}`}
-                                        alt={brandImage}
+                                        alt={`logo`}
                                         title={brandImage}
                                         width={134}
                                         height={42}

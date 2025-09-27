@@ -1,8 +1,8 @@
 "use client"; // This is a client component 👈🏽
 
 import React, { useEffect, useState } from 'react'
-import 'moment/locale/ar'
-import moment from 'moment'
+import 'dayjs/locale/ar'
+import dayjs from 'dayjs'
 import Link from 'next/link'
 import dynamic from 'next/dynamic'
 import { get } from "../../api/ApiCalls"
@@ -68,7 +68,7 @@ export default function OrderListing({ params }: { params: { lang: string, data:
                                         </div>
                                         <div className="text-[#1C262D85] max-md:my-4">
                                             <h4 className="font-medium text-xs mb-1">{params.lang == 'ar' ? 'تاريخ الطلب' : 'Order Date'}:</h4>
-                                            <p className="font-medium text-[#004B7A]">{moment(data?.created_at).locale(params.lang == 'ar' ? 'ar' : 'en').format("MMM  DD, YYYY")}</p>
+                                            <p className="font-medium text-[#004B7A]">{dayjs(data?.created_at).locale(params.lang == 'ar' ? 'ar' : 'en').format("MMM  DD, YYYY")}</p>
                                         </div>
                                         <div className="text-[#1C262D85] max-md:my-4">
                                             <h4 className="font-medium text-xs mb-1">{params.lang == 'ar' ? 'عدد المنتجات' : 'No. of Products'}:</h4>
