@@ -22,7 +22,7 @@ import { useApp } from '@/app/_ctx/AppContext';
 import { useSlot } from '@/app/_ctx/ClientDataRegistry';
 
 
-const LoginSingup = dynamic(() => import('../../components/LoginSignup'), { ssr: false })
+// const LoginSingup = dynamic(() => import('../../components/LoginSignup'), { ssr: false })
 const MobileHeader = dynamic(() => import('../../components/MobileHeader'), { ssr: true })
 const RatingComponent = dynamic(() => import('../../components/ProductComponents/Rating'), { ssr: false })
 const ProductSliderComponent = dynamic(() => import("../../components/NewHomePageComp/ProductSlider"), { ssr: false });
@@ -50,8 +50,7 @@ interface PushGTMEventProps {
 }
 
 export default function Product() {
-    const [dict, setDict] = useState<any>([]);
-    const { lang, deviceType, t } = useApp();
+    const { lang, deviceType, t, origin } = useApp();
     const isArabic = lang === "ar" ? true : false;
     const productDataClassic = useSlot<any>("product");
     // const [data, setData] = useState<any>(productDataClassic?.data);
@@ -1200,11 +1199,6 @@ export default function Product() {
         )
     }
 
-    const origin =
-        typeof window !== 'undefined' && window.location.origin
-            ? window.location.origin
-            : '';
-
 
     const getFormattedPrice = (price: number | undefined) =>
         price ? price.toLocaleString('EN-US') : '';
@@ -1311,7 +1305,7 @@ export default function Product() {
 
     return (
         <>
-            <LoginSingup show={loginPopup} lang={lang} dict={dict} onClose={() => setLoginPopup(false)} />
+            {/* <LoginSingup show={loginPopup} lang={lang} dict={dict} onClose={() => setLoginPopup(false)} /> */}
             <MobileHeader
                 type="Product"
                 ariaLabel={isArabic ? 'شـارك الــمــنـتـج' : 'Share Product'}
@@ -1874,7 +1868,7 @@ export default function Product() {
                     {productDataClassic?.data?.upsaleproductdata?.products?.data?.length > 0 ?
                         <>
                             <div className='my-6 relative'>
-                                <ProductSliderComponent origin={origin} sliderHeading={isArabic ? 'المنتجات الموصى بها' : 'Recommended Products'} dict={dict.products} productDataSlider={productDataClassic?.data?.upsaleproductdata} headingRequired={true} isMobileOrTablet={isMobileOrTablet} isArabic={isArabic} />
+                                <ProductSliderComponent origin={origin} sliderHeading={isArabic ? 'المنتجات الموصى بها' : 'Recommended Products'} productDataSlider={productDataClassic?.data?.upsaleproductdata} headingRequired={true} isMobileOrTablet={isMobileOrTablet} isArabic={isArabic} />
                             </div>
                         </>
                         : null}
@@ -2059,7 +2053,7 @@ export default function Product() {
                     <div className='my-6 relative'>
                         <h3 className='text-base  font-semibold'>{isArabic ? 'منـتجات مشـابهـة' : 'Related Products'}</h3>
                         <div className='mt-2 pb-2'>
-                            <ProductSliderComponent origin={origin} dict={dict.products} productDataSlider={productdata} isMobileOrTablet={isMobileOrTablet} isArabic={isArabic} />
+                            <ProductSliderComponent origin={origin} productDataSlider={productdata} isMobileOrTablet={isMobileOrTablet} isArabic={isArabic} />
                         </div>
                     </div>
                     : null
