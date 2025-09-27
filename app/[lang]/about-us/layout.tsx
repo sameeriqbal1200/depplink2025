@@ -1,52 +1,15 @@
 import type { Metadata } from "next";
 import { getRequestContext } from "@/lib/request-context";
-import { getFooterCached } from "@/lib/footerpages/footer.cached";
 import { BridgeSlot } from "@/app/_ctx/ClientDataRegistry";
-
-export const viewport = {
-    width: 'device-width',
-    initialScale: 1,
-    maximumScale: 1,
-    userScalable: 0,
-}
+import { getFooterCached } from "@/lib/footerpages/footer.cached";
 
 export default async function AboutUsLayout({ children }: { children: React.ReactNode }) {
-    const { lang, baseUrl, slugStr } = await getRequestContext();
+    const { slugStr } = await getRequestContext();
     if (!slugStr) return null;
 
     const footer = await getFooterCached(slugStr);
     const value = footer ? JSON.parse(JSON.stringify(footer)) : null;
-
-    const jsonLd = [
-        {
-            "@id": "#breadcrumb",
-            "@context": "https://schema.org",
-            "@type": "BreadcrumbList",
-            itemListElement: [
-                {
-                    "@type": "ListItem",
-                    position: 1,
-                    name: lang === 'ar' ? 'الصفحة الرئيسي' : 'Home Page',
-                    item: `${baseUrl}/${lang}`,
-                },
-                {
-                    "@type": "ListItem",
-                    position: 2,
-                    name: lang === 'ar' ? 'معلومات عنا' : 'About Us',
-                    item: `${baseUrl}/${lang}/${footer?.data?.data?.page_link}`,
-                },
-            ],
-        },
-    ]
-    return (
-        <BridgeSlot slot="footer" value={value}>
-            <script
-                type="application/ld+json"
-                dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-            />
-            {children}
-        </BridgeSlot>
-    );
+    return <BridgeSlot slot="footer" value={value}>{children}</BridgeSlot>;
 }
 
 // ---- SEO metadata ----

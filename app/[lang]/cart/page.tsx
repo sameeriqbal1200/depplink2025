@@ -16,7 +16,6 @@ import Swal from 'sweetalert2'
 import '@next/third-parties/google'
 import withReactContent from 'sweetalert2-react-content'
 import { getCart, getCartCount, getSummary, removeCartItem, increaseQty, setShipping, setDiscountRule, setDiscountRuleBogo, getProductids, removecheckoutdata, removeCartItemFbt, removeCartItemGift, getExpressDeliveryCart, getPickupStoreCart, setPickupStoreCart, getFGCart, addgifttextraitem } from '../cartstorage/cart';
-import Lottie from 'lottie-react';
 import FullPageLoader from '../components/FullPageLoader';
 import GlobalContext from '../GlobalContext'
 import PickupStorePopup from '../components/PickupStorePopup';
@@ -68,7 +67,7 @@ export default function NewCart({ params }: { params: { lang: string, data: any,
         const handleGlobalStoreChange = () => {
             resetCart(false);
         };
-        
+
         window.addEventListener("storage", () => {
             refetch();
         });
@@ -189,14 +188,14 @@ export default function NewCart({ params }: { params: { lang: string, data: any,
         setexpressData(exp)
 
         {/* Commented Pickup Store */ }
-        if(isRun == true){
+        if (isRun == true) {
             const store: any = await getPickupStoreCart(params?.lang, false)
             setglobalStore(store?.warehouse_single)
             localStorage.setItem('globalStore', store?.warehouse_single?.id)
             setallStores(store?.warehouses)
-    
+
             setstoreData(store)
-            if(store?.success == false){
+            if (store?.success == false) {
                 setstorePickup(0)
                 localStorage.setItem('globalStore', '0')
                 updateDeliveryMethod(0, true)
@@ -215,24 +214,24 @@ export default function NewCart({ params }: { params: { lang: string, data: any,
 
     {/* Commented Pickup Store */ }
     const updateDeliveryMethod = (method: any, isSet: any = false) => {
-		setstorePickup(method)
-		var storeId: any = false
-		var storetype: any = 0
-		var storeCity: any = false
-		if (method == 1) {
-			storeId = globalStore?.id
-			storetype = method
-			storeCity = isArabic ? globalStore?.waybill_city_data?.name_arabic : globalStore?.waybill_city_data?.name
-			localStorage.setItem('globalStore', storeId)
-		}
-		if(method == 0) {
-			localStorage.setItem('globalStore', '0')
-		}
-		setPickupStoreCart(storeId, storetype, storeCity)
-		if(isSet == false){
-			resetCart()
-		}
-	}
+        setstorePickup(method)
+        var storeId: any = false
+        var storetype: any = 0
+        var storeCity: any = false
+        if (method == 1) {
+            storeId = globalStore?.id
+            storetype = method
+            storeCity = isArabic ? globalStore?.waybill_city_data?.name_arabic : globalStore?.waybill_city_data?.name
+            localStorage.setItem('globalStore', storeId)
+        }
+        if (method == 0) {
+            localStorage.setItem('globalStore', '0')
+        }
+        setPickupStoreCart(storeId, storetype, storeCity)
+        if (isSet == false) {
+            resetCart()
+        }
+    }
 
     const removeItem = (key: any) => {
         setLoaderStatus(true)
@@ -444,63 +443,63 @@ export default function NewCart({ params }: { params: { lang: string, data: any,
     const madfuImg = '/images/madfu.webp';
     const tamaraImg = '/images/tamara-en.webp';
     const proceedCheckout = isArabic ? 'اكمال شراء الطلب' : 'Proceed to Checkout';
- const currencySymbol = (
-		<svg
-		className="riyal-svg inline-flex"
-		xmlns="http://www.w3.org/2000/svg"
-		viewBox="0 0 1124.14 1256.39"
-		width="15"
-		height="15"
-		>
-		<path
-			fill="currentColor"
-			d="M699.62,1113.02h0c-20.06,44.48-33.32,92.75-38.4,143.37l424.51-90.24c20.06-44.47,33.31-92.75,38.4-143.37l-424.51,90.24Z"
-		></path>
-		<path
-			fill="currentColor"
-			d="M1085.73,895.8c20.06-44.47,33.32-92.75,38.4-143.37l-330.68,70.33v-135.2l292.27-62.11c20.06-44.47,33.32-92.75,38.4-143.37l-330.68,70.27V66.13c-50.67,28.45-95.67,66.32-132.25,110.99v403.35l-132.25,28.11V0c-50.67,28.44-95.67,66.32-132.25,110.99v525.69l-295.91,62.88c-20.06,44.47-33.33,92.75-38.42,143.37l334.33-71.05v170.26l-358.3,76.14c-20.06,44.47-33.32,92.75-38.4,143.37l375.04-79.7c30.53-6.35,56.77-24.4,73.83-49.24l68.78-101.97v-.02c7.14-10.55,11.3-23.27,11.3-36.97v-149.98l132.25-28.11v270.4l424.53-90.28Z"
-		></path>
-		</svg>
- )
- const currencySymbolSmall = (
-		<svg
-		className="riyal-svg inline-flex"
-		xmlns="http://www.w3.org/2000/svg"
-		viewBox="0 0 1124.14 1256.39"
-		width="12"
-		height="12"
-		>
-		<path
-			fill="currentColor"
-			d="M699.62,1113.02h0c-20.06,44.48-33.32,92.75-38.4,143.37l424.51-90.24c20.06-44.47,33.31-92.75,38.4-143.37l-424.51,90.24Z"
-		></path>
-		<path
-			fill="currentColor"
-			d="M1085.73,895.8c20.06-44.47,33.32-92.75,38.4-143.37l-330.68,70.33v-135.2l292.27-62.11c20.06-44.47,33.32-92.75,38.4-143.37l-330.68,70.27V66.13c-50.67,28.45-95.67,66.32-132.25,110.99v403.35l-132.25,28.11V0c-50.67,28.44-95.67,66.32-132.25,110.99v525.69l-295.91,62.88c-20.06,44.47-33.33,92.75-38.42,143.37l334.33-71.05v170.26l-358.3,76.14c-20.06,44.47-33.32,92.75-38.4,143.37l375.04-79.7c30.53-6.35,56.77-24.4,73.83-49.24l68.78-101.97v-.02c7.14-10.55,11.3-23.27,11.3-36.97v-149.98l132.25-28.11v270.4l424.53-90.28Z"
-		></path>
-		</svg>
- )
+    const currencySymbol = (
+        <svg
+            className="riyal-svg inline-flex"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 1124.14 1256.39"
+            width="15"
+            height="15"
+        >
+            <path
+                fill="currentColor"
+                d="M699.62,1113.02h0c-20.06,44.48-33.32,92.75-38.4,143.37l424.51-90.24c20.06-44.47,33.31-92.75,38.4-143.37l-424.51,90.24Z"
+            ></path>
+            <path
+                fill="currentColor"
+                d="M1085.73,895.8c20.06-44.47,33.32-92.75,38.4-143.37l-330.68,70.33v-135.2l292.27-62.11c20.06-44.47,33.32-92.75,38.4-143.37l-330.68,70.27V66.13c-50.67,28.45-95.67,66.32-132.25,110.99v403.35l-132.25,28.11V0c-50.67,28.44-95.67,66.32-132.25,110.99v525.69l-295.91,62.88c-20.06,44.47-33.33,92.75-38.42,143.37l334.33-71.05v170.26l-358.3,76.14c-20.06,44.47-33.32,92.75-38.4,143.37l375.04-79.7c30.53-6.35,56.77-24.4,73.83-49.24l68.78-101.97v-.02c7.14-10.55,11.3-23.27,11.3-36.97v-149.98l132.25-28.11v270.4l424.53-90.28Z"
+            ></path>
+        </svg>
+    )
+    const currencySymbolSmall = (
+        <svg
+            className="riyal-svg inline-flex"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 1124.14 1256.39"
+            width="12"
+            height="12"
+        >
+            <path
+                fill="currentColor"
+                d="M699.62,1113.02h0c-20.06,44.48-33.32,92.75-38.4,143.37l424.51-90.24c20.06-44.47,33.31-92.75,38.4-143.37l-424.51,90.24Z"
+            ></path>
+            <path
+                fill="currentColor"
+                d="M1085.73,895.8c20.06-44.47,33.32-92.75,38.4-143.37l-330.68,70.33v-135.2l292.27-62.11c20.06-44.47,33.32-92.75,38.4-143.37l-330.68,70.27V66.13c-50.67,28.45-95.67,66.32-132.25,110.99v403.35l-132.25,28.11V0c-50.67,28.44-95.67,66.32-132.25,110.99v525.69l-295.91,62.88c-20.06,44.47-33.33,92.75-38.42,143.37l334.33-71.05v170.26l-358.3,76.14c-20.06,44.47-33.32,92.75-38.4,143.37l375.04-79.7c30.53-6.35,56.77-24.4,73.83-49.24l68.78-101.97v-.02c7.14-10.55,11.3-23.27,11.3-36.97v-149.98l132.25-28.11v270.4l424.53-90.28Z"
+            ></path>
+        </svg>
+    )
 
     const iconPickupMan = "/icons/pickupMans.webp";
-	const iconLocationPin = "/icons/location_icon.webp";
-	const iconPickupTime = "/icons/box-time.webp";
-	const pickupStoreContent = isArabic ? "الاستلام من المعرض" : "Store Pick Up";
-	const showroomName = isArabic
-		? globalStore?.showroom_arabic
+    const iconLocationPin = "/icons/location_icon.webp";
+    const iconPickupTime = "/icons/box-time.webp";
+    const pickupStoreContent = isArabic ? "الاستلام من المعرض" : "Store Pick Up";
+    const showroomName = isArabic
+        ? globalStore?.showroom_arabic
         : globalStore?.showroom;
 
-	const pickupStoreTimeText = isArabic ? (
-		<>
-			الاستلام سوف يكون متاح خلال{" "}
-			<span className="text-[#fde18d] font-bold">1</span> ساعة عمل.
-		</>
-	) : (
-		<>
-			Collection will be available in the next{" "}
-			<span className="text-[#fde18d] font-bold">1</span> hour.
-		</>
-	);
-	const stockText = isArabic ? "متوفر في المعرض" : "Item in Stock for Pickup";
+    const pickupStoreTimeText = isArabic ? (
+        <>
+            الاستلام سوف يكون متاح خلال{" "}
+            <span className="text-[#fde18d] font-bold">1</span> ساعة عمل.
+        </>
+    ) : (
+        <>
+            Collection will be available in the next{" "}
+            <span className="text-[#fde18d] font-bold">1</span> hour.
+        </>
+    );
+    const stockText = isArabic ? "متوفر في المعرض" : "Item in Stock for Pickup";
 
     return (
         <>
