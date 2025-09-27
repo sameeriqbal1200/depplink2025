@@ -38,7 +38,7 @@ export default function Wishlist() {
     const [loading, setLoading] = useState<boolean>(true)
     const isMobileOrTablet = true;
     const { updateWishlist, setUpdateWishlist } = useContext(GlobalContext);
-    
+
     const getWishlistData = async () => {
         try {
             setLoading(true);
@@ -107,6 +107,7 @@ export default function Wishlist() {
                                             lang={lang}                // or pass isArabic if ProductLoop expects boolean
                                             isMobileOrTablet={isMobileOrTablet}
                                             origin={origin}
+                                            NewMedia={process.env.NEXT_PUBLIC_NEW_MEDIA}
                                         />
                                     </div>
                                 ) : (
