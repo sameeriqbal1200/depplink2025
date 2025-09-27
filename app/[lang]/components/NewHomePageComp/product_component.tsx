@@ -1,11 +1,10 @@
 "use client";
 
 import Image from "next/image";
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "swiper/css";
 import "swiper/css/navigation";
 import Link from "next/link";
-import { post } from "../../api/ApiCalls";
 import { useRouter } from "next-nprogress-bar";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
@@ -13,6 +12,7 @@ import { cacheKey } from "../../../GlobalVar";
 import { setCartItems } from "../../cartstorage/cart";
 import GlobalContext from "../../GlobalContext";
 import FlashSaleTimer from "./FlashSaleTimer";
+import { addProductWishlistData, removeProductWishlistData } from "@/lib/components/component.client";
 
 export default function product_component_updated({
   productData,
@@ -754,37 +754,34 @@ if (specs.length >= 4) {
         product_id: id,
       };
       if (type) {
-        post("removewishlist", data).then((responseJson: any) => {
-          if (responseJson?.success) {
-            var wishlistRemovetext = isArabic
-              ? "تمت إزالة هذا المنتج من قائمة الرغبات."
-              : "This product has been removed from wishlist.";
-            topMessageAlartDanger(wishlistRemovetext);
-            if (localStorage.getItem("wishlistCount")) {
-              var wishlistlength: any = localStorage.getItem("wishlistCount");
-              wishlistlength = parseInt(wishlistlength) - 1;
-              localStorage.setItem("wishlistCount", wishlistlength);
-            }
-            localStorage.removeItem("userWishlist");
-            setUpdateWishlist(updateWishlist == 0 ? 1 : 0);
+        const removeWishlist = await removeProductWishlistData(data);
+        if (removeWishlist?.removeWishlistData?.success) {
+          var wishlistRemovetext = isArabic
+            ? "تمت إزالة هذا المنتج من قائمة الرغبات."
+            : "This product has been removed from wishlist.";
+          topMessageAlartDanger(wishlistRemovetext);
+          if (localStorage.getItem("wishlistCount")) {
+            var wishlistlength: any = localStorage.getItem("wishlistCount");
+            wishlistlength = parseInt(wishlistlength) - 1;
+            localStorage.setItem("wishlistCount", wishlistlength);
           }
-        });
+          localStorage.removeItem("userWishlist");
+          setUpdateWishlist(updateWishlist == 0 ? 1 : 0);
       } else {
-        post("addwishlist", data).then((responseJson: any) => {
-          if (responseJson?.success) {
-            var wishlistAddtext = isArabic
-              ? "تمت إضافة هذا المنتج إلى قائمة الرغبات."
-              : "This product has been Added in the wishlist.";
-            topMessageAlartSuccess(wishlistAddtext);
-            if (localStorage.getItem("wishlistCount")) {
-              var wishlistlength: any = localStorage.getItem("wishlistCount");
-              wishlistlength = parseInt(wishlistlength) + 1;
-              localStorage.setItem("wishlistCount", wishlistlength);
-            }
-            localStorage.removeItem("userWishlist");
-            setUpdateWishlist(updateWishlist == 0 ? 1 : 0);
+        const addWishlist = await addProductWishlistData(data);
+        if (addWishlist?.addWishlistData?.success) {
+          var wishlistAddtext = isArabic
+            ? "تمت إضافة هذا المنتج إلى قائمة الرغبات."
+            : "This product has been Added in the wishlist.";
+          topMessageAlartSuccess(wishlistAddtext);
+          if (localStorage.getItem("wishlistCount")) {
+            var wishlistlength: any = localStorage.getItem("wishlistCount");
+            wishlistlength = parseInt(wishlistlength) + 1;
+            localStorage.setItem("wishlistCount", wishlistlength);
           }
-        });
+          localStorage.removeItem("userWishlist");
+          setUpdateWishlist(updateWishlist == 0 ? 1 : 0);
+        }
       }
     } else {
       router.push(`/${isArabic ? "ar" : "en"}/login`);

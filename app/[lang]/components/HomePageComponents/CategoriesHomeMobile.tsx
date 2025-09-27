@@ -88,7 +88,7 @@ export default function CategoriesHomeMobile(props: any) {
                                         <div className=''>
                                             <Link href={`${origin}/${props?.lang}/category/${category.slug}`} className="rounded-md">
                                                 <Image
-                                                    src={category?.web_media_image ? NewMedia + category?.web_media_image?.image : ''}
+                                                    src={category?.web_media_image ? `${NewMedia}${category?.web_media_image?.image}` : ''}
                                                     alt={`${renderCategoryName(category)}-${i + 11}`}
                                                     title={renderCategoryName(category)}
                                                     width={0}
