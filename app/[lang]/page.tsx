@@ -1345,74 +1345,80 @@ export default function Homepage() {
               >
                 <div className="felx flex-col space-y-3 sm:w-auto w-full">
                   <div className="overflow-hidden rounded-2xl">
-                    <Link
-                      prefetch={false}
-                      scroll={false}
-                      href={`${origin}/${lang}/${sec13Link2}`}
-                      aria-label={`${origin}/${lang}`}
-                    >
-                      <Image
-                        alt="Built in Appliances"
-                        title="Built in Appliances"
-                        width={0}
-                        height={0}
-                        decoding="async"
-                        loading="lazy"
-                        sizes="100vw"
-                        quality={100}
-                        data-nimg="1"
-                        className="h-auto w-[27rem] mx-auto rounded-2xl hover:scale-110 transform transition-transform duration-500 ease-in-out"
-                        src={sec13Image2}
-                        style={{ color: "transparent" }}
-                      />
-                    </Link>
+                    {sec13Image2 && (
+                      <Link
+                        prefetch={false}
+                        scroll={false}
+                        href={`${origin}/${lang}/${sec13Link2}`}
+                        aria-label={`${origin}/${lang}`}
+                      >
+                        <Image
+                          alt="Built in Appliances"
+                          title="Built in Appliances"
+                          width={0}
+                          height={0}
+                          decoding="async"
+                          loading="lazy"
+                          sizes="100vw"
+                          quality={100}
+                          data-nimg="1"
+                          className="h-auto w-[27rem] mx-auto rounded-2xl hover:scale-110 transform transition-transform duration-500 ease-in-out"
+                          src={sec13Image2}
+                          style={{ color: "transparent" }}
+                        />
+                      </Link>
+                    )}
                   </div>
                   <div className="overflow-hidden rounded-2xl">
-                    <Link
-                      prefetch={false}
-                      scroll={false}
-                      href={`${origin}/${lang}/${sec13Link3}`}
-                      aria-label={`${origin}/${lang}`}
-                    >
-                      <Image
-                        alt="Built in Appliances"
-                        title="Built in Appliances"
-                        width={0}
-                        height={0}
-                        decoding="async"
-                        loading="lazy"
-                        sizes="100vw"
-                        quality={100}
-                        data-nimg="1"
-                        className="h-auto w-[27rem] mx-auto rounded-2xl hover:scale-110 transform transition-transform duration-500 ease-in-out"
-                        src={sec13Image3}
-                        style={{ color: "transparent" }}
-                      />
-                    </Link>
+                    {sec13Image3 && (
+                      <Link
+                        prefetch={false}
+                        scroll={false}
+                        href={`${origin}/${lang}/${sec13Link3}`}
+                        aria-label={`${origin}/${lang}`}
+                      >
+                        <Image
+                          alt="Built in Appliances"
+                          title="Built in Appliances"
+                          width={0}
+                          height={0}
+                          decoding="async"
+                          loading="lazy"
+                          sizes="100vw"
+                          quality={100}
+                          data-nimg="1"
+                          className="h-auto w-[27rem] mx-auto rounded-2xl hover:scale-110 transform transition-transform duration-500 ease-in-out"
+                          src={sec13Image3}
+                          style={{ color: "transparent" }}
+                        />
+                      </Link>
+                    )}
                   </div>
                 </div>
                 <div className="overflow-hidden rounded-2xl sm:w-auto md:w-auto">
-                  <Link
-                    prefetch={false}
-                    scroll={false}
-                    href={`${origin}/${lang}/${sec13Link1}`}
-                    aria-label={`${origin}/${lang}`}
-                  >
-                    <Image
-                      alt="Built in Appliances"
-                      title="Built in Appliances"
-                      width={0}
-                      height={0}
-                      decoding="async"
-                      sizes="100vw"
-                      quality={100}
-                      loading="lazy"
-                      data-nimg="1"
-                      className="h-auto w-64 mx-auto rounded-2xl hover:scale-110 transform transition-transform duration-500 ease-in-out"
-                      src={sec13Image1}
-                      style={{ color: "transparent" }}
-                    />
-                  </Link>
+                  {sec13Image1 && (
+                    <Link
+                      prefetch={false}
+                      scroll={false}
+                      href={`${origin}/${lang}/${sec13Link1}`}
+                      aria-label={`${origin}/${lang}`}
+                    >
+                      <Image
+                        alt="Built in Appliances"
+                        title="Built in Appliances"
+                        width={0}
+                        height={0}
+                        decoding="async"
+                        sizes="100vw"
+                        quality={100}
+                        loading="lazy"
+                        data-nimg="1"
+                        className="h-auto w-64 mx-auto rounded-2xl hover:scale-110 transform transition-transform duration-500 ease-in-out"
+                        src={sec13Image1}
+                        style={{ color: "transparent" }}
+                      />
+                    </Link>
+                  )}
                 </div>
                 <button className="btnPrimarySpecial absolute ltr:left-8 rtl:right-8 bottom-4 !py-[0.5rem] !px-[1.5rem]">
                   <Link
@@ -1525,70 +1531,76 @@ export default function Homepage() {
                 </div>
                 <div className="w-full flex items-center justify-center md:gap-4 gap-2">
                   <div className="overflow-hidden rounded-md">
-                    <Link
-                      prefetch={false}
-                      scroll={false}
-                      href={`${origin}/${lang}/${sec18Link1}`}
-                      aria-label={`${origin}/${lang}`}
-                    >
-                      <Image
-                        alt="oven-stg-25FEB.webp"
-                        title="oven-stg-25FEB.webp"
-                        width={0}
-                        height={0}
-                        quality={100}
-                        decoding="async"
-                        data-nimg="1"
-                        className="h-auto w-[300px]  mx-auto rounded-2xl hover:scale-110 transform transition-transform duration-500 ease-in-out"
-                        sizes="(max-width: 640px) 100vw, (max-width: 768px) 100vw, (max-width: 1024px) 100vw, 100vw"
-                        src={sec18Image1}
-                        style={{ color: "transparent" }}
-                      />
-                    </Link>
+                    {sec18Image1 && (
+                      <Link
+                        prefetch={false}
+                        scroll={false}
+                        href={`${origin}/${lang}/${sec18Link1}`}
+                        aria-label={`${origin}/${lang}`}
+                      >
+                        <Image
+                          alt="oven-stg-25FEB.webp"
+                          title="oven-stg-25FEB.webp"
+                          width={0}
+                          height={0}
+                          quality={100}
+                          decoding="async"
+                          data-nimg="1"
+                          className="h-auto w-[300px]  mx-auto rounded-2xl hover:scale-110 transform transition-transform duration-500 ease-in-out"
+                          sizes="(max-width: 640px) 100vw, (max-width: 768px) 100vw, (max-width: 1024px) 100vw, 100vw"
+                          src={sec18Image1}
+                          style={{ color: "transparent" }}
+                        />
+                      </Link>
+                    )}
                   </div>
                   <div className="overflow-hidden rounded-md">
-                    <Link
-                      prefetch={false}
-                      scroll={false}
-                      href={`${origin}/${lang}/${sec18Link2}`}
-                      aria-label={`${origin}/${lang}`}
-                    >
-                      <Image
-                        alt="oven-stg-25FEB.webp"
-                        title="oven-stg-25FEB.webp"
-                        width={0}
-                        height={0}
-                        quality={100}
-                        decoding="async"
-                        data-nimg="1"
-                        className="h-auto w-[300px] mx-auto rounded-2xl hover:scale-110 transform transition-transform duration-500 ease-in-out"
-                        sizes="(max-width: 640px) 100vw, (max-width: 768px) 100vw, (max-width: 1024px) 100vw, 100vw"
-                        src={sec18Image2}
-                        style={{ color: "transparent" }}
-                      />
-                    </Link>
+                    {sec18Image2 && (
+                      <Link
+                        prefetch={false}
+                        scroll={false}
+                        href={`${origin}/${lang}/${sec18Link2}`}
+                        aria-label={`${origin}/${lang}`}
+                      >
+                        <Image
+                          alt="oven-stg-25FEB.webp"
+                          title="oven-stg-25FEB.webp"
+                          width={0}
+                          height={0}
+                          quality={100}
+                          decoding="async"
+                          data-nimg="1"
+                          className="h-auto w-[300px] mx-auto rounded-2xl hover:scale-110 transform transition-transform duration-500 ease-in-out"
+                          sizes="(max-width: 640px) 100vw, (max-width: 768px) 100vw, (max-width: 1024px) 100vw, 100vw"
+                          src={sec18Image2}
+                          style={{ color: "transparent" }}
+                        />
+                      </Link>
+                    )}
                   </div>
                   <div className="overflow-hidden rounded-md">
-                    <Link
-                      prefetch={false}
-                      scroll={false}
-                      href={`${origin}/${lang}/${sec18Link3}`}
-                      aria-label={`${origin}/${lang}`}
-                    >
-                      <Image
-                        alt="oven-stg-25FEB.webp"
-                        title="oven-stg-25FEB.webp"
-                        width={0}
-                        height={0}
-                        quality={100}
-                        decoding="async"
-                        data-nimg="1"
-                        className="h-auto w-[300px] mx-auto rounded-2xl hover:scale-110 transform transition-transform duration-500 ease-in-out"
-                        sizes="(max-width: 640px) 100vw, (max-width: 768px) 100vw, (max-width: 1024px) 100vw, 100vw"
-                        src={sec18Image3}
-                        style={{ color: "transparent" }}
-                      />
-                    </Link>
+                    {sec18Image3 && (
+                      <Link
+                        prefetch={false}
+                        scroll={false}
+                        href={`${origin}/${lang}/${sec18Link3}`}
+                        aria-label={`${origin}/${lang}`}
+                      >
+                        <Image
+                          alt="oven-stg-25FEB.webp"
+                          title="oven-stg-25FEB.webp"
+                          width={0}
+                          height={0}
+                          quality={100}
+                          decoding="async"
+                          data-nimg="1"
+                          className="h-auto w-[300px] mx-auto rounded-2xl hover:scale-110 transform transition-transform duration-500 ease-in-out"
+                          sizes="(max-width: 640px) 100vw, (max-width: 768px) 100vw, (max-width: 1024px) 100vw, 100vw"
+                          src={sec18Image3}
+                          style={{ color: "transparent" }}
+                        />
+                      </Link>
+                    )}
                   </div>
                 </div>
               </div>
