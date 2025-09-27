@@ -7,14 +7,18 @@ import dynamic from 'next/dynamic'
 import { getDictionary } from "../dictionaries"
 import { useRouter, usePathname } from 'next/navigation'
 import shoppingCart from "../../../public/json/NoProductsFound.json"
+import { useApp } from '@/app/_ctx/AppContext';
 
 const Products = dynamic(() => import('../components/Products'), { ssr: true })
 const MobileHeader = dynamic(() => import('../components/MobileHeader'), { ssr: true })
 export const fetchCache = 'force-no-store'
 
-export default function Category({ params, searchParams }: { params: { lang: string, slug: string, data: any}, searchParams: any }) {
+export default function Category({ params, searchParams }: { params: { data: any}, searchParams: any }) {
   const [filterHide, setFilterHide] = useState<any>(false);
   const router = useRouter()
+  const { lang, slug } = useApp();
+  const NewMedia = process.env.NEXT_PUBLIC_MEDIA;
+  const isArabic = lang === 'ar' ? true : false;
   const pathname = usePathname()
   const [BrandfilterHide, setBrandfilterHide] = useState<any>(false);
   const [RatingfilterHide, setRatingfilterHide] = useState<any>(false);
@@ -32,7 +36,7 @@ export default function Category({ params, searchParams }: { params: { lang: str
   const [sort, setsort] = useState<any>(false);
   useEffect(() => {
     (async () => {
-      const translationdata = await getDictionary(params.lang);
+      const translationdata = await getDictionary(lang);
       setDict(translationdata);
       if (searchParams?.brand) {
         setBrandfilterHide(true)
@@ -143,7 +147,7 @@ export default function Category({ params, searchParams }: { params: { lang: str
       filterdata['sort'] = sort
     const result = '?' + new URLSearchParams(filterdata).toString();
     if (Object.keys(filterdata).length >= 1) {
-      router.push(`/${params.lang}/newly-arrived${result}`, { scroll: false })
+      router.push(`/${lang}/newly-arrived${result}`, { scroll: false })
       router.refresh();
     }
   }
@@ -169,19 +173,14 @@ export default function Category({ params, searchParams }: { params: { lang: str
   }, [currentPage])
 
   const SortingProduct = [
-    { value: '', label: params.lang == 'ar' ? 'الأكثر تطابقاً' : 'Relevance' },
-    { value: 'price-asc', label: params.lang == 'ar' ? 'السعر (من الأقل إلى الأعلى)' : 'Price (Low to High)' },
-    { value: 'price-desc', label: params.lang == 'ar' ? 'السعر (من الأعلى إلى الأقل)' : 'Price (Hight to Low)' },
+    { value: '', label: lang == 'ar' ? 'الأكثر تطابقاً' : 'Relevance' },
+    { value: 'price-asc', label: lang == 'ar' ? 'السعر (من الأقل إلى الأعلى)' : 'Price (Low to High)' },
+    { value: 'price-desc', label: lang == 'ar' ? 'السعر (من الأعلى إلى الأقل)' : 'Price (Hight to Low)' },
   ];
-
-  const origin =
-  typeof window !== 'undefined' && window.location.origin
-    ? window.location.origin
-    : '';
 
   return (
     <>
-        <MobileHeader type="Secondary" lang={params.lang} dict={dict} pageTitle={params.lang === 'ar' ? CatData?.category?.name_arabic : CatData?.category?.name} />
+        <MobileHeader type="Secondary" lang={lang} dict={dict} pageTitle={lang === 'ar' ? CatData?.category?.name_arabic : CatData?.category?.name} />
       <div className='container py-4 max-md:pt-20'>
 
         <div className='py-8 max-md:py-0'>
@@ -192,7 +191,7 @@ export default function Category({ params, searchParams }: { params: { lang: str
             {CatData?.productData?.products?.data?.length ?
               <div className="px-0 flex-1 py-0 ltr:xl:mr-1 rtl:xl:ml-1">
                 <div className="mb-4 flex items-center justify-between">
-                  <h2 className="text-base font-bold">{params.data?.productData?.products?.total} {params.lang == 'ar' ? 'منتجات' : 'Products'}</h2>
+                  <h2 className="text-base font-bold">{params.data?.productData?.products?.total} {lang == 'ar' ? 'منتجات' : 'Products'}</h2>
                   <Select
                     styles={{
                       control: (provided: any, state: any) => ({
@@ -230,7 +229,7 @@ export default function Category({ params, searchParams }: { params: { lang: str
                 </div>
                 <div className="grid grid-cols-2 md:grid-cols-3 2xl:grid-cols-4 gap-3">
                   {/* SORTING */}
-                  <Products lang={params.lang} dict={dict?.products} products={CatData?.productData?.products?.data} />
+                  <Products NewMedia={NewMedia} isArabic={isArabic} lang={lang} dict={dict?.products} products={CatData?.productData?.products?.data} />
                 </div>
                 <ul className="flex items-center justify-center space-x-0.5 rtl:space-x-reverse m-auto mt-6">
                   {CatData?.productData?.products?.current_page != 1 ?
@@ -240,7 +239,7 @@ export default function Category({ params, searchParams }: { params: { lang: str
                         onClick={() => { setcurrentPage(CatData?.productData?.products?.current_page - 1); }}
                         className="focus-visible:outline-none flex justify-center font-medium text-sm px-3.5 py-1.5 rounded transition text-primary bg-white hover:text-[#219EBC] border border-[#DFE3E8] hover:border-[#219EBC]"
                       >
-                        {params.lang == 'ar' ? 'سابق' : 'Prev'}
+                        {lang == 'ar' ? 'سابق' : 'Prev'}
                       </button>
                     </li>
                     : null}
@@ -267,7 +266,7 @@ export default function Category({ params, searchParams }: { params: { lang: str
                         onClick={() => { setcurrentPage(CatData?.productData?.products?.current_page + 1); }}
                         className="focus-visible:outline-none flex justify-center font-medium text-sm px-3.5 py-1.5 rounded transition text-primary bg-white hover:text-[#219EBC] border border-[#DFE3E8] hover:border-[#219EBC]"
                       >
-                        {params.lang == 'ar' ? 'التالي' : 'Next'}
+                        {lang == 'ar' ? 'التالي' : 'Next'}
                       </button>
                     </li>
                     : null}
@@ -277,8 +276,8 @@ export default function Category({ params, searchParams }: { params: { lang: str
               <div className="container my-10 flex items-center justify-center py-8">
                 <div className='text-center'>
                   <Lottie animationData={shoppingCart} loop={true} className="h-80 my-[-50px]" />
-                  <p className="text-center text-base text-[#5D686F] w-1/2 m-auto mt-14">{params.lang == 'ar' ? 'لم تقم بإضافة أي منتجات إلى سلة التسوق الخاصة بك بعد، تصفح المنتجات وأضفها إلى سلة التسوق الخاصة بك لعملية دفع سريعة تصفح المنتجات وقم باضافتها الي العربة الان.' : 'You have not added any products to your shopping cart yet. Browse the products and add them to your shopping cart for a quick checkout process. Browse the products and add them to the cart now.'}</p>
-                  <button className="focus-visible:outline-none btn bg-[#004B7A] w-72 p-2.5 rounded-md text-sm 2xl:text-base text-white mt-6" onClick={() => router.push('/')}>{params.lang == 'ar' ? 'تسوق المنتجات' : 'Shop products'}</button>
+                  <p className="text-center text-base text-[#5D686F] w-1/2 m-auto mt-14">{lang == 'ar' ? 'لم تقم بإضافة أي منتجات إلى سلة التسوق الخاصة بك بعد، تصفح المنتجات وأضفها إلى سلة التسوق الخاصة بك لعملية دفع سريعة تصفح المنتجات وقم باضافتها الي العربة الان.' : 'You have not added any products to your shopping cart yet. Browse the products and add them to your shopping cart for a quick checkout process. Browse the products and add them to the cart now.'}</p>
+                  <button className="focus-visible:outline-none btn bg-[#004B7A] w-72 p-2.5 rounded-md text-sm 2xl:text-base text-white mt-6" onClick={() => router.push('/')}>{lang == 'ar' ? 'تسوق المنتجات' : 'Shop products'}</button>
                 </div>
               </div>
             }
