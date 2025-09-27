@@ -1,18 +1,15 @@
 "use client"
 
-import dayjs from 'dayjs'
 import Link from 'next/link'
 import Image from 'next/image'
 import React, { useState, useEffect, Fragment, useContext } from 'react'
 import dynamic from 'next/dynamic'
-import { NewMedia } from '../api/Api'
-import { get, post } from "../api/ApiCalls"
-import { useRouter } from 'next-nprogress-bar'
 import withReactContent from 'sweetalert2-react-content'
 import Swal from 'sweetalert2'
-import { useUserAgent } from 'next-useragent'
 import { setCartItems } from '../cartstorage/cart'
 import GlobalContext from '../GlobalContext'
+import { addProductCompareData, addProductWishlistData, getProductExtraData, removeProductCompareData, removeProductWishlistData } from '@/lib/components/component.client'
+import { useRouter } from 'next-nprogress-bar'
 
 const RatingComponent = dynamic(() => import('./ProductComponents/Rating'), { ssr: false })
 
@@ -31,7 +28,9 @@ interface FreeGiftProps {
 }
 
 export default function Products(props: any) {
-    const isArabic = props?.lang === 'ar'
+    const isArabic = props?.isArabic
+    const lang = props?.lang;
+    const NewMedia = props?.NewMedia;
     const router = useRouter()
     const [ProExtraData, setProExtraData] = useState<any>([])
     const [buyNowLoading, setBuyNowLoading] = useState<number>(0)
@@ -107,30 +106,30 @@ export default function Products(props: any) {
             a.push(item.id)
         });
         // localStorage.getItem("globalcity")
-        await get(`productextradatamulti-regional-new/${a?.join(",")}/${localStorage.getItem("globalcity")}`).then((responseJson: any) => {
-            const data = responseJson?.data;
-            setProExtraData(data)
+        const city = localStorage.getItem("globalcity");
+        const dataExtra = await getProductExtraData(a?.join(","), city);
+        const data = dataExtra?.extraDataDetails?.data;
+        setProExtraData(data)
 
-            if (data && typeof data === 'object') {
-                const entries: any = Object.entries(data);
-                const filteredEntries: any = entries.filter(([key, item]: any) => item.fbtdata !== false);
-                if (filteredEntries.length > 0) {
-                    const filteredData: any = filteredEntries.map(([key, item]: any) => ({ key, ...item }));
-                    for (let index = 0; index < filteredData.length; index++) {
-                        const element = filteredData[index];
-                        if (element?.fbtdata?.show_on_thumbnail === 1) {
-                            var newfbtdata = fbtProCheck
-                            newfbtdata[element?.key] = true
-                            setfbtProCheck({ ...newfbtdata })
-                        }
+        if (data && typeof data === 'object') {
+            const entries: any = Object.entries(data);
+            const filteredEntries: any = entries.filter(([key, item]: any) => item.fbtdata !== false);
+            if (filteredEntries.length > 0) {
+                const filteredData: any = filteredEntries.map(([key, item]: any) => ({ key, ...item }));
+                for (let index = 0; index < filteredData.length; index++) {
+                    const element = filteredData[index];
+                    if (element?.fbtdata?.show_on_thumbnail === 1) {
+                        var newfbtdata = fbtProCheck
+                        newfbtdata[element?.key] = true
+                        setfbtProCheck({ ...newfbtdata })
                     }
-                } else {
-                    console.log('No objects have fbtdata not equal to false.');
                 }
             } else {
-                console.log('No valid data found.');
+                console.log('No objects have fbtdata not equal to false.');
             }
-        })
+        } else {
+            console.log('No valid data found.');
+        }
 
         if (localStorage.getItem("userid")) {
             // get(`checkmultiwishlistproduct/${a.join(",")}/${localStorage.getItem("userid")}`).then((responseJson: any) => {
@@ -151,7 +150,7 @@ export default function Products(props: any) {
                 </div>
             ,
             toast: true,
-            position: props.lang == 'ar' ? 'top-start' : 'top-end',
+            position: lang == 'ar' ? 'top-start' : 'top-end',
             showConfirmButton: false,
             timer: 15000,
             showCloseButton: true,
@@ -161,7 +160,7 @@ export default function Products(props: any) {
         });
     };
 
-    const WishlistProduct = (id: any, type: boolean) => {
+    const WishlistProduct = async (id: any, type: boolean) => {
         // var testing: any = ProWishlistData
         if (localStorage.getItem("userid")) {
             var data = {
@@ -169,45 +168,43 @@ export default function Products(props: any) {
                 product_id: id,
             }
             if (type) {
-                post('removewishlist', data).then((responseJson: any) => {
-                    if (responseJson?.success) {
-                        // testing[id].wishlist = !type;
-                        // setProWishlistData({ ...testing })
-                        var wishlistRemovetext = props.dict?.wishlistRemovedText ? props.dict?.wishlistRemovedText : props?.dict?.products?.wishlistRemovedText
-                        topMessageAlartDanger(wishlistRemovetext)
-                        if (localStorage.getItem("wishlistCount")) {
-                            var wishlistlength: any = localStorage.getItem('wishlistCount');
-                            wishlistlength = parseInt(wishlistlength) - 1;
-                            localStorage.setItem('wishlistCount', wishlistlength);
-                        }
-                        localStorage.removeItem('userWishlist')
-                        setUpdateWishlist(updateWishlist == 0 ? 1 : 0)
+                const removeWishlist = await removeProductWishlistData(data);
+                if (removeWishlist?.removeWishlistData?.success) {
+                    // testing[id].wishlist = !type;
+                    // setProWishlistData({ ...testing })
+                    var wishlistRemovetext = props.dict?.wishlistRemovedText ? props.dict?.wishlistRemovedText : props?.dict?.products?.wishlistRemovedText
+                    topMessageAlartDanger(wishlistRemovetext)
+                    if (localStorage.getItem("wishlistCount")) {
+                        var wishlistlength: any = localStorage.getItem('wishlistCount');
+                        wishlistlength = parseInt(wishlistlength) - 1;
+                        localStorage.setItem('wishlistCount', wishlistlength);
                     }
-                })
+                    localStorage.removeItem('userWishlist')
+                    setUpdateWishlist(updateWishlist == 0 ? 1 : 0)
+                }
             } else {
-                post('addwishlist', data).then((responseJson: any) => {
-                    if (responseJson?.success) {
-                        // testing[id].wishlist = !type;
-                        // setProWishlistData({ ...testing })
-                        var wishlistAddtext = props.dict?.wishlistAddedText ? props.dict?.wishlistAddedText : props?.dict?.products?.wishlistAddedText
-                        topMessageAlartSuccess(wishlistAddtext)
-                        if (localStorage.getItem("wishlistCount")) {
-                            var wishlistlength: any = localStorage.getItem('wishlistCount');
-                            wishlistlength = parseInt(wishlistlength) + 1;
-                            localStorage.setItem('wishlistCount', wishlistlength);
-                        }
-                        localStorage.removeItem('userWishlist')
-                        setUpdateWishlist(updateWishlist == 0 ? 1 : 0)
+                const addWishlist = await addProductWishlistData(data);
+                if (addWishlist?.addWishlistData?.success) {
+                    // testing[id].wishlist = !type;
+                    // setProWishlistData({ ...testing })
+                    var wishlistAddtext = props.dict?.wishlistAddedText ? props.dict?.wishlistAddedText : props?.dict?.products?.wishlistAddedText
+                    topMessageAlartSuccess(wishlistAddtext)
+                    if (localStorage.getItem("wishlistCount")) {
+                        var wishlistlength: any = localStorage.getItem('wishlistCount');
+                        wishlistlength = parseInt(wishlistlength) + 1;
+                        localStorage.setItem('wishlistCount', wishlistlength);
                     }
-                })
+                    localStorage.removeItem('userWishlist')
+                    setUpdateWishlist(updateWishlist == 0 ? 1 : 0)
+                }
             }
 
         } else {
-            router.push(`/${props.lang}/login`);
+            router.push(`/${lang}/login`);
         }
     }
 
-    const CompareProduct = (id: any, type: boolean) => {
+    const CompareProduct = async (id: any, type: boolean) => {
         // var testing: any = ProComparetData
         if (localStorage.getItem("userid")) {
             var data = {
@@ -215,42 +212,40 @@ export default function Products(props: any) {
                 product_id: id,
             }
             if (type) {
-                post('removecompare', data).then((responseJson: any) => {
-                    if (responseJson?.success) {
-                        // testing[id].compare = !type;
-                        // setProComparetData({ ...testing })
-                        var compareRemovetext = props.dict?.compareRemovedText ? props.dict?.compareRemovedText : props?.dict?.compareRemovedText
-                        topMessageAlartDanger(compareRemovetext)
-                        if (localStorage.getItem("compareCount")) {
-                            var comparelength: any = localStorage.getItem('compareCount');
-                            comparelength = parseInt(comparelength) - 1;
-                            localStorage.setItem('compareCount', comparelength);
-                        }
-                        localStorage.removeItem('userCompare')
-                        setUpdateCompare(updateCompare == 0 ? 1 : 0)
+                const removeCompare = await removeProductCompareData(data);
+                if (removeCompare?.removeCompareData?.success) {
+                    // testing[id].compare = !type;
+                    // setProComparetData({ ...testing })
+                    var compareRemovetext = props.dict?.compareRemovedText ? props.dict?.compareRemovedText : props?.dict?.compareRemovedText
+                    topMessageAlartDanger(compareRemovetext)
+                    if (localStorage.getItem("compareCount")) {
+                        var comparelength: any = localStorage.getItem('compareCount');
+                        comparelength = parseInt(comparelength) - 1;
+                        localStorage.setItem('compareCount', comparelength);
                     }
-                })
+                    localStorage.removeItem('userCompare')
+                    setUpdateCompare(updateCompare == 0 ? 1 : 0)
+                }
             } else {
-                post('addcompare', data).then((responseJson: any) => {
-                    if (responseJson?.success) {
-                        // testing[id].compare = !type;
-                        // setProComparetData({ ...testing })
-                        var compareAddtext = props.dict?.compareAddedText ? props.dict?.compareAddedText : props?.dict?.compareAddedText
-                        topMessageAlartSuccess(compareAddtext)
-                        if (localStorage.getItem("compareCount")) {
-                            var comparelength: any = localStorage.getItem('compareCount');
-                            comparelength = parseInt(comparelength) + 1;
-                            localStorage.setItem('compareCount', comparelength);
-                        }
-                        localStorage.removeItem('userCompare')
-                        setUpdateCompare(updateCompare == 0 ? 1 : 0)
-                    } else {
-                        topMessageAlartDanger(props.dict?.compareAlreadyText)
+                const addCompare = await addProductCompareData(data);
+                if (addCompare?.addCompareData?.success) {
+                    // testing[id].compare = !type;
+                    // setProComparetData({ ...testing })
+                    var compareAddtext = props.dict?.compareAddedText ? props.dict?.compareAddedText : props?.dict?.compareAddedText
+                    topMessageAlartSuccess(compareAddtext)
+                    if (localStorage.getItem("compareCount")) {
+                        var comparelength: any = localStorage.getItem('compareCount');
+                        comparelength = parseInt(comparelength) + 1;
+                        localStorage.setItem('compareCount', comparelength);
                     }
-                })
+                    localStorage.removeItem('userCompare')
+                    setUpdateCompare(updateCompare == 0 ? 1 : 0)
+                } else {
+                    topMessageAlartDanger(props.dict?.compareAlreadyText)
+                }
             }
         } else {
-            router.push(`/${props.lang}/login`);
+            router.push(`/${lang}/login`);
         }
     }
 
@@ -263,21 +258,21 @@ export default function Products(props: any) {
                     <div className="uppercase">{title}</div>
                     {viewcart ?
                         <>
-                            <p className="font-light mb-3">{props.lang == 'ar' ? 'تمت إضافة العنصر إلى سلة التسوق الخاصة بك.' : 'The item has been added into your cart.'}</p>
+                            <p className="font-light mb-3">{lang == 'ar' ? 'تمت إضافة العنصر إلى سلة التسوق الخاصة بك.' : 'The item has been added into your cart.'}</p>
                             <button
                                 onClick={() => {
-                                    router.push(`/${props.lang}/cart`)
+                                    router.push(`/${lang}/cart`)
                                     router.refresh();
                                 }}
                                 className="focus-visible:outline-none mt-2 underline">
-                                {props.lang == 'ar' ? 'عرض العربة' : 'View Cart'}
+                                {lang == 'ar' ? 'عرض العربة' : 'View Cart'}
                             </button>
                         </>
                         : null}
                 </div>
             ,
             toast: true,
-            position: props.lang == 'ar' ? 'top-start' : 'top-end',
+            position: lang == 'ar' ? 'top-start' : 'top-end',
             showConfirmButton: false,
             timer: 5000,
             showCloseButton: false,
@@ -527,15 +522,7 @@ export default function Products(props: any) {
 
     const checkAr = isArabic ? 'ar' : 'en';
 
-    const origin =
-        typeof window !== 'undefined' && window.location.origin
-            ? window.location.origin
-            : '';
-
-    const userAgent: any =
-        typeof window !== 'undefined' && window.location.origin
-            ? useUserAgent(window.navigator.userAgent)
-            : false;
+    const origin = props?.origin
 
     return (
         <>

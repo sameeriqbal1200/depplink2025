@@ -9,16 +9,19 @@ import { getDictionary } from "../dictionaries"
 import { useRouter, usePathname } from 'next/navigation'
 import shoppingCart from "../../../public/json/NoProductsFound.json"
 import Pagination from '../components/Pagination';
+import { useApp } from '@/app/_ctx/AppContext';
 
 const Products = dynamic(() => import('../components/Products'), { ssr: true })
 const MobileHeader = dynamic(() => import('../components/MobileHeader'), { ssr: true })
 const BrandSliderOther = dynamic(() => import('../components/BrandSliderOther'), { ssr: true })
 export const fetchCache = 'force-no-store'
 
-export default function Category({ params, searchParams }: { params: { lang: string, slug: string, data: any, devicetype: any }, searchParams: any }) {
-  const NewMedia = process.env.NEXT_PUBLIC_NEW_MEDIA;
+export default function Category({ params, searchParams }: { params: { data: any, devicetype: any }, searchParams: any }) {
   const [filterHide, setFilterHide] = useState<any>(false);
   const router = useRouter()
+  const { lang, slug } = useApp();
+  const NewMedia = process.env.NEXT_PUBLIC_MEDIA;
+  const isArabic = lang === 'ar' ? true : false;
   const pathname = usePathname()
   const [BrandfilterHide, setBrandfilterHide] = useState<any>(false);
   const [RatingfilterHide, setRatingfilterHide] = useState<any>(false);
@@ -39,7 +42,7 @@ export default function Category({ params, searchParams }: { params: { lang: str
   const isMobileOrTablet = params?.devicetype === 'mobile' || params?.devicetype === 'tablet' ? true : false;
   useEffect(() => {
     (async () => {
-      const translationdata = await getDictionary(params.lang);
+      const translationdata = await getDictionary(lang);
       setDict(translationdata);
       if (searchParams?.brand) {
         setBrandfilterHide(true)
@@ -151,7 +154,7 @@ export default function Category({ params, searchParams }: { params: { lang: str
       filterdata['text'] = searchParams?.text
     const result = '?' + new URLSearchParams(filterdata).toString();
     if (Object.keys(filterdata).length >= 1) {
-      router.push(`/${params.lang}/search${result}`, { scroll: false })
+      router.push(`/${lang}/search${result}`, { scroll: false })
       router.refresh();
     }
   }
@@ -177,9 +180,9 @@ export default function Category({ params, searchParams }: { params: { lang: str
   }, [currentPage])
 
   const SortingProduct = [
-    { value: '', label: params.lang == 'ar' ? 'الأكثر تطابقاً' : 'Relevance' },
-    { value: 'price-asc', label: params.lang == 'ar' ? 'السعر (من الأقل إلى الأعلى)' : 'Price (Low to High)' },
-    { value: 'price-desc', label: params.lang == 'ar' ? 'السعر (من الأعلى إلى الأقل)' : 'Price (Hight to Low)' },
+    { value: '', label: lang == 'ar' ? 'الأكثر تطابقاً' : 'Relevance' },
+    { value: 'price-asc', label: lang == 'ar' ? 'السعر (من الأقل إلى الأعلى)' : 'Price (Low to High)' },
+    { value: 'price-desc', label: lang == 'ar' ? 'السعر (من الأعلى إلى الأقل)' : 'Price (Hight to Low)' },
   ];
 
   const origin =
@@ -189,13 +192,13 @@ export default function Category({ params, searchParams }: { params: { lang: str
 
   return (
     <>
-        <MobileHeader type="Third" lang={params.lang} dict={dict} pageTitle={`"${searchParams?.text}"`} />
+        <MobileHeader type="Third" lang={lang} dict={dict} pageTitle={`"${searchParams?.text}"`} />
       <div className='tpb_308mainDiv'>
         <div className='srh__302mainDiv'>
           {CatData?.brands?.length ?
           <>
-          <h2 className="srh__302mainInnerSmHeading">{params.lang == 'ar' ? 'تصفية حسب العلامات التجارية' : `Filter's by Brands`}</h2>
-          <BrandSliderOther NewMedia={NewMedia} devicetype={params.devicetype} lang={params.lang} dict={dict?.products} data={CatData?.brands} BrandData={selectedbrands} setBrandData={(id: number, name: string) => {
+          <h2 className="srh__302mainInnerSmHeading">{lang == 'ar' ? 'تصفية حسب العلامات التجارية' : `Filter's by Brands`}</h2>
+          <BrandSliderOther NewMedia={NewMedia} devicetype={params.devicetype} lang={lang} dict={dict?.products} data={CatData?.brands} BrandData={selectedbrands} setBrandData={(id: number, name: string) => {
             var bdata = selectedbrands
             if (!bdata[name]) {
               bdata[name] = true;
@@ -209,8 +212,8 @@ export default function Category({ params, searchParams }: { params: { lang: str
           :null}
           {CatData?.cats?.length ?
           <>
-          <h2 className="srh__302mainInnerSmHeading">{params.lang == 'ar' ? 'فلتر حسب الفئة' : `Filter's by Category`}</h2>
-          <BrandSliderOther NewMedia={NewMedia} devicetype={params.devicetype} lang={params.lang} dict={dict?.products} data={CatData?.cats} BrandData={selectedcats} setBrandData={(id: number, name: string) => {
+          <h2 className="srh__302mainInnerSmHeading">{lang == 'ar' ? 'فلتر حسب الفئة' : `Filter's by Category`}</h2>
+          <BrandSliderOther NewMedia={NewMedia} devicetype={params.devicetype} lang={lang} dict={dict?.products} data={CatData?.cats} BrandData={selectedcats} setBrandData={(id: number, name: string) => {
             var bdata = selectedcats
             if (!bdata[name]) {
               bdata[name] = true;
@@ -226,7 +229,7 @@ export default function Category({ params, searchParams }: { params: { lang: str
           {CatData?.productData?.products?.data?.length ?
             <div className="mt-5">
               <div className="srh__302mainInnerSecDiv">
-                <h2 className="h__312BaseHeading">{params.data?.productData?.products?.total} {params.lang == 'ar' ? 'منتجات' : 'Products'}</h2>
+                <h2 className="h__312BaseHeading">{params.data?.productData?.products?.total} {lang == 'ar' ? 'منتجات' : 'Products'}</h2>
                 <Select
                   styles={{
                     control: (provided: any, state: any) => ({
@@ -264,7 +267,7 @@ export default function Category({ params, searchParams }: { params: { lang: str
               </div>
               {/* <div className="srh__302mainInnerThirdDiv"> */}
                 {/* <Products grid={!isMobileOrTablet ? '4' : '2'} className="!min-w-44" devicetype={params?.devicetype} lang={params?.lang} dict={dict?.products} products={CatData?.productData?.products?.data} /> */}
-                <Products grid={!isMobileOrTablet ? '6' : '2'} className="!min-w-40" devicetype={isMobileOrTablet} lang={params?.lang} dict={dict?.products} products={CatData?.productData?.products?.data} />
+                <Products NewMedia={NewMedia} isArabic={isArabic} grid={!isMobileOrTablet ? '6' : '2'} className="!min-w-40" devicetype={isMobileOrTablet} lang={params?.lang} dict={dict?.products} products={CatData?.productData?.products?.data} />
               {/* </div> */}
               {/* <ul className="srh__302mainInnerUL">
                 {CatData?.productData?.products?.current_page != 1 ?
@@ -274,7 +277,7 @@ export default function Category({ params, searchParams }: { params: { lang: str
                       onClick={() => { setcurrentPage(CatData?.productData?.products?.current_page - 1); }}
                       className="srh__302mainActionBtn"
                     >
-                      {params.lang == 'ar' ? 'سابق' : 'Prev'}
+                      {lang == 'ar' ? 'سابق' : 'Prev'}
                     </button>
                   </li>
                   : null}
@@ -301,7 +304,7 @@ export default function Category({ params, searchParams }: { params: { lang: str
                       onClick={() => { setcurrentPage(CatData?.productData?.products?.current_page + 1); }}
                       className="srh__302mainActionBtn"
                     >
-                      {params.lang == 'ar' ? 'التالي' : 'Next'}
+                      {lang == 'ar' ? 'التالي' : 'Next'}
                     </button>
                   </li>
                   : null}
@@ -322,8 +325,8 @@ export default function Category({ params, searchParams }: { params: { lang: str
             <div className="srh__302mainInnerFourthDiv">
               <div className='text-center'>
                 <Lottie animationData={shoppingCart} loop={true} className="srh__302mainInnerLottie" />
-                <p className="srh__302mainInnerBasePara">{params.lang == 'ar' ? 'لم تقم بإضافة أي منتجات إلى سلة التسوق الخاصة بك بعد، تصفح المنتجات وأضفها إلى سلة التسوق الخاصة بك لعملية دفع سريعة تصفح المنتجات وقم باضافتها الي العربة الان.' : 'You have not added any products to your shopping cart yet. Browse the products and add them to your shopping cart for a quick checkout process. Browse the products and add them to the cart now.'}</p>
-                <button className="btn srh__302mainShopProdBtn" onClick={() => router.push('/')}>{params.lang == 'ar' ? 'تسوق المنتجات' : 'Shop products'}</button>
+                <p className="srh__302mainInnerBasePara">{lang == 'ar' ? 'لم تقم بإضافة أي منتجات إلى سلة التسوق الخاصة بك بعد، تصفح المنتجات وأضفها إلى سلة التسوق الخاصة بك لعملية دفع سريعة تصفح المنتجات وقم باضافتها الي العربة الان.' : 'You have not added any products to your shopping cart yet. Browse the products and add them to your shopping cart for a quick checkout process. Browse the products and add them to the cart now.'}</p>
+                <button className="btn srh__302mainShopProdBtn" onClick={() => router.push('/')}>{lang == 'ar' ? 'تسوق المنتجات' : 'Shop products'}</button>
               </div>
             </div>
           }
