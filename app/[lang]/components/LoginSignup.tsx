@@ -3,17 +3,21 @@
 import React, { useState, useEffect, useRef, Fragment } from 'react'
 import Image from 'next/image'
 import MaskedInput from 'react-text-mask'
-import { get, post } from "../api/ApiCalls"
 import { RadioGroup } from '@headlessui/react'
 import { Dialog, Transition } from '@headlessui/react'
 import { useRouter, usePathname } from "next/navigation"
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
-import { getDictionary } from "../dictionaries"
-import { NewMedia } from '../api/Api'
-// import otpAnimation from "../../../public/json/otpConfirmation.json";
+import { postLoginSignup } from '@/lib/components/component.client'
+import { postUserLogin } from '@/lib/components/component.client'
+import { postCheckOtp } from '@/lib/components/component.client'
+import { postRegOtp } from '@/lib/components/component.client'
+import { postRegCheckPhone } from '@/lib/components/component.client'
+import { postUserRegister } from '@/lib/components/component.client'
+import { postResendOtp } from '@/lib/components/component.client'
 
 export default function LoginSingup(props: any) {
+    const NewMedia = props?.NewMedia;
     const router = useRouter()
     const path = usePathname()
     const [isOpen, setIsOpen] = useState(false)
@@ -153,19 +157,18 @@ export default function LoginSingup(props: any) {
         }
     }
 
-    const quicklogin: any = () => {
+    const quicklogin: any = async () => {
         var data = {
             phone_number: phoneNumber,
         };
-        post("getlogin", data).then((responseJson: any) => {
-            if (responseJson?.success) {
-                localStorage.setItem("userid", responseJson?.user?.id.toString());
-                setUserid(localStorage.getItem("userid"))
-            } else {
-                setLoginErrorStatus(true)
-                setLoginBtnLoading(false)
-            }
-        });
+        const dataUpd = await postLoginSignup(data);
+        if (dataUpd?.loignSignupData?.success) {
+            localStorage.setItem("userid", dataUpd?.loignSignupData?.user?.id.toString());
+            setUserid(localStorage.getItem("userid"))
+        } else {
+            setLoginErrorStatus(true)
+            setLoginBtnLoading(false)
+        }
     }
 
     function CheckIcon(props: any) {
@@ -183,24 +186,23 @@ export default function LoginSingup(props: any) {
         )
     }
 
-    const CheckPhoneNumber = () => {
+    const CheckPhoneNumber = async () => {
         var data = {
             phone_number: phoneNumber,
         }
-        post('user-login', data).then((responseJson: any) => {
-            if (responseJson?.success === true) {
-                setLoginBtnLoading(false)
-                setOtpBox(true)
-            }
-            else {
-                setRegister(true)
-                setOtpType(register)
-                setLoginBtnLoading(false)
-            }
-        })
+        const Login = await postUserLogin(data);
+        if (Login?.userLogin?.success === true) {
+            setLoginBtnLoading(false)
+            setOtpBox(true)
+        }
+        else {
+            setRegister(true)
+            setOtpType(register)
+            setLoginBtnLoading(false)
+        }
     }
 
-    const CheckOtp = () => {
+    const CheckOtp = async () => {
 
         setSeconds(59)
         setMinutes(1)
@@ -208,66 +210,62 @@ export default function LoginSingup(props: any) {
             phone_number: phoneNumber,
             otp_code: otp.join('')
         }
-        post('check-otp', dataotp).then((responseJson: any) => {
-            if (responseJson?.success === true) {
-                localStorage.setItem("userid", responseJson?.user_id.toString())
-                if (!localStorage.getItem('profileImg') && responseJson?.user?.profile_img != null) {
-                    localStorage.setItem('profileImg', NewMedia + responseJson?.user?.profile_img?.toString())
-                } else {
-                    localStorage.removeItem('profileImg')
-                    localStorage.setItem('profileImg', NewMedia + responseJson?.user?.profile_img?.toString())
-                }
-                setLoginBtnLoading(false)
-                props.onClose()
-                setPhoneNumber(false)
-                setOtpBox(false)
-                router.push(path + '?refresh=' + Math.random(), { scroll: false })
-                router.refresh()
+        const checkOtp = await postCheckOtp(dataotp);
+        if (checkOtp?.checkOtpLogin?.success === true) {
+            localStorage.setItem("userid", checkOtp?.checkOtpLogin?.user_id.toString())
+            if (!localStorage.getItem('profileImg') && checkOtp?.checkOtpLogin?.user?.profile_img != null) {
+                localStorage.setItem('profileImg', `${NewMedia}${checkOtp?.checkOtpLogin?.user?.profile_img?.toString()}`)
+            } else {
+                localStorage.removeItem('profileImg')
+                localStorage.setItem('profileImg', `${NewMedia}${checkOtp?.checkOtpLogin?.user?.profile_img?.toString()}`)
             }
-            else {
-                setLoginBtnLoading(false)
-                topMessageAlartDanger(props?.dict?.login?.WrongOtp)
-            }
-        })
+            setLoginBtnLoading(false)
+            props.onClose()
+            setPhoneNumber(false)
+            setOtpBox(false)
+            router.push(path + '?refresh=' + Math.random(), { scroll: false })
+            router.refresh()
+        }
+        else {
+            setLoginBtnLoading(false)
+            topMessageAlartDanger(props?.dict?.login?.WrongOtp)
+        }
     }
 
-    const CheckRegisterOtp = () => {
+    const CheckRegisterOtp = async () => {
 
         var dataotp = {
             phone_number: phoneNumber,
             otp_code: otp.join('')
         }
-        post('check-register-otp', dataotp).then((responseJson: any) => {
-            if (responseJson?.success === true) {
-                Register()
-                setLoginBtnLoading(false)
-                // console.log('register-successfully')
-            }
-            else {
-                setLoginBtnLoading(false)
-                topMessageAlartDanger(props?.dict?.login?.WrongOtp)
-            }
-        })
+        const otpRegisterCheck = await postRegOtp(dataotp);
+        if (otpRegisterCheck?.checkRegOtp?.success === true) {
+            Register()
+            setLoginBtnLoading(false)
+        }
+        else {
+            setLoginBtnLoading(false)
+            topMessageAlartDanger(props?.dict?.login?.WrongOtp)
+        }
     }
 
-    const CheckRegisterPhone = () => {
+    const CheckRegisterPhone = async () => {
         var data = {
             phone_number: phoneNumber,
         }
-        post('register-check-phone', data).then((responseJson: any) => {
-            if (responseJson?.success === true) {
-                setRegisterOtpBox(true)
-                setLoginBtnLoading(false)
-            }
-            else {
-                setOtpType(register)
-                setRegister(true)
-                setLoginBtnLoading(false)
-            }
-        })
+        const phoneRegisterCheck = await postRegCheckPhone(data);
+        if (phoneRegisterCheck?.checkRegPhone?.success === true) {
+            setRegisterOtpBox(true)
+            setLoginBtnLoading(false)
+        }
+        else {
+            setOtpType(register)
+            setRegister(true)
+            setLoginBtnLoading(false)
+        }
     }
 
-    const Register = () => {
+    const Register = async () => {
         var data = {
             phone_number: phoneNumber,
             first_name: firstName,
@@ -276,37 +274,35 @@ export default function LoginSingup(props: any) {
             date_of_birth: dateOfBirth,
             gender: selected,
         }
-        post('user-register', data).then((responseJson: any) => {
-            if (responseJson?.success === true) {
-                localStorage.setItem("userid", responseJson?.user?.id.toString())
-                props.onClose()
-                topMessageAlartSuccess(props?.dict?.login.Register)
-                router.push(path + '?refresh=' + Math.random(), { scroll: false })
-                router.refresh()
-                // alert('User Registered Successfully!')
-            }
-            else {
-                setLoginBtnLoading(false)
-                topMessageAlartDanger(props?.dict?.login?.UserExists)
-            }
-        })
+        const registrationUser = await postUserRegister(data);
+        if (registrationUser?.userReg?.success === true) {
+            localStorage.setItem("userid", registrationUser?.userReg?.user?.id.toString())
+            props.onClose()
+            topMessageAlartSuccess(props?.dict?.login.Register)
+            router.push(path + '?refresh=' + Math.random(), { scroll: false })
+            router.refresh()
+            // alert('User Registered Successfully!')
+        }
+        else {
+            setLoginBtnLoading(false)
+            topMessageAlartDanger(props?.dict?.login?.UserExists)
+        }
     }
 
-    const ResendOtp = () => {
+    const ResendOtp = async () => {
         var data = {
             phone_number: phoneNumber,
         }
         setSeconds(59)
         setMinutes(1)
-        post('resend-otp', data).then((responseJson: any) => {
-            if (responseJson?.success === true) {
-                setResendOtpMsssage(true)
-                topMessageAlartSuccess(props?.dict?.login.ResendOtpSuccess)
-            }
-            else {
-                topMessageAlartDanger(props?.dict?.login?.ResendOtpfailed)
-            }
-        })
+        const resendOtp = await postResendOtp(data);
+        if (resendOtp?.resendingOtp?.success === true) {
+            setResendOtpMsssage(true)
+            topMessageAlartSuccess(props?.dict?.login.ResendOtpSuccess)
+        }
+        else {
+            topMessageAlartDanger(props?.dict?.login?.ResendOtpfailed)
+        }
     }
 
     return (

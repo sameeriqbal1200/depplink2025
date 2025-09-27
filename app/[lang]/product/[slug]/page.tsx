@@ -5,7 +5,6 @@ import dayjs from 'dayjs'
 import Link from 'next/link'
 import Image from 'next/image'
 import dynamic from 'next/dynamic'
-import { NewMedia } from '../../api/Api'
 import { RWebShare } from "react-web-share"
 import { get, post } from "../../api/ApiCalls"
 import { getDictionary } from "../../dictionaries"
@@ -25,6 +24,8 @@ const LoginSingup = dynamic(() => import('../../components/LoginSignup'), { ssr:
 const MobileHeader = dynamic(() => import('../../components/MobileHeader'), { ssr: true })
 const RatingComponent = dynamic(() => import('../../components/ProductComponents/Rating'), { ssr: false })
 const ProductSliderComponent = dynamic(() => import("../../components/NewHomePageComp/ProductSlider"), { ssr: false });
+
+const NewMedia = process.env.NEXT_PUBLIC_NEW_MEDIA;
 
 type GTMEventType =
     | 'view_item_list'
@@ -1409,7 +1410,7 @@ export default function Product({ params, searchParams }: { params: { lang: stri
 
     return (
         <>
-            <LoginSingup show={loginPopup} lang={params?.lang} dict={dict} onClose={() => setLoginPopup(false)} />
+            <LoginSingup NewMedia={NewMedia} show={loginPopup} lang={params?.lang} dict={dict} onClose={() => setLoginPopup(false)} />
             <MobileHeader
                 type="Product"
                 ariaLabel={isArabic ? 'شـارك الــمــنـتـج' : 'Share Product'}
