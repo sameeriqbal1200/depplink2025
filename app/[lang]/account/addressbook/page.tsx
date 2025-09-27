@@ -1,7 +1,7 @@
 "use client"; // This is a client component 👈🏽
 
-import React, { useEffect, useState } from 'react'
-import dynamic from 'next/dynamic'
+import React, { useEffect, useState } from 'react';
+import dynamic from 'next/dynamic';
 import Select from 'react-select';
 import { useRouter } from 'next-nprogress-bar';
 import { RadioGroup } from '@headlessui/react'
@@ -93,7 +93,7 @@ export default function AddressBook() {
                 EditAddress(AddressShippingId);
                 seteditdata(true);
             } else if (addAddressCheckout) {
-                await getCities();
+                await getCities(lang);
                 seteditdata(false);
                 setAddAddress(true);
             }
@@ -105,54 +105,65 @@ export default function AddressBook() {
 
     useEffect(() => {
         getCustomerAddressData()
-        getCities()
+        getCities(lang)
     }, [])
 
     const router = useRouter();
 
-    const AddAddress = () => {
-        if (isactive == true) {
-            localStorage.setItem('globalcity', selectedCity?.label?.toString())
-        }
-        var data = {
-            user_id: localStorage.getItem("userid"),
-            address: address,
-            state_id: city?.value,
-            shippinginstractions: shippinginstructions,
-            make_default: isactive == true ? 1 : 0,
-            address_label: typeHouse == 'Home' ? 0 : 1,
-        }
-        if (!address || !city || !shippinginstructions) {
-            setErrorMsg('Error! Please fill ' + (!address ? 'Address, ' : '') + (!city ? 'City, ' : '') + (!shippinginstructions ? ' Shipping Instructions' : '') + '!')
-            topMessageAlartDanger(errormsg)
-            setLoader(false)
-            return false;
-        }
-        postAddAddress(data).then((addNewAddress: any) => {
-            if (addAddressCheckout && addNewAddress?.addNewAddress?.success) {
-                setLoader(false)
-                setAddAddress(false)
-                DataGo()
-                getCustomerAddressData()
-                topMessageAlartSuccess(t('address.AddAddress'))
-                router.push(`/${lang}/checkout`)
-            }
-            if (addNewAddress?.addNewAddress?.success) {
-                setLoader(false)
-                DataGo()
-                setAddAddress(false)
-                getCustomerAddressData()
-                topMessageAlartSuccess(t('address.AddAddress'))
-            }
-            else {
-                setLoader(false)
-                topMessageAlartDanger('Something Went Wrong')
-            }
-
-        })
+    const AddAddress = async () => {
+    if (isactive == true) {
+      localStorage.setItem("globalcity", selectedCity?.label?.toString());
     }
+    var data = {
+      user_id: localStorage.getItem("userid"),
+      address: address,
+      state_id: city?.value,
+      shippinginstractions: shippinginstructions,
+      make_default: isactive == true ? 1 : 0,
+      address_label: typeHouse == "Home" ? 0 : 1,
+    };
+    if (!address || !city || !shippinginstructions) {
+      const missingFields =
+        (!address ? (lang === "ar" ? "العنوان، " : "Address, ") : "") +
+        (!city ? (lang === "ar" ? "المدينة، " : "City, ") : "") +
+        (!shippinginstructions
+          ? lang === "ar"
+            ? "تعليمات الشحن"
+            : "Shipping Instructions"
+          : "");
 
-    const UpdateAddress = (dataid: any) => {
+      setErrorMsg(
+        lang === "ar"
+          ? `خطأ! يرجى إدخال ${missingFields}!`
+          : `Error! Please fill ${missingFields}!`
+      );
+
+      topMessageAlartDanger(errormsg);
+      setLoader(false);
+      return false;
+    }
+    const AddAddress = await postAddAddress(data);
+    if (addAddressCheckout && AddAddress?.addNewAddress?.success) {
+      setLoader(false);
+      setAddAddress(false);
+      DataGo();
+      getCustomerAddressData();
+      topMessageAlartSuccess(t("address.AddAddress"));
+      router.push(`/${lang}/checkout`);
+    }
+    if (AddAddress?.addNewAddress?.success) {
+      setLoader(false);
+      DataGo();
+      setAddAddress(false);
+      getCustomerAddressData();
+      topMessageAlartSuccess(t("address.AddAddress"));
+    } else {
+      setLoader(false);
+      topMessageAlartDanger(t("somethingwentwrong"));
+    }
+  };
+
+    const UpdateAddress = async (dataid: any) => {
         if (isactive == true) {
             localStorage.setItem('globalcity', selectedCity?.label?.toString())
         }
@@ -165,78 +176,116 @@ export default function AddressBook() {
             address_label: typeHouse == 'Home' ? 0 : 1,
         }
         if (!address || !selectedCity || !shippinginstructions) {
-            setErrorMsg('Error! Please fill ' + (!address ? 'Address, ' : '') + (!selectedCity ? 'City, ' : '') + (!shippinginstructions ? ' Shipping Instructions' : '') + '!')
-            topMessageAlartDanger(errormsg)
-            setLoader(false)
+            const missingFields =
+                (!address ? (lang === "ar" ? "العنوان، " : "Address, ") : "") +
+                (!selectedCity ? (lang === "ar" ? "المدينة، " : "City, ") : "") +
+                (!shippinginstructions
+                ? lang === "ar"
+                    ? "تعليمات الشحن"
+                    : "Shipping Instructions"
+                : "");
+            setErrorMsg(
+                lang === "ar"
+                ? `خطأ! يرجى إدخال ${missingFields}!`
+                : `Error! Please fill ${missingFields}!`
+            );
+            topMessageAlartDanger(errormsg);
+            setLoader(false);
             return false;
         }
 
-        postUpdateAddress(dataid, data).then((updateAddressPost: any) => {
-            if (AddressShippingId == dataid && updateAddressPost?.updateAddressPost?.success) {
-                setLoader(false)
-                getCustomerAddressData()
-                DataGo()
-                topMessageAlartSuccess(t('address.UpdateAddress'))
-                router.push(`/${lang}/checkout`)
+        const updateUseraddress = await postUpdateAddress(dataid, data);
+            if (
+            AddressShippingId == dataid &&
+            updateUseraddress?.updateAddressPost?.success
+            ) {
+            setLoader(false);
+            getCustomerAddressData();
+            DataGo();
+            topMessageAlartSuccess(t("address.UpdateAddress"));
+            router.push(`/${lang}/checkout`);
             }
-            if (updateAddressPost?.updateAddressPost?.success) {
-                setLoader(false)
-                setAddAddress(false)
-                getCustomerAddressData()
-                DataGo()
-                topMessageAlartSuccess(t('address.UpdateAddress'))
-            }
-            else {
-                setLoader(false)
-                topMessageAlartDanger('Something Went Wrong')
-            }
-
-        })
-    }
-
-    function EditAddress(id: any) {
-        getUserEditAddress(id).then((userEditAddress: any) => {
-            setAddress(userEditAddress?.userEditAddress?.address?.address)
-            setShippingInstructions(userEditAddress?.userEditAddress?.address?.shippinginstractions)
-            setPrimaryAddress(userEditAddress?.userEditAddress?.address?.make_default)
-            if (userEditAddress?.userEditAddress?.address?.make_default == 1) {
-                setActive(true)
-            }
-            else {
-                setActive(false)
-            }
-            if (userEditAddress?.userEditAddress?.address?.address_label == 0) {
-                setTypeHouse("Home")
+            if (updateUseraddress?.updateAddressPost?.success) {
+            setLoader(false);
+            setAddAddress(false);
+            getCustomerAddressData();
+            DataGo();
+            topMessageAlartSuccess(t("address.UpdateAddress"));
             } else {
-                setTypeHouse("Office")
-            }
-            setId(userEditAddress?.userEditAddress?.address?.id)
-            const citiesLanguage = lang === 'ar' ? userEditAddress?.userEditAddress?.arabiccities : userEditAddress?.userEditAddress?.cities
-            const CityData = citiesLanguage?.filter((item: { value: any }) => item?.value === userEditAddress?.userEditAddress?.address?.state_id);
-            setSelectedCity(CityData[0])
-        })
+            setLoader(false);
+            topMessageAlartDanger(t("somethingwentwrong"));
+        }
     }
 
-    function DeleteAddress(id: any) {
-        userDeleteAddress(id).then((deleteAddress: any) => {
-            if (deleteAddress?.deleteAddress?.success) {
-                getCustomerAddressData()
-                topMessageAlartSuccess(t('address.DeleteAddress'))
-            }
-            else {
-                topMessageAlartDanger('Something Went Wrong')
-            }
-        })
+    async function EditAddress(id: any) {
+        const getEditAddress = await getUserEditAddress(id);
+        // if (lang === 'ar') {
+        //     setRegions(responseJson?.arabicregions)
+        // }
+        // else {
+        //     setRegions(responseJson?.regions)
+        // }
+        setAddress(getEditAddress?.userEditAddress?.address?.address);
+        setShippingInstructions(
+        getEditAddress?.userEditAddress?.address?.shippinginstractions
+        );
+        setPrimaryAddress(getEditAddress?.userEditAddress?.address?.make_default);
+        if (getEditAddress?.userEditAddress?.address?.make_default == 1) {
+        setActive(true);
+        } else {
+        setActive(false);
+        }
+        if (getEditAddress?.userEditAddress?.address?.address_label == 0) {
+        setTypeHouse("Home");
+        } else {
+        setTypeHouse("Office");
+        }
+        setId(getEditAddress?.userEditAddress?.address?.id);
+
+        // if (lang === 'ar') {
+        //     const parentData = getEditAddress?.userEditAddress.arabicregions?.filter((item: { value: any; }) => item?.value === getEditAddress?.userEditAddress?.address?.state_data?.region?.id);
+        //     setSelectedRegion(parentData[0])
+        // }
+        // else {
+        //     const parentData = getEditAddress?.userEditAddress.regions?.filter((item: { value: any; }) => item?.value === getEditAddress?.userEditAddress?.address?.state_data?.region?.id);
+        //     setSelectedRegion(parentData[0])
+        // }
+
+        if (lang === "ar") {
+        const CityData = getEditAddress?.userEditAddress.arabiccities?.filter(
+            (item: { value: any }) =>
+            item?.value === getEditAddress?.userEditAddress?.address?.state_id
+        );
+        setSelectedCity(CityData[0]);
+        } else {
+        const CityData = getEditAddress?.userEditAddress.cities?.filter(
+            (item: { value: any }) =>
+            item?.value === getEditAddress?.userEditAddress?.address?.state_id
+        );
+        setSelectedCity(CityData[0]);
+    }
+  }
+
+    async function DeleteAddress(id: any) {
+        const deleteAddress = await userDeleteAddress(id);
+        if (deleteAddress?.deleteAddress?.success) {
+        getCustomerAddressData();
+        topMessageAlartSuccess(t("address.DeleteAddress"));
+        } else {
+        topMessageAlartDanger(t("somethingwentwrong"));
+        }
     }
 
-    function getCities() {
-        getCitiesList(lang).then((listOfCities: any) => {
-            setCities(listOfCities?.listOfCities?.data)
-            var selectcity = listOfCities?.listOfCities?.data?.filter((item: { label: string | null; }) => item.label == localStorage.getItem('globalcity'))[0]
-            if (selectcity) {
-                setCity(selectcity)
-            }
-        })
+    async function getCities(lang: string) {
+        const getAllCities = await getCitiesList(lang);
+        setCities(getAllCities?.listOfCities?.data);
+        var selectcity = getAllCities?.listOfCities?.data?.filter(
+        (item: { label: string | null }) =>
+            item.label == localStorage.getItem("globalcity")
+        )[0];
+        if (selectcity) {
+        setCity(selectcity);
+        }
     }
 
     const DataGo = () => {
@@ -258,7 +307,7 @@ export default function AddressBook() {
             } else {
                 // ADD FLOW
                 // If AddAddress needs city list first, await it here:
-                await getCities();
+                await getCities(lang);
                 await AddAddress();
             }
             // TODO: success toast / close modal / refresh data
@@ -459,7 +508,7 @@ export default function AddressBook() {
             <div className="fixed bottom-0 w-full p-3 bg-white shadow-md border-t border-[#5D686F26]">
                 <button
                     type="button"
-                    onClick={() => { seteditdata(false), getCities(), setAddAddress(true) }}
+                    onClick={() => { seteditdata(false), getCities(lang), setAddAddress(true) }}
                     className={`focus-visible:outline-none bg-[#004B7A] border border-[#004B7A] hover:bg-[#00446f] hover:border-[#00446f] text-white w-full rounded-md p-2.5 text-sm font-medium flex items-center justify-center ${addAddress == true ? 'hidden' : ''}`}>
                     {lang === 'ar' ? 'اضـافـة عنوان جديد' : 'Add New Address'}
                 </button>
