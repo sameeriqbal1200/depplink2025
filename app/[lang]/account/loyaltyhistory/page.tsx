@@ -31,7 +31,7 @@ export default function UserLoyaltyHistory() {
       const userId = typeof window !== "undefined" ? localStorage.getItem("userid") : null;
 
       if (!userId) {
-        router.push(`/${lang}`);
+        router.push(`${origin}/${lang}`);
         return;
       }
 
