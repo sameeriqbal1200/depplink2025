@@ -1,15 +1,15 @@
 "use client"; // This is a client component 👈🏽
 import React, { useEffect } from 'react'
 import { useRouter, usePathname } from "next/navigation"
-import { get, post } from "@/lib/api/apiCalls"
 import { useApp } from '@/app/_ctx/AppContext';
+import { getAffliationData, postStoreLocatorData } from '@/lib/footerpages/store-locator.client';
 
 export default function AF(searchParams: any) {
   const { lang, slugStr } = useApp();
   const router = useRouter();
   const path = usePathname();
 
-  useEffect(() => {
+   useEffect(() => {
     if (searchParams?.notifications?.length) {
       notificationCount()
     }
@@ -18,35 +18,27 @@ export default function AF(searchParams: any) {
 
   }, [])
 
-  const notificationCount = () => {
+  const notificationCount = async () => {
     if (searchParams?.notifications?.length) {
       var data = {
         id: searchParams?.notifications,
-        mobileapp: true,
+        desktop: true,
       }
-      post('notificationsCounts', data).then((responseJson: any) => {
-        if (responseJson?.success) {
-          // console.log("responseJsonCount",responseJson?.success)
-        }
-      })
+      const notifyData = await postStoreLocatorData(data);
+      if (notifyData?.storeLocatorData?.success) {
+      }
     }
   }
 
-  const checkAffiliation = () => {
-
-    get(`checkaffiliation/${slugStr}`).then((responseJson: any) => {
-      if (responseJson?.success) {
-        localStorage.setItem('affiliationCode', responseJson?.data?.slug_code.toString())
-
-        if (typeof window !== 'undefined') {
-          window.location.href = responseJson?.data?.custom_link;
-        }
-        // router.push(`/${params?.lang}/${responseJson?.data?.custom_link}`);
+  const checkAffiliation = async () => {
+    const checkData = await getAffliationData(slugStr);
+    if (checkData?.affliationData?.success) {
+      if (checkData?.affliationData?.data?.custom_link) {
+        router.push(`${origin}/${lang}/${checkData?.affliationData?.data?.custom_link}`);
       } else {
         router.push(`/`);
       }
-
-    })
+    }
   }
   return (
     <>
