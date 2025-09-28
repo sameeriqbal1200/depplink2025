@@ -96,3 +96,18 @@
         cursor: pointer;
     }
 }
+
+/* One Time Image Fetch */
+.bg-expressEn {
+    background-image: url('/icons/express_logo/express_en_w.webp');
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+}
+
+.bg-expressAr {
+    background-image: url('/icons/express_logo/express_w.webp');
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+}

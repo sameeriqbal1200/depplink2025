@@ -14,12 +14,17 @@ import {
   addProductWishlistData,
   removeProductWishlistData,
 } from "@/lib/components/component.client";
+import HeartIcon from "@/components/Icons/HeartIcon";
+import { useApp } from "@/app/_ctx/AppContext";
+import SARIcon from "../Icons/SARIcon";
+import StarIcon from "../Icons/StarIcon";
 
 export default function product_component_updated(props: any) {
-  const NewMedia = props?.NewMedia;
   const router = useRouter();
   const origin = props?.origin;
   const isArabic = props?.lang;
+  const NewMedia = props?.NewMedia;
+  const { deviceDetail } = useApp()
   const isMobileOrTablet = props?.isMobileOrTablet;
   var productData: any = props?.productData;
   const [isImageLoaded, setImageLoaded] = useState(false);
@@ -43,9 +48,21 @@ export default function product_component_updated(props: any) {
     };
   }
   //Product Dynamic Data
-  const expressIcon = isArabic
-    ? "/icons/express_logo/express_ar_w.webp"
-    : "/icons/express_logo/express_en_w.webp";
+  // const ExpressIcon = ({ isArabic }: { isArabic: boolean }) => {
+  //   const expressIcon = isArabic
+  //     ? "/icons/express_logo/express_w.webp"
+  //     : "/icons/express_logo/express_en_w.webp";
+
+  //   return (
+  //     <div
+  //       className="inline-block w-10 h-10 bg-contain bg-center bg-no-repeat"
+  //       style={{ backgroundImage: `url(${expressIcon})` }}
+  //     />
+  //   );
+  // };
+  // const expressIcon = isArabic
+  //   ? "/icons/express_logo/express_w.webp"
+  //   : "/icons/express_logo/express_en_w.webp";
   const installmentMethodsImages = isArabic
     ? `/icons/installment-3.webp?v=${cacheKey}`
     : `/icons/installment-3.webp?v=${cacheKey}`;
@@ -64,45 +81,44 @@ export default function product_component_updated(props: any) {
   const productBadgeRightBackgroundColor = productData?.badge_right_color
     ? productData?.badge_right_color
     : "#004B7A";
-  const productSlug = `${origin}/${isArabic ? "ar" : "en"}/product/${
-    productData?.slug
-  }`;
+  const productSlug = `${origin}/${isArabic ? "ar" : "en"}/product/${productData?.slug
+    }`;
   function isValidUrl(value: any) {
     return value != null && value !== "" && value !== undefined;
   }
   const productFeaturedImage: any =
     isValidUrl(productData?.featured_image?.image) &&
-    productData?.featured_image?.image
+      productData?.featured_image?.image
       ? `${NewMedia}${productData?.featured_image?.image}`
       : null;
   const productSpecificationImageOne: any =
     isValidUrl(productData?.specification_image_one) &&
-    productData?.specification_image_one
+      productData?.specification_image_one
       ? `${productData?.specification_image_one}`
       : null;
   const productSpecificationImageTwo: any =
     isValidUrl(productData?.specification_image_two) &&
-    productData?.specification_image_two
+      productData?.specification_image_two
       ? `${productData?.specification_image_two}`
       : null;
   const productSpecificationImageThree: any =
     isValidUrl(productData?.specification_image_three) &&
-    productData?.specification_image_three
+      productData?.specification_image_three
       ? `${productData?.specification_image_three}`
       : null;
   const productSpecificationImageFour: any =
     isValidUrl(productData?.specification_image_four) &&
-    productData?.specification_image_four
+      productData?.specification_image_four
       ? `${productData?.specification_image_four}`
       : null;
   const productSpecificationImageFive: any =
     isValidUrl(productData?.specification_image_five) &&
-    productData?.specification_image_five
+      productData?.specification_image_five
       ? `${productData?.specification_image_five}`
       : null;
   const productSpecificationImageSix: any =
     isValidUrl(productData?.specification_image_six) &&
-    productData?.specification_image_six
+      productData?.specification_image_six
       ? `${productData?.specification_image_six}`
       : null;
   const productTitle = isArabic ? productData?.name_arabic : productData?.name;
@@ -128,24 +144,24 @@ export default function product_component_updated(props: any) {
   }
   const salePormotionPriceSatus =
     productData?.promotional_price == null &&
-    productData?.promotional_price >= 0
+      productData?.promotional_price >= 0
       ? 0
       : 1; // 1 for sale, 0 for no sale This is for dummy value only
   const salePormotionPriceOnly = productData?.promotional_price;
   const salePormotionText = isArabic
-        ? productData?.promo_title_arabic
-        : productData?.promo_title;
+    ? productData?.promo_title_arabic
+    : productData?.promo_title;
 
   const productSalePrice =
     salePormotionPriceSatus > 0 && productFlashSalePriceStatus == 0
       ? Math.max(
-          0,
-          Number(
-            productData?.sale_price > 0
-              ? productData?.sale_price
-              : productData?.price
-          ) - Number(salePormotionPriceOnly)
-        )
+        0,
+        Number(
+          productData?.sale_price > 0
+            ? productData?.sale_price
+            : productData?.price
+        ) - Number(salePormotionPriceOnly)
+      )
       : productData?.sale_price;
   const productRegularPrice = productData?.price;
   const regularPrice = Number(productRegularPrice);
@@ -175,7 +191,7 @@ export default function product_component_updated(props: any) {
       ? Math.round(((regularPrice - salePrice) * 100) / regularPrice)
       : Math.max(0, Number(productRegularPrice) - Number(productSalePrice));
   const productDiscountType = percentage > 0 ? (isArabic ? "خصم" : "OFF") : "";
-  
+
   const productDiscountValue =
     percentage > 0 ? (
       isArabic ? (
@@ -192,13 +208,14 @@ export default function product_component_updated(props: any) {
         Save {discountPercentage.toLocaleString("en-US")} {sarIcon()}
       </>
     );
-    
+
   const installmentMethods = isArabic ? "طرق الدفع" : "Payment";
   const installmentMethodsText = isArabic
     ? "قسطها ع كيفك, إشتري الأن وإدفع لاحقا"
     : "Split it your way buy now pay later!";
   const giftAvailableText = isArabic ? "هدية" : "Gift";
   const buttonTextCheckout = isArabic ? "شراء الأن" : "Checkout Now";
+  const codeText = isArabic ? "كود" : "Code";
 
   const [timeLeft, setTimeLeft] = useState("");
   const [countdownTarget] = useState(() => {
@@ -435,9 +452,9 @@ export default function product_component_updated(props: any) {
     var flashCalc = ProExtraData?.flash
       ? ProExtraData?.flash?.discount_type === 2
         ? Math.round(
-            (productData?.sale_price * ProExtraData?.flash?.discount_amount) /
-              100
-          )
+          (productData?.sale_price * ProExtraData?.flash?.discount_amount) /
+          100
+        )
         : ProExtraData?.flash?.discount_amount
       : productData?.sale_price;
     setBuyNowLoading(id);
@@ -447,7 +464,7 @@ export default function product_component_updated(props: any) {
 
     if (
       ProExtraData?.freegiftData?.freegiftlist?.length ==
-        ProExtraData?.freegiftData?.allowed_gifts &&
+      ProExtraData?.freegiftData?.allowed_gifts &&
       ProExtraData?.freegiftData?.freegiftlist?.filter(
         (e: any) => e?.discount > 0
       )?.length <= 0
@@ -463,8 +480,8 @@ export default function product_component_updated(props: any) {
         price: flashCalc
           ? flashCalc
           : productData.sale_price
-          ? productData.sale_price
-          : productData.price,
+            ? productData.sale_price
+            : productData.price,
         regular_price: productData.price,
         quantity: 1,
         total_quantity: productData.quantity,
@@ -594,8 +611,8 @@ export default function product_component_updated(props: any) {
         price: flashCalc
           ? flashCalc
           : productData.sale_price
-          ? productData.sale_price
-          : productData.price,
+            ? productData.sale_price
+            : productData.price,
         regular_price: productData.price,
         quantity: 1,
         total_quantity: productData.quantity,
@@ -718,15 +735,6 @@ export default function product_component_updated(props: any) {
     ? productData?.gift_image
     : null;
 
-  function detectPlatform() {
-    if (window.Android) return "Android-WebView";
-    if (window.webkit?.messageHandlers?.iosBridge) return "iOS-WebView";
-    var userAgent = navigator.userAgent || navigator.vendor || window.opera;
-    if (/android/i.test(userAgent)) return "Android-Mobile-WebView";
-    if (/iPad|iPhone|iPod/.test(userAgent)) return "iOS-Mobile-WebView";
-    return "Web";
-  }
-
   const pushGTMEvent = (eventName: string) => {
     if (typeof window !== "undefined" && window.dataLayer) {
       // Clear previous ecommerce data
@@ -761,7 +769,7 @@ export default function product_component_updated(props: any) {
       // Push new ecommerce event
       window.dataLayer.push({
         event: eventName,
-        platform: detectPlatform(),
+        platform: deviceDetail,
         event_value: Number(getDiscountedPrice()), // sum of prices
         currency: "SAR", // currency
         ecommerce: {
@@ -863,6 +871,22 @@ export default function product_component_updated(props: any) {
   //     : `${fourth?.specs_en || ""} ${fourth?.value_en || ""}`;
   // }
 
+  const specificationImages = [
+    productSpecificationImageOne,
+    productSpecificationImageTwo,
+    productSpecificationImageThree,
+    productSpecificationImageFour,
+    productSpecificationImageFive,
+    productSpecificationImageSix,
+  ].filter(Boolean); // removes null/undefined
+
+  const absoluteTexts = [
+    imgAbsoluteTextOne,
+    imgAbsoluteTextTwo,
+    imgAbsoluteTextThree,
+    imgAbsoluteTextFour,
+  ].filter(Boolean);
+
   return (
     <>
       <div className="tamkeenProduct_card relative w-full h-fit">
@@ -870,12 +894,11 @@ export default function product_component_updated(props: any) {
           <div className="tamkeenProduct_card_header flex justify-between items-center px-2">
             <div className="productRedOrangeBtns h-8 flex items-center gap-x-2 z-10 absolute sm:top-3 top-2 rtl:left-3 ltr:right-3">
               <button
-                className={`productSliderBtns hover:!bg-red !text-primary hover:!text-white !p-1.5 transition-all duration-300 ease-in-out ${
-                  ProWishlistData.filter((item: any) => item == productData?.id)
-                    .length >= 1
-                    ? "!bg-red !fill-white !text-white"
-                    : "!bg-white"
-                }`}
+                className={`productSliderBtns hover:!bg-red !text-primary hover:!text-white !p-1.5 transition-all duration-300 ease-in-out ${ProWishlistData.filter((item: any) => item == productData?.id)
+                  .length >= 1
+                  ? "!bg-red !fill-white !text-white"
+                  : "!bg-white"
+                  }`}
                 onClick={(e: any) => {
                   var type: boolean =
                     ProWishlistData.filter(
@@ -884,116 +907,7 @@ export default function product_component_updated(props: any) {
                   WishlistProduct(productData?.id, type);
                 }}
               >
-                <svg
-                  width="17"
-                  height="17"
-                  viewBox="0 0 27 27"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <g clipPath="url(#clip0_1_8618)">
-                    <g clipPath="url(#clip1_1_8618)">
-                      <path
-                        d="M24.4211 6.4022C23.7697 5.36917 22.8155 4.56212 21.6888 4.09101C20.412 3.55511 18.9781 3.45865 17.5419 3.81275C16.2259 4.13729 14.944 4.84118 13.8001 5.8623C12.6561 4.84109 11.3741 4.13716 10.0579 3.81266C8.62172 3.45842 7.18764 3.55498 5.91093 4.09124C4.78414 4.56249 3.83005 5.3697 3.17869 6.40288C2.49655 7.48122 2.14954 8.79259 2.17515 10.1951C2.28887 16.4299 11.5764 22.0994 13.4371 23.1727C13.5475 23.2364 13.6727 23.2699 13.8001 23.2699C13.9276 23.2699 14.0528 23.2364 14.1632 23.1727C16.0241 22.0993 25.3124 16.4288 25.4251 10.194C25.4505 8.79159 25.1033 7.48036 24.4211 6.4022ZM23.9721 10.1679C23.9358 12.1838 22.5919 14.534 20.0862 16.9645C17.7657 19.2152 15.1262 20.9116 13.8001 21.701C12.474 20.9118 9.8349 19.2155 7.51463 16.9648C5.0088 14.5345 3.66496 12.1844 3.62817 10.1685C3.58802 7.9674 4.65179 6.19642 6.47371 5.43113C7.07081 5.18168 7.71185 5.05446 8.35895 5.057C10.03 5.057 11.7977 5.86594 13.282 7.37527C13.3496 7.44403 13.4302 7.49864 13.5192 7.53592C13.6081 7.5732 13.7036 7.59239 13.8 7.59239C13.8965 7.59239 13.992 7.5732 14.0809 7.53592C14.1699 7.49864 14.2505 7.44403 14.3181 7.37527C16.3803 5.27844 18.9891 4.53349 21.1259 5.43099C22.948 6.19601 24.0119 7.96671 23.9721 10.1677V10.1679Z"
-                        fill="currentColor"
-                      />
-                    </g>
-                  </g>
-                  <defs>
-                    <clipPath id="clip0_1_8618">
-                      <rect
-                        width="26.1592"
-                        height="26.1592"
-                        fill="white"
-                        transform="translate(0.72168 0.266602)"
-                      />
-                    </clipPath>
-                    <clipPath id="clip1_1_8618">
-                      <rect
-                        width="26.1592"
-                        height="26.1592"
-                        fill="white"
-                        transform="translate(0.72168 0.266449)"
-                      />
-                    </clipPath>
-                  </defs>
-                </svg>
-              </button>
-              <button
-                className="productSliderBtns !bg-white !p-1.5 !text-primary hover:!bg-primary hover:!text-white transition-all duration-300 ease-in-out"
-                onClick={() => {
-                  if (fGiftType == 0) {
-                    addToCart(productData.id, 0, true);
-                  } else if (fGift) {
-                    router.push(productSlug);
-                  } else {
-                    addToCart(productData.id, 0, true);
-                  }
-                  handleGTMAddToCart();
-                }}
-              >
-                <svg
-                  width="17"
-                  height="17"
-                  viewBox="0 0 27 32"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <g clipPath="url(#clip0_1_8623)">
-                    <g clipPath="url(#clip1_1_8623)">
-                      <g clipPath="url(#clip2_1_8623)">
-                        <path
-                          d="M9.53418 26.0958C10.1228 26.0958 10.6172 26.5855 10.6172 27.21C10.6172 27.8346 10.1228 28.3243 9.53418 28.3243C8.94571 28.324 8.45216 27.8344 8.45215 27.21C8.45215 26.5856 8.9457 26.096 9.53418 26.0958Z"
-                          fill="white"
-                          stroke="currentColor"
-                          strokeWidth="0.968858"
-                        />
-                        <path
-                          d="M19.0527 26.096C19.6414 26.096 20.1357 26.5857 20.1357 27.2102C20.1357 27.8348 19.6414 28.3245 19.0527 28.3245C18.4643 28.3243 17.9707 27.8346 17.9707 27.2102C17.9707 26.5858 18.4643 26.0962 19.0527 26.096Z"
-                          fill="white"
-                          stroke="currentColor"
-                          strokeWidth="0.968858"
-                        />
-                        <path
-                          d="M2.75391 7.79214C2.86045 7.78183 2.96807 7.79334 3.07031 7.82535L5.92578 8.71988L6.01758 8.75504C6.10677 8.79535 6.18811 8.85201 6.25781 8.92203C6.32756 8.99211 6.38414 9.07425 6.4248 9.16422L6.45996 9.25699L9.61816 19.4582H19.8877L21.6963 11.1603H8.62207L8.59668 11.0802L8.14355 9.65933L8.09668 9.51089H22.752C22.8718 9.51177 22.9898 9.54006 23.0977 9.59293C23.2056 9.64584 23.3008 9.72207 23.376 9.81656H23.375C23.4543 9.91163 23.5124 10.0232 23.543 10.1437C23.5737 10.2648 23.5762 10.3913 23.5518 10.5138V10.5168L21.3438 20.463C21.3028 20.6485 21.2003 20.8143 21.0527 20.9318C20.9057 21.0488 20.7232 21.1097 20.5361 21.1056V21.1066H9.82715L8.2002 22.4836C8.17468 22.5344 8.15934 22.5901 8.15918 22.6476C8.15902 22.7103 8.1752 22.7719 8.20508 22.8263C8.23488 22.8806 8.27758 22.926 8.3291 22.9582C8.38074 22.9903 8.4399 23.0078 8.5 23.0099H20.2295C20.4452 23.0099 20.6519 23.0982 20.8037 23.2531C20.9553 23.4079 21.04 23.6172 21.04 23.8351C21.04 24.053 20.9554 24.2624 20.8037 24.4171C20.6519 24.572 20.4452 24.6593 20.2295 24.6593H8.60742V24.6584C8.29281 24.6733 7.97932 24.6145 7.69141 24.4845C7.40172 24.3537 7.14623 24.1556 6.94531 23.9064L6.94336 23.9044C6.6605 23.5382 6.51169 23.0828 6.52246 22.6173C6.53331 22.1519 6.7034 21.7049 7.00293 21.3527L7.00781 21.3459L7.09863 21.2541L7.10645 21.2462L7.17969 21.3341L7.10742 21.2462L8.19043 20.3429L5.03418 10.1701L2.5918 9.40738C2.38521 9.34261 2.21296 9.19662 2.1123 9.00308C2.01172 8.80941 1.99068 8.58247 2.05371 8.3732C2.1168 8.16409 2.25855 7.98803 2.44922 7.88492C2.54363 7.83387 2.64734 7.80249 2.75391 7.79214Z"
-                          fill="currentColor"
-                          stroke="currentColor"
-                          strokeWidth="0.228241"
-                        />
-                      </g>
-                    </g>
-                  </g>
-                  <path
-                    d="M19.0157 5.70898H16.9877V4.26898H19.0157V2.25298H20.4557V4.26898H22.5077V5.70898H20.4557V7.74898H19.0157V5.70898Z"
-                    fill="currentColor"
-                  />
-                  <defs>
-                    <clipPath id="clip0_1_8623">
-                      <rect
-                        width="26.1592"
-                        height="26.1592"
-                        fill="white"
-                        transform="translate(0.821289 5.17773)"
-                      />
-                    </clipPath>
-                    <clipPath id="clip1_1_8623">
-                      <rect
-                        width="24.4788"
-                        height="24.4788"
-                        fill="white"
-                        transform="matrix(-1 0 0 1 25.5186 5.55743)"
-                      />
-                    </clipPath>
-                    <clipPath id="clip2_1_8623">
-                      <rect
-                        width="22.2837"
-                        height="21.3149"
-                        fill="white"
-                        transform="translate(1.64453 7.49344)"
-                      />
-                    </clipPath>
-                  </defs>
-                </svg>
+                <HeartIcon size={13} color="#004B7A" />
               </button>
             </div>
           </div>
@@ -1010,134 +924,84 @@ export default function product_component_updated(props: any) {
                   width={350}
                   height={350}
                   quality={100}
-                  className={`w-full h-full object-cover object-center rounded-2xl transition-opacity duration-300 ${
-                    isImageLoaded ? "opacity-100" : "opacity-0"
-                  }`}
+                  className={`w-full h-full object-cover object-center rounded-2xl transition-opacity duration-300 ${isImageLoaded ? "opacity-100" : "opacity-0"
+                    }`}
                   onLoad={() => setImageLoaded(true)}
                 />
               </div>
-              {imgAbsoluteTextOne ||
-              imgAbsoluteTextTwo ||
-              imgAbsoluteTextThree ||
-              imgAbsoluteTextFour ? (
+              {absoluteTexts.length > 0 ? (
                 <div className="flex items-center justify-center mx-8 text-nowrap overflow-hidden">
-                  {imgAbsoluteTextOne && (
-                    <div className="text-[0.5rem] font-semibold">
-                      {imgAbsoluteTextOne}
-                    </div>
-                  )}
-                  {imgAbsoluteTextTwo && (
-                    <div className="h-3 w-px mx-1 border border-gray opacity-20"></div>
-                  )}
-                  {imgAbsoluteTextTwo && (
-                    <div className="text-[0.5rem] font-semibold">
-                      {imgAbsoluteTextTwo}
-                    </div>
-                  )}
-                  {imgAbsoluteTextThree && (
-                    <div className="h-3 w-px mx-1 border border-gray opacity-20"></div>
-                  )}
-                  {imgAbsoluteTextThree && (
-                    <div className="text-[0.5rem] font-semibold">
-                      {imgAbsoluteTextThree}
-                    </div>
-                  )}
-                  {imgAbsoluteTextFour && (
-                    <div className="h-3 w-px mx-1 border border-gray opacity-20"></div>
-                  )}
-                  {imgAbsoluteTextFour && (
-                    <div className="text-[0.5rem] font-semibold">
-                      {imgAbsoluteTextFour}
-                    </div>
-                  )}
+                  {absoluteTexts.map((text, i) => (
+                    <React.Fragment key={i}>
+                      {i > 0 && (
+                        <div className="h-3 w-px mx-1 border border-gray opacity-20"></div>
+                      )}
+                      <div className="text-[0.5rem] font-semibold">{text}</div>
+                    </React.Fragment>
+                  ))}
                 </div>
               ) : (
                 <div className="h-4 w-full"></div>
               )}
             </div>
-            <div className="tamkeenProduct_card_body pt-3 mb-1">
-              <div className="flex items-end justify-between gap-1 w-full mb-1">
-                <div className="flex items-center gap-1">
-                  {giftAvailableImage != null ? (
-                    <div className="flex items-center gap-0.5 font-bold px-2 py-1">
-                      <Image
-                        alt={giftAvailableText}
-                        title={giftAvailableText}
-                        loading="lazy"
-                        width={0}
-                        height={0}
-                        decoding="async"
-                        data-nimg="1"
-                        quality={100}
-                        className={`rounded-md object-contain h-[0.6875rem] ${
-                          giftAvailableImage != null ? "w-14" : ""
-                        } lg:w-14 2xl:w-12`}
-                        src={giftAvailableImage}
-                        sizes="(max-width: 640px) 100vw, (max-width: 768px) 100vw, (max-width: 1024px) 100vw, 100vw"
-                        style={{ color: "transparent" }}
-                      />
-                    </div>
-                  ) : null}
-                  {productBadgeTop ? (
-                    <div
-                      className={`productBadge_topText !text-[0.589rem] md:text-[0.589rem] font-semibold py-[0.150rem] px-[0.308rem] rounded-md w-auto text-center border line-clamp-1`}
-                      style={{
-                        borderColor: `${productBadgeLeftBackgroundColor}25`,
-                        color: productBadgeLeftBackgroundColor,
-                      }}
-                    >
-                      {productBadgeTop}
-                    </div>
-                  ) : (
-                    <div className="h-[22.78px]" />
-                  )}
-                  {productBadgeInsideText ? (
-                    <div
-                      className={`productBadge_topText !text-[0.589rem] md:text-[0.589rem] font-semibold py-[0.150rem] px-[0.308rem] rounded-md w-auto text-center border line-clamp-1`}
-                      style={{
-                        borderColor: `${productBadgeRightBackgroundColor}25`,
-                        color: productBadgeRightBackgroundColor,
-                      }}
-                    >
-                      {productBadgeInsideText}
-                    </div>
-                  ) : (
-                    <div className="h-[22.78px]" />
-                  )}
+            {/* Badge Gift & Express Area */}
+            <div className="flex items-end justify-between gap-1 w-full mt-3 mb-1">
+              {giftAvailableImage != null ? (
+                <div className="flex items-center gap-0.5 font-bold px-2 py-1">
+                  <Image
+                    alt={giftAvailableText}
+                    title={giftAvailableText}
+                    loading="lazy"
+                    width={0}
+                    height={0}
+                    decoding="async"
+                    data-nimg="1"
+                    quality={100}
+                    className={`rounded-md object-contain h-[0.6875rem] ${giftAvailableImage != null ? "w-14" : ""
+                      } lg:w-14 2xl:w-12`}
+                    src={giftAvailableImage}
+                    sizes="(max-width: 640px) 100vw, (max-width: 768px) 100vw, (max-width: 1024px) 100vw, 100vw"
+                    style={{ color: "transparent" }}
+                  />
                 </div>
-                {ProExtraData?.expressdeliveryData ? (
-                  <div className="productBadge_topImg rtl:mr-auto ltr:ml-auto !w-[73px] !h-[27.2px] relative">
-                    <Image
-                      src="/icons/express_logo/express_en_w.png"
-                      alt="Express Logo"
-                      fill
-                      loading="lazy"
-                      decoding="async"
-                      quality={100}
-                      sizes="(max-width: 640px) 100vw, (max-width: 768px) 100vw, (max-width: 1024px) 100vw, 100vw"
-                      priority={false}
-                      width={0}
-                      height={0}
-                      className="w-full h-full object-contain object-center"
-                    />
-                  </div>
-                ) : (
-                  <div className="h-[27.2px]" />
-                )}
-              </div>
-              <h2 className="productDesc text-start !text-xs 2xl:text-sm line-clamp-2 font-semibold h-[2rem]">
-                <span className='font-[900] after:content-["•"]'>
-                  {productBrand}{" "}
-                </span>{" "}
+              ) : null}
+              {/* Left side badges */}
+              {/* {productBadgeTop ? (
+                        <div
+                          className="productBadge_topText !text-[0.589rem] font-semibold py-[0.150rem] px-[0.308rem] rounded-md w-auto text-center border line-clamp-1"
+                          style={{
+                            borderColor: `${productBadgeLeftBackgroundColor}25`,
+                            color: productBadgeLeftBackgroundColor,
+                          }}
+                        >
+                          {productBadgeTop}
+                        </div>
+                      ) : null} */}
+              {productBadgeInsideText ? (
+                <div
+                  className="productBadge_topText !text-[0.589rem] font-semibold py-[0.150rem] px-[0.308rem] rounded-md w-auto text-center border line-clamp-1"
+                  style={{
+                    borderColor: `${productBadgeRightBackgroundColor}25`,
+                    color: productBadgeRightBackgroundColor,
+                  }}
+                >
+                  {productBadgeInsideText}
+                </div>
+              ) : null}
+              {/* Express badge on the right */}
+              {ProExtraData?.expressdeliveryData ? (
+                <div className={`${isArabic ? "bg-expressAr" : "bg-expressEn"} w-14 h-6`} />
+              ) : null}
+            </div>
+            <div className="tamkeenProduct_card_body my-3">
+              <h2 className="productDesc text-start text-xs line-clamp-2 font-semibold">
+                <span className='after:content-["•"] font-bold'>{productBrand}{" "}</span>{" "}
                 {productTitle}
               </h2>
-              <div className="flex items-center justify-between gap-2 mb-2">
-                <h2 className="productDesc  font-semibold text-start !text-xs 2xl:text-sm line-clamp-1">
-                  <span className='font-[900] after:content-["•"]'>
-                    {isArabic ? "كود" : "Code"}{" "}
-                  </span>{" "}
-                  <span className="inline-flex items-center gap-1">
-                    {productData?.sku}
+              <div className="flex items-center justify-between gap-2 my-2">
+                <h2 className="productDesc font-semibold text-start text-xs line-clamp-1">
+                  <span className='font-bold after:content-["•"]'>{codeText}{" "}</span>{" "}
+                  <span className="inline-flex items-center gap-1">{productData?.sku}
                     <svg
                       width="18"
                       height="18"
@@ -1159,191 +1023,76 @@ export default function product_component_updated(props: any) {
                   loading="lazy"
                   width={0}
                   height={0}
-                  className="w-[4.625rem] h-7 object-contain object-center"
+                  className="w-18 h-8 object-contain object-center"
                   sizes="100vh"
                 />
               </div>
-              {productSpecificationImageOne ||
-              productSpecificationImageTwo ||
-              productSpecificationImageThree ||
-              productSpecificationImageFour ||
-              productSpecificationImageFive ||
-              productSpecificationImageSix ? (
+              {specificationImages.length > 0 ? (
                 <div
-                  className="specificationImagesProduct_wrapper  px-2 py-1 mb-3 rounded-md relative h-[36px]"
+                  className="py-2 mb-3 rounded-md relative flex items-center justify-center gap-1"
                   style={{ backgroundColor: productBadgeBackgroundColor }}
                 >
-                  <>
-                    <div className="product_specification flex items-center justify-center gap-2">
-                      {productSpecificationImageOne ? (
-                        <Image
-                          src={productSpecificationImageOne}
-                          alt={`specification-${productTitle}`}
-                          decoding="async"
-                          data-nimg="1"
-                          title={`Specification ${productTitle}`}
-                          width={0}
-                          height={0}
-                          sizes="(max-width: 640px) 100vw, (max-width: 768px) 100vw, (max-width: 1024px) 100vw, 100vw"
-                          quality={100}
-                          className="specificationImagesProduct w-[36px] h-[26px] rounded-md"
-                        />
-                      ) : null}
-                      {productSpecificationImageTwo ? (
-                        <Image
-                          src={productSpecificationImageTwo}
-                          alt={`specification-${productTitle}`}
-                          decoding="async"
-                          data-nimg="1"
-                          title={`Specification ${productTitle}`}
-                          width={0}
-                          height={0}
-                          sizes="(max-width: 640px) 100vw, (max-width: 768px) 100vw, (max-width: 1024px) 100vw, 100vw"
-                          quality={100}
-                          className="specificationImagesProduct w-[36px] h-[26px] rounded-md"
-                        />
-                      ) : null}
-                      {productSpecificationImageThree ? (
-                        <Image
-                          src={productSpecificationImageThree}
-                          alt={`specification-${productTitle}`}
-                          decoding="async"
-                          data-nimg="1"
-                          title={`Specification ${productTitle}`}
-                          width={0}
-                          height={0}
-                          sizes="(max-width: 640px) 100vw, (max-width: 768px) 100vw, (max-width: 1024px) 100vw, 100vw"
-                          quality={100}
-                          className="specificationImagesProduct w-[36px] h-[26px] rounded-md"
-                        />
-                      ) : null}
-                      {productSpecificationImageFour ? (
-                        <Image
-                          src={productSpecificationImageFour}
-                          alt={`specification-${productTitle}`}
-                          decoding="async"
-                          data-nimg="1"
-                          title={`Specification ${productTitle}`}
-                          width={0}
-                          height={0}
-                          sizes="(max-width: 640px) 100vw, (max-width: 768px) 100vw, (max-width: 1024px) 100vw, 100vw"
-                          quality={100}
-                          className="specificationImagesProduct w-[36px] h-[26px] rounded-md"
-                        />
-                      ) : null}
-                      {productSpecificationImageFive ? (
-                        <Image
-                          src={productSpecificationImageFive}
-                          alt={`specification-${productTitle}`}
-                          decoding="async"
-                          data-nimg="1"
-                          title={`Specification ${productTitle}`}
-                          width={0}
-                          height={0}
-                          sizes="(max-width: 640px) 100vw, (max-width: 768px) 100vw, (max-width: 1024px) 100vw, 100vw"
-                          quality={100}
-                          className="specificationImagesProduct w-[36px] h-[26px] rounded-md"
-                        />
-                      ) : null}
-                      {productSpecificationImageSix ? (
-                        <Image
-                          src={productSpecificationImageSix}
-                          alt={`specification-${productTitle}`}
-                          decoding="async"
-                          data-nimg="1"
-                          title={`Specification ${productTitle}`}
-                          width={0}
-                          height={0}
-                          sizes="(max-width: 640px) 100vw, (max-width: 768px) 100vw, (max-width: 1024px) 100vw, 100vw"
-                          quality={100}
-                          className="specificationImagesProduct w-[36px] h-[26px] rounded-md hidden md:block"
-                        />
-                      ) : null}
-                    </div>
-                  </>
+                  {specificationImages.map((imgSrc, i) => (
+                    <Image
+                      key={i}
+                      src={imgSrc as string}
+                      alt={`specification-${productTitle}-${i + 1}`}
+                      decoding="async"
+                      data-nimg="1"
+                      title={`Specification ${productTitle} - ${i + 1}`}
+                      width={0}
+                      height={0}
+                      sizes="100vw"
+                      quality={100}
+                      className="w-10 h-auto rounded-md"
+                    />
+                  ))}
                 </div>
               ) : (
                 <div className="specificationImagesProduct_wrapper h-[36px] w-full mb-3"></div>
               )}
               <div
-                className={`p-1 rounded-md relative h-[46px] ${
-                  salePormotionText ? "" : "flex items-center justify-center"
-                }`}
+                className={`p-1 rounded-md relative h-[46px] ${salePormotionText ? "" : "flex items-center justify-center"
+                  }`}
                 style={{ backgroundColor: productBadgeBackgroundColor }}
               >
                 <div className="align__center w-full">
                   <div>
                     <div className="flex items-center sm:gap-2 gap-1">
-                      <h3 className="afterDiscount md:text-base !text-sm font-[900] text-orangePrice">
+                      <h3 className="afterDiscount md:text-base !text-sm font-bold text-orangePrice">
                         <div className="flex gap-1 items-center">
                           {productSalePrice > 0 ? (
                             <>{productSalePrice.toLocaleString("en-US")}</>
                           ) : (
                             <>{productRegularPrice.toLocaleString("en-US")}</>
                           )}
-                          <svg
-                            className="riyal-svg"
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 1124.14 1256.39"
-                            width="10"
-                            height="11"
-                          >
-                            <path
-                              fill="currentColor"
-                              d="M699.62,1113.02h0c-20.06,44.48-33.32,92.75-38.4,143.37l424.51-90.24c20.06-44.47,33.31-92.75,38.4-143.37l-424.51,90.24Z"
-                            ></path>
-                            <path
-                              fill="currentColor"
-                              d="M1085.73,895.8c20.06-44.47,33.32-92.75,38.4-143.37l-330.68,70.33v-135.2l292.27-62.11c20.06-44.47,33.32-92.75,38.4-143.37l-330.68,70.27V66.13c-50.67,28.45-95.67,66.32-132.25,110.99v403.35l-132.25,28.11V0c-50.67,28.44-95.67,66.32-132.25,110.99v525.69l-295.91,62.88c-20.06,44.47-33.33,92.75-38.42,143.37l334.33-71.05v170.26l-358.3,76.14c-20.06,44.47-33.32,92.75-38.4,143.37l375.04-79.7c30.53-6.35,56.77-24.4,73.83-49.24l68.78-101.97v-.02c7.14-10.55,11.3-23.27,11.3-36.97v-149.98l132.25-28.11v270.4l424.53-90.28Z"
-                            ></path>
-                          </svg>
+                          <SARIcon size={8} color="#F0660C" />
                         </div>
                       </h3>
                       <div className="flex items-center mt-0.5">
-                        {productSalePrice > 0 ? (
-                          <>
-                            <h3 className="realPrice md:!text-xs !text-[0.625rem] text-gray-500 line-through decoration-double decoration-red leading-3 flex items-center gap-x-0.5">
-                              {productRegularPrice}
-                              <svg
-                                className="riyal-svg"
-                                xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 1124.14 1256.39"
-                                width="7"
-                                height="8"
-                              >
-                                <path
-                                  fill="currentColor"
-                                  d="M699.62,1113.02h0c-20.06,44.48-33.32,92.75-38.4,143.37l424.51-90.24c20.06-44.47,33.31-92.75,38.4-143.37l-424.51,90.24Z"
-                                ></path>
-                                <path
-                                  fill="currentColor"
-                                  d="M1085.73,895.8c20.06-44.47,33.32-92.75,38.4-143.37l-330.68,70.33v-135.2l292.27-62.11c20.06-44.47,33.32-92.75,38.4-143.37l-330.68,70.27V66.13c-50.67,28.45-95.67,66.32-132.25,110.99v403.35l-132.25,28.11V0c-50.67,28.44-95.67,66.32-132.25,110.99v525.69l-295.91,62.88c-20.06,44.47-33.33,92.75-38.42,143.37l334.33-71.05v170.26l-358.3,76.14c-20.06,44.47-33.32,92.75-38.4,143.37l375.04-79.7c30.53-6.35,56.77-24.4,73.83-49.24l68.78-101.97v-.02c7.14-10.55,11.3-23.27,11.3-36.97v-149.98l132.25-28.11v270.4l424.53-90.28Z"
-                                ></path>
-                              </svg>
-                            </h3>
-                          </>
-                        ) : null}
+                        {productSalePrice > 0 && (
+                          <h3 className="realPrice md:!text-xs !text-[0.625rem] text-gray-500 line-through decoration-double decoration-red leading-3 flex items-center gap-x-0.5">
+                            {productRegularPrice}
+                            <SARIcon size={7} color="#6B7280" />
+                          </h3>
+                        )}
                       </div>
                     </div>
                   </div>
-                  <div
-                    className={`offerPercent !text-[0.625rem] md:!text-xs font-bold px-1 md:px-2 py-1 bg-white rounded-sm`}
-                  >
+                  <div className={`offerPercent !text-[0.625rem] md:!text-xs font-bold px-1 py-1 bg-white rounded-sm`}>
                     <span className="text-[#F0660C] flex items-center gap-1 text-nowrap">
-                      {productDiscountValue} {productDiscountType}
+                      {productDiscountValue}{" "}{productDiscountType}
                     </span>
                   </div>
                 </div>
-                {(productData?.promotional_price >= 0 && productData?.promotional_price != null && productData?.sale_price) ? (
-                  <span className="animated_orangePrice text-orangePrice !text-[0.55rem] md:!text-[0.625rem] font-bold animationImp">
+                {(productData?.promotional_price >= 0 && productData?.promotional_price != null && productData?.sale_price) && (
+                  <span className="animated_orangePrice text-orangePrice !text-[0.55rem] font-bold animationImp">
                     {salePormotionText}
                   </span>
-                ) : null}
+                )}
               </div>
               <div className="mt-2 flex items-center justify-between gap-2">
-                <h3
-                  className={`paymentText font-bold md:!text-[0.619rem] sm:!text-[0.50rem] text-[.625rem] md:!leading-[0.619rem] sm:!leading-[0.50rem] leading-[.625rem] line-clamp-2`}
-                >
+                <h3 className={`paymentText font-bold text-[.525rem] line-clamp-2`}>
                   {installmentMethodsText}
                 </h3>
                 <Image
@@ -1367,18 +1116,7 @@ export default function product_component_updated(props: any) {
                       {Array.from({ length: Number(productData?.rating) }).map(
                         (_, i) => (
                           <span key={i}>
-                            <svg
-                              width="13"
-                              height="12"
-                              viewBox="0 0 13 12"
-                              fill="none"
-                              xmlns="http://www.w3.org/2000/svg"
-                            >
-                              <path
-                                d="M7.00722 9.68738C6.82753 9.58159 6.6046 9.58159 6.4249 9.68738L3.63545 11.3294C3.19737 11.5873 2.66504 11.1904 2.78715 10.697L3.52981 7.69574C3.58284 7.48149 3.50829 7.25581 3.33809 7.11529L0.925653 5.12352C0.52746 4.79476 0.732039 4.14844 1.24688 4.10869L4.45509 3.86095C4.66757 3.84454 4.85346 3.71176 4.93788 3.51609L6.18908 0.616336C6.38846 0.154255 7.04366 0.154255 7.24304 0.616338L8.49424 3.51609C8.57867 3.71176 8.76455 3.84454 8.97703 3.86094L12.1858 4.10869C12.7006 4.14844 12.9052 4.79482 12.5069 5.12355L10.0941 7.11529C9.92385 7.25581 9.84929 7.48151 9.90231 7.69579L10.645 10.697C10.7671 11.1904 10.2347 11.5873 9.79667 11.3294L7.00722 9.68738Z"
-                                fill="#FFC107"
-                              />
-                            </svg>
+                            <StarIcon size={16} color="gold" className="inline-block" />
                           </span>
                         )
                       )}
@@ -1439,7 +1177,7 @@ export default function product_component_updated(props: any) {
             >
               {buttonTextCheckout}
             </button>
-            <button
+            {/* <button
               className="flex items-center flex-nowrap gap-1.5"
               onClick={() => router.push(productSlug)}
             >
@@ -1461,10 +1199,10 @@ export default function product_component_updated(props: any) {
                   fill="#004B7A"
                 />
               </svg>
-            </button>
+            </button> */}
           </div>
-        </div>
-      </div>
+        </div >
+      </div >
     </>
   );
 }

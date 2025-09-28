@@ -55,19 +55,19 @@ export default function ProductLoopMobile(props: any) {
                 slidesPerView={5}
                 breakpoints={{
                     320: {
-                        slidesPerView: 2.2,
+                        slidesPerView: 1.2,
                         spaceBetween: 6,
                     },
                     640: {
-                        slidesPerView: 2.2,
+                        slidesPerView: 1.2,
                         spaceBetween: 6,
                     },
                     768: {
-                        slidesPerView: 4,
+                        slidesPerView: 3,
                         spaceBetween: 6,
                     },
                     1024: {
-                        slidesPerView: 5,
+                        slidesPerView: 4,
                         spaceBetween: 6,
                     },
                     1650: {
@@ -116,7 +116,7 @@ export default function ProductLoopMobile(props: any) {
             >
                 {productData?.map((productData: any, i: number) => (
                     <SwiperSlide key={i}>
-                        <ProductComponent NewMedia={NewMedia} productData={productData} key={i} lang={isArabic} isMobileOrTablet={isMobileOrTablet} origin={origin} ProExtraData={ProExtraData[productData?.id]} gtmColumnItemListId={gtmNewListId} gtmColumnItemListName={gtmNewListName}/>
+                        <ProductComponent NewMedia={NewMedia} productData={productData} key={i} lang={isArabic} isMobileOrTablet={isMobileOrTablet} origin={origin} ProExtraData={ProExtraData[productData?.id]} gtmColumnItemListId={gtmNewListId} gtmColumnItemListName={gtmNewListName} />
                     </SwiperSlide>
                 ))}
             </Swiper>

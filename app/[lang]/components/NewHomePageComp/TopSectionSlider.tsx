@@ -50,19 +50,19 @@ const TopSectionSlider: React.FC<TopSectionSliderData> = ({
                 className='rounded-b-2xl w-full cursor-grab'
                 aria-label={`Go to ${sliderLink}`}
               > */}
-                <div className={`relative w-full`}>
-                  <Image
-                    src={sliderImage}
-                    alt={`${sliderLink} image`}
-                    title={`${sliderLink} image`}
-                    width={0}
-                    height={0}
-                    className={`object-center shadow-lg h-auto w-full`}
-                    quality={100}
-                    sizes='100vw'
-                    priority={true}
-                  />
-                </div>
+              <div className={`relative w-full`}>
+                <Image
+                  src={sliderImage}
+                  alt={`${sliderLink} image`}
+                  title={`${sliderLink} image`}
+                  width={0}
+                  height={0}
+                  className={`object-center shadow-lg h-auto w-full`}
+                  quality={100}
+                  sizes='100vw'
+                  priority={true}
+                />
+              </div>
               {/* </Link> */}
             </SwiperSlide>
           );

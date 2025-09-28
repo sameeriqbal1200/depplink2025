@@ -29,21 +29,30 @@ export default function Homepage() {
   const {
     lang,
     deviceType,
-    deviceDetail,
-    isWebView,
-    os,
     city,
-    origin,
-    baseUrl,
-    fullUrl,
-    slug, slugStr, slugParts,
+    origin, slugStr
   } = useApp();
   const Media = process.env.NEXT_PUBLIC_MEDIA;
   const NewMedia = process.env.NEXT_PUBLIC_NEW_MEDIA;
-  const NewMedia2 = process.env.NEXT_PUBLIC_NEW_MEDIA2; 
+  const NewMedia2 = process.env.NEXT_PUBLIC_NEW_MEDIA2;
   const [homepagepartonelatest, setHomepagePartOneLatest] = useState<any>(null);
   const [homepageparttwolatest, setHomepagePartTwoLatest] = useState<any>(null);
   const [homepagepartthreelatest, setHomepagePartThreeLatest] = useState<any>(null);
+
+  useEffect(() => {
+    const observer = new MutationObserver(() => {
+      console.log("DOM nodes Page:", document.getElementsByTagName("*").length);
+    });
+
+    observer.observe(document.body, { childList: true, subtree: true });
+
+    // Run once initially
+    console.log("DOM nodes (initial):", document.getElementsByTagName("*").length);
+
+    return () => observer.disconnect();
+  }, []);
+
+
 
   useEffect(() => {
     (async () => {
@@ -890,15 +899,15 @@ export default function Homepage() {
         data={sec1SliderData}
         lang={lang}
         origin={origin}
-        NewMedia2={NewMedia2} 
+        NewMedia2={NewMedia2}
         deviceType={deviceType}
         isMobileOrTablet={true}
       />
       <div className="sticky top-0 z-40 bg-white">
         <MobileHeaderNew
           type="Main"
-          isArabic={isArabic} 
-          NewMedia={NewMedia} 
+          isArabic={isArabic}
+          NewMedia={NewMedia}
           lang={lang}
           deviceType={deviceType}
           city={city}
@@ -983,7 +992,7 @@ export default function Homepage() {
         </div>
       </section>
       {/* Section 2 End */}
-      <MainSliderMobile data={sec5Slider} lang={lang} origin={origin} NewMedia2={NewMedia2}/>
+      <MainSliderMobile data={sec5Slider} lang={lang} origin={origin} NewMedia2={NewMedia2} />
 
       {/* Section 4 Start */}
       <section
@@ -1726,7 +1735,7 @@ export default function Homepage() {
         className={`${containerClass} bg-[#F3F9FC] border-t border-b border-primary py-3`}
       >
         <div data-section="18">
-          <TamkeenServices 
+          <TamkeenServices
             isArabic={isArabic}
             NewMedia={NewMedia}
             origin={origin}
