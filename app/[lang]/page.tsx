@@ -6,7 +6,6 @@ import Image from "next/image";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import { userAgent } from "next/server";
-import { get } from "./api/ApiCalls";
 
 const ProductSliderComponent = dynamic(() => import("./components/NewHomePageComp/ProductSlider"), { ssr: false });
 const BadgeProductSlider = dynamic(() => import("./components/NewHomePageComp/BadgeProductSlider"), { ssr: false });
@@ -23,7 +22,7 @@ const TopSectionSlider = dynamic(() => import("./components/NewHomePageComp/TopS
 // const Popup = dynamic(() => import("./components/NewHomePageComp/Popup"), { ssr: true })
 
 import { useApp } from "../_ctx/AppContext";
-import { getHomePages } from "@/lib/homepage/homepage.pages";
+import { getHomePages, getLatestCategoryProducts } from "@/lib/homepage/homepage.pages";
 
 export default function Homepage() {
   const {
@@ -305,10 +304,8 @@ export default function Homepage() {
       if (type == 1) setIsSection4Visible(true);
       if (type == 2) setIsSection6NewVisible(true);
       const city: any = localStorage.getItem("globalcity") || "Jeddah";
-      const response: any = await get(
-        `getlatestcategoryproducts/${type}/${rowId}&city=${city}`
-      );
-      const data = response;
+      const response = await getLatestCategoryProducts(type, rowId, city);
+      const data: any = response?.latestCategoryData; 
       const selectedProducts = data?.[0]?.products || [];
       if (type == 2) {
         setSec6SelectedIndex(categoryIndex);

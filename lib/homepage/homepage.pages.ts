@@ -21,3 +21,12 @@ export async function getHomePages(lang: string, deviceType: string) {
         homepageSectionThree: await homepageSectionThree.json(),
     };
 }
+export async function getLatestCategoryProducts(type: string, rowId: string, city: string) {
+    const latestCategoryData = await fetch(`${Api}getlatestcategoryproducts/${type}/${rowId}&city=${city}`, {
+        next: { revalidate: 3600 }, // cache for 1 hour
+    })
+    if (!latestCategoryData) throw new Error("Failed to load data");
+    return {
+        latestCategoryData: await latestCategoryData.json(),
+    };
+}
