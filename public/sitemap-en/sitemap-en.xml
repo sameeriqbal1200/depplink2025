@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <sitemap>
+    <loc>https://tamkeenstores.com.sa/sitemap-en/main-en.xml</loc>
+  </sitemap>
+  <sitemap>
+    <loc>https://tamkeenstores.com.sa/sitemap-en/brands-en.xml</loc>
+  </sitemap>
+  <sitemap>
+    <loc>https://tamkeenstores.com.sa/sitemap-en/category-en.xml</loc>
+  </sitemap>
+  <sitemap>
+    <loc>https://tamkeenstores.com.sa/sitemap-en/blogs-en.xml</loc>
+  </sitemap>
+  <sitemap>
+    <loc>https://tamkeenstores.com.sa/sitemap-en/product-1-en.xml</loc>
+  </sitemap>
+  <sitemap>
+    <loc>https://tamkeenstores.com.sa/sitemap-en/product-2-en.xml</loc>
+  </sitemap>
+</sitemapindex>

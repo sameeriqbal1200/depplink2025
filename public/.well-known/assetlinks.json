@@ -1,0 +1,15 @@
+[
+    {
+        "relation": [
+            "delegate_permission/common.handle_all_urls"
+        ],
+        "target": {
+            "namespace": "android_app",
+            "package_name": "com.tamkeen.tamkeenstores",
+            "sha256_cert_fingerprints": [
+                "2E:45:AA:DC:F6:ED:A5:71:E9:FD:8F:52:8E:84:F7:08:FC:6D:9F:CD:BB:D0:18:93:6D:B1:8C:A1:B4:CC:85:A8",
+                "A4:00:B2:1E:2B:C2:27:8C:6D:FF:05:12:E9:3F:21:8E:7E:D4:E0:02:9B:71:3B:0D:97:0C:9E:E0:A0:92:71:B7"
+            ]
+        }
+    }
+]
