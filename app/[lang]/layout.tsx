@@ -1,6 +1,6 @@
 import "./globals.css";
 import "./customGlobal.css";
-import React, { cache, useState } from "react";
+import React, { cache } from "react";
 import dynamic from "next/dynamic";
 import { Cairo, Noto_Sans } from "next/font/google";
 import Providers from "./providers";
@@ -13,7 +13,6 @@ import ReloadRefresh from "@/components/ReloadRefresh";
 import { getRequestContext } from "@/lib/request-context";
 import { getDictionary } from "@/lib/i18n.server";
 import { AppProvider } from "@/app/_ctx/AppContext";
-import { Metadata, ResolvingMetadata } from "next";
 import CityBootstrapper from "@/app/(site)/CityBootstrapper";
 import { getHomepageServerSide } from "@/lib/homepage/homepage.server";
 import { Api } from "@/lib/api/apiLinks";
@@ -50,11 +49,9 @@ export const fetcher = cache(async (url: string): Promise<any> => {
 });
 
 export default async function RootLayout({
-  children,
-  params,
+  children
 }: {
   children: React.ReactNode;
-  params: { lang: string };
 }) {
   const {
     lang: headerLang,
@@ -74,19 +71,6 @@ export default async function RootLayout({
   const lang = headerLang ?? "en";
   const dict = await getDictionary(lang);
   const googleApiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_BROWSER_KEY!;
-
-  // console.log("Lang:", headerLang);
-  // console.log("Device:", deviceType);
-  // console.log("Device Detail:", deviceDetail);
-  // console.log("Is WebView:", isWebView);
-  // console.log("OS:", os);
-  // console.log("City:", city);
-  // console.log("Origin:", origin, "FullUrl:", origin + "/" + headerLang);
-  // console.log("Base URL:", baseUrl);
-  // console.log("Full URL:", fullUrl);
-  // console.log("Slug:", slug);
-  // console.log("Slug String:", slugStr);
-  // console.log("Slug Parts:", slugParts);
 
   return (
     <html lang={lang} dir={lang === "ar" ? "rtl" : "ltr"}>
