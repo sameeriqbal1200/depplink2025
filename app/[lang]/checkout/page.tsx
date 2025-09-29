@@ -4,7 +4,6 @@ import React, { useEffect, useState, Fragment, useContext } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import dynamic from 'next/dynamic'
-import Select from 'react-select';
 import '@next/third-parties/google'
 import { RadioGroup, Transition, Dialog } from '@headlessui/react'
 import { usePathname } from "next/navigation"
@@ -31,6 +30,7 @@ import { getDiscountTypeCart } from '@/lib/cartPage/cart.client';
 
 const MobileHeader = dynamic(() => import('../components/MobileHeader'), { ssr: true })
 const FullPageLoader = dynamic(() => import('../components/FullPageLoader'), { ssr: false })
+const Select = dynamic(() => import('react-select'), { ssr: false });
 
 export default function Checkout() {
     const { t, lang, origin, deviceType, deviceDetail, os } = useApp();
@@ -2477,7 +2477,7 @@ export default function Checkout() {
                                         prototalqty.push({ value: (index + 1), label: (index + 1) })
                                     }
                                     return (
-                                        <>
+                                        <React.Fragment key={i}>
                                             {/* Express Content Copy */}
                                             <div className="bg-white rounded-md shadow-md mb-4" key={pro.id}>
                                                 <div className='flex items-center gap-x-4 relative'>
@@ -2660,7 +2660,7 @@ export default function Checkout() {
                                                     )}
                                                 </div>
                                                 : null}
-                                        </>
+                                        </React.Fragment>
                                     )
                                     //}
                                 })
