@@ -65,7 +65,7 @@ export default function InstallmentServiceMethods() {
                             {({ open }) => (
                                 <>
                                     <DisclosureButton>
-                                        <Image src="https://partners.tamkeenstores.com.sa/public/assets/new-media/c441dffe5d6d6d30a26c0253b282da6c1716289368.webp" alt='Tamara' title='Tamara' height={0} width={0} className="h-full w-full rounded-t-md" />
+                                        <Image src="https://images.tamkeenstores.com.sa/assets/new-media/c441dffe5d6d6d30a26c0253b282da6c1716289368.webp" alt='Tamara' title='Tamara' height={0} width={0} className="h-full w-full rounded-t-md" />
                                         <div className="flex w-full justify-between items-center rounded-b-md text-left text-lg font-medium ocus-visible:outline-none bg-[#EEF8FC] px-2 py-4 md:p-3 mb-3 text-[#004B7A]">
                                             <div className="gap-2 md:gap-8 flex">
                                                 <span>{lang === "ar" ? "تمارا" : "Tamara"}</span>
@@ -183,7 +183,7 @@ export default function InstallmentServiceMethods() {
                             {({ open }) => (
                                 <>
                                     <DisclosureButton>
-                                        <Image src="https://partners.tamkeenstores.com.sa/public/assets/new-media/fe4736f61bc0caab22719078aeffac4a1716289368.webp" alt='Tabby' title='Tabby' height={0} width={0} className="h-full w-full rounded-t-md" />
+                                        <Image src="https://images.tamkeenstores.com.sa/assets/new-media/fe4736f61bc0caab22719078aeffac4a1716289368.webp" alt='Tabby' title='Tabby' height={0} width={0} className="h-full w-full rounded-t-md" />
                                         <div className="flex w-full justify-between items-center rounded-b-md text-left text-lg font-medium ocus-visible:outline-none bg-[#EEF8FC] px-2 py-4 md:p-3 mb-3 text-[#004B7A]">
                                             <div className="gap-2 md:gap-10 flex">
                                                 <span>{lang === "ar" ? "تابي" : "Tabby"}</span>
@@ -239,7 +239,7 @@ export default function InstallmentServiceMethods() {
                             {({ open }) => (
                                 <>
                                     <DisclosureButton>
-                                        <Image src="https://partners.tamkeenstores.com.sa/public/assets/new-media/7df3b6cf7ed89268ed3b605dbd9d2dac1716289368.webp" alt='Baseeta' title='Baseeta' height={0} width={0} className="h-full w-full rounded-t-md" />
+                                        <Image src="https://images.tamkeenstores.com.sa/assets/new-media/7df3b6cf7ed89268ed3b605dbd9d2dac1716289368.webp" alt='Baseeta' title='Baseeta' height={0} width={0} className="h-full w-full rounded-t-md" />
                                         <div className="flex w-full justify-between items-center rounded-b-md text-left text-lg font-medium ocus-visible:outline-none bg-[#EEF8FC] px-2 py-4 md:p-3 mb-3 text-[#004B7A]">
                                             <div className="gap-2 md:gap-10 flex">
                                                 <span>{lang === "ar" ? "بسيطة" : "Baseeta"}</span>
@@ -248,9 +248,9 @@ export default function InstallmentServiceMethods() {
                                         </div>
                                     </DisclosureButton>
                                     {lang === "ar" ?
-                                        <Image src="https://images.tamkeenstores.com.sa/public/assets/new-media/baseeta_ar.webp" alt='BaseetaAr' title='Baseeta-Ar' height={0} width={0} className="h-full w-full rounded-t-md" />
+                                        <Image src="https://images.tamkeenstores.com.sa/assets/new-media/baseeta_ar.webp" alt='BaseetaAr' title='Baseeta-Ar' height={0} width={0} className="h-full w-full rounded-t-md" />
                                         :
-                                        <Image src="https://images.tamkeenstores.com.sa/public/assets/new-media/1a59ef48ac2e95e6dabb768c1b8278cb1717486312.webp" alt='BaseetaAr' title='Baseeta-Ar' height={0} width={0} className="h-full w-full rounded-t-md" />
+                                        <Image src="https://images.tamkeenstores.com.sa/assets/new-media/1a59ef48ac2e95e6dabb768c1b8278cb1717486312.webp" alt='BaseetaAr' title='Baseeta-Ar' height={0} width={0} className="h-full w-full rounded-t-md" />
                                     }
                                 </>
                             )}
