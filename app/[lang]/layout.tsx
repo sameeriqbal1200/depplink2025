@@ -1,26 +1,28 @@
-import './globals.css'
-import './customGlobal.css'
-import React, { cache, useState } from 'react'
-import dynamic from 'next/dynamic'
-import { Cairo, Noto_Sans } from 'next/font/google'
-import Providers from './providers';
-import LayoutWrapper from './LayoutWrapper'
-import GTM from '@/components/GTM'
-import LoginGuard from '@/components/LoginGuard'
-import { GlobalProvider } from './GlobalContext';
-import Script from 'next/script';
-import ReloadRefresh from '@/components/ReloadRefresh';
+import "./globals.css";
+import "./customGlobal.css";
+import React, { cache, useState } from "react";
+import dynamic from "next/dynamic";
+import { Cairo, Noto_Sans } from "next/font/google";
+import Providers from "./providers";
+import LayoutWrapper from "./LayoutWrapper";
+import GTM from "@/components/GTM";
+import LoginGuard from "@/components/LoginGuard";
+import { GlobalProvider } from "./GlobalContext";
+import Script from "next/script";
+import ReloadRefresh from "@/components/ReloadRefresh";
 import { getRequestContext } from "@/lib/request-context";
 import { getDictionary } from "@/lib/i18n.server";
 import { AppProvider } from "@/app/_ctx/AppContext";
-import { Metadata, ResolvingMetadata } from 'next';
+import { Metadata, ResolvingMetadata } from "next";
 import CityBootstrapper from "@/app/(site)/CityBootstrapper";
 import { getHomepageServerSide } from "@/lib/homepage/homepage.server";
-import { Api } from '@/lib/api/apiLinks';
+import { Api } from "@/lib/api/apiLinks";
 import DebugDOM from "@/components/DebugDOM";
 // import "../../tailwind.config.ts";
 
-const MobileFooterNew = dynamic(() => import('@/components/MobileFooterNew'), { ssr: true })
+const MobileFooterNew = dynamic(() => import("@/components/MobileFooterNew"), {
+  ssr: true,
+});
 
 const notoSans = Noto_Sans({
   weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
@@ -35,17 +37,17 @@ const cairo = Cairo({
 });
 
 export const viewport = {
-  width: 'device-width',
+  width: "device-width",
   initialScale: 1,
   maximumScale: 1,
-  themeColor: 'white',
-}
+  themeColor: "white",
+};
 
 export const fetcher = cache(async (url: string): Promise<any> => {
   const res = await fetch(`${Api}${url}`, { next: { revalidate: 7200 } });
   if (!res.ok) throw new Error(`Failed to fetch: ${res.statusText}`);
   return res.json();
-})
+});
 
 export default async function RootLayout({
   children,
@@ -64,7 +66,9 @@ export default async function RootLayout({
     origin,
     baseUrl,
     fullUrl,
-    slug, slugStr, slugParts,
+    slug,
+    slugStr,
+    slugParts,
   } = await getRequestContext();
 
   const lang = headerLang ?? "en";
@@ -130,6 +134,11 @@ export default async function RootLayout({
           <symbol id="clock-icon" viewBox="0 0 14 14">
             <path d="M6.73889 13.4101C3.48621 13.3672 0.859806 10.7408 0.816935 7.48812C0.859806 4.23544 3.48621 1.60904 6.73889 1.56616C9.99157 1.60904 12.618 4.23544 12.6608 7.48812C12.618 10.7408 9.99157 13.3672 6.73889 13.4101ZM6.73889 2.88215C4.20901 2.91546 2.16623 4.95824 2.13292 7.48812C2.16623 10.018 4.20901 12.0608 6.73889 12.0941C9.26877 12.0608 11.3115 10.018 11.3449 7.48812C11.3115 4.95824 9.26877 2.91546 6.73889 2.88215ZM10.0289 8.14611H6.08089V4.19814H7.39688V6.83012H10.0289V8.14611ZM12.195 3.34801L10.2151 1.37403L11.1422 0.44165L13.1228 2.41564L12.195 3.34736V3.34801ZM1.28214 3.34801L0.351074 2.41564L2.31914 0.44165L3.2502 1.37403L1.28345 3.34801H1.28214Z" />
           </symbol>
+
+          {/* Arrow Right Icon */}
+          <symbol id="arrowRight-icon" viewBox="0 0 24 24">
+            <path d="M15 19a1 1 0 0 1-.71-.29l-6-6a1 1 0 0 1 0-1.41l6-6a1 1 0 0 1 1.41 1.41L10.41 12l5.29 5.29A1 1 0 0 1 15 19z" />
+          </symbol>
         </svg>
 
         <AppProvider
@@ -174,29 +183,43 @@ export default async function RootLayout({
 
 export async function generateMetadata() {
   const { lang } = await getRequestContext();
-  const homepagedata: any = await getHomepageServerSide(lang)
+  const homepagedata: any = await getHomepageServerSide(lang);
   // params.data = homepagedata
 
-  const metaTitle = lang === 'en' ? homepagedata?.homepageData?.meta_title_en : homepagedata?.homepageData?.meta_title_ar
-  const metaDescription = lang === 'en' ? homepagedata?.homepageData?.meta_description_en : homepagedata?.homepageData?.meta_description_ar
+  const metaTitle =
+    lang === "en"
+      ? homepagedata?.homepageData?.meta_title_en
+      : homepagedata?.homepageData?.meta_title_ar;
+  const metaDescription =
+    lang === "en"
+      ? homepagedata?.homepageData?.meta_description_en
+      : homepagedata?.homepageData?.meta_description_ar;
 
-  const baseUrl = process.env.NODE_ENV === 'production' ? `https://tamkeenstores.com.sa/${lang}` : 'http://localhost:3000';
+  const baseUrl =
+    process.env.NODE_ENV === "production"
+      ? `https://tamkeenstores.com.sa/${lang}`
+      : "http://localhost:3000";
 
   return {
     metadataBase: new URL(baseUrl),
     title: metaTitle,
     description: metaDescription,
-    keywords: ["Tamkeen Stores", "تمكين", "Electronics Saudi Arabia", "معارض تمكين"],
-    referrer: 'origin-when-cross-origin',
+    keywords: [
+      "Tamkeen Stores",
+      "تمكين",
+      "Electronics Saudi Arabia",
+      "معارض تمكين",
+    ],
+    referrer: "origin-when-cross-origin",
     robots: {
       index: true,
       follow: true,
       googleBot: {
         index: true,
         follow: true,
-        'max-image-preview': 'large',
-        'max-snippet': -1,
-        'max-video-preview': -1,
+        "max-image-preview": "large",
+        "max-snippet": -1,
+        "max-video-preview": -1,
       },
     },
     formatDetection: {
@@ -209,25 +232,28 @@ export async function generateMetadata() {
       title: metaTitle,
       description: metaDescription,
       locale: lang,
-      type: 'website',
-      images: [{ url: '/images/metaLogo.jpg', width: 800, height: 800, alt: 'logo' }],
+      type: "website",
+      images: [
+        { url: "/images/metaLogo.jpg", width: 800, height: 800, alt: "logo" },
+      ],
       url: baseUrl,
     },
     alternates: {
       canonical: baseUrl,
       languages: {
-        en: 'https://tamkeenstores.com.sa/en',
-        ar: 'https://tamkeenstores.com.sa/ar',
+        en: "https://tamkeenstores.com.sa/en",
+        ar: "https://tamkeenstores.com.sa/ar",
       },
     },
     appLinks: {
       ios: {
-        url: 'https://apps.apple.com/sa/app/tamkeen-stores-%D9%85%D8%B9%D8%A7%D8%B1%D8%B6-%D8%AA%D9%85%D9%83%D9%8A%D9%86/id1546482321',
-        app_store_id: 'com.tamkeen.tamkeenstore',
+        url: "https://apps.apple.com/sa/app/tamkeen-stores-%D9%85%D8%B9%D8%A7%D8%B1%D8%B6-%D8%AA%D9%85%D9%83%D9%8A%D9%86/id1546482321",
+        app_store_id: "com.tamkeen.tamkeenstore",
       },
       android: {
-        package: 'https://play.google.com/store/apps/details?id=com.tamkeen.tamkeenstores',
-        app_name: 'com.tamkeen.tamkeenstores',
+        package:
+          "https://play.google.com/store/apps/details?id=com.tamkeen.tamkeenstores",
+        app_name: "com.tamkeen.tamkeenstores",
       },
       web: {
         url: baseUrl,
@@ -235,12 +261,12 @@ export async function generateMetadata() {
       },
     },
     twitter: {
-      card: 'summary_large_image',
+      card: "summary_large_image",
       title: metaTitle,
       description: metaDescription,
-      siteId: '@TamkeenStores',
-      creator: 'Muhammad Usman Siddiqui | usman@tamkeen-ksa.com',
+      siteId: "@TamkeenStores",
+      creator: "Muhammad Usman Siddiqui | usman@tamkeen-ksa.com",
       images: [`${baseUrl}/images/metaLogo.jpg`],
     },
-  }
+  };
 }

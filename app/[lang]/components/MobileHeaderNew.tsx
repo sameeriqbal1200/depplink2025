@@ -16,16 +16,24 @@ import withReactContent from "sweetalert2-react-content";
 import { getCartCount } from "../cartstorage/cart";
 import dynamic from "next/dynamic";
 import GlobalContext from "../GlobalContext";
-import { getAllCityData, getHeaderMenuData, getOnlyCityData, getSearchData } from "@/lib/components/component.client";
-const ProductLoop = dynamic(() => import("./NewHomePageComp/ProductLoop"), { ssr: false });
+import {
+  getAllCityData,
+  getHeaderMenuData,
+  getOnlyCityData,
+  getSearchData,
+} from "@/lib/components/component.client";
+import ArrowLeftIcon from "./Icons/ArrowLeftIcon";
+const ProductLoop = dynamic(() => import("./NewHomePageComp/ProductLoop"), {
+  ssr: false,
+});
 
-export default function MobileHeaderNew(props:any) {
+export default function MobileHeaderNew(props: any) {
   const NewMedia = props?.NewMedia;
-  const lang = props?.lang
-  const deviceType = props?.deviceType
-  const city = props?.city
-  const origin = props?.origin
-  const slugStr = props?.slugStr
+  const lang = props?.lang;
+  const deviceType = props?.deviceType;
+  const city = props?.city;
+  const origin = props?.origin;
+  const slugStr = props?.slugStr;
   const isArabic = props?.isArabic;
   const isMobileOrTablet = props?.isMobileOrTablet;
   const router = useRouter();
@@ -56,9 +64,9 @@ export default function MobileHeaderNew(props:any) {
     } else {
       setSearchDialoug(true);
       var searchcity = await localStorage.getItem("city");
-      const getData = await getSearchData(e, searchcity, lang)
-      if(getData?.getUserSearchData){
-        setSearchResult(getData?.getUserSearchData)
+      const getData = await getSearchData(e, searchcity, lang);
+      if (getData?.getUserSearchData) {
+        setSearchResult(getData?.getUserSearchData);
       }
     }
   };
@@ -90,7 +98,6 @@ export default function MobileHeaderNew(props:any) {
   useEffect(() => {
     if (!localStorage.getItem("globalcity")) {
       setTimeout(function () {
-
         if (localStorage.getItem("default_address") != "yes") {
           var live = localStorage.getItem("live_location");
           if (live != "false") {
@@ -113,7 +120,6 @@ export default function MobileHeaderNew(props:any) {
 
     // for address
     if (!fullAddress) {
-
       if ("geolocation" in navigator) {
         // Retrieve latitude & longitude coordinates from `navigator.geolocation` Web API
         navigator.geolocation.getCurrentPosition(({ coords }) => {
@@ -151,7 +157,7 @@ export default function MobileHeaderNew(props:any) {
     for (var a = 0; a < data?.results[0]["address_components"]?.length; a++) {
       if (
         data?.results[0]["address_components"][a]?.types[0] ==
-        "administrative_area_level_2" &&
+          "administrative_area_level_2" &&
         data?.results[0]["address_components"][a]?.types[1] == "political" &&
         !localStorage.getItem("globalcity")
       ) {
@@ -159,7 +165,7 @@ export default function MobileHeaderNew(props:any) {
         setCityData(city);
         localStorage.setItem("globalcity", city.toString());
         setglobalCity(city);
-        updateCity()
+        updateCity();
       }
 
       // if (
@@ -195,7 +201,7 @@ export default function MobileHeaderNew(props:any) {
   };
   const getCitiesData = async () => {
     const dataCities = await getAllCityData(lang);
-    setcitiesData(dataCities?.allCitiesData?.cities)
+    setcitiesData(dataCities?.allCitiesData?.cities);
   };
 
   const filteredCities = citiesData.filter((city: { label: string }) =>
@@ -217,26 +223,26 @@ export default function MobileHeaderNew(props:any) {
     setCityList(false);
     router.refresh();
   };
-  
+
   const updateCity = async () => {
     var sCty: any = localStorage?.getItem("globalcity");
     if (!sCty) {
       sCty = "Jeddah";
     }
-    const getData = await getOnlyCityData(sCty, lang)
+    const getData = await getOnlyCityData(sCty, lang);
     if (getData?.getCityDataUpd?.cities) {
-        var city = "Jeddah";
-        if (isArabic) {
-          city = getData?.getCityDataUpd?.cities?.name_arabic;
-        }
-        if (isArabic == false) {
-          city = getData?.getCityDataUpd?.cities?.name;
-        }
-        localStorage?.setItem("globalcity", city);
-        setglobalCity(city);
-        setCityData(city);
-        setselectedCityData(city);
+      var city = "Jeddah";
+      if (isArabic) {
+        city = getData?.getCityDataUpd?.cities?.name_arabic;
       }
+      if (isArabic == false) {
+        city = getData?.getCityDataUpd?.cities?.name;
+      }
+      localStorage?.setItem("globalcity", city);
+      setglobalCity(city);
+      setCityData(city);
+      setselectedCityData(city);
+    }
   };
 
   // Here is the issue
@@ -268,8 +274,10 @@ export default function MobileHeaderNew(props:any) {
   return (
     <>
       <header className="py-3 bg-white shadow-lg w-full overflow-hidden">
-
-        <button onClick={() => setWhatsappBtn(true)} className={`WhatsappBeforeHover ${whatsappBtn ? "hidden" : "flex"}`}>
+        <button
+          onClick={() => setWhatsappBtn(true)}
+          className={`WhatsappBeforeHover ${whatsappBtn ? "hidden" : "flex"}`}
+        >
           <svg
             height={14}
             viewBox="0 0 24 24"
@@ -286,16 +294,46 @@ export default function MobileHeaderNew(props:any) {
           </svg>
         </button>
         <div className={`whatsappLayout ${whatsappBtn ? "flex" : "hidden"}`}>
-          <Link href="https://wa.me/9668002444464" aria-label="" target="_blank" prefetch={false} scroll={false} rel="noopener noreferrer">
-            <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
+          <Link
+            href="https://wa.me/9668002444464"
+            aria-label=""
+            target="_blank"
+            prefetch={false}
+            scroll={false}
+            rel="noopener noreferrer"
+          >
+            <svg
+              width="26"
+              height="26"
+              viewBox="0 0 26 26"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              xmlnsXlink="http://www.w3.org/1999/xlink"
+            >
               <g opacity="0.8">
-                <rect width="25" height="25" transform="translate(0.75 0.5)" fill="url(#pattern0_579_2464)" />
+                <rect
+                  width="25"
+                  height="25"
+                  transform="translate(0.75 0.5)"
+                  fill="url(#pattern0_579_2464)"
+                />
               </g>
               <defs>
-                <pattern id="pattern0_579_2464" patternContentUnits="objectBoundingBox" width="1" height="1">
+                <pattern
+                  id="pattern0_579_2464"
+                  patternContentUnits="objectBoundingBox"
+                  width="1"
+                  height="1"
+                >
                   <use xlinkHref="#image0_579_2464" transform="scale(0.0125)" />
                 </pattern>
-                <image id="image0_579_2464" width="80" height="80" preserveAspectRatio="none" xlinkHref="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFAAAABQCAYAAACOEfKtAAAACXBIWXMAAAsTAAALEwEAmpwYAAAMTUlEQVR4nO1ceYwb1R12D9RLVc9/2n+q3lVbVeoBPdRWAQItSJQ7lLulBZICKpSUiPsOhzhCaCDlbqAhQBpCo1C1lKZtdheStWe8l9+beW9sr3e9u9nL565vv+ob20tkz4yv8c5C/UlPWq08M7/55h2/973vPZeriy666KKLLrrowrVv3773eobZFzyEf1tStNUSZSfLlJ1S+ls70uvTvuR2u4/oUuVyuYQQ7/aq6jclwq6WCNslU0ZlyrMy5aJOycuUM4nyv8qUb/AqyndB/P8FqUKId3kU5ccy4U9IlM0fRkrRpwWL/vFJEZ6eFYfmImI2EhPzsYRe8Df+NzE9K/zhSUECIf2ayvUS5QmZ8G2yTz3+RSHe43qnwev1fkim6lUS5YHKS9PgmJiYmRPx5KIoFIqiWRSKRZFYWBSTs/NCHR0/rIayScnHrnVr2kdcb3e43eEPyoRdL1M+h5cbYv4ialgqkxF2I53N6mQO80ClZsZlyu8khHzY9XaEl6gnyZSN4mXwUtPzUb3WLAci8YTw+UfLRLIpSWEXoPtwvR3gpvSTMuG7EfyAohVmIlFRXCbiqjEbjYlB1V/QiSTsNbcv+CnXSoaXaj+UKQ8j4ODElMjm8k2/dCKXFCzpF1J0SPTN9YveuYPCHRkQasIvYrl40/fL5wsiNDVd6h8Jn8FA41qJkKi2DimGV9EKc7HGXrQgimIkrojnQjvF+qFbxSlv/kKs2n+qZTnpjfPFlYM3imdGd4iB6IgoFAsNPSsaT+otQiIMNfIa10qCTNgt+MIjWrCYymTrvsxEako8Gdwu1hy8uC5h9crpB34ltvifFqHF8brPzWSzgpT7RonwB1ZEvyhTtklPSwKhYi5v3WSDC2PiTmWTOLbnjLaJqy5H7z9N3ETu1Zu/FfKFgmChcCXlecZREiXKb0IgCKhQMG9K6UJaPD26Q6zuOdN24oyI3KhsEtFszDQeZAPa+GQpCSf8AUfIkwm/tFLzrMgbjPlsaarNltMO/FJ4IgOWJLLRck0k/PfLSp7Hx74vU55Dn2fVbLeP7epIc22mNqLmF0XRtDmjT9QHluUanQcHRz+GBNlLeXExbTyjwMj4ANvqGHHVBf1urmj8oTPZnBhQtQJSHA8hn+44gTLlL6Haz0WNUxWQdxu933HSqst1IxtNSYzEk5VB5R8dHVQkhZ+IBwXCU6bNdrP2hONkmZU76IN67mmE0GQp2ZaIdk5HyOsLhT4gEe5HopzN5QyDeH7sZcdJqlfQJ5rNWErTPnaoI0oORip8IYgCRvDFFbHawQGjmYGlP+I1nTuX9cU7bK99UDWGeaBgJAyk8ilx1sFL6gZ/1dBN4uWJV8U/p/8rdk/8TVwir3eERKQ48VzCuCJo+kwlbmst9BB2Bb7MjEnt2xrYVjfoTfyxmnRiPhsRJ/ad6wiJiMcIGBzLeuIG2wiUKFMGVX/RSM8bWwzXbbrrh24x7bw3a487QuAxPacLLRmsiQctrCzKTtqyPOD2qd/DFxk/NGtIwD3qw5aBHt+7Rsxk5oTV/Bj9khMk3kLuM4xpcmau1Bcq2uq2CZQJewQ3W0ynax50KD1Tt/bdpWwW9YC+0alaiBZUjXQmWx5M2NNtkYekEos0kMeNXvyZ0R11g5Qig3UJ/PdMnyMEomwN/MkwJiU4hjlyrK1mLKnqV62a73nuy+oGuJBfqEsgZgjQ9ZwgEM81EmWXmjHVjmyZQNnHLsdNYolaEiCxr6oTHPq/RvHU6POO1cKhGKmJJ76w2L5SI1P2Z9wEqkU1Xhh/pW5g6B/NlJBq9MwecIzAbaEXa+JBxqEv3hO+u2UCJcIlDOlGL3ztyJ0NBTebmW+IQCcFiN8N3WwYE/GHMJAoLQ8gEuVJPjZhePNGZh6r9p8q/jPTV5e816f3O0YeyilvXmgYF6wm0D1bMjRBG0PzHTs0U3PjdCHTcO52o+9uS/KwKoe+0kkCUYymdnBRgAM4xpomUB5hX8PFsEtUY3RxvOHAju05Q8xaJNIXSVc6Th6KmtBqYoOhSR9IFO2olmcguEk1SFxtKritgW0rXj/0RodrYpuJlNQZL+XHNE0gpjG4GNayaiA5bia41T1nGmb8FSXnnP51jhMIB0Q1YK0rz0hObppAmbCjdQUmUqvAwBHQbIBXD91smtLAxoFplZMEvjHnNiCwpMx4CPtZ0wQO+Ni3cPGUQR8IFaOVIF8K7xFmcFrNRqWoBipP2Zh0dNMEDirK53AxRqKaG2fmWgry+N41wr8wakoiNDqnCOTJQE08U+VBBJ7tpgkcHg59HBdjsaWdNGZVVTm3/zemajCa+IP8j019EKjLdhBoNGevpDFeSj/bkgkcibRmkkif77685WDRH+ZNlhiBXRN769pAjutdszSHhfthw/DtLX9UCApG0MYnsD6SaVmRkSnvhRJtdPONykNtfXGkL1YYjhFLtWfv1Gs118BYBJG0WSKvGb7NMAY4L2TKR1oiTyeQ8C2owkbLmFgcWtVms3l+bJclidlCVvcOwhPYyHpGBUiZ7lH/0PAqoVEc8PuUdgKwnS0TKFH2axAYTSRrHhBcCNnS92D0rYeF/KLYMb5b7z9v8N1t6jCoBgaGRtIjmuA118aSC5XFpSttEFRr58PAxfLVtpCImYrZolO7OLHvHMtn/7z/UsP8dGkeTLVvuNoBdhANMWNJ66XwHlsIrIgOmJXYCYysrToVdCcr4dNte2Ww1wJfIrlY+3Lz2Yitpsmz+9cKOTpkG4EH5iXL56GPnErXpmmpdKZiNnrU1S4qMxKzZrzZ5nVdjKBb/E+Z5orNoF6mgIHGCJXmKxH2A5cdkCgfhofOyIkayUbFCX1n20oiChwLjwefs7TqWgH2Eat0Bi1nPDVhKOUPMj/SF26b1c1D2flm8+JOLwj9pPcscSu5T18zQVpTDxihnwpur5sLPhZ41vB62FfKAsIVLruA7aQyZUHd3mFQC1P5lD6adYrESkE+eK+6Ra9d1X0XNuG8OvW6nuo00tfC+G5h65iGocplJypLnNPztQIrsM67oeMEGjVzkIH5cKOzDwwcmOUYAe9W7vvWu+yGh2inmwms8VzCcT2vXUkN29Kwk0km3L8vEHi/7QRKlG0FgdjtU419M72OE9NIgdJjBtiWy+bKE2wnr0QgD2BybfTw+9gjjpPTjj/6ME/gix0hD4c96EucU8a54Nn9ax0nyKo8xB83JQ9Js1fhRYnw8QM+3yc6QqBM2WVmokKoiSXO5S7I9f4S3mvabHO5vBjhumSVw+EVHSGvRCB/BdKOkUdm18Rex4kyKljpIwlmSh7SMRIIYZdSEapTx8iDrQGnYuBgByNcN7LR8AVg/cBUCTlbODWpKy5IijtNHJRqJNJYdrAib2nHJuE3uDqJAUX7kZlDIVfMLclF8JdADd4z+XedMCPMZSLiYe3JjhAJ4u5nj4rJ1CFT4vSYc3m95i3bTk2JstvxsIVUrRozlZ7WbW6Q0hu1sQFwbEEgtUNPvMB9ua5aW9lHKsDePvR5aLY4TaTj5OkEEnZgQNU6dmzE2GJY7Azv0ff4Xui5wnJGgWQdI/71vrv0a6yWSKuBCQA2SOJ0JC/RLloW8jCsy4QVrPbG2Q30XdPpWX3xHn4V7PlVElyMLU40JCZUA+s5ZZsaSrAty26zkClbo0/foq1JSpXtpMt1Xky1MABjlFfRKufHbJcDgY8uG3k6gYQ/UZq+GW8uNAI2YOPgGwiw2M2O66HiwLSNDX2dBkZY7OcbYoHSeTGUcw9lP11W4pYIpDyEQ8HqBRxLLuhOflo6FOytQrimHwpWPksGtQHEGi0PtIuFVFr/aPhY5eeHJcJ/q6rq+xwhz00DXzGS8tE0QABqlFo69GvpFDVsSIQxHZ20Z8T/maV7ud1HyFQ9T6JcqvwWC1WYGsYSScN153pAUo+ZEeIrL4BXPhrxEL7WMeJqtzgk9V1K6E9g83irTykd8IVz/PClvT7+9UYkcEyZJMLuxoseXltRc3gorHtxsCYBYw8MjpWj7/DBQDh+A/KrzhQMy5Q95CH8O66VAoiKlWZ32Dl9GYnyfyGHgoN1X5sHH0oj/Iul0z/YoxJhPeUT1ywPYNTPCqTcLRH+LGraAPF/2bUSgf2yEuEv4MVQYySfdpztMncVUIOROrlV9fOwlHkoP1Z3yiraUVjkX/GHh3XRRRdddNFFF67lw/8Ax0fkbUKDZYUAAAAASUVORK5CYII=" />
+                <image
+                  id="image0_579_2464"
+                  width="80"
+                  height="80"
+                  preserveAspectRatio="none"
+                  xlinkHref="data:image/png;base64,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"
+                />
               </defs>
             </svg>
           </Link>
@@ -545,12 +583,8 @@ export default function MobileHeaderNew(props:any) {
               }
               enterTo={lang === "ar" ? "-translate-x-0" : "translate-x-0"}
               leave="transition ease-in-out duration-300 transform"
-              leaveFrom={
-                lang === "ar" ? "-translate-x-0" : "translate-x-0"
-              }
-              leaveTo={
-                lang === "ar" ? "translate-x-full" : "-translate-x-full"
-              }
+              leaveFrom={lang === "ar" ? "-translate-x-0" : "translate-x-0"}
+              leaveTo={lang === "ar" ? "translate-x-full" : "-translate-x-full"}
             >
               <Dialog.Panel className="w-80 h-[-webkit-fill-available] ltr:mr-auto rtl:ml-auto transform overflow-hidden bg-white text-left align-middle shadow-xl transition-all">
                 <div className="py-3.5 border-b mb-3 border-[#9CA4AB50]">
@@ -613,47 +647,62 @@ export default function MobileHeaderNew(props:any) {
                             quality={100}
                           />
                           <label
-                            className={`text-sm font-semibold ${parentCategory == data.id ? "text-[#219EBC]" : ""
-                              }`}
+                            className={`text-sm font-semibold ${
+                              parentCategory == data.id ? "text-[#219EBC]" : ""
+                            }`}
                           >
-                            {lang === "ar"
-                              ? data?.name_arabic
-                              : data?.name}
+                            {lang === "ar" ? data?.name_arabic : data?.name}
                           </label>
                         </div>
-                        {data?.child.length ? (
-                          <>
-                            {parentCategory == data.id ? (
-                              <svg
-                                height="26"
-                                viewBox="0 0 24 24"
-                                width="26"
-                                className="-rotate-90 fill-[#219EBC]"
-                                xmlns="http://www.w3.org/2000/svg"
-                                id="fi_2722991"
-                              >
-                                <g id="_17" data-name="17">
-                                  <path d="m15 19a1 1 0 0 1 -.71-.29l-6-6a1 1 0 0 1 0-1.41l6-6a1 1 0 0 1 1.41 1.41l-5.29 5.29 5.29 5.29a1 1 0 0 1 -.7 1.71z"></path>
-                                </g>
-                              </svg>
-                            ) : (
-                              <svg
-                                height="26"
-                                viewBox="0 0 24 24"
-                                width="26"
-                                className={
-                                  lang === "ar" ? "" : "rotate-180"
-                                }
-                                xmlns="http://www.w3.org/2000/svg"
-                                id="fi_2722991"
-                              >
-                                <g id="_17" data-name="17">
-                                  <path d="m15 19a1 1 0 0 1 -.71-.29l-6-6a1 1 0 0 1 0-1.41l6-6a1 1 0 0 1 1.41 1.41l-5.29 5.29 5.29 5.29a1 1 0 0 1 -.7 1.71z"></path>
-                                </g>
-                              </svg>
-                            )}
-                          </>
-                        ) : null}
+                        {data?.child.length && (
+                          <ArrowLeftIcon
+                            size={26}
+                            color={
+                              parentCategory === data.id ? "#219EBC" : "#000000"
+                            }
+                            className={
+                              lang === "ar"
+                                ? parentCategory === data.id
+                                ? "-rotate-90" // 270° is equivalent to -90°
+                                : ""
+                                : parentCategory === data.id
+                                ? "-rotate-90" // 270° is equivalent to -90°
+                                : "rotate-180"
+                            }
+                          />
+
+                          // <>
+                          //   {parentCategory == data.id ? (
+                          //     <svg
+                          //       height="26"
+                          //       viewBox="0 0 24 24"
+                          //       width="26"
+                          //       className="-rotate-90 fill-[#219EBC]"
+                          //       xmlns="http://www.w3.org/2000/svg"
+                          //       id="fi_2722991"
+                          //     >
+                          //       <g id="_17" data-name="17">
+                          //         <path d="m15 19a1 1 0 0 1 -.71-.29l-6-6a1 1 0 0 1 0-1.41l6-6a1 1 0 0 1 1.41 1.41l-5.29 5.29 5.29 5.29a1 1 0 0 1 -.7 1.71z"></path>
+                          //       </g>
+                          //     </svg>
+                          //   ) : (
+                          //     <svg
+                          //       height="26"
+                          //       viewBox="0 0 24 24"
+                          //       width="26"
+                          //       className={
+                          //         lang === "ar" ? "" : "rotate-180"
+                          //       }
+                          //       xmlns="http://www.w3.org/2000/svg"
+                          //       id="fi_2722991"
+                          //     >
+                          //       <g id="_17" data-name="17">
+                          //         <path d="m15 19a1 1 0 0 1 -.71-.29l-6-6a1 1 0 0 1 0-1.41l6-6a1 1 0 0 1 1.41 1.41l-5.29 5.29 5.29 5.29a1 1 0 0 1 -.7 1.71z"></path>
+                          //       </g>
+                          //     </svg>
+                          //   )}
+                          // </>
+                        )}
                       </button>
                       {data?.child.length ? (
                         <>
@@ -662,10 +711,11 @@ export default function MobileHeaderNew(props:any) {
                             <>
                               <button
                                 key={i + 10}
-                                className={`focus-visible:outline-none py-3 border-b border-[#9CA4AB50] ltr:pl-8 rtl:pr-8 rtl:pl-3 ltr:pr-3 w-full ${parentCategory == data?.id
-                                  ? "scale-100 block"
-                                  : "scale-0 hidden"
-                                  }`}
+                                className={`focus-visible:outline-none py-3 border-b border-[#9CA4AB50] ltr:pl-8 rtl:pr-8 rtl:pl-3 ltr:pr-3 w-full ${
+                                  parentCategory == data?.id
+                                    ? "scale-100 block"
+                                    : "scale-0 hidden"
+                                }`}
                                 onClick={() => {
                                   if (childcatgeory?.child?.length) {
                                     if (subCategory === childcatgeory.id) {
@@ -694,10 +744,11 @@ export default function MobileHeaderNew(props:any) {
                                       quality={100}
                                     />
                                     <label
-                                      className={`text-sm font-semibold ${subCategory === childcatgeory.id
-                                        ? "text-[#219EBC]"
-                                        : ""
-                                        }`}
+                                      className={`text-sm font-semibold ${
+                                        subCategory === childcatgeory.id
+                                          ? "text-[#219EBC]"
+                                          : ""
+                                      }`}
                                     >
                                       {lang === "ar"
                                         ? childcatgeory.name_arabic
@@ -725,9 +776,7 @@ export default function MobileHeaderNew(props:any) {
                                           viewBox="0 0 24 24"
                                           width="26"
                                           className={
-                                            lang === "ar"
-                                              ? ""
-                                              : "rotate-180"
+                                            lang === "ar" ? "" : "rotate-180"
                                           }
                                           xmlns="http://www.w3.org/2000/svg"
                                           id="fi_2722991"
@@ -749,10 +798,11 @@ export default function MobileHeaderNew(props:any) {
                                       <>
                                         <button
                                           key={i + 50}
-                                          className={`focus-visible:outline-none flex items-center gap-2 py-3 border-b border-[#9CA4AB50] w-full ltr:ml-4 ltr:pl-8 rtl:pr-8 ${subCategory == childcatgeory?.id
-                                            ? "scale-100"
-                                            : "scale-0 hidden"
-                                            }`}
+                                          className={`focus-visible:outline-none flex items-center gap-2 py-3 border-b border-[#9CA4AB50] w-full ltr:ml-4 ltr:pl-8 rtl:pr-8 ${
+                                            subCategory == childcatgeory?.id
+                                              ? "scale-100"
+                                              : "scale-0 hidden"
+                                          }`}
                                           onClick={() => {
                                             menuRedirection(subcatgeory?.slug);
                                           }}
@@ -810,9 +860,7 @@ export default function MobileHeaderNew(props:any) {
           <Transition.Child
             as={Fragment}
             enter="transition ease-in-out duration-300 transform"
-            enterFrom={
-              lang === "ar" ? "-translate-y-full" : "translate-y-full"
-            } // Start from bottom for 'ar', top for others
+            enterFrom={lang === "ar" ? "-translate-y-full" : "translate-y-full"} // Start from bottom for 'ar', top for others
             enterTo="translate-y-0" // Transition to center
           >
             <div className="fixed inset-0 overflow-y-auto">
@@ -845,10 +893,11 @@ export default function MobileHeaderNew(props:any) {
                       <Tab as={Fragment}>
                         {({ selected }) => (
                           <button
-                            className={`${selected
-                              ? "!border-primary text-primary !outline-none"
-                              : ""
-                              } flex items-center justify-center border-b-2 text-base border-transparent bg-transparent py-3 before:inline-block hover:border-primary hover:text-primary font-bold w-full`}
+                            className={`${
+                              selected
+                                ? "!border-primary text-primary !outline-none"
+                                : ""
+                            } flex items-center justify-center border-b-2 text-base border-transparent bg-transparent py-3 before:inline-block hover:border-primary hover:text-primary font-bold w-full`}
                           >
                             {lang == "ar" ? "التوصيل" : "Deliver here"}
                           </button>
@@ -875,9 +924,7 @@ export default function MobileHeaderNew(props:any) {
                               name="shipping-charge"
                               className="form-input focus-visible:outline-none text-sm h-9 border-none w-full"
                               placeholder={
-                                lang === "ar"
-                                  ? "مدينة البحث"
-                                  : "Search City"
+                                lang === "ar" ? "مدينة البحث" : "Search City"
                               }
                               value={citySearch}
                               onChange={(e) => setCitySearch(e.target.value)}
@@ -911,16 +958,18 @@ export default function MobileHeaderNew(props:any) {
                                       {({ active, checked }) => (
                                         <>
                                           <div
-                                            className={`flex w-full items-center justify-between pb-3 ${i + 1 === citiesData.length
-                                              ? ""
-                                              : "border-b border-[#9CA4AB50]"
-                                              }`}
+                                            className={`flex w-full items-center justify-between pb-3 ${
+                                              i + 1 === citiesData.length
+                                                ? ""
+                                                : "border-b border-[#9CA4AB50]"
+                                            }`}
                                           >
                                             <label
-                                              className={`font-normal text-sm ${checked
-                                                ? "text-[#219EBC]"
-                                                : "text-[#000000]"
-                                                }`}
+                                              className={`font-normal text-sm ${
+                                                checked
+                                                  ? "text-[#219EBC]"
+                                                  : "text-[#000000]"
+                                              }`}
                                             >
                                               {data.label}
                                             </label>
@@ -976,9 +1025,7 @@ export default function MobileHeaderNew(props:any) {
                               }}
                               className="focus-visible:outline-none btn border border-[#004B7A] bg-[#004B7A] p-2.5 rounded-md w-full text-white fill-white font-medium"
                             >
-                              {lang === "ar"
-                                ? "تغيير المدينة"
-                                : "Change City"}
+                              {lang === "ar" ? "تغيير المدينة" : "Change City"}
                             </button>
                           </div>
                         </div>
@@ -1049,9 +1096,7 @@ export default function MobileHeaderNew(props:any) {
                                         <div className="flex gap-x-1 justify-start items-center">
                                           <span className="bg-[#20831E] h-2 w-2 rounded-full"></span>
                                           <p>
-                                            {lang == "ar"
-                                              ? "يفتح"
-                                              : "Open"}
+                                            {lang == "ar" ? "يفتح" : "Open"}
                                           </p>
                                         </div>
                                         <div className="flex gap-x-1.5 justify-start items-center">
@@ -1065,8 +1110,9 @@ export default function MobileHeaderNew(props:any) {
                                             viewBox="0 0 24 24"
                                             width="14"
                                             xmlns="http://www.w3.org/2000/svg"
-                                            className={`${open ? "-rotate-180" : ""
-                                              } tc__311mainDisclosureBtnSvg`}
+                                            className={`${
+                                              open ? "-rotate-180" : ""
+                                            } tc__311mainDisclosureBtnSvg`}
                                           >
                                             <path
                                               clipRule="evenodd"
@@ -1294,9 +1340,7 @@ export default function MobileHeaderNew(props:any) {
                                         <div className="flex gap-x-1 justify-start items-center">
                                           <span className="bg-[#20831E] h-2 w-2 rounded-full"></span>
                                           <p>
-                                            {lang == "ar"
-                                              ? "يفتح"
-                                              : "Open"}
+                                            {lang == "ar" ? "يفتح" : "Open"}
                                           </p>
                                         </div>
                                         <div className="flex gap-x-1.5 justify-start items-center">
@@ -1310,8 +1354,9 @@ export default function MobileHeaderNew(props:any) {
                                             viewBox="0 0 24 24"
                                             width="14"
                                             xmlns="http://www.w3.org/2000/svg"
-                                            className={`${open ? "-rotate-180" : ""
-                                              } tc__311mainDisclosureBtnSvg`}
+                                            className={`${
+                                              open ? "-rotate-180" : ""
+                                            } tc__311mainDisclosureBtnSvg`}
                                           >
                                             <path
                                               clipRule="evenodd"
@@ -1539,8 +1584,9 @@ export default function MobileHeaderNew(props:any) {
                     }}
                   />
                   <button
-                    className={`focus-visible:outline-none underline text-xs text-[#DC4E4E] font-semibold ${searchInput?.length ? "block" : "hidden"
-                      }`}
+                    className={`focus-visible:outline-none underline text-xs text-[#DC4E4E] font-semibold ${
+                      searchInput?.length ? "block" : "hidden"
+                    }`}
                     onClick={() => {
                       setSearchInput(""), setSearchResult([]);
                     }}
@@ -1623,11 +1669,10 @@ export default function MobileHeaderNew(props:any) {
                             >
                               {data?.brand_media_image?.image ? (
                                 <Image
-                                  src={
-                                    `${NewMedia}${data?.brand_media_image?.image}`
-                                  }
-                                  alt={`${isArabic ? data?.name_arabic : data?.name
-                                    }-${data?.id + 17}`}
+                                  src={`${NewMedia}${data?.brand_media_image?.image}`}
+                                  alt={`${
+                                    isArabic ? data?.name_arabic : data?.name
+                                  }-${data?.id + 17}`}
                                   title={
                                     isArabic ? data?.name_arabic : data?.name
                                   }

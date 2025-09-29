@@ -4,26 +4,39 @@ import React, { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import dynamic from "next/dynamic";
-import { useRouter } from "next/navigation";
 import { userAgent } from "next/server";
-import { get } from "./api/ApiCalls";
+import { useRouter } from "next/navigation";
 
-const ProductSliderComponent = dynamic(() => import("./components/NewHomePageComp/ProductSlider"), { ssr: false });
-const BadgeProductSlider = dynamic(() => import("./components/NewHomePageComp/BadgeProductSlider"), { ssr: false });
-const PriceSection = dynamic(() => import("./components/NewHomePageComp/PriceSection"), { ssr: false });
-const BrandSlider = dynamic(() => import("./components/NewHomePageComp/BrandSlider"), { ssr: false });
-const BadgeProductLoopComponent = dynamic(() => import("./components/NewHomePageComp/BadgeProductLoop"), { ssr: false });
-const MainSliderMobile = dynamic(() => import("./components/NewHomePageComp/MainSliderMobile"), { ssr: false });
-const CategoriesHomeMobile = dynamic(() => import("./components/NewHomePageComp/CategoriesHomeMobile"), { ssr: false });
-const ProductLoopMobile = dynamic(() => import("./components/NewHomePageComp/ProductLoopMobile"), { ssr: false });
-const TamkeenServices = dynamic(() => import("./components/TamkeenServices"), { ssr: true, });
-const MobileHeaderNew = dynamic(() => import("./components/MobileHeaderNew"), { ssr: true, });
-const Newsletter = dynamic(() => import("./components/NewHomePageComp/Newsletter"), { ssr: true });
-const TopSectionSlider = dynamic(() => import("./components/NewHomePageComp/TopSectionSlider"), { ssr: false });
+// const ProductSliderComponent = dynamic(() => import("@/components/NewHomePageComp/ProductSlider"), { ssr: false });
+const ProductSliderComponent = dynamic(
+  () => import("@/components/NewHomePageComp/ProductSlider"),
+  { ssr: false, loading: () => <div className="h-40 bg-gray-100 animate-pulse" /> }
+);
+const CategoriesHomeMobile = dynamic(
+  () => import("@/components/NewHomePageComp/CategoriesHomeMobile"),
+  {
+    ssr: false, loading: () => (
+      <div className="bg-white rounded-lg shadow-md text-center text-primary animate-pulse w-full">
+        <div className="rounded-md bg-dark/10 p-2.5 h-auto w-full"></div>
+      </div>
+    )
+  }
+);
+const BadgeProductSlider = dynamic(() => import("@/components/NewHomePageComp/BadgeProductSlider"), { ssr: false });
+const PriceSection = dynamic(() => import("@/components/NewHomePageComp/PriceSection"), { ssr: false });
+const BrandSlider = dynamic(() => import("@/components/NewHomePageComp/BrandSlider"), { ssr: false });
+const BadgeProductLoopComponent = dynamic(() => import("@/components/NewHomePageComp/BadgeProductLoop"), { ssr: false });
+const MainSliderMobile = dynamic(() => import("@/components/NewHomePageComp/MainSliderMobile"), { ssr: false });
+// const CategoriesHomeMobile = dynamic(() => import("@/components/NewHomePageComp/CategoriesHomeMobile"), { ssr: false });
+const ProductLoopMobile = dynamic(() => import("@/components/NewHomePageComp/ProductLoopMobile"), { ssr: false });
+const TamkeenServices = dynamic(() => import("@/components/TamkeenServices"), { ssr: true, });
+const MobileHeaderNew = dynamic(() => import("@/components/MobileHeaderNew"), { ssr: true, });
+const Newsletter = dynamic(() => import("@/components/NewHomePageComp/Newsletter"), { ssr: true });
+const TopSectionSlider = dynamic(() => import("@/components/NewHomePageComp/TopSectionSlider"), { ssr: false });
 // const Popup = dynamic(() => import("./components/NewHomePageComp/Popup"), { ssr: true })
 
 import { useApp } from "../_ctx/AppContext";
-import { getHomePages } from "@/lib/homepage/homepage.pages";
+import { getHomePages, getLatestCategoryProducts } from "@/lib/homepage/homepage.pages";
 
 export default function Homepage() {
   const {
@@ -305,10 +318,8 @@ export default function Homepage() {
       if (type == 1) setIsSection4Visible(true);
       if (type == 2) setIsSection6NewVisible(true);
       const city: any = localStorage.getItem("globalcity") || "Jeddah";
-      const response: any = await get(
-        `getlatestcategoryproducts/${type}/${rowId}&city=${city}`
-      );
-      const data = response;
+      const response = await getLatestCategoryProducts(type, rowId, city);
+      const data: any = response?.latestCategoryData; 
       const selectedProducts = data?.[0]?.products || [];
       if (type == 2) {
         setSec6SelectedIndex(categoryIndex);
