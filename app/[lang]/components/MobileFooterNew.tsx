@@ -289,7 +289,7 @@ export default function MobileFooterNew(props: any) {
                       })
                     }
                     { index === 4 && cartCount > 0 && (
-                      <span className="bg-secondary absolute -top-1 right-0 text-[10px] text-white h-4 min-w-4 rounded-full flex justify-center items-center">{cartCount}</span>
+                      <span className="bg-secondary absolute -top-1 right-0 text-10 text-white h-4 min-w-4 rounded-full flex justify-center items-center">{cartCount}</span>
                     )}
                     </div>
                     <span

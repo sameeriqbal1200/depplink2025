@@ -1039,18 +1039,7 @@ export default function product_component_updated(props: any) {
             <h3 className={`font-bold text-xxs line-clamp-2`}>
               {installmentMethodsText}
             </h3>
-            <Image
-              alt={installmentMethods}
-              title={installmentMethods}
-              loading="lazy"
-              width={160}
-              height={20}
-              quality={100}
-              decoding="async"
-              sizes="(max-width: 640px) 100vw, (max-width: 768px) 100vw, (max-width: 1024px) 100vw, 100vw"
-              className="rounded-md object-contain"
-              src={installmentMethodsImages}
-            />
+            <div className="bg-payment w-40 h-5" />
           </div>
           <div className="flex items-center justify-between gap-2 mt-3">
             {productData?.totalrating > 0 ? (
