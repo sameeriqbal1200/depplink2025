@@ -854,7 +854,7 @@ export default function product_component_updated(props: any) {
   ].filter(Boolean);
 
   return (
-    <div className="proBox relative z-20 !min-h-full !rounded-2xl shadow-md !p-3.5">
+    <div className="proBox relative z-20 !min-h-full !rounded-2xl shadow-md !p-3.5 w-full">
       <button
         className={`absolute top-3 rtl:left-3 ltr:right-3 z-10 hover:!bg-red hover:!text-white !p-1.5 rounded-2xl cursor-pointer transition-all duration-300 ease-in-out ${
           ProWishlistData.filter((item: any) => item == productData?.id)
