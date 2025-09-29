@@ -2,14 +2,52 @@ import type { Metadata } from "next";
 import { getRequestContext } from "@/lib/request-context";
 import { BridgeSlot } from "@/app/_ctx/ClientDataRegistry";
 import { getFooterCached } from "@/lib/footerpages/footer.cached";
+import { getStoreLocatorData } from "@/lib/footerpages/storeLocatore.server";
 
-export default async function NotificationLayout({ children }: { children: React.ReactNode }) {
-    const { slugStr } = await getRequestContext();
+export const viewport = {
+    width: 'device-width',
+    initialScale: 1,
+    maximumScale: 1,
+}
+
+export default async function StoreLocatorLayout({ children }: { children: React.ReactNode }) {
+    const { slugStr, lang, baseUrl } = await getRequestContext();
     if (!slugStr) return null;
 
-    const footer = await getFooterCached(slugStr);
+    const footer = await getStoreLocatorData(lang);
     const value = footer ? JSON.parse(JSON.stringify(footer)) : null;
-    return <BridgeSlot slot="footer" value={value}>{children}</BridgeSlot>;
+
+    const jsonLd = [
+        {
+            "@id": "#breadcrumb",
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            itemListElement: [
+                {
+                    "@type": "ListItem",
+                    position: 1,
+                    name: lang === 'ar' ? 'الصفحة الرئيسي' : 'Home Page',
+                    item: `${baseUrl}/${lang}`,
+                },
+                {
+                    "@type": "ListItem",
+                    position: 2,
+                    name: lang === 'ar' ? 'مواقع المعارض' : 'Store Locator',
+                    item: `${baseUrl}/${lang}/storelocator`,
+                },
+            ],
+        },
+    ]
+
+    return (
+        <BridgeSlot slot="storeLocatorPage" value={value}>
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+            />
+            {children}
+        </BridgeSlot>
+    );
 }
 
 // ---- SEO metadata ----
@@ -21,17 +59,17 @@ export async function generateMetadata(): Promise<Metadata | null> {
 
     const metaTitle =
         lang === "en"
-            ? footer?.data?.meta_title_en ?? "Tamkeen Stores Store locatore"
-            : footer?.data?.meta_title_ar ?? "فروعنا | معارض تمكين";
+            ? footer?.data?.meta_title_en ?? "Tamkeen Stores Store Locator"
+            : footer?.data?.meta_title_ar ?? "معارض تمكين محدد مواقع المتاجر";
 
     const metaDescription =
         lang === "en"
             ? footer?.data?.meta_description_en ??
-            "Tamkeen Stores Store locator"
+            "Tamkeen Stores Store Locator"
             : footer?.data?.meta_description_ar ??
-            "معارض تمكين فروعنا";
+            "معارض تمكين محدد مواقع المتاجر";
 
-    // In /[lang]/faqs/[...slug], slugParts are ONLY the [...slug] bits (not "faqs")
+    // In /[lang]/about-us/[...slug], slugParts are ONLY the [...slug] bits (not "about-us")
     const suffix = slugParts?.length ? `/${slugParts.join("/")}` : "";
     const canonicalPath = `/${lang}${suffix}`;
     const canonicalUrl = `${origin}${canonicalPath}`;
@@ -45,7 +83,7 @@ export async function generateMetadata(): Promise<Metadata | null> {
             "تمكين",
             "Electronics Saudi Arabia",
             "معارض تمكين",
-            "Store locator",
+            "Store Locator",
         ],
 
         referrer: "origin-when-cross-origin",
