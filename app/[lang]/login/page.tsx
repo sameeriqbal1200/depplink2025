@@ -5,18 +5,18 @@ import dayjs from 'dayjs'
 import Link from 'next/link'
 import Image from 'next/image'
 import dynamic from 'next/dynamic'
-import { get, post } from "@/lib/api/apiCalls"
 import MaskedInput from 'react-text-mask'
-import { usePathname } from "next/navigation"
 import { useRouter } from 'next/navigation'
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
-import { NewMedia } from '@/lib/api/apiLinks';
 import GlobalContext from '../GlobalContext';
 import ReCAPTCHA from 'react-google-recaptcha';
 import { useApp } from "@/app/_ctx/AppContext";
 import { getSignUpData } from '@/lib/footerpages/signup.client';
+import { postCheckResendOtpData, postCheckUserOtpData, postUserLoginData } from '@/lib/login/login.client';
+import { getContactUserProfileData } from '@/lib/footerpages/contact-us.client';
 
+const NewMedia = process.env.NEXT_PUBLIC_NEW_MEDIA
 const MobileHeader = dynamic(() => import('../components/MobileHeader'), { ssr: true })
 
 export default function Login(searchParams: any) {
@@ -122,14 +122,13 @@ export default function Login(searchParams: any) {
     }, [otp]);
 
     const optConfirmation: any = () => {
-        router.push(`/${lang}`);
+        router.push(`${origin}/${lang}`);
     }
-
     const getUser: any = () => {
         if (localStorage.getItem("userid")) {
             setUserid(localStorage.getItem("userid"))
             setIsOpen(false)
-            router.push('/' + lang)
+            router.push(`${origin}/${lang}`)
         }
     }
 
@@ -140,21 +139,6 @@ export default function Login(searchParams: any) {
             setPhoneNumber(phone)
             setLoginBtnStatus(false)
         }
-    }
-
-    const quicklogin: any = () => {
-        var data = {
-            phone_number: phoneNumber,
-        };
-        post("getlogin", data).then((responseJson: any) => {
-            if (responseJson?.success) {
-                localStorage.setItem("userid", responseJson?.user?.id.toString());
-                setUserid(localStorage.getItem("userid"))
-            } else {
-                setLoginErrorStatus(true)
-                setLoginBtnLoading(false)
-            }
-        });
     }
 
     function CheckIcon(params: any) {
@@ -173,83 +157,93 @@ export default function Login(searchParams: any) {
     }
 
     const CheckPhoneNumber = async () => {
-        const recaptchaValue = recaptchaRef.current.getValue();
-        if (!recaptchaValue) {
-            setLoginBtnLoading(false)
-            setcaptchaErrorStatus(true)
-            return false
-        }
-        const token = recaptchaValue;
-        let phone = phoneNumber.replace('(966)-', '');
-        phone = phone.replace(/[^0-9\.]+/g, '')
-        if (phone == '' || phone.length < 9) {
-            setLoginBtnLoading(false)
-            return topMessageAlartDanger(lang === 'ar' ? "الرجاء إضافة بيانات الحقول!" : "please add fields data!")
-        }
-        var data = {
-            phone_number: phoneNumber,
-            lang: lang,
-            token: token
-        }
-        post('user-login', data).then((responseJson: any) => {
+        try {
+            const recaptchaValue = recaptchaRef.current.getValue();
+            if (!recaptchaValue) {
+                setLoginBtnLoading(false)
+                setcaptchaErrorStatus(true)
+                return false
+            }
+            const token = recaptchaValue;
+            let phone = phoneNumber.replace('(966)-', '');
+            phone = phone.replace(/[^0-9\.]+/g, '')
+            if (phone == '' || phone.length < 9) {
+                setLoginBtnLoading(false)
+                return topMessageAlartDanger(lang === 'ar' ? "الرجاء إضافة بيانات الحقول!" : "please add fields data!")
+            }
+            var data = {
+                phone_number: phoneNumber,
+                lang: lang,
+                token: token
+            }
+
+            const res = await postUserLoginData(data);
             localStorage.setItem('phoneNumber', data?.phone_number.toString())
-            if (responseJson?.success === true) {
+            if (res?.userLoginUpdate?.success === true) {
                 setOtpBox(true)
                 setLoginBtnLoading(false)
             }
             else {
-                // router.push(`/${lang}/signup`)
                 if (searchParams?.type) {
-                    router.push(`/${lang}/signup?type=${searchParams?.type}`)
+                    router.push(`${origin}/${lang}/signup?type=${searchParams?.type}`)
                 }
                 else {
-                    router.push(`/${lang}/signup`)
+                    router.push(`${origin}/${lang}/signup`)
                 }
                 setLoginBtnLoading(false)
             }
-        })
+        } catch (e) {
+            console.error("login failed:", e);
+            topMessageAlartDanger(lang === "ar" ? "حدث خطأ غير متوقع" : "Unexpected error");
+        }
     }
 
-    const CheckOtp = () => {
-        var dataotp = {
-            phone_number: phoneNumber,
-            otp_code: otp,
-            device: deviceType,
-        }
-        post('check-otp', dataotp).then((responseJson: any) => {
-            if (responseJson?.success === true) {
-                localStorage.setItem("userid", responseJson?.user_id.toString())
-                if (!localStorage.getItem('profileImg') && responseJson?.user?.profile_img != null) {
-                    localStorage.setItem('profileImg', NewMedia + responseJson?.user?.profile_img?.toString())
+    const CheckOtp = async () => {
+        try {
+            var dataotp = {
+                phone_number: phoneNumber,
+                otp_code: otp,
+                device: 'desktop',
+            }
+            const res = await postCheckUserOtpData(dataotp);
+            if (res?.usercheckOtpData?.success === true) {
+                localStorage.setItem("userid", res?.usercheckOtpData?.user_id.toString())
+                if (!localStorage.getItem('profileImg') && res?.usercheckOtpData?.user?.profile_img != null) {
+                    localStorage.setItem('profileImg', `${NewMedia}${res?.usercheckOtpData?.user?.profile_img?.toString()}`)
                 } else {
                     localStorage.removeItem('profileImg')
-                    localStorage.setItem('profileImg', NewMedia + responseJson?.user?.profile_img?.toString())
+                    localStorage.setItem('profileImg', `${NewMedia}${res?.usercheckOtpData?.user?.profile_img?.toString()}`)
                 }
                 if (lang == "ar") {
                     localStorage.setItem('default_address', 'yes')
-                    localStorage.setItem("globalcity", responseJson?.user?.shipping_address_data_default?.state_data?.name_arabic.toString());
+                    localStorage.setItem("globalcity", res?.usercheckOtpData?.user?.shipping_address_data_default?.state_data?.name_arabic.toString());
                 }
                 else {
                     localStorage.setItem('default_address', 'yes')
-                    localStorage.setItem("globalcity", responseJson?.user?.shipping_address_data_default?.state_data?.name.toString());
+                    localStorage.setItem("globalcity", res?.usercheckOtpData?.user?.shipping_address_data_default?.state_data?.name.toString());
                 }
-                // localStorage.removeItem('userCompare')
+                localStorage.removeItem('userCompare')
                 localStorage.removeItem('userWishlist')
-                // setDiscountRule();
-                // setDiscountRuleBogo();
-                get(`user-profile/${localStorage.getItem("userid")}`).then((responseJson: any) => {
-                    localStorage.setItem('eMail', responseJson.user?.email.toString())
-                    localStorage.setItem('fullName', responseJson.user?.full_name.toString())
-                    localStorage.setItem('phoneNumber', responseJson.user?.phone_number.toString())
-                    localStorage.setItem('loyaltyCount', responseJson.user?.loyaltypoints.toString())
-                    localStorage.setItem('compareCount', responseJson.user?.compares_count.toString())
-                    localStorage.setItem('wishlistCount', responseJson.user?.wishlists_count.toString())
-                    localStorage.setItem('orderCount', responseJson.user?.confirmed_orders_data_count.toString())
+
+                const status = res?.usercheckOtpData.success == true
+                    ? 'Login Success'
+                    : 'Login Failed: Invalid username or password. Please try again.';
+
+                    const responseData = await getContactUserProfileData();
+                    localStorage.setItem('eMail', responseData?.userData?.user?.email.toString())
+                    localStorage.setItem('fullName', responseData?.userData?.user?.full_name.toString())
+                    localStorage.setItem('phoneNumber', responseData?.userData?.user?.phone_number.toString())
+                    localStorage.setItem('loyaltyCount', responseData?.userData?.user?.loyaltypoints.toString())
+                    localStorage.setItem('compareCount', responseData?.userData?.user?.compares_count.toString())
+                    localStorage.setItem('wishlistCount', responseData?.userData?.user?.wishlists_count.toString())
+                    localStorage.setItem('orderCount', responseData?.userData?.user?.confirmed_orders_data_count.toString())
                     setUpdateUser(updateUser == 0 ? 1 : 0)
                     setUpdateOrder(updateOrder == 0 ? 1 : 0)
                     setUpdateWishlist(updateWishlist == 0 ? 1 : 0)
                     setUpdateCompare(updateCompare == 0 ? 1 : 0)
-                    const fullName = responseJson.user?.full_name?.toString() || '';
+
+                    // Generate and store new userId if not present
+                    const fullName = responseData?.userData?.user?.full_name?.toString() || '';
                     const [firstname, ...lastnameParts] = fullName?.trim().split(' ') || [];
                     const lastname = lastnameParts.join(' ');
 
@@ -258,30 +252,30 @@ export default function Login(searchParams: any) {
                     // if (!genUserId) {
                     let genUserId = crypto.randomUUID();
                     // localStorage.setItem('webengageUserId', genUserId);
-                    const gender = responseJson.user?.gender === 1 ? 'male' : 'female';
+                    const gender = responseData?.userData?.user?.gender === 1 ? 'male' : 'female';
 
                     wind.push({
                         event: 'login',
                         platform: deviceType,
                         gender: gender,
-                        email: responseJson.user?.email?.toString() || '',
-                        phone: `966${responseJson.user?.phone_number?.toString() || ''}`,
+                        email: responseData?.userData?.user?.email?.toString() || '',
+                        phone: `966${responseData?.userData?.user?.phone_number?.toString() || ''}`,
                         user_id: genUserId, // Use generated UUID as userId
                         status: status, // Or "Login Success"
                         method: 'otp_login', // Can be "email", "gmail", "fb", etc.
                         first_name: firstname,
                         last_name: lastname
                     });
-                    const userEmail = responseJson.user?.email?.toString() || '';
-                    const userPhone: any = `966${responseJson.user?.phone_number?.toString() || ''}`;
+                    const userEmail = responseData?.userData?.user?.email?.toString() || '';
+                    const userPhone: any = `966${responseData?.userData?.user?.phone_number?.toString() || ''}`;
                     const userProfileAtt: any = {
-                        "account_creation_date": responseJson?.user_webengage_data?.account_creation_date ? dayjs(responseJson?.user_webengage_data?.account_creation_date).locale('en').format('DD-MM-YYYY hh:mm A') : '',
-                        "backend_user_id": `${responseJson?.user_webengage_data?.backend_user_id ?? ''}`,
-                        "last_purchase_date": responseJson?.user_webengage_data?.last_purchase_date ? dayjs(responseJson.user_webengage_data?.last_purchase_date).locale('en').format('DD-MM-YYYY hh:mm A') : '',
-                        "store_language": responseJson?.user_webengage_data?.store_language ?? 'ar',
-                        "total_purchases": responseJson?.user_webengage_data?.total_purchases ?? 0,
-                        "total_revenue": responseJson?.user_webengage_data?.total_revenue ?? 0,
-                        "user_data_source": deviceType ?? 'desktop'
+                        "account_creation_date": responseData?.userData?.user_webengage_data?.account_creation_date ? dayjs(responseData?.userData?.user_webengage_data?.account_creation_date).locale('en').format('DD-MM-YYYY hh:mm A') : '',
+                        "backend_user_id": `${responseData?.userData?.user_webengage_data?.backend_user_id ?? ''}`,
+                        "last_purchase_date": responseData?.userData?.user_webengage_data?.last_purchase_date ? dayjs(responseData?.userData?.user_webengage_data?.last_purchase_date).locale('en').format('DD-MM-YYYY hh:mm A') : '',
+                        "store_language": responseData?.userData?.user_webengage_data?.store_language ?? 'ar',
+                        "total_purchases": responseData?.userData?.user_webengage_data?.total_purchases ?? 0,
+                        "total_revenue": responseData?.userData?.user_webengage_data?.total_revenue ?? 0,
+                        "user_data_source": deviceType ? deviceType : 'desktop'
                     };
                     wind.push({
                         event: "global_variables",
@@ -297,12 +291,12 @@ export default function Login(searchParams: any) {
                         platform: deviceType
                     });
                     localStorage.setItem('userProfileData', JSON.stringify(userProfileAtt));
-                })
                 if (searchParams?.type) {
-                    router.push(`/${lang}/${searchParams?.type}`, { scroll: false })
+                    router.push(`${origin}/${lang}/${searchParams?.type}`, { scroll: false })
                 }
                 else {
-                    router.back()
+                    const returnTo = sessionStorage.getItem('preLoginRoute') || '/'
+                    router.push(returnTo, { scroll: false })
                 }
                 router.refresh()
 
@@ -315,24 +309,33 @@ export default function Login(searchParams: any) {
                 setLoginBtnLoading(false)
                 topMessageAlartDanger(t('login.WrongOtp'))
             }
-        })
+        } catch (e) {
+            console.error("login failed:", e);
+            topMessageAlartDanger(lang === "ar" ? "حدث خطأ غير متوقع" : "Unexpected error");
+        }
     }
 
-    const ResendOtp = () => {
-        var data = {
-            phone_number: phoneNumber,
-        }
-        setSeconds(59)
-        setMinutes(1)
-        post('resend-otp', data).then((responseJson: any) => {
-            if (responseJson?.success === true) {
+    const ResendOtp = async () => {
+        try {
+            var data = {
+                phone_number: phoneNumber,
+            }
+            setSeconds(59)
+            setMinutes(1)
+
+            const res = await postCheckResendOtpData(data);
+            localStorage.setItem('phoneNumber', data?.phone_number.toString())
+            if (res?.userResendcheckOtpData?.success === true) {
                 setResendOtpMsssage(true)
                 topMessageAlartSuccess(t('login.ResendOtpSuccess'))
             }
             else {
                 topMessageAlartDanger(t('login?.ResendOtpfailed'))
             }
-        })
+        } catch (e) {
+            console.error("login failed:", e);
+            topMessageAlartDanger(lang === "ar" ? "حدث خطأ غير متوقع" : "Unexpected error");
+        }
     }
 
     const maxLengthCheck = (object: any, length: number) => {
@@ -341,11 +344,6 @@ export default function Login(searchParams: any) {
         }
         setOtp(object)
     }
-
-    const origin =
-        typeof window !== 'undefined' && window.location.origin
-            ? window.location.origin
-            : '';
 
     return (
         <>

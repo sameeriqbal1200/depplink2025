@@ -6,15 +6,13 @@ import dynamic from 'next/dynamic'
 import MaskedInput from 'react-text-mask'
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
-import { get, post } from "@/lib/api/apiCalls"
 import { useApp } from "@/app/_ctx/AppContext";
-// import { useSlot } from '@/app/_ctx/ClientDataRegistry';
+import { getCitiesData, postProjectSalesData } from '@/lib/footerpages/project-sales.server';
 
 const MobileHeader = dynamic(() => import('../components/MobileHeader'), { ssr: true })
 
 export default function ProjectSales() {
-    const { t, lang } = useApp();
-    // const footer = useSlot<any>("footer");
+    const { t, lang, deviceType } = useApp();
 
     const [cityData, setCityData] = useState<any>([])
     const [firstName, setFirstName] = useState<any>('')
@@ -25,10 +23,9 @@ export default function ProjectSales() {
     const [comments, setComments] = useState<any>('')
     const [city, setCity] = useState<any>(false)
 
-    const getCities = () => {
-        get(`getcities/${lang}`).then((responseJson: any) => {
-            setCityData(responseJson?.cities)
-        })
+    const getCities = async () => {
+        const cityDataLi = await getCitiesData(lang)
+        setCityData(cityDataLi?.cityListData?.cities)
     }
 
     useEffect(() => {
@@ -70,21 +67,21 @@ export default function ProjectSales() {
     };
 
 
-    const SubmitData = () => {
-        if (firstName == '' || lastName == '' || email == '' || phoneNumber == '' || compnanyName == '' || comments == '' || city == '') {
-            return topMessageAlartDanger(lang === 'ar' ? "الرجاء إضافة بيانات الحقول!" : "please add fields data!")
-        }
-        var data = {
-            full_name: firstName + ' ' + lastName,
-            email_address: email,
-            phone_number: phoneNumber,
-            company_name: compnanyName,
-            comment: comments,
-            city: city,
-        }
-
-        post('mob-new-projectsale', data).then((responseJson: any) => {
-            if (responseJson?.success === "true") {
+    const SubmitData = async () => {
+        try {
+            if (firstName == '' || lastName == '' || email == '' || phoneNumber == '' || compnanyName == '' || comments == '' || city == '') {
+                return topMessageAlartDanger(lang === 'ar' ? "الرجاء إضافة بيانات الحقول!" : "please add fields data!")
+            }
+            var data = {
+                full_name: firstName +' '+lastName,
+                email_address: email,
+                phone_number: phoneNumber,
+                company_name: compnanyName,
+                comment: comments,
+                city: city,
+            }
+            const res = await postProjectSalesData(data)
+            if (res?.userprojectSalesData?.success === "true") {
                 topMessageAlartSuccess(lang === 'ar' ? "تم إرسال استفسارك!" : "your inquiry has been sent!")
                 setFirstName('')
                 setLastName('')
@@ -95,9 +92,11 @@ export default function ProjectSales() {
                 setCity(false)
             }
             else {
-                topMessageAlartDanger(t("somethingwentwrong"))
+                topMessageAlartDanger(t('somethingwentwrong'))
             }
-        })
+        } catch (err) {
+            console.error("Failed to fetch project data:", err);
+        }
     }
 
 

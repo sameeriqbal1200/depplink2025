@@ -1,15 +1,18 @@
 "use client"; // This is a client component 👈🏽
 
-import React, { useEffect, useState } from 'react'
-import { getDictionary } from "../../dictionaries";
-import { get, post } from '../../api/ApiCalls';
+import React, { useEffect, useState, use } from 'react';
 import { getOrderId, removeCart } from '../../cartstorage/cart';
 import { useRouter } from "next/navigation"
 import dynamic from 'next/dynamic';
-const FullPageLoader = dynamic(() => import('../../components/FullPageLoader'), { ssr: false })
+import { useApp } from '@/app/_ctx/AppContext';
+import { hyperpayUpdate, misspayUpdate, orderUpdate } from '@/lib/paymentstatus/paymentstatus.client';
+const FullPageLoader = dynamic(() => import('@/components/FullPageLoader'), { ssr: false })
 
-export default function PaymentStatus({ params, searchParams }: { params: { lang: string, slug: any }, searchParams: any }) {
-    const [dict, setDict] = useState<any>([]);
+export default function PaymentStatus(
+    props: { searchParams: Promise<any> }
+) {
+    const { lang, slugStr, deviceType, origin } = useApp();
+    const searchParams = use(props.searchParams);
     const [paymentmethod, setpaymentmethod] = useState<any>(false);
     const [paymentid, setpaymentid] = useState<any>(false);
     const [orderId, setorderId] = useState<any>(false);
@@ -17,14 +20,10 @@ export default function PaymentStatus({ params, searchParams }: { params: { lang
     const router = useRouter();
     const [loaderStatus, setLoaderStatus] = useState<any>(false)
 
-    useEffect(() => {
-        (async () => {
-            const translationdata = await getDictionary(params.lang);
-            setDict(translationdata);
-        })();
+   useEffect(() => {
         setupData()
         setLoaderStatus(true)
-    }, [params])
+    }, [])
 
     useEffect(() => {
         if (paymentid)
@@ -36,28 +35,20 @@ export default function PaymentStatus({ params, searchParams }: { params: { lang
             submitProcess()
     }, [orderId])
 
-    const submitOrder = () => {
-        get('order-paymentupdate/' + orderId + '/' + paymentid).then(async (responseJson: any) => {
-            removeCart()
-            router.push(`/${params.lang}/checkout/congratulations/${orderId}`);
-        })
+    const submitOrder = async () => {
+        const orderData = await orderUpdate(orderId, paymentid);
+        const responseJson = orderData.userOrderDetails
+        removeCart()
+        router.push(`${origin}/${lang}/checkout/congratulations/${orderId}`);
+
     }
 
     const setupData = async () => {
-        var paydata = params.slug.split('-')
+        var paydata: any = slugStr?.split('-')
         await setpaymentmethod(paydata[0])
         await settype(paydata[1])
         await setorderId(getOrderId())
 
-    }
-
-    function detectPlatform() {
-        if (window.Android) return "Android";
-        if (window.webkit?.messageHandlers?.iosBridge) return "iOS";
-        var userAgent = navigator.userAgent || navigator.vendor || window.opera;
-        if (/android/i.test(userAgent)) return "Android";
-        if (/iPad|iPhone|iPod/.test(userAgent)) return "iOS";
-        return "Web";
     }
 
     const pushGTMEvent = () => {
@@ -66,7 +57,7 @@ export default function PaymentStatus({ params, searchParams }: { params: { lang
 
         window.dataLayer.push({
             event: "Payment_failed",
-            platform: detectPlatform(),
+            platform: deviceType,
             method: paymentmethod,
             reason: "insufficent balance", // currency
             
@@ -74,44 +65,42 @@ export default function PaymentStatus({ params, searchParams }: { params: { lang
     }
 
     const submitProcess = async () => {
-        // console.log('paymentmethod',paymentmethod)
-        // console.log('type',type)
-        // return false;
         if (paymentmethod == 'hyperpay') {
-            await get(`hyperresponse/${orderId}/${searchParams.id}`).then(async (responseJson: any) => {
-                if (responseJson.status === true) {
-                    await setpaymentid(searchParams.id)
-                }
-                else {
-                    pushGTMEvent();
-                    router.push(`/${params.lang}/checkout`);
-                }
-            })
+            const orderData = await hyperpayUpdate(orderId, searchParams.id);
+            const responseJson = orderData.userOrderDetails
+            if (responseJson.status === true) {
+                await setpaymentid(searchParams.id)
+            }
+            else {
+                pushGTMEvent();
+                router.push(`${origin}/${lang}/checkout`);
+            }
+
         }
-        else if(paymentmethod == 'clickpay' || paymentmethod == 'clickpay_applepay'){
-            if(searchParams?.respStatus == 'A'){
+        else if (paymentmethod == 'clickpay' || paymentmethod == 'clickpay_applepay') {
+            if (searchParams?.respStatus == 'A') {
                 await setpaymentid(searchParams?.tranRef)
             }
             else {
                 pushGTMEvent();
-                router.push(`/${params.lang}/checkout`);
+                router.push(`${origin}/${lang}/checkout`);
             }
         }
-        else if(paymentmethod == 'mispay'){
-            await get(`mispayresponse/${orderId}/${searchParams._}`).then(async (responseJson: any) => {
-                if (responseJson.status === true) {
-                    await setpaymentid(responseJson.id)
-                } 
-                else {
-                    pushGTMEvent();
-                    router.push(`/${params.lang}/checkout`);
-                }
-            })
+        else if (paymentmethod == 'mispay') {
+            const orderData = await misspayUpdate(orderId, searchParams._);
+            const responseJson = orderData.userOrderDetails
+            if (responseJson.status === true) {
+                await setpaymentid(responseJson.id)
+            }
+            else {
+                pushGTMEvent();
+                router.push(`${origin}/${lang}/checkout`);
+            }
         }
         else {
             if (type != 'success') {
                 pushGTMEvent();
-                router.push(`/${params.lang}/checkout`);
+                router.push(`${origin}/${lang}/checkout`);
             }
             else {
                 if (paymentmethod == 'tamara') {
@@ -129,7 +118,7 @@ export default function PaymentStatus({ params, searchParams }: { params: { lang
 
     return (
         <>
-            <FullPageLoader loader={loaderStatus} Text={params.lang === 'ar' ? '' : `Please wait!`} TextTwo={params.lang === 'ar' ? '' : `While We Are Confirming Your Transaction ...`} />
+            <FullPageLoader loader={loaderStatus} Text={lang === 'ar' ? '' : `Please wait!`} TextTwo={lang === 'ar' ? '' : `While We Are Confirming Your Transaction ...`} />
         </>
     )
 }
