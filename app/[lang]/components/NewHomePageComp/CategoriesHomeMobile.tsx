@@ -59,27 +59,23 @@ export default function CategoriesHomeMobile(props: any) {
                 >
                     {categories.length > 0 ? (
                         categories.map((category: any, i: number) => (
-                            <SwiperSlide key={i} className="">
-                                <div>
-                                    <div className=''>
-                                        <Link prefetch={false} scroll={false} href={`${origin}/${props?.lang}/category/${category?.slug}`} className="rounded-md">
-                                            <Image
-                                                src={category?.image ? `${NewMedia}${category?.image?.image}` : ''}
-                                                alt={`${renderCategoryName(category)}-${i + 11}`}
-                                                title={renderCategoryName(category)}
-                                                width={0}
-                                                height={0}
-                                                quality={100}
-                                                sizes='(max-width: 140px) 100vw, (max-width: 1068px) 1150px, (max-width: 1024px) 1, 100vw'
-                                                priority={true}
-                                                className="mx-auto h-auto bg-white w-full border rounded-xl shadow-sm border-[#ff7b345e]"
-                                            />
-                                            <h2 className="font-bold mt-2 text-[0.65rem] xl:text-xs line-clamp-1 md:line-clamp-2 leading-4 text-xs text-center">
-                                                {renderCategoryName(category)}
-                                            </h2>
-                                        </Link>
-                                    </div>
-                                </div>
+                            <SwiperSlide key={i}>
+                                <Link prefetch={false} scroll={false} href={`${origin}/${props?.lang}/category/${category?.slug}`} className="rounded-md">
+                                    <Image
+                                        src={category?.image ? `${NewMedia}${category?.image?.image}` : ''}
+                                        alt={`${renderCategoryName(category)}-${i + 11}`}
+                                        title={renderCategoryName(category)}
+                                        width={0}
+                                        height={0}
+                                        quality={100}
+                                        sizes='(max-width: 140px) 100vw, (max-width: 1068px) 1150px, (max-width: 1024px) 1, 100vw'
+                                        priority={true}
+                                        className="mx-auto h-auto bg-white w-full border rounded-xl shadow-sm border-[#ff7b345e]"
+                                    />
+                                    <h2 className="font-bold mt-2 text-[0.65rem] xl:text-xs line-clamp-1 md:line-clamp-2 leading-4 text-xs text-center">
+                                        {renderCategoryName(category)}
+                                    </h2>
+                                </Link>
                             </SwiperSlide>
                         ))
                     ) : (
