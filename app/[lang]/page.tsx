@@ -1207,8 +1207,7 @@ export default function Homepage() {
                   )}
                 </>
               ) : (
-                <div className="animate-pulse">
-                  <div className="tamkeenSales_cardss flex items-center xl:justify-between justify-start xl:gap-4 gap-x-4 gap-y-8 overflow-hidden">
+                  <div className="animate-pulse flex items-center xl:justify-between justify-start xl:gap-4 gap-x-4 gap-y-8 overflow-hidden">
                     {[...Array(4)].map((_, i) => (
                       <div
                         key={i}
@@ -1223,7 +1222,6 @@ export default function Homepage() {
                       </div>
                     ))}
                   </div>
-                </div>
               )}
             </>
           ) : (
