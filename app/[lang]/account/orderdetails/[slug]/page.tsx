@@ -616,7 +616,7 @@ export default function OrderDetails() {
                                 leaveFrom="opacity-100 scale-100"
                                 leaveTo="opacity-0 scale-95"
                             >
-                                <DialogPanel className="w-full max-w-md max-md:h-[-webkit-fill-available] transform overflow-hidden rounded-md bg-white text-left align-middle shadow-xl transition-all">
+                                <DialogPanel className="w-full max-w-md max-md:h-screen transform overflow-hidden rounded-md bg-white text-left align-middle shadow-xl transition-all">
                                     <Dialog.Title
                                         as="h3"
                                         className="text-lg font-medium leading-6 text-gray-900 container"

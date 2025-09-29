@@ -474,7 +474,7 @@ export default function MobileHeaderNew(props: any) {
               leaveFrom={lang === "ar" ? "-translate-x-0" : "translate-x-0"}
               leaveTo={lang === "ar" ? "translate-x-full" : "-translate-x-full"}
             >
-              <Dialog.Panel className="w-80 h-[-webkit-fill-available] ltr:mr-auto rtl:ml-auto transform overflow-hidden bg-white text-left align-middle shadow-xl transition-all">
+              <Dialog.Panel className="w-80 h-screen ltr:mr-auto rtl:ml-auto transform overflow-hidden bg-white text-left align-middle shadow-xl transition-all">
                   <div className="container align__center py-3.5 border-b mb-3 border-[#9CA4AB50]">
                     <Dialog.Title
                       as="h4"
@@ -489,7 +489,7 @@ export default function MobileHeaderNew(props: any) {
                       <CloseIcon size={16} color="#000000" />
                     </button>
                   </div>
-                <div className="overflow-y-auto h-[-webkit-fill-available] pb-40 mt-4">
+                <div className="overflow-y-auto h-screen pb-40 mt-4">
                   {/* SubCategories */}
                   {menuData?.map((data: any, i: number) => (
                     <React.Fragment key={i}>
@@ -710,7 +710,7 @@ export default function MobileHeaderNew(props: any) {
             enterTo="translate-y-0" // Transition to center
           >
             <div className="fixed inset-0 overflow-y-auto">
-              <Dialog.Panel className="w-full h-[-webkit-fill-available] transform overflow-hidden bg-white text-left align-middle shadow-xl transition-all">
+              <Dialog.Panel className="w-full h-screen transform overflow-hidden bg-white text-left align-middle shadow-xl transition-all">
                 <div className="align__center py-3.5 px-4 bg-[#219EBC60]">
                   <Dialog.Title
                     as="h4"
@@ -1368,7 +1368,7 @@ export default function MobileHeaderNew(props: any) {
               leaveFrom={isArabic ? "-translate-x-0" : "translate-x-0"}
               leaveTo={isArabic ? "translate-x-full" : "-translate-x-full"}
             >
-              <Dialog.Panel className="w-full h-[-webkit-fill-available] container transform overflow-hidden bg-white text-left align-middle shadow-xl transition-all">
+              <Dialog.Panel className="w-full h-screen container transform overflow-hidden bg-white text-left align-middle shadow-xl transition-all">
                 <div className="align__center py-3.5 border-b mb-3 border-[#9CA4AB50]">
                   <Dialog.Title
                     as="h4"
@@ -1414,7 +1414,7 @@ export default function MobileHeaderNew(props: any) {
                     {isArabic ? "مسح" : "Clear"}
                   </button>
                 </div>
-                <div className="overflow-y-auto h-[-webkit-fill-available] pb-40 mt-4">
+                <div className="overflow-y-auto h-screen pb-40 mt-4">
                   <div className="mb-6 flex flex-wrap gap-2">
                     {searchResult?.cats?.map((d: any, i: any) => (
                       <button
