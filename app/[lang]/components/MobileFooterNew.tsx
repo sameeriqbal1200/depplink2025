@@ -26,13 +26,13 @@ export default function MobileFooterNew(props: any) {
   };
 
   useEffect(() => {
-    const handleStorageChange = (e: StorageEvent) => {
+    const handleStorageChange = (e: any) => {
       if (e.key === "cartData") {
         setUpdateCart((prev: any) => (prev == 0 ? 1 : 0));
       }
     };
 
-    const handleCustomCartChange = (e: CustomEvent) => {
+    const handleCustomCartChange = (e: any) => {
       setUpdateCart((prev: any) => (prev == 0 ? 1 : 0));
     };
 

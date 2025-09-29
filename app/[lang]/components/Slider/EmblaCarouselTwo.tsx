@@ -9,10 +9,11 @@ import {
 } from './EmblaCarouselArrowButtons';
 import Image from 'next/image';
 import Link from 'next/link';
-import { NewMedia } from '../../api/Api';
 import dynamic from 'next/dynamic';
 import ClassNames from 'embla-carousel-class-names';
 import { DotButton, useDotButton } from './EmblaCarouselDotButton';
+
+const NewMedia = process.env.NEXT_PUBLIC_NEW_MEDIA
 
 const CountDown = dynamic(() => import('../CountDown'), { ssr: false });
 

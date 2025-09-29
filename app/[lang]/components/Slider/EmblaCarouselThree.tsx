@@ -8,7 +8,8 @@ import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import { NextButton, PrevButton, usePrevNextButtons } from './EmblaCarouselArrowButtons';
 import { DotButton, useDotButton } from './EmblaCarouselDotButton';
-import { NewMedia } from '../../api/Api';
+
+const NewMedia = process.env.NEXT_PUBLIC_NEW_MEDIA
 
 const CountDown = dynamic(() => import('../CountDown'), { ssr: false });
 
