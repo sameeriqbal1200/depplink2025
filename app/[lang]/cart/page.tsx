@@ -888,7 +888,7 @@ export default function NewCart() {
                                         if (s?.key == 'total') {
                                             return (
                                                 <>
-                                                    <hr className="nc__278mainInnerHr" key={i} />
+                                                    <hr className="nc__278mainInnerHr" key={i + 1} />
                                                     <div className="nc__278mainInnerNineteenDiv" key={i + 1}>
                                                         <label className="text-dark">{itemTitletext} <small className="nc__278mainInnerSmall">({includingVatText})</small></label>
                                                         <p className={`text-[#004B7A] flex items-center gap-0.5`}><span className="font-bold">{s?.price?.toLocaleString('EN-US')}</span>{' '}{currencySymbol}</p>
@@ -897,7 +897,7 @@ export default function NewCart() {
                                             )
                                         }
                                         return (
-                                            <div className="nc__278mainInnerTwntyDiv" key={i}>
+                                            <div className="nc__278mainInnerTwntyDiv" key={i + 1}>
                                                 <label className="nc__278mainInnerMdLabel">{itemTitletext}</label>
                                                 <p className={`nc__278mainInnerPara flex items-center gap-0.5`}><span className="font-bold">{s?.price?.toLocaleString('EN-US')}</span>{' '}{currencySymbol}</p>
                                             </div>
