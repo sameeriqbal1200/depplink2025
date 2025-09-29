@@ -1,17 +1,8 @@
-import { Api } from '@/lib/api/apiLinks';
 import { getRequestContext } from "@/lib/request-context";
 import { getFooterCached } from "@/lib/footerpages/footer.cached";
 import type { Metadata } from 'next'
-
-type Props = {
-    params: { slug: string, lang: string, data: any }
-}
-
-const fetcher = async (params: any) => {
-    const slug = "categorylisting";
-    const res: any = await fetch(`${Api}/footer_pages/${slug}`, { next: { revalidate: 7200 } })
-    return res.json()
-}
+import { BridgeSlot } from '@/app/_ctx/ClientDataRegistry';
+import { getCategoriesListingData } from '@/lib/categoryPage/category.server';
 
 export const viewport = {
     width: 'device-width',
@@ -23,7 +14,7 @@ export async function generateMetadata(): Promise<Metadata | null> {
     const { slugParts, slugStr, lang, origin } = await getRequestContext();
     if (!slugStr) return null;
 
-    const footer = await getFooterCached(slugStr);
+    const footer = await getFooterCached('categorylisting');
 
     const metaTitle =
         lang === "en"
@@ -124,16 +115,42 @@ export async function generateMetadata(): Promise<Metadata | null> {
     };
 }
 
-export default async function CategoriesListingLayout({ children, params }: {
-    children: React.ReactNode, params: {
-        slug: string, data: any, lang: string
-    }
-}) {
-    const categoryListing = await fetcher(params);
-    params.data = categoryListing;
+export default async function CategoriesListingLayout({ children }: { children: React.ReactNode }) {
+    const { slugStr, lang, baseUrl } = await getRequestContext();
+    if (!slugStr) return null;
+
+    const catgeoryData = await getCategoriesListingData(lang);
+    const value = catgeoryData ? JSON.parse(JSON.stringify(catgeoryData)) : null;
+
+    const jsonLd = [
+        {
+            "@id": "#breadcrumb",
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            itemListElement: [
+                {
+                    "@type": "ListItem",
+                    position: 1,
+                    name: lang === 'ar' ? 'الصفحة الرئيسية' : 'Home Page',
+                    item: `${baseUrl}/${lang}`,
+                },
+                {
+                    "@type": "ListItem",
+                    position: 2,
+                    name: lang === 'ar' ? 'الفئات' : 'Categories Listing',
+                    item: `${baseUrl}/${lang}/${catgeoryData?.data?.data?.page_link}`,
+                },
+            ],
+        },
+    ];
+
     return (
-        <>
+        <BridgeSlot slot="categoryListingPage" value={value}>
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+            />
             {children}
-        </>
-    )
+        </BridgeSlot>
+    );
 }
