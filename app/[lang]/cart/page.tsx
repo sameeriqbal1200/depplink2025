@@ -281,9 +281,9 @@ export default function NewCart() {
         // })
         // // abandoned cart work
         if (localStorage.getItem("userid")) {
-            router.push(`/${lang}/checkout`);
+            router.push(`${origin}/${lang}/checkout`);
         } else {
-            router.push(`/${lang}/login?type=checkout`)
+            router.push(`${origin}/${lang}/login?type=checkout`)
         }
     }
 
