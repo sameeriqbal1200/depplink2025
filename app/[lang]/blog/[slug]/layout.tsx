@@ -20,17 +20,18 @@ export async function generateMetadata(): Promise<Metadata | null> {
     const blogsDetails = await getBlogDetailsCached(slugStr);
     // console.log(blogsDetails?.data?.meta_title_en, "this is")
 
-    const metaTitle =
+   const metaTitle =
         lang === "en"
-            ? blogsDetails?.data?.meta_title_en ?? "Tamkeen Stores Notifications"
-            : blogsDetails?.data?.meta_title_ar ?? "الأسئلة الشائعة | معارض تمكين";
+            ? blogsDetails?.data?.meta_title_en ?? "Tamkeen Stores Blog Details"
+            : blogsDetails?.data?.meta_title_ar ?? "تفاصيل مدونة معارض تمكين";
 
     const metaDescription =
         lang === "en"
             ? blogsDetails?.data?.meta_description_en ??
-            "Tamkeen Stores Notifications"
+            "Tamkeen Stores Blog Details"
             : blogsDetails?.data?.meta_description_ar ??
-            "الأسئلة الشائعة حول معارض تمكين";
+            "تفاصيل مدونة معارض تمكين";
+
 
     // In /[lang]/notifications/[...slug], slugParts are ONLY the [...slug] bits (not "notifications")
     const suffix = slugParts?.length ? `/${slugParts.join("/")}` : "";
