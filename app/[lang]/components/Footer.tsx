@@ -6,7 +6,6 @@ import Image from 'next/image';
 import { usePathname } from "next/navigation"
 import withReactContent from 'sweetalert2-react-content';
 import Swal from 'sweetalert2';
-import { post } from '../api/ApiCalls';
 import { postSubmitNewsLetter } from '@/lib/components/component.client';
 
 export default function Footer(props: any) {
