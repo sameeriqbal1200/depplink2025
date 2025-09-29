@@ -1,21 +1,21 @@
 "use client"; // This is a client component 👈🏽
 
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link'
 import Image from 'next/image'
-import { getDictionary } from "../dictionaries";
-import { usePathname } from "next/navigation"
-import { useRouter } from 'next-nprogress-bar';
 import withReactContent from 'sweetalert2-react-content';
 import Swal from 'sweetalert2';
 import MaskedInput from 'react-text-mask';
-import { get, post } from "@/lib/api/apiCalls";
 import dynamic from 'next/dynamic';
+import { useApp } from '@/app/_ctx/AppContext';
+import { getContactUserProfileData, postContactUsData } from '@/lib/footerpages/contact-us.client';
+import { useRouter } from 'next-nprogress-bar';
 
 const MobileHeader = dynamic(() => import('../components/MobileHeader'), { ssr: true })
 
-export default function ContactUs({ params }: { params: { lang: string } }) {
-    const [dict, setDict] = useState<any>([]);
+export default function ContactUs() {
+    const router = useRouter();
+    const { t, lang, deviceType, origin } = useApp();
     const [fullName, setfullName] = useState('');
     const [email, setemail] = useState('');
     const [phoneNumber, setphoneNumber] = useState('');
@@ -30,12 +30,8 @@ export default function ContactUs({ params }: { params: { lang: string } }) {
     const [loading, setloading] = useState(false);
 
     useEffect(() => {
-        (async () => {
-            const translationdata = await getDictionary(lang);
-            setDict(translationdata);
-        })();
         getUser()
-    }, [params])
+    }, [])
 
     const MySwal = withReactContent(Swal);
     const topMessageAlartSuccess = (title: any) => {
@@ -83,67 +79,74 @@ export default function ContactUs({ params }: { params: { lang: string } }) {
         setemail(e.target.value);
     }
 
-    const getUser = () => {
-        if (localStorage.getItem("userid")) {
-            get(`user-profile/${localStorage.getItem("userid")}`).then((responseJson: any) => {
-                setfullName(responseJson?.user?.full_name)
-                setemail(responseJson?.user?.email)
-                setphoneNumber(responseJson?.user?.phone_number)
-            })
+    const getUser = async () => {
+        try {
+            const userId = typeof window !== "undefined" ? localStorage.getItem("userid") : null;
+            if (!userId) { router.push(`${origin}/${lang}`); return; }
+
+            const res: any = await getContactUserProfileData();
+            setfullName(res?.userData?.user?.full_name)
+            setemail(res?.userData?.user?.email)
+            setphoneNumber(res?.userData?.user?.phone_number)
+
+        } catch (err) {
+            console.error("getUserProfile failed:", err);
+            // optional: show toast / set error state
         }
     }
 
-    const submitData = () => {
-        const data = {
-            full_name: fullName,
-            email: email,
-            phone_number: phoneNumber,
-            notes: notes,
-            reason: reason,
-            complain: complain
-        }
-
-        if (!fullName || !email || !phoneNumber || !notes) {
-            const regEx: any = /[a-zA-Z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,8}(.[a-z{2,8}])?/g;
-            topMessageAlartDanger(dict?.contactUsDataRequired)
-            if (!fullName) {
-                setfullNameError(true)
-                setTimeout(function () {
-                    setfullNameError(false)
-                }, 3000)
+    const submitData = async () => {
+        try {
+            const data = {
+                full_name: fullName,
+                email: email,
+                phone_number: phoneNumber,
+                notes: notes,
+                reason: reason,
+                complain: complain
             }
 
-            if (!regEx.test(email) && email !== "") {
-                setMessage("Please enter valid email");
-                setTimeout(function () {
-                    setMessage('')
-                }, 3000)
+            if (!fullName || !email || !phoneNumber || !notes) {
+                const regEx: any = /[a-zA-Z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,8}(.[a-z{2,8}])?/g;
+                topMessageAlartDanger(t('contactUsDataRequired'))
+                if (!fullName) {
+                    setfullNameError(true)
+                    setTimeout(function () {
+                        setfullNameError(false)
+                    }, 3000)
+                }
+
+                if (!regEx.test(email) && email !== "") {
+                    setMessage("Please enter valid email");
+                    setTimeout(function () {
+                        setMessage('')
+                    }, 3000)
+                }
+                if (!email) {
+                    setemailError(true)
+                    setTimeout(function () {
+                        setemailError(false)
+                    }, 3000)
+                }
+                if (!phoneNumber) {
+                    setphoneNumberError(true)
+                    setTimeout(function () {
+                        setphoneNumberError(false)
+                    }, 3000)
+                }
+                if (!notes) {
+                    setnotesError(true)
+                    setTimeout(function () {
+                        setnotesError(false)
+                    }, 3000)
+                }
+                return false
             }
-            if (!email) {
-                setemailError(true)
-                setTimeout(function () {
-                    setemailError(false)
-                }, 3000)
-            }
-            if (!phoneNumber) {
-                setphoneNumberError(true)
-                setTimeout(function () {
-                    setphoneNumberError(false)
-                }, 3000)
-            }
-            if (!notes) {
-                setnotesError(true)
-                setTimeout(function () {
-                    setnotesError(false)
-                }, 3000)
-            }
-            return false
-        }
-        setloading(true)
-        post("store-contact-us", data).then((responseJson: any) => {
-            if (responseJson.success === true) {
+            setloading(true)
+            const res = await postContactUsData(data);
+            if (res?.contactUsFormData?.success === true) {
                 setloading(false)
-                topMessageAlartSuccess(dict?.contactUsSuccess)
+                topMessageAlartSuccess(t('contactUsSuccess'))
                 if (!localStorage.getItem("userid")) {
                     setfullName('')
                     setemail('')
@@ -154,10 +157,12 @@ export default function ContactUs({ params }: { params: { lang: string } }) {
                 setnotes('')
             } else {
                 setloading(false)
-                topMessageAlartDanger(dict?.somethingwentwrong)
+                topMessageAlartDanger(t('somethingwentwrong'))
             }
-        })
-
+        } catch (e) {
+            console.error("updateProfileData failed:", e);
+            topMessageAlartDanger(lang === "ar" ? "حدث خطأ غير متوقع" : "Unexpected error");
+        }
     }
 
     return (
@@ -272,7 +277,7 @@ export default function ContactUs({ params }: { params: { lang: string } }) {
                                 <label className="text-sm font-medium text-[#344054]">{lang == 'ar' ? 'رقم الهاتف' : 'Note'}</label>
                                 <div className={`border border-[#${notesError ? 'dc4e4e' : '004B7A'}] focus-visible:outline-none hover:border-primary bg-white rounded p-3`}>
                                     <div className="flex items-start gap-3 fill-[#004B7A]">
-                                        <svg id="fi_3253339" enable-background="new 0 0 512 512" height="20" viewBox="0 0 512 512" width="20" xmlns="http://www.w3.org/2000/svg"><g><path d="m391.99 512h-317c-12.407 0-22.5-10.093-22.5-22.5v-7.5h-7.5c-12.407 0-22.5-10.093-22.5-22.5v-225c0-4.142 3.358-7.5 7.5-7.5s7.5 3.358 7.5 7.5v225c0 4.136 3.365 7.5 7.5 7.5h317c4.136 0 7.5-3.364 7.5-7.5v-168.665l-25.797-74.098c-1.088-3.125-1.64-6.387-1.64-9.694v-56.083c0-6.077 3.708-11.295 9.448-13.293 5.738-2 11.886-.212 15.662 4.552l2.327 2.937v-122.656c0-4.136-3.364-7.5-7.5-7.5h-317c-4.135 0-7.5 3.364-7.5 7.5v182c0 4.142-3.358 7.5-7.5 7.5s-7.5-3.358-7.5-7.5v-182c0-12.407 10.093-22.5 22.5-22.5h317c12.407 0 22.5 10.093 22.5 22.5v7.5h7.5c12.407 0 22.5 10.093 22.5 22.5v106.841c0 4.142-3.358 7.5-7.5 7.5s-7.5-3.358-7.5-7.5v-106.841c0-4.136-3.364-7.5-7.5-7.5h-7.5v119.087l17.501 22.089c2.055 2.594 3.648 5.493 4.735 8.616l81.859 235.13c4.186 12.023-6.207 25.808-24.174 32.063s-34.672 1.905-38.859-10.119l-11.062-31.775v69.409c0 12.407-10.093 22.5-22.5 22.5zm-324.5-30v7.5c0 4.136 3.365 7.5 7.5 7.5h317c4.136 0 7.5-3.364 7.5-7.5v-112.494l-15-43.085v125.579c0 12.407-10.093 22.5-22.5 22.5zm292.869-263.016 79.36 227.951c.7 2.009 8.49 4.808 19.762.884 11.271-3.924 15.64-10.956 14.94-12.966l-79.36-227.951zm-3.305-29.502v14.77l31.448-10.948-9.172-11.576zm0-35.869v19.987l12.412-4.321zm-40.064 268.387h-227c-4.142 0-7.5-3.358-7.5-7.5s3.358-7.5 7.5-7.5h227c4.142 0 7.5 3.358 7.5 7.5s-3.358 7.5-7.5 7.5zm0-45h-227c-4.142 0-7.5-3.358-7.5-7.5s3.358-7.5 7.5-7.5h227c4.142 0 7.5 3.358 7.5 7.5s-3.358 7.5-7.5 7.5zm0-45h-227c-4.142 0-7.5-3.358-7.5-7.5s3.358-7.5 7.5-7.5h227c4.142 0 7.5 3.358 7.5 7.5s-3.358 7.5-7.5 7.5zm-20-45h-207c-4.142 0-7.5-3.358-7.5-7.5s3.358-7.5 7.5-7.5h207c4.142 0 7.5 3.358 7.5 7.5s-3.358 7.5-7.5 7.5zm20-45h-227c-4.142 0-7.5-3.358-7.5-7.5s3.358-7.5 7.5-7.5h227c4.142 0 7.5 3.358 7.5 7.5s-3.358 7.5-7.5 7.5zm0-45h-227c-4.142 0-7.5-3.358-7.5-7.5s3.358-7.5 7.5-7.5h227c4.142 0 7.5 3.358 7.5 7.5s-3.358 7.5-7.5 7.5zm-227-45c-4.131 0-7.486-3.341-7.5-7.475-.014-4.142 3.333-7.511 7.475-7.525l149-.5c4.172-.018 7.511 3.333 7.525 7.475s-3.333 7.511-7.475 7.525l-149 .5c-.008 0-.017 0-.025 0zm187.475-75h-147.95c-4.142 0-7.5-3.358-7.5-7.5s3.358-7.5 7.5-7.5h147.95c4.142 0 7.5 3.358 7.5 7.5s-3.358 7.5-7.5 7.5z"></path></g></svg>
+                                        <svg id="fi_3253339" enableBackground="new 0 0 512 512" height="20" viewBox="0 0 512 512" width="20" xmlns="http://www.w3.org/2000/svg"><g><path d="m391.99 512h-317c-12.407 0-22.5-10.093-22.5-22.5v-7.5h-7.5c-12.407 0-22.5-10.093-22.5-22.5v-225c0-4.142 3.358-7.5 7.5-7.5s7.5 3.358 7.5 7.5v225c0 4.136 3.365 7.5 7.5 7.5h317c4.136 0 7.5-3.364 7.5-7.5v-168.665l-25.797-74.098c-1.088-3.125-1.64-6.387-1.64-9.694v-56.083c0-6.077 3.708-11.295 9.448-13.293 5.738-2 11.886-.212 15.662 4.552l2.327 2.937v-122.656c0-4.136-3.364-7.5-7.5-7.5h-317c-4.135 0-7.5 3.364-7.5 7.5v182c0 4.142-3.358 7.5-7.5 7.5s-7.5-3.358-7.5-7.5v-182c0-12.407 10.093-22.5 22.5-22.5h317c12.407 0 22.5 10.093 22.5 22.5v7.5h7.5c12.407 0 22.5 10.093 22.5 22.5v106.841c0 4.142-3.358 7.5-7.5 7.5s-7.5-3.358-7.5-7.5v-106.841c0-4.136-3.364-7.5-7.5-7.5h-7.5v119.087l17.501 22.089c2.055 2.594 3.648 5.493 4.735 8.616l81.859 235.13c4.186 12.023-6.207 25.808-24.174 32.063s-34.672 1.905-38.859-10.119l-11.062-31.775v69.409c0 12.407-10.093 22.5-22.5 22.5zm-324.5-30v7.5c0 4.136 3.365 7.5 7.5 7.5h317c4.136 0 7.5-3.364 7.5-7.5v-112.494l-15-43.085v125.579c0 12.407-10.093 22.5-22.5 22.5zm292.869-263.016 79.36 227.951c.7 2.009 8.49 4.808 19.762.884 11.271-3.924 15.64-10.956 14.94-12.966l-79.36-227.951zm-3.305-29.502v14.77l31.448-10.948-9.172-11.576zm0-35.869v19.987l12.412-4.321zm-40.064 268.387h-227c-4.142 0-7.5-3.358-7.5-7.5s3.358-7.5 7.5-7.5h227c4.142 0 7.5 3.358 7.5 7.5s-3.358 7.5-7.5 7.5zm0-45h-227c-4.142 0-7.5-3.358-7.5-7.5s3.358-7.5 7.5-7.5h227c4.142 0 7.5 3.358 7.5 7.5s-3.358 7.5-7.5 7.5zm0-45h-227c-4.142 0-7.5-3.358-7.5-7.5s3.358-7.5 7.5-7.5h227c4.142 0 7.5 3.358 7.5 7.5s-3.358 7.5-7.5 7.5zm-20-45h-207c-4.142 0-7.5-3.358-7.5-7.5s3.358-7.5 7.5-7.5h207c4.142 0 7.5 3.358 7.5 7.5s-3.358 7.5-7.5 7.5zm20-45h-227c-4.142 0-7.5-3.358-7.5-7.5s3.358-7.5 7.5-7.5h227c4.142 0 7.5 3.358 7.5 7.5s-3.358 7.5-7.5 7.5zm0-45h-227c-4.142 0-7.5-3.358-7.5-7.5s3.358-7.5 7.5-7.5h227c4.142 0 7.5 3.358 7.5 7.5s-3.358 7.5-7.5 7.5zm-227-45c-4.131 0-7.486-3.341-7.5-7.475-.014-4.142 3.333-7.511 7.475-7.525l149-.5c4.172-.018 7.511 3.333 7.525 7.475s-3.333 7.511-7.475 7.525l-149 .5c-.008 0-.017 0-.025 0zm187.475-75h-147.95c-4.142 0-7.5-3.358-7.5-7.5s3.358-7.5 7.5-7.5h147.95c4.142 0 7.5 3.358 7.5 7.5s-3.358 7.5-7.5 7.5z"></path></g></svg>
                                         <textarea placeholder={lang == 'ar' ? 'رقم الهاتف' : 'Note'} rows={3} wrap="soft" className="focus-visible:outline-none text-sm w-full" value={notes} id="message2" onChange={(e: any) => setnotes(e.target.value)}></textarea>
                                     </div>
                                 </div>
