@@ -1,29 +1,45 @@
 "use client"; // This is a client component 👈🏽
 
-import React, { useEffect, useState, Fragment, useContext } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import Select from 'react-select'
-import dynamic from 'next/dynamic'
-import { getDictionary } from "../dictionaries"
+import dynamic from 'next/dynamic'  
 
 import { useRouter } from 'next/navigation'
-import shoppingCart from "../../../public/json/shoppingCart.json"
+import CartIcon from "@/public/icons/empty_cart.png";
 import dayjs from 'dayjs'
-import { NewMedia } from '../api/Api'
-import { get, post } from "../api/ApiCalls"
 import Swal from 'sweetalert2'
 import '@next/third-parties/google'
 import withReactContent from 'sweetalert2-react-content'
-import { getCart, getCartCount, getSummary, removeCartItem, increaseQty, setShipping, setDiscountRule, setDiscountRuleBogo, getProductids, removecheckoutdata, removeCartItemFbt, removeCartItemGift, getExpressDeliveryCart, getPickupStoreCart, setPickupStoreCart, getFGCart, addgifttextraitem } from '../cartstorage/cart';
+import {
+  getCart,
+  getCartCount,
+  getSummary,
+  removeCartItem,
+  increaseQty,
+  setShipping,
+  setDiscountRule,
+  setDiscountRuleBogo,
+  getProductids,
+  removecheckoutdata,
+  removeCartItemFbt,
+  removeCartItemGift,
+  getExpressDeliveryCart,
+  getPickupStoreCart,
+  setPickupStoreCart,
+} from "../cartstorage/cart";
 import FullPageLoader from '../components/FullPageLoader';
 import GlobalContext from '../GlobalContext'
 import PickupStorePopup from '../components/PickupStorePopup';
+import { getDiscountTypeCart, getUserProfileData, getWishlist, removeWishlist } from '@/lib/cartPage/cart.client';
+import { useApp } from '@/app/_ctx/AppContext';
 
 const MobileHeader = dynamic(() => import('../components/MobileHeader'), { ssr: true })
 
-export default function NewCart({ params }: { params: { lang: string, data: any, devicetype: any } }) {
-    const [dict, setDict] = useState<any>([]);
+export default function NewCart() {
+    const NewMedia = process.env.NEXT_PUBLIC_NEW_MEDIA;
+    const { lang, origin, deviceType, t } = useApp();
     const [cartData, setcartData] = useState<any>({})
     const [cartCount, setCartCount] = useState(0)
     const [summary, setSummary] = useState<any>([]);
@@ -41,7 +57,7 @@ export default function NewCart({ params }: { params: { lang: string, data: any,
 
     // Fgift 
     const [isOpen, setIsOpen] = useState(false)
-    const isArabic = params?.lang === "ar" ? true : false;
+    const isArabic = lang === "ar" ? true : false;
     const [extraData, setExtraData] = useState<any>([]);
     const [selectedGifts, setselectedGifts] = useState<any>({})
     const [allowed_gifts, setallowed_gifts] = useState(0)
@@ -92,16 +108,12 @@ export default function NewCart({ params }: { params: { lang: string, data: any,
     }
 
     useEffect(() => {
-        (async () => {
-            const translationdata = await getDictionary(params.lang);
-            setDict(translationdata);
-        })();
 
         resetCart()
         getDiscountType()
         getUser()
 
-    }, [params])
+    }, []);
 
     useEffect(() => {
         var sku: string[] = []
@@ -120,15 +132,6 @@ export default function NewCart({ params }: { params: { lang: string, data: any,
         }
     }, [cartData?.products, gtmEventPushed])
 
-    function detectPlatform() {
-        if (window.Android) return "Android-WebView";
-        if (window.webkit?.messageHandlers?.iosBridge) return "iOS-WebView";
-        var userAgent = navigator.userAgent || navigator.vendor || window.opera;
-        if (/android/i.test(userAgent)) return "Android-Mobile-WebView";
-        if (/iPad|iPhone|iPod/.test(userAgent)) return "iOS-Mobile-WebView";
-        return "Web";
-    }
-
     const pushGTMEvent = () => {
         if (typeof window === 'undefined' || !window.dataLayer) return;
 
@@ -140,7 +143,7 @@ export default function NewCart({ params }: { params: { lang: string, data: any,
             event: isList,
             value: Number(getSummary().filter((element: any) => element.key == 'total')[0]?.price), // sum of prices
             currency: "SAR", // currency
-            platform: detectPlatform(),
+            platform: deviceType,
             ecommerce: {
                 items: productArray.map((item: any, index: number) => {
                     const price = item?.bogo === 1 ? 0 : (item?.price > 0 ? Number(item?.price) : Number(item?.regular_price));
@@ -167,10 +170,10 @@ export default function NewCart({ params }: { params: { lang: string, data: any,
     };
 
     const getDiscountType = async () => {
-        get(`getdiscounttype`).then((responseJson: any) => {
-            setDiscountType(responseJson?.data?.discount_type)
-        })
-    }
+        const discountData: any = await getDiscountTypeCart();
+        const responseJson = discountData?.discountData;
+        setDiscountType(responseJson?.data?.discount_type);
+    };
 
     const resetCart = async (isRun: any = true) => {
         removecheckoutdata()
@@ -189,7 +192,7 @@ export default function NewCart({ params }: { params: { lang: string, data: any,
 
         {/* Commented Pickup Store */ }
         if (isRun == true) {
-            const store: any = await getPickupStoreCart(params?.lang, false)
+            const store: any = await getPickupStoreCart(lang, false)
             setglobalStore(store?.warehouse_single)
             localStorage.setItem('globalStore', store?.warehouse_single?.id)
             setallStores(store?.warehouses)
@@ -258,16 +261,14 @@ export default function NewCart({ params }: { params: { lang: string, data: any,
 
     const getUser: any = async () => {
         if (localStorage.getItem("userid")) {
-            setUserid(localStorage.getItem("userid"))
+        setUserid(localStorage.getItem("userid"));
 
-            var proid: any = getProductids();
-
-            await get(`user/${localStorage.getItem('userid')}`).then((responseJson: any) => {
-                setProfileData(responseJson)
-            })
+        var proid: any = getProductids();
+        const profileData: any = await getUserProfileData();
+        const responseJson = profileData?.userData;
+        setProfileData(responseJson);
         }
-
-    }
+    };
 
     const getCheckout: any = async () => {
         setLoaderStatus(true)
@@ -280,59 +281,59 @@ export default function NewCart({ params }: { params: { lang: string, data: any,
         // })
         // // abandoned cart work
         if (localStorage.getItem("userid")) {
-            router.push(`/${params.lang}/checkout`);
+            router.push(`${origin}/${lang}/checkout`);
         } else {
-            router.push(`/${params.lang}/login?type=checkout`)
+            router.push(`${origin}/${lang}/login?type=checkout`)
         }
     }
 
-    const WishlistProduct = (i: number, id: number) => {
-        if (localStorage.getItem("userid")) {
-            var data = {
-                user_id: localStorage.getItem("userid"),
-                product_id: id,
-            }
-            post('addwishlist', data).then((responseJson: any) => {
-                if (responseJson?.success) {
-                    if (localStorage.getItem("wishlistCount")) {
-                        topMessageAlartSuccess(dict?.products?.wishlistAddedText)
-                        var wishlistlength: any = localStorage.getItem('wishlistCount');
-                        wishlistlength = parseInt(wishlistlength) + 1;
-                        localStorage.setItem('wishlistCount', wishlistlength);
-                    }
-                    getUser()
-                    localStorage.removeItem('userWishlist')
-                    setUpdateWishlist(updateWishlist == 0 ? 1 : 0)
-                }
-            })
-        } else {
-            router.push(`/${params.lang}/login`)
+    const WishlistProduct = async (i: number, id: number) => {
+    if (localStorage.getItem("userid")) {
+      var data = {
+        user_id: localStorage.getItem("userid"),
+        product_id: id,
+      };
+      const wishlistData = await getWishlist(data);
+      const responseJson = wishlistData?.wishlistData;
+      if (responseJson?.success) {
+        if (localStorage.getItem("wishlistCount")) {
+          topMessageAlartSuccess(t('products.wishlistAddedText'));
+          var wishlistlength: any = localStorage.getItem("wishlistCount");
+          wishlistlength = parseInt(wishlistlength) + 1;
+          localStorage.setItem("wishlistCount", wishlistlength);
         }
+        getUser();
+        localStorage.removeItem("userWishlist");
+        setUpdateWishlist(updateWishlist == 0 ? 1 : 0);
+      }
+    } else {
+      router.push(`${origin}/${lang}/login`);
     }
+    };
 
-    const RemoveWishlistProduct = (i: number, id: number) => {
+    const RemoveWishlistProduct = async (i: number, id: number) => {
         if (localStorage.getItem("userid")) {
-            var data = {
-                user_id: localStorage.getItem("userid"),
-                product_id: id,
+        var data = {
+            user_id: localStorage.getItem("userid"),
+            product_id: id,
+        };
+        const wishlistData = await removeWishlist(data);
+        const responseJson = wishlistData?.wishlistData;
+        if (responseJson?.success) {
+            if (localStorage.getItem("wishlistCount")) {
+            topMessageAlartSuccess(t('products.wishlistAddedText'));
+            var wishlistlength: any = localStorage.getItem("wishlistCount");
+            wishlistlength = parseInt(wishlistlength) - 1;
+            localStorage.setItem("wishlistCount", wishlistlength);
             }
-            post('removewishlist', data).then((responseJson: any) => {
-                if (responseJson?.success) {
-                    if (localStorage.getItem("wishlistCount")) {
-                        topMessageAlartSuccess(dict?.products?.wishlistRemovedText)
-                        var wishlistlength: any = localStorage.getItem('wishlistCount');
-                        wishlistlength = parseInt(wishlistlength) - 1;
-                        localStorage.setItem('wishlistCount', wishlistlength);
-                    }
-                    getUser()
-                    localStorage.removeItem('userWishlist')
-                    setUpdateWishlist(updateWishlist == 0 ? 1 : 0)
-                }
-            })
-        } else {
-            router.push(`/${params.lang}/login`)
+            getUser();
+            localStorage.removeItem("userWishlist");
+            setUpdateWishlist(updateWishlist == 0 ? 1 : 0);
         }
-    }
+        } else {
+        router.push(`${origin}/${lang}/login`);
+        }
+    };
     const MySwal = withReactContent(Swal);
     const topMessageAlartSuccess = (title: any) => {
         MySwal.fire({
@@ -355,12 +356,6 @@ export default function NewCart({ params }: { params: { lang: string, data: any,
             },
         });
     };
-
-    const origin =
-        typeof window !== 'undefined' && window.location.origin
-            ? window.location.origin
-            : '';
-
 
     const totalPrice = summary.find((e: any) => e.key === "total")?.price || 0;
 
@@ -390,7 +385,7 @@ export default function NewCart({ params }: { params: { lang: string, data: any,
                     loading="lazy"
                 />
                 <p className="mt-3">
-                    {params.lang === "ar"
+                    {lang === "ar"
                         ? `قسها على ${installments} دفعات`
                         : `Split in ${installments} payments of `}{" "}
                     <span className="font-bold inline-flex items-center gap-0.5">
@@ -398,12 +393,12 @@ export default function NewCart({ params }: { params: { lang: string, data: any,
                         <span>{currencySymbolSmall}</span>
                     </span>
                     .{" "}
-                    {params.lang === "ar"
+                    {lang === "ar"
                         ? "بدون فوائد و رسوم تأخير"
                         : "No interest. No late fees"}.
                 </p>
-                <button className="nc__278mainInnerLMBtn" onClick={() => { router.push(`${origin}/${params.lang}/installment-service-methods`) }}>
-                    {params.lang === "ar" ? "تعلم أكثر" : "Learn More"}
+                <button className="nc__278mainInnerLMBtn" onClick={() => { router.push(`${origin}/${lang}/installment-service-methods`) }}>
+                    {lang === "ar" ? "تعلم أكثر" : "Learn More"}
                 </button>
             </div>
         );
@@ -504,14 +499,26 @@ export default function NewCart({ params }: { params: { lang: string, data: any,
     return (
         <>
             <FullPageLoader loader={loaderStatus} />
-            <MobileHeader type="Third" lang={params.lang} pageTitle={pageTitle} />
+            <MobileHeader type="Third" lang={lang} pageTitle={pageTitle} />
             {cartData?.products?.length < 1 ?
-                <div className="nc__278mainDiv">
+                <div className="nc__278mainDiv container">
                     <div className='text-center'>
-                        <Lottie animationData={shoppingCart} loop={true} className="srh__302mainInnerLottie" />
+                        {/* <Lottie
+                            animationData={shoppingCart}
+                            loop={true}
+                            className="srh__302mainInnerLottie"
+                            /> */}
+                            <Image
+                            src={CartIcon}
+                            alt="Empty Cart"
+                            title="Empty Cart"
+                            width={0}
+                            height={0}
+                            className="w-48 h-48 object-contain inline-block mb-4"
+                        />
                         <p className="nc__278mainInnerXsPara">{pageDescription}</p>
                         <div className="nc__278mainInnerSecDiv">
-                            <Link prefetch={false} scroll={false} href={`${origin}/${params.lang}`} className="btn nc__278mainInnerLink">{shopProductsText}</Link>
+                            <Link prefetch={false} scroll={false} href={`${origin}/${lang}`} className="btn nc__278mainInnerLink">{shopProductsText}</Link>
                         </div>
                     </div>
                 </div>
@@ -882,7 +889,7 @@ export default function NewCart({ params }: { params: { lang: string, data: any,
                                             return (
                                                 <>
                                                     <hr className="nc__278mainInnerHr" key={i} />
-                                                    <div className="nc__278mainInnerNineteenDiv" key={i}>
+                                                    <div className="nc__278mainInnerNineteenDiv" key={i + 1}>
                                                         <label className="text-dark">{itemTitletext} <small className="nc__278mainInnerSmall">({includingVatText})</small></label>
                                                         <p className={`text-[#004B7A] flex items-center gap-0.5`}><span className="font-bold">{s?.price?.toLocaleString('EN-US')}</span>{' '}{currencySymbol}</p>
                                                     </div>
@@ -941,13 +948,13 @@ export default function NewCart({ params }: { params: { lang: string, data: any,
                                 />
                             </div>
                         </div>
-                        <div className="nc__278mainInnerCheckDiv left-0 !bottom-[78px]">
+                        <div className="nc__278mainInnerCheckDiv container left-0 !bottom-[78px]">
                             <div className="nc__278mainInnerCheckFirstDiv" onClick={() => getCheckout()}>
                                 <button className="nc__278mainInnerCheckBtn" onClick={() => getCheckout()}>{proceedCheckout}</button>
                             </div>
                         </div>
                         {/* Commented Pickup Store */}
-                        <PickupStorePopup lang={params?.lang} allStores={allStores} setModal={() => setIsOpenModal(false)} isOpenModal={isOpenModal} direction={direction} isArabic={isArabic ? true : false} />
+                        <PickupStorePopup lang={lang} allStores={allStores} setModal={() => setIsOpenModal(false)} isOpenModal={isOpenModal} direction={direction} isArabic={isArabic ? true : false} />
                     </>
                     :
                     null}

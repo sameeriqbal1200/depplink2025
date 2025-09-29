@@ -43,7 +43,7 @@ export default function MobileHeaderNew(props:any) {
   const [cityList, setCityList] = useState<boolean>(false);
   const [citySearch, setCitySearch] = useState<any>("");
   const [searchPop, setSearchPop] = useState<boolean>(false);
-  const [searchInput, setSearchInput] = useState<any>(null);
+  const [searchInput, setSearchInput] = useState<any>("");
   const [searchResult, setSearchResult] = useState<any>(null);
   const [searchDialoug, setSearchDialoug] = useState(false);
   const [cartCount, setCartCount] = useState(0);

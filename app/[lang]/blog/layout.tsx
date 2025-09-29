@@ -21,15 +21,15 @@ export async function generateMetadata(): Promise<Metadata | null> {
 
     const metaTitle =
         lang === "en"
-            ? blogsData?.blogsettings?.meta_title_en ?? "Tamkeen Stores About Us"
-            : blogsData?.blogsettings?.meta_title_ar ?? "معلومات عنا | معارض تمكين";
+            ? blogsData?.data?.meta_title_en ?? "Tamkeen Stores Blog"
+            : blogsData?.data?.meta_title_ar ?? "مدونة معارض تمكين";
 
     const metaDescription =
         lang === "en"
-            ? blogsData?.blogsettings?.meta_description_en ??
-            "Tamkeen Stores About Us"
-            : blogsData?.blogsettings?.meta_description_ar ??
-            "معارض تمكين معلومات عنا";
+            ? blogsData?.data?.meta_description_en ??
+            "Tamkeen Stores Blog"
+            : blogsData?.data?.meta_description_ar ??
+            "مدونة معارض تمكين";
 
     // In /[lang]/about-us/[...slug], slugParts are ONLY the [...slug] bits (not "about-us")
     const suffix = slugParts?.length ? `/${slugParts.join("/")}` : "";

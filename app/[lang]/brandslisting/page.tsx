@@ -1,42 +1,26 @@
 "use client"; // This is a client component 👈🏽
 
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react';
 import Link from 'next/link'
 import Image from 'next/image'
-import { NewMedia } from '@/lib/api/apiLinks'
-import { get } from "@/lib/api/apiCalls"
-import { getDictionary } from "../dictionaries"
 import dynamic from 'next/dynamic';
+import { useApp } from '@/app/_ctx/AppContext';
+import { useSlot } from '@/app/_ctx/ClientDataRegistry';
 
 const MobileHeader = dynamic(() => import('../components/MobileHeader'), { ssr: true })
 
 export default function AboutUs({ params }: { params: { lang: string, data: any } }) {
-    const [dict, setDict] = useState<any>([]);
-    const isArabic = params?.lang === "ar" ? true : false;
-    const [brandsData, setBrandsData] = useState<any>([]);
-    const getBrandsData = async () => {
-        await get(`get-brands`).then((responseJson: any) => {
-            setBrandsData(responseJson?.brands)
-        })
-    }
-
-    useEffect(() => {
-        (async () => {
-            const translationdata = await getDictionary(lang);
-            setDict(translationdata);
-        })();
-        getBrandsData()
-    }, [params])
-
-    const origin =
-        typeof window !== 'undefined' && window.location.origin
-            ? window.location.origin
-            : '';
+    const NewMedia = process.env.NEXT_PUBLIC_NEW_MEDIA;
+    const { lang, deviceType, origin } = useApp();
+    const [ariaLabel, setAriaLabel] = useState('/ar');
+    const isArabic = lang === "ar" ? true : false;
 
     const titles = {
         breadcrumbHome: isArabic ? 'الصفحة الرئيسية' : 'Home',
         breadcrumbBrands: isArabic ? 'تسوق حسب العلامة التجارية' : 'Shop by Brands'
     };
+
+    const brandsListingData = useSlot<any>("brandListingPageData"); 
 
     return (
         <>
@@ -46,7 +30,7 @@ export default function AboutUs({ params }: { params: { lang: string, data: any 
                 <div className="my-6">
                     <h1 className=" font-semibold text-lg 2xl:text-xl hidden md:block">{lang == 'ar' ? 'تسوق حسب العلامة التجارية' : `Shop By Brand's`}</h1>
                     <div className={`grid grid-cols-2 md:mt-4 gap-3`}>
-                        {brandsData?.map((data: any, i: number) => {
+                        {brandsListingData?.brands?.map((data: any, i: number) => {
                             return (
                                 <div className='bg-white h-auto relative p-2 rounded-lg shadow-md text-sm' key={data?.id}>
                                     <Link
