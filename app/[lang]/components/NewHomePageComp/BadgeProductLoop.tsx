@@ -8,7 +8,6 @@ import 'swiper/css/free-mode';
 import 'swiper/css/scrollbar';
 import './scrollBar.css';
 import Link from "next/link";
-import { get } from "../../api/ApiCalls";
 import { getCookie } from "cookies-next";
 import { getProductExtraData } from "@/lib/components/component.client";
 
