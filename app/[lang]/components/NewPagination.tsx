@@ -120,7 +120,7 @@ const Pagination: React.FC<PaginationProps> = ({
           }`}
           disabled={currentPage === 1}
         >
-          {prevIcon}
+          {isArabic ? nextIcon : prevIcon}
         </button>
 
         {/* Next Button */}
@@ -131,7 +131,7 @@ const Pagination: React.FC<PaginationProps> = ({
           }`}
           disabled={currentPage === lastPage}
         >
-          {nextIcon}
+          {isArabic ? prevIcon : nextIcon}
         </button>
       </div>
     );
