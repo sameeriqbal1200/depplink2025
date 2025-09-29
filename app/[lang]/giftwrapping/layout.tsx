@@ -1,136 +1,154 @@
-
-import type { Metadata, ResolvingMetadata } from 'next'
-import { get } from "../api/ApiCalls"
-import { headers } from 'next/headers'
-
-// import Loading from './loading'
-type Props = {
-    params: { slug: string, lang: string, data: any }
-}
+import type { Metadata } from "next";
+import { getRequestContext } from "@/lib/request-context";
+import { BridgeSlot } from "@/app/_ctx/ClientDataRegistry";
+import { getFooterCached } from "@/lib/footerpages/footer.cached";
 
 export const viewport = {
     width: 'device-width',
     initialScale: 1,
     maximumScale: 1,
-    // userScalable: false,
-    // Also supported by less commonly used
-    // interactiveWidget: 'resizes-visual',
 }
 
+export default async function GiftWrappingLayout({ children }: { children: React.ReactNode }) {
+    const { slugStr, lang, baseUrl } = await getRequestContext();
+    if (!slugStr) return null;
 
-const fetcher = async (params: any) => {
-    const slug = "giftwrapping";
-    var data;
-    await get('footer_pages/' + slug).then((responseJson: any) => {
-        data = responseJson
-    })
-    return data
-}
+    const footer = await getFooterCached(slugStr);
+    const value = footer ? JSON.parse(JSON.stringify(footer)) : null;
 
-export async function generateMetadata({ params }: Props, parent: ResolvingMetadata): Promise<Metadata> {
-    return {
-        title: params.lang == 'ar' ? params?.data?.data?.meta_title_ar : params?.data?.data?.meta_title_en,
-        description: params.lang == 'ar' ? params?.data?.data?.meta_description_ar : params?.data?.data?.meta_description_en,
-        keywords: [params.lang == 'ar' ? params?.data?.data?.meta_tag_ar : params?.data?.data?.meta_tag_en],
-        referrer: 'origin-when-cross-origin',
-        robots: {
-            index: true,
-            follow: true,
-            nocache: false,
-            googleBot: {
-                index: true,
-                follow: true,
-                noimageindex: false,
-                'max-video-preview': -1,
-                'max-image-preview': 'large',
-                'max-snippet': -1,
-            },
-        },
-        formatDetection: {
-            email: false,
-            address: true,
-            telephone: true,
-        },
-        openGraph: {
-            siteName: params.lang == 'ar' ? params?.data?.data?.meta_title_ar : params?.data?.data?.meta_title_en,
-            title: params.lang == 'ar' ? params?.data?.data?.meta_title_ar : params?.data?.data?.meta_title_en,
-            description: params.lang == 'ar' ? params?.data?.data?.meta_description_ar : params?.data?.data?.meta_description_en,
-            locale: params.lang,
-            type: 'website',
-            images: [
-                {
-                    url: '/images/metaLogo.jpg', // Must be an absolute URL
-                    width: 800,
-                    height: 800,
-                    alt: 'logo',
-                },
-            ],
-            url: `https://tamkeenstores.com.sa/${params.lang}/${params?.data?.data?.page_link}`,
-        },
-        alternates: {
-            canonical: `https://tamkeenstores.com.sa/${params.lang}/${params?.data?.data?.page_link}`, //This will be current link will come
-            languages: {
-                'en': `https://tamkeenstores.com.sa/en/${params?.data?.data?.page_link}`,
-                'ar': `https://tamkeenstores.com.sa/ar/${params?.data?.data?.page_link}`,
-            },
-        },
-        appLinks: {
-            ios: {
-                url: 'https://apps.apple.com/sa/app/tamkeen-stores-%D9%85%D8%B9%D8%A7%D8%B1%D8%B6-%D8%AA%D9%85%D9%83%D9%8A%D9%86/id1546482321',
-                app_store_id: 'com.tamkeen.tamkeenstore',
-            },
-            android: {
-                package: 'https://play.google.com/store/apps/details?id=com.tamkeen.tamkeenstores&hl=en&gl=US&pli=1',
-                app_name: 'com.tamkeen.tamkeenstores',
-            },
-            web: {
-                url: `https://tamkeenstores.com.sa/${params.lang}/${params?.data?.data?.page_link}`,
-                should_fallback: true,
-            },
-        },
-        twitter: {
-            card: 'summary_large_image',
-            title: params.lang == 'ar' ? params?.data?.data?.meta_title_ar : params?.data?.data?.meta_title_en,
-            description: params.lang == 'ar' ? params?.data?.data?.meta_description_ar : params?.data?.data?.meta_description_en,
-            siteId: '@TamkeenStores',
-            creator: 'Muhammad Usman Siddiqui | usman@tamkeen-ksa.com',
-            images: ['/images/metaLogo.jpg'], // Must be an absolute URL
-        },
-    }
-}
-
-export default async function GiftWrappingLayout({ children, params }: { children: React.ReactNode, params: { slug: string, data: any, lang: string} }) {
-    const footerdata = await fetcher(params);
-    params.data = footerdata;
     const jsonLd = [
         {
             "@id": "#breadcrumb",
-            "@context": "http://schema.org",
+            "@context": "https://schema.org",
             "@type": "BreadcrumbList",
             itemListElement: [
                 {
                     "@type": "ListItem",
                     position: 1,
-                    name: params.lang == 'ar' ? 'الصفحة الرئيسي' : 'Home Page',
-                    item: "https://tamkeenstores.com.sa/" + params.lang,
+                    name: lang === 'ar' ? 'الصفحة الرئيسي' : 'Home Page',
+                    item: `${baseUrl}/${lang}`,
                 },
                 {
                     "@type": "ListItem",
                     position: 2,
-                    name: "Gift Wrapping",
-                    item: "https://tamkeenstores.com.sa/" + params.lang + "/giftwrapping",
+                    name: lang === 'ar' ? 'تغليف الهدايا' : 'Gift Wrapping',
+                    item: `${baseUrl}/${lang}/${footer?.data?.data?.page_link}`,
                 },
             ],
         },
     ]
-
     return (
-        <>
+        <BridgeSlot slot="footer" value={value}>
             <script
                 type="application/ld+json"
                 dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
             />
             {children}
-        </>
-    )
+        </BridgeSlot>
+    );
+}
+
+// ---- SEO metadata ----
+export async function generateMetadata(): Promise<Metadata | null> {
+    const { slugParts, slugStr, lang, origin } = await getRequestContext();
+    if (!slugStr) return null;
+
+    const footer = await getFooterCached(slugStr);
+
+    const metaTitle =
+        lang === "en"
+            ? footer?.data?.meta_title_en ?? "Tamkeen Stores Gift Wrapping"
+            : footer?.data?.meta_title_ar ?? "معلومات عن معارض تمكين";
+
+    const metaDescription =
+        lang === "en"
+            ? footer?.data?.meta_description_en ?? "Tamkeen Stores Gift Wrapping"
+            : footer?.data?.meta_description_ar ?? "معلومات عن معارض تمكين";
+
+
+    // In /[lang]/about-us/[...slug], slugParts are ONLY the [...slug] bits (not "about-us")
+    const suffix = slugParts?.length ? `/${slugParts.join("/")}` : "";
+    const canonicalPath = `/${lang}${suffix}`;
+    const canonicalUrl = `${origin}${canonicalPath}`;
+
+    return {
+        metadataBase: new URL(origin),
+        title: metaTitle,
+        description: metaDescription,
+        keywords: [
+            "Tamkeen Stores",
+            "تمكين",
+            "Electronics Saudi Arabia",
+            "معارض تمكين",
+            "Gift Wrapping",
+        ],
+
+        referrer: "origin-when-cross-origin",
+        robots: {
+            index: true,
+            follow: true,
+            googleBot: {
+                index: true,
+                follow: true,
+                "max-image-preview": "large",
+                "max-snippet": -1,
+                "max-video-preview": -1,
+            },
+        },
+        formatDetection: { email: false, address: true, telephone: true },
+
+        openGraph: {
+            siteName: "Tamkeen Stores",
+            title: metaTitle,
+            description: metaDescription,
+            locale: lang,
+            type: "website",
+            images: [
+                {
+                    url: `${origin}/images/metaLogo.jpg`,
+                    width: 800,
+                    height: 800,
+                    alt: "logo",
+                },
+            ],
+            url: canonicalUrl,
+        },
+
+        alternates: {
+            canonical: canonicalUrl,
+            languages: {
+                en: `${origin}/en${suffix}`,
+                ar: `${origin}/ar${suffix}`,
+            },
+        },
+
+        appLinks: {
+            ios: {
+                url: "https://apps.apple.com/sa/app/tamkeen-stores-%D9%85%D8%B9%D8%A7%D8%B1%D8%B6-%D8%AA%D9%85%D9%83%D9%8A%D9%86/id1546482321",
+                app_store_id: "com.tamkeen.tamkeenstore",
+            },
+            android: {
+                package:
+                    "https://play.google.com/store/apps/details?id=com.tamkeen.tamkeenstores",
+                app_name: "com.tamkeen.tamkeenstores",
+            },
+            web: { url: canonicalUrl, should_fallback: true },
+        },
+
+        twitter: {
+            card: "summary_large_image",
+            title: metaTitle,
+            description: metaDescription,
+            site: "@TamkeenStores",
+            creator: "@TamkeenStores",
+            images: [`${origin}/images/metaLogo.jpg`],
+        },
+
+        // ✅ Developer Info (will render as <meta name="developer:*">)
+        other: {
+            "developer:name": "Muhammad Usman Siddiqui",
+            "developer:email": "usman@tamkeen-ksa.com",
+            "developer:role": "E-commerce Applications Manager",
+        },
+    };
 }
