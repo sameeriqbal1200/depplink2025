@@ -1,16 +1,51 @@
-import { Api } from '@/lib/api/apiLinks';
 import { getRequestContext } from "@/lib/request-context";
 import { getFooterCached } from "@/lib/footerpages/footer.cached";
 import type { Metadata } from 'next'
-
-type Props = {
-    params: { slug: string, lang: string, data: any }
-}
+import { BridgeSlot } from "@/app/_ctx/ClientDataRegistry";
+import { getBrandListingPageData } from "@/lib/brand/brand-listing.server";
 
 export const viewport = {
     width: 'device-width',
     initialScale: 1,
     maximumScale: 1,
+}
+
+export default async function BrandLayout({ children }: { children: React.ReactNode }) {
+    const { lang, baseUrl } = await getRequestContext();
+
+    const brandPageData = await getBrandListingPageData();
+    const value = brandPageData ? JSON.parse(JSON.stringify(brandPageData)) : null;
+    const jsonLd = [
+        {
+            "@context": "https://schema.org", // Prefer https
+            "@type": "BreadcrumbList",
+            "@id": "#breadcrumb",
+            itemListElement: [
+                {
+                    "@type": "ListItem",
+                    position: 1,
+                    name: lang === 'ar' ? 'الصفحة الرئيسية' : 'Home',
+                    item: `${baseUrl}/${lang}`
+                },
+                {
+                    "@type": "ListItem",
+                    position: 2,
+                    name: lang === 'ar' ? 'تسوق حسب العلامة التجارية' : "Shop by Brands",
+                    item: `${baseUrl}/${lang}/${brandPageData?.data?.data?.page_link}`
+                }
+            ]
+        }
+    ];
+
+    return (
+        <BridgeSlot slot="brandListingPageData" value={value}>
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+            />
+            {children}
+        </BridgeSlot>
+    );
 }
 
 export async function generateMetadata(): Promise<Metadata | null> {
@@ -116,12 +151,4 @@ export async function generateMetadata(): Promise<Metadata | null> {
             "developer:role": "E-commerce Applications Manager",
         },
     };
-}
-
-export default async function AboutUsLayout({ children, params }: { children: React.ReactNode, params: { slug: string, data: any, lang: string } }) {
-    return (
-        <>
-            {children}
-        </>
-    )
 }
