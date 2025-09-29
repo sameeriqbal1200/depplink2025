@@ -43,7 +43,7 @@ export default function ProductLoopComponent(props: any) {
     return (
         <>
             {productData?.map((productData: any, i: number) => (
-                <ProductComponent NewMedia={NewMedia} productImage="https://images.tamkeenstores.com.sa/assets/new-media/GT32Q69-1W.webp" productData={productData} key={i} isArabic={isArabic} isMobileOrTablet={isMobileOrTablet} origin={origin} ProExtraData={ProExtraData?.[productData?.id]} />
+                <ProductComponent NewMedia={NewMedia} productImage="https://images.tamkeenstores.com.sa/assets/new-media/GT32Q69-1W.webp" productData={productData} key={i} lang={isArabic} isMobileOrTablet={isMobileOrTablet} origin={origin} ProExtraData={ProExtraData?.[productData?.id]} />
             ))}
         </>
     );
