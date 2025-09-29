@@ -4,11 +4,12 @@ import { BridgeSlot } from "@/app/_ctx/ClientDataRegistry";
 import { getFooterCached } from "@/lib/footerpages/footer.cached";
 
 export default async function FlyerLayout({ children }: { children: React.ReactNode }) {
-    const { slugStr } = await getRequestContext();
+    const { lang, baseUrl } = await getRequestContext();
+    const slugStr = "ministryofcommerce";
     if (!slugStr) return null;
-
     const footer = await getFooterCached(slugStr);
     const value = footer ? JSON.parse(JSON.stringify(footer)) : null;
+
     return <BridgeSlot slot="footer" value={value}>{children}</BridgeSlot>;
 }
 

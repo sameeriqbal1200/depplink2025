@@ -1,6 +1,6 @@
 "use client"; // This is a client component 👈🏽
 
-import React, { useEffect, useState, Fragment, useContext, use } from 'react';
+import React, { useEffect, useState, Fragment, useContext } from 'react';
 import Image from 'next/image'
 import { useRouter } from 'next-nprogress-bar';
 import Swal from 'sweetalert2'
@@ -286,7 +286,7 @@ export default function Compare() {
                                 {comapareData?.user?.compares?.length < 4 ?
                                     [...Array(4 - comapareData?.user?.compares?.length)].map((data: any, i: React.Key | null | undefined) => {
                                         return (
-                                            <div className="bg-[#5D686F20] border border-[#5D686F30] p-4 flex items-center justify-center text-[#00002C] fill-[#00002C] gap-x-3">
+                                            <div key={i} className="bg-[#5D686F20] border border-[#5D686F30] p-4 flex items-center justify-center text-[#00002C] fill-[#00002C] gap-x-3">
                                                 <svg height="18" width="18" viewBox="0 0 426.66667 426.66667" xmlns="http://www.w3.org/2000/svg" id="fi_1828925" className="text-center"><path d="m405.332031 192h-170.664062v-170.667969c0-11.773437-9.558594-21.332031-21.335938-21.332031-11.773437 0-21.332031 9.558594-21.332031 21.332031v170.667969h-170.667969c-11.773437 0-21.332031 9.558594-21.332031 21.332031 0 11.777344 9.558594 21.335938 21.332031 21.335938h170.667969v170.664062c0 11.777344 9.558594 21.335938 21.332031 21.335938 11.777344 0 21.335938-9.558594 21.335938-21.335938v-170.664062h170.664062c11.777344 0 21.335938-9.558594 21.335938-21.335938 0-11.773437-9.558594-21.332031-21.335938-21.332031zm0 0"></path></svg>
                                                 {lang == "ar" ? 'إضافة مــنــتج اخــر الي الـمقـارنة' : 'Product Specifications'}
                                             </div>
