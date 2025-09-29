@@ -7,7 +7,6 @@ import dayjs from 'dayjs'
 import 'dayjs/locale/ar'
 import relativeTime from "dayjs/plugin/relativeTime";
 import dynamic from 'next/dynamic';
-import { NewMedia } from '@/lib/api/apiLinks';
 import { useApp } from '@/app/_ctx/AppContext';
 import { useSlot } from '@/app/_ctx/ClientDataRegistry';
 
@@ -17,7 +16,7 @@ export default function Blogs() {
     const { lang } = useApp();
     const blogsData = useSlot<any>("blogs");
     dayjs.extend(relativeTime);
-    console.log(dayjs().fromNow()); // "a few seconds ago"
+    const NewMedia = process.env.NEXT_PUBLIC_NEW_MEDIA;
 
     return (
         <div className='pt-10'>
