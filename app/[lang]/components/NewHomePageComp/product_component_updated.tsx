@@ -19,13 +19,14 @@ import { useApp } from "@/app/_ctx/AppContext";
 import SARIcon from "../Icons/SARIcon";
 import StarIcon from "../Icons/StarIcon";
 import CopyIcon from "../Icons/CopyIcon";
+import ClockIcon from "../Icons/ClockIcon";
 
 export default function product_component_updated(props: any) {
   const router = useRouter();
   const origin = props?.origin;
   const isArabic = props?.lang;
   const NewMedia = props?.NewMedia;
-  const { deviceDetail } = useApp()
+  const { deviceDetail } = useApp();
   const isMobileOrTablet = props?.isMobileOrTablet;
   var productData: any = props?.productData;
   const [isImageLoaded, setImageLoaded] = useState(false);
@@ -82,44 +83,45 @@ export default function product_component_updated(props: any) {
   const productBadgeRightBackgroundColor = productData?.badge_right_color
     ? productData?.badge_right_color
     : "#004B7A";
-  const productSlug = `${origin}/${isArabic ? "ar" : "en"}/product/${productData?.slug
-    }`;
+  const productSlug = `${origin}/${isArabic ? "ar" : "en"}/product/${
+    productData?.slug
+  }`;
   function isValidUrl(value: any) {
     return value != null && value !== "" && value !== undefined;
   }
   const productFeaturedImage: any =
     isValidUrl(productData?.featured_image?.image) &&
-      productData?.featured_image?.image
+    productData?.featured_image?.image
       ? `${NewMedia}${productData?.featured_image?.image}`
       : null;
   const productSpecificationImageOne: any =
     isValidUrl(productData?.specification_image_one) &&
-      productData?.specification_image_one
+    productData?.specification_image_one
       ? `${productData?.specification_image_one}`
       : null;
   const productSpecificationImageTwo: any =
     isValidUrl(productData?.specification_image_two) &&
-      productData?.specification_image_two
+    productData?.specification_image_two
       ? `${productData?.specification_image_two}`
       : null;
   const productSpecificationImageThree: any =
     isValidUrl(productData?.specification_image_three) &&
-      productData?.specification_image_three
+    productData?.specification_image_three
       ? `${productData?.specification_image_three}`
       : null;
   const productSpecificationImageFour: any =
     isValidUrl(productData?.specification_image_four) &&
-      productData?.specification_image_four
+    productData?.specification_image_four
       ? `${productData?.specification_image_four}`
       : null;
   const productSpecificationImageFive: any =
     isValidUrl(productData?.specification_image_five) &&
-      productData?.specification_image_five
+    productData?.specification_image_five
       ? `${productData?.specification_image_five}`
       : null;
   const productSpecificationImageSix: any =
     isValidUrl(productData?.specification_image_six) &&
-      productData?.specification_image_six
+    productData?.specification_image_six
       ? `${productData?.specification_image_six}`
       : null;
   const productTitle = isArabic ? productData?.name_arabic : productData?.name;
@@ -145,7 +147,7 @@ export default function product_component_updated(props: any) {
   }
   const salePormotionPriceSatus =
     productData?.promotional_price == null &&
-      productData?.promotional_price >= 0
+    productData?.promotional_price >= 0
       ? 0
       : 1; // 1 for sale, 0 for no sale This is for dummy value only
   const salePormotionPriceOnly = productData?.promotional_price;
@@ -156,19 +158,20 @@ export default function product_component_updated(props: any) {
   const productSalePrice =
     salePormotionPriceSatus > 0 && productFlashSalePriceStatus == 0
       ? Math.max(
-        0,
-        Number(
-          productData?.sale_price > 0
-            ? productData?.sale_price
-            : productData?.price
-        ) - Number(salePormotionPriceOnly)
-      )
+          0,
+          Number(
+            productData?.sale_price > 0
+              ? productData?.sale_price
+              : productData?.price
+          ) - Number(salePormotionPriceOnly)
+        )
       : productData?.sale_price;
   const productRegularPrice = productData?.price;
   const regularPrice = Number(productRegularPrice);
   const salePrice = Number(productSalePrice);
   const flashSalePrice = Number(productFlashSalePrice);
-  const percentage = (productData?.save_type === "1" || productData?.save_type === 1) ? 1 : 0; // 1 for percentage, 0 for amount
+  const percentage =
+    productData?.save_type === "1" || productData?.save_type === 1 ? 1 : 0; // 1 for percentage, 0 for amount
   const sarIcon = () => (
     <svg
       className="riyal-svg"
@@ -370,7 +373,6 @@ export default function product_component_updated(props: any) {
   };
 
   const WishlistProduct = async (id: any, type: boolean) => {
-    // var testing: any = ProWishlistData
     if (localStorage.getItem("userid")) {
       var data = {
         user_id: localStorage.getItem("userid"),
@@ -379,8 +381,6 @@ export default function product_component_updated(props: any) {
       if (type) {
         const RemoveData = await removeProductWishlistData(data);
         if (RemoveData?.removeWishlistData?.success) {
-          // testing[id].wishlist = !type;
-          // setProWishlistData({ ...testing })
           var wishlistRemovetext = isArabic
             ? "تمت إزالة هذا المنتج من قائمة الرغبات."
             : "This product has been removed from wishlist.";
@@ -396,8 +396,6 @@ export default function product_component_updated(props: any) {
       } else {
         const AddData = await addProductWishlistData(data);
         if (AddData?.addWishlistData?.success) {
-          // testing[id].wishlist = !type;
-          // setProWishlistData({ ...testing })
           var wishlistAddtext = isArabic
             ? "تمت إضافة هذا المنتج إلى قائمة الرغبات."
             : "This product has been Added in the wishlist.";
@@ -453,9 +451,9 @@ export default function product_component_updated(props: any) {
     var flashCalc = ProExtraData?.flash
       ? ProExtraData?.flash?.discount_type === 2
         ? Math.round(
-          (productData?.sale_price * ProExtraData?.flash?.discount_amount) /
-          100
-        )
+            (productData?.sale_price * ProExtraData?.flash?.discount_amount) /
+              100
+          )
         : ProExtraData?.flash?.discount_amount
       : productData?.sale_price;
     setBuyNowLoading(id);
@@ -465,7 +463,7 @@ export default function product_component_updated(props: any) {
 
     if (
       ProExtraData?.freegiftData?.freegiftlist?.length ==
-      ProExtraData?.freegiftData?.allowed_gifts &&
+        ProExtraData?.freegiftData?.allowed_gifts &&
       ProExtraData?.freegiftData?.freegiftlist?.filter(
         (e: any) => e?.discount > 0
       )?.length <= 0
@@ -481,8 +479,8 @@ export default function product_component_updated(props: any) {
         price: flashCalc
           ? flashCalc
           : productData.sale_price
-            ? productData.sale_price
-            : productData.price,
+          ? productData.sale_price
+          : productData.price,
         regular_price: productData.price,
         quantity: 1,
         total_quantity: productData.quantity,
@@ -583,10 +581,6 @@ export default function product_component_updated(props: any) {
       );
       setBuyNowLoading(0);
       if (redirect) {
-        // router.push(
-        //   `/${isArabic ? "ar" : "en"}/${localStorage.getItem("userid") ? "checkout" : "login?type=checkout"
-        //   }`
-        // ); // Redirect to cart page
         router.push(`/${isArabic ? "ar" : "en"}/cart`); // Redirect to cart page
         router.refresh();
       }
@@ -612,8 +606,8 @@ export default function product_component_updated(props: any) {
         price: flashCalc
           ? flashCalc
           : productData.sale_price
-            ? productData.sale_price
-            : productData.price,
+          ? productData.sale_price
+          : productData.price,
         regular_price: productData.price,
         quantity: 1,
         total_quantity: productData.quantity,
@@ -722,10 +716,6 @@ export default function product_component_updated(props: any) {
       );
       setBuyNowLoading(0);
       if (redirect) {
-        // router.push(
-        //   `/${isArabic ? "ar" : "en"}/${localStorage.getItem("userid") ? "checkout" : "login?type=checkout"
-        //   }`
-        // ); // Redirect to cart page
         router.push(`/${isArabic ? "ar" : "en"}/cart`); // Redirect to cart page
         router.refresh();
       }
@@ -823,22 +813,11 @@ export default function product_component_updated(props: any) {
   }
 
   const giftText = isArabic ? "هدية" : "Gift";
-  // const specs = {
-  //   capacity: isArabic ? "سعة: 430 لتر" : "Capacity: 430 L",
-  //   width:    isArabic ? "عرض: 83.9 سم" : "Width: 83.9 cm",
-  //   height:   isArabic ? "إرتفاع: 176.3 سم" : "Height: 176.3 cm",
-  //   depth:    isArabic ? "عمق: 63.7 سم" : "Depth: 63.7 cm",
-  // };
 
   let imgAbsoluteTextOne = "";
   let imgAbsoluteTextTwo = "";
   let imgAbsoluteTextThree = "";
   let imgAbsoluteTextFour = "";
-
-  // const specs =
-  //   productData?.specs && productData?.specs[0]?.specdetails
-  //     ? productData?.specs[0]?.specdetails
-  //     : [];
 
   const specs =
     productData?.features && productData?.features.length > 0
@@ -858,20 +837,6 @@ export default function product_component_updated(props: any) {
       : `${second?.feature_en || ""} `;
   }
 
-  // if (specs.length >= 3) {
-  //   const third = specs[2];
-  //   imgAbsoluteTextThree = isArabic
-  //     ? `${third?.specs_ar || ""} ${third?.value_ar || ""}`
-  //     : `${third?.specs_en || ""} ${third?.value_en || ""}`;
-  // }
-
-  // if (specs.length >= 4) {
-  //   const fourth = specs[3];
-  //   imgAbsoluteTextFour = isArabic
-  //     ? `${fourth?.specs_ar || ""} ${fourth?.value_ar || ""}`
-  //     : `${fourth?.specs_en || ""} ${fourth?.value_en || ""}`;
-  // }
-
   const specificationImages = [
     productSpecificationImageOne,
     productSpecificationImageTwo,
@@ -889,311 +854,265 @@ export default function product_component_updated(props: any) {
   ].filter(Boolean);
 
   return (
-    <>
-      <div className="tamkeenProduct_card relative w-full h-fit">
-        <div className="proBox relative z-20 !min-h-full !rounded-2xl shadow-md !p-3.5">
-          <div className="tamkeenProduct_card_header flex justify-between items-center px-2">
-            <div className="productRedOrangeBtns h-8 flex items-center gap-x-2 z-10 absolute sm:top-3 top-2 rtl:left-3 ltr:right-3">
-              <button
-                className={`productSliderBtns hover:!bg-red !text-primary hover:!text-white !p-1.5 transition-all duration-300 ease-in-out ${ProWishlistData.filter((item: any) => item == productData?.id)
-                  .length >= 1
-                  ? "!bg-red !fill-white !text-white"
-                  : "!bg-white"
-                  }`}
-                onClick={(e: any) => {
-                  var type: boolean =
-                    ProWishlistData.filter(
-                      (item: any) => item == productData?.id
-                    ).length >= 1;
-                  WishlistProduct(productData?.id, type);
-                }}
-              >
-                <HeartIcon size={13} color="#004B7A" />
-              </button>
-            </div>
+    <div className="proBox relative z-20 !min-h-full !rounded-2xl shadow-md !p-3.5">
+      <button
+        className={`absolute top-3 rtl:left-3 ltr:right-3 z-10 hover:!bg-red hover:!text-white !p-1.5 rounded-2xl cursor-pointer transition-all duration-300 ease-in-out ${
+          ProWishlistData.filter((item: any) => item == productData?.id)
+            .length >= 1
+            ? "!bg-red"
+            : "!bg-white"
+        }`}
+        onClick={(e: any) => {
+          var type: boolean =
+            ProWishlistData.filter((item: any) => item == productData?.id)
+              .length >= 1;
+          WishlistProduct(productData?.id, type);
+        }}
+      >
+        <HeartIcon
+          size={13}
+          color={` ${
+            ProWishlistData.filter((item: any) => item == productData?.id)
+              .length >= 1
+              ? "#ffffff"
+              : "#004B7A"
+          }`}
+        />
+      </button>
+      <Link
+        prefetch={false}
+        scroll={false}
+        href={productSlug}
+        className="w-full !rounded-2xl"
+      >
+        <div className="relative z-[-1] w-full max-w-[350px] aspect-square mx-auto">
+          {!isImageLoaded && (
+            <div className="absolute inset-0 bg-primary/10 animate-pulse rounded-2xl z-10"></div>
+          )}
+          <Image
+            src={productFeaturedImage}
+            alt={productTitle}
+            title={productTitle}
+            width={350}
+            height={350}
+            quality={100}
+            className={`w-full h-full object-cover object-center rounded-2xl transition-opacity duration-300 ${
+              isImageLoaded ? "opacity-100" : "opacity-0"
+            }`}
+            onLoad={() => setImageLoaded(true)}
+          />
+        </div>
+        {absoluteTexts.length > 0 ? (
+          <div className="flex items-center justify-center mx-8 text-nowrap overflow-hidden">
+            {absoluteTexts.map((text, i) => (
+              <React.Fragment key={i}>
+                {i > 0 && (
+                  <div className="h-3 w-px mx-1 border border-gray opacity-20"></div>
+                )}
+                <div className="text-xxs font-semibold">{text}</div>
+              </React.Fragment>
+            ))}
           </div>
-          <Link prefetch={false} scroll={false} href={productSlug}>
-            <div className="tamkeenProduct_card_img w-full !rounded-2xl">
-              <div className="relative z-[-1] w-full max-w-[350px] aspect-square mx-auto">
-                {!isImageLoaded && (
-                  <div className="absolute inset-0 bg-primary/10 animate-pulse rounded-2xl z-10"></div>
-                )}
-                <Image
-                  src={productFeaturedImage}
-                  alt={productTitle}
-                  title={productTitle}
-                  width={350}
-                  height={350}
-                  quality={100}
-                  className={`w-full h-full object-cover object-center rounded-2xl transition-opacity duration-300 ${isImageLoaded ? "opacity-100" : "opacity-0"
-                    }`}
-                  onLoad={() => setImageLoaded(true)}
-                />
-              </div>
-              {absoluteTexts.length > 0 ? (
-                <div className="flex items-center justify-center mx-8 text-nowrap overflow-hidden">
-                  {absoluteTexts.map((text, i) => (
-                    <React.Fragment key={i}>
-                      {i > 0 && (
-                        <div className="h-3 w-px mx-1 border border-gray opacity-20"></div>
-                      )}
-                      <div className="text-[0.5rem] font-semibold">{text}</div>
-                    </React.Fragment>
-                  ))}
-                </div>
-              ) : (
-                <div className="h-4 w-full"></div>
-              )}
+        ) : (
+          <div className="h-3.5 w-full"></div>
+        )}
+        {/* Badge Gift & Express Area */}
+        <div className="flex items-end justify-between gap-1 w-full mt-3 mb-1">
+          {giftAvailableImage != null && (
+            <div className="flex items-center gap-0.5 font-bold px-2 py-1">
+              <Image
+                alt={giftAvailableText}
+                title={giftAvailableText}
+                loading="lazy"
+                width={0}
+                height={0}
+                decoding="async"
+                data-nimg="1"
+                quality={100}
+                className={`rounded-md object-contain h-3 ${
+                  giftAvailableImage != null ? "w-14" : ""
+                } lg:w-14 2xl:w-12`}
+                src={giftAvailableImage}
+                sizes="(max-width: 640px) 100vw, (max-width: 768px) 100vw, (max-width: 1024px) 100vw, 100vw"
+                style={{ color: "transparent" }}
+              />
             </div>
-            {/* Badge Gift & Express Area */}
-            <div className="flex items-end justify-between gap-1 w-full mt-3 mb-1">
-              {giftAvailableImage != null ? (
-                <div className="flex items-center gap-0.5 font-bold px-2 py-1">
-                  <Image
-                    alt={giftAvailableText}
-                    title={giftAvailableText}
-                    loading="lazy"
-                    width={0}
-                    height={0}
-                    decoding="async"
-                    data-nimg="1"
-                    quality={100}
-                    className={`rounded-md object-contain h-[0.6875rem] ${giftAvailableImage != null ? "w-14" : ""
-                      } lg:w-14 2xl:w-12`}
-                    src={giftAvailableImage}
-                    sizes="(max-width: 640px) 100vw, (max-width: 768px) 100vw, (max-width: 1024px) 100vw, 100vw"
-                    style={{ color: "transparent" }}
-                  />
-                </div>
-              ) : null}
-              {/* Left side badges */}
-              {/* {productBadgeTop ? (
-                        <div
-                          className="productBadge_topText !text-[0.589rem] font-semibold py-[0.150rem] px-[0.308rem] rounded-md w-auto text-center border line-clamp-1"
-                          style={{
-                            borderColor: `${productBadgeLeftBackgroundColor}25`,
-                            color: productBadgeLeftBackgroundColor,
-                          }}
-                        >
-                          {productBadgeTop}
-                        </div>
-                      ) : null} */}
-              {productBadgeInsideText ? (
-                <div
-                  className="productBadge_topText !text-[0.589rem] font-semibold py-[0.150rem] px-[0.308rem] rounded-md w-auto text-center border line-clamp-1"
-                  style={{
-                    borderColor: `${productBadgeRightBackgroundColor}25`,
-                    color: productBadgeRightBackgroundColor,
-                  }}
-                >
-                  {productBadgeInsideText}
-                </div>
-              ) : null}
-              {/* Express badge on the right */}
-              {ProExtraData?.expressdeliveryData ? (
-                <div className={`${isArabic ? "bg-expressAr" : "bg-expressEn"} w-14 h-6`} />
-              ) : null}
+          )}
+          {productBadgeInsideText && (
+            <div
+              className="text-xxs font-semibold py-0.5 px-1 rounded-md w-auto text-center border line-clamp-1"
+              style={{
+                borderColor: `${productBadgeRightBackgroundColor}25`,
+                color: productBadgeRightBackgroundColor,
+              }}
+            >
+              {productBadgeInsideText}
             </div>
-            <div className="tamkeenProduct_card_body my-3">
-              <h2 className="productDesc text-start text-xs line-clamp-2 font-semibold">
-                <span className='after:content-["•"] font-bold'>{productBrand}{" "}</span>{" "}
-                {productTitle}
-              </h2>
-              <div className="flex items-center justify-between gap-2 my-2">
-                <h2 className="productDesc font-semibold text-start text-xs line-clamp-1">
-                  <span className='font-bold after:content-["•"]'>{codeText}{" "}</span>{" "}
-                  <button className="inline-flex items-center gap-1">
-                    {productData?.sku}{" "}
-                    <CopyIcon size={12} color="#000000" />
-                  </button>
-                </h2>
+          )}
+          {/* Express badge on the right */}
+          {ProExtraData?.expressdeliveryData && (
+            <div
+              className={`${
+                isArabic ? "bg-expressAr" : "bg-expressEn"
+              } w-14 h-6`}
+            />
+          )}
+        </div>
+        <div className="my-3">
+          <h2 className="text-start text-xs line-clamp-2 font-semibold">
+            <span className='after:content-["•"] font-bold'>
+              {productBrand}{" "}
+            </span>{" "}
+            {productTitle}
+          </h2>
+          <div className="flex items-center justify-between gap-2 my-2">
+            <button className="font-semibold text-start text-xs line-clamp-1">
+              <span className='font-bold after:content-["•"]'>{codeText} </span>{" "}
+              <span className="inline-flex items-center gap-1">
+                {productData?.sku} <CopyIcon size={12} color="#000000" />
+              </span>
+            </button>
+            <Image
+              src={productBrandImage}
+              alt={productBrand}
+              title={productBrand}
+              loading="lazy"
+              width={0}
+              height={0}
+              className="w-18 h-8 object-contain object-center"
+              sizes="100vh"
+            />
+          </div>
+          {specificationImages.length > 0 ? (
+            <div
+              className="py-2 mb-3 rounded-md relative flex items-center justify-center gap-1"
+              style={{ backgroundColor: productBadgeBackgroundColor }}
+            >
+              {specificationImages.map((imgSrc, i) => (
                 <Image
-                  src={productBrandImage}
-                  alt={productBrand}
-                  title={productBrand}
-                  loading="lazy"
-                  width={0}
-                  height={0}
-                  className="w-18 h-8 object-contain object-center"
-                  sizes="100vh"
-                />
-              </div>
-              {specificationImages.length > 0 ? (
-                <div
-                  className="py-2 mb-3 rounded-md relative flex items-center justify-center gap-1"
-                  style={{ backgroundColor: productBadgeBackgroundColor }}
-                >
-                  {specificationImages.map((imgSrc, i) => (
-                    <Image
-                      key={i}
-                      src={imgSrc as string}
-                      alt={`specification-${productTitle}-${i + 1}`}
-                      decoding="async"
-                      data-nimg="1"
-                      title={`Specification ${productTitle} - ${i + 1}`}
-                      width={0}
-                      height={0}
-                      sizes="100vw"
-                      quality={100}
-                      className="w-10 h-auto rounded-md"
-                    />
-                  ))}
-                </div>
-              ) : (
-                <div className="specificationImagesProduct_wrapper h-[36px] w-full mb-3"></div>
-              )}
-              <div
-                className={`p-1 rounded-md relative h-[46px] ${salePormotionText ? "" : "flex items-center justify-center"
-                  }`}
-                style={{ backgroundColor: productBadgeBackgroundColor }}
-              >
-                <div className="align__center w-full">
-                  <div>
-                    <div className="flex items-center sm:gap-2 gap-1">
-                      <h3 className="afterDiscount md:text-base !text-sm font-bold text-orangePrice">
-                        <div className="flex gap-1 items-center">
-                          {productSalePrice > 0 ? (
-                            <>{productSalePrice.toLocaleString("en-US")}</>
-                          ) : (
-                            <>{productRegularPrice.toLocaleString("en-US")}</>
-                          )}
-                          <SARIcon size={8} color="#F0660C" />
-                        </div>
-                      </h3>
-                      <div className="flex items-center mt-0.5">
-                        {productSalePrice > 0 && (
-                          <h3 className="realPrice md:!text-xs !text-[0.625rem] text-gray-500 line-through decoration-double decoration-red leading-3 flex items-center gap-x-0.5">
-                            {productRegularPrice}
-                            <SARIcon size={7} color="#6B7280" />
-                          </h3>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                  <div className={`offerPercent !text-[0.625rem] md:!text-xs font-bold px-1 py-1 bg-white rounded-sm`}>
-                    <span className="text-[#F0660C] flex items-center gap-1 text-nowrap">
-                      {productDiscountValue}{" "}{productDiscountType}
-                    </span>
-                  </div>
-                </div>
-                {(productData?.promotional_price >= 0 && productData?.promotional_price != null && productData?.sale_price) && (
-                  <span className="animated_orangePrice text-orangePrice text-xxs font-bold animationImp">
-                    {salePormotionText}
-                  </span>
-                )}
-              </div>
-              <div className="mt-2 flex items-center justify-between gap-2">
-                <h3 className={`paymentText font-bold text-[.525rem] line-clamp-2`}>
-                  {installmentMethodsText}
-                </h3>
-                <Image
-                  alt={installmentMethods}
-                  title={installmentMethods}
-                  loading="lazy"
-                  width={0}
-                  height={0}
-                  quality={100}
+                  key={i}
+                  src={imgSrc as string}
+                  alt={`specification-${productTitle}-${i + 1}`}
                   decoding="async"
-                  sizes="(max-width: 640px) 100vw, (max-width: 768px) 100vw, (max-width: 1024px) 100vw, 100vw"
-                  className="rounded-md sm:w-24 w-32 h-5 md:w-28 md:h-5"
-                  src={installmentMethodsImages}
+                  data-nimg="1"
+                  title={`Specification ${productTitle} - ${i + 1}`}
+                  width={0}
+                  height={0}
+                  sizes="100vw"
+                  quality={100}
+                  className="w-10 h-auto rounded-md"
                 />
-              </div>
-              <div className="flex items-center justify-between gap-2 mt-3">
-                {productData?.totalrating > 0 ? (
-                  <div className="rating_div flex ltr:flex-row rtl:flex-row-reverse items-center gap-x-1">
-                    <span className="!text-xs opacity-60">{ratingText}</span>
-                    <div className="flex items-center gap-1">
-                      {Array.from({ length: Number(productData?.rating) }).map(
-                        (_, i) => (
-                          <span key={i}>
-                            <StarIcon size={16} color="gold" className="inline-block" />
-                          </span>
-                        )
-                      )}
-                    </div>
-                  </div>
-                ) : (
-                  <div className="h-4" />
+              ))}
+            </div>
+          ) : (
+            <div className="specificationImagesProduct_wrapper h-[45px] w-full mb-3"></div>
+          )}
+          <div
+            className={`p-1 rounded-md relative h-[46px] ${
+              salePormotionText ? "" : "flex items-center justify-center"
+            }`}
+            style={{ backgroundColor: productBadgeBackgroundColor }}
+          >
+            <div className="align__center w-full">
+              <div className="flex items-center gap-1">
+                <h3 className="!text-sm font-bold text-orangePrice flex gap-1 items-center">
+                  {productSalePrice > 0 ? (
+                    <>{productSalePrice.toLocaleString("en-US")}</>
+                  ) : (
+                    <>{productRegularPrice.toLocaleString("en-US")}</>
+                  )}
+                  <SARIcon size={8} color="#F0660C" />
+                </h3>
+                {productSalePrice > 0 && (
+                  <h3 className="text-xxs text-gray-500 line-through decoration-double decoration-red leading-3 flex items-center gap-x-0.5 mt-0.5">
+                    {productRegularPrice}
+                    <SARIcon size={7} color="#6B7280" />
+                  </h3>
                 )}
-                <div className="flex items-center gap-1.5 ml-auto">
-                  {timerText && (
-                    <>
-                      <span className="text-[#F00C0C] !text-sm font-medium tracking-[0.16px]">
-                        <FlashSaleTimer
-                          expiryTimestamp={productData.flash_sale_expiry}
+              </div>
+              <div
+                className={`text-xxs text-[#F0660C] flex items-center gap-1 text-nowrap font-bold px-1 py-1 bg-white rounded-sm`}
+              >
+                {productDiscountValue} {productDiscountType}
+              </div>
+            </div>
+            {productData?.promotional_price >= 0 &&
+              productData?.promotional_price != null &&
+              productData?.sale_price && (
+                <span className="text-orangePrice text-xxs font-bold animationImp">
+                  {salePormotionText}
+                </span>
+              )}
+          </div>
+          <div className="mt-2 flex items-center justify-between gap-2">
+            <h3 className={`font-bold text-xxs line-clamp-2`}>
+              {installmentMethodsText}
+            </h3>
+            <Image
+              alt={installmentMethods}
+              title={installmentMethods}
+              loading="lazy"
+              width={0}
+              height={0}
+              quality={100}
+              decoding="async"
+              sizes="(max-width: 640px) 100vw, (max-width: 768px) 100vw, (max-width: 1024px) 100vw, 100vw"
+              className="rounded-md w-40 h-5 object-contain"
+              src={installmentMethodsImages}
+            />
+          </div>
+          <div className="flex items-center justify-between gap-2 mt-3">
+            {productData?.totalrating > 0 ? (
+              <div className="rating_div flex ltr:flex-row rtl:flex-row-reverse items-center gap-x-1">
+                <span className="!text-xs opacity-60">{ratingText}</span>
+                <div className="flex items-center gap-1">
+                  {Array.from({ length: Number(productData?.rating) }).map(
+                    (_, i) => (
+                      <span key={i}>
+                        <StarIcon
+                          size={16}
+                          color="gold"
+                          className="inline-block"
                         />
                       </span>
-                      <svg
-                        width="14"
-                        height="14"
-                        viewBox="0 0 14 14"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          d="M6.73889 13.4101C3.48621 13.3672 0.859806 10.7408 0.816935 7.48812C0.859806 4.23544 3.48621 1.60904 6.73889 1.56616C9.99157 1.60904 12.618 4.23544 12.6608 7.48812C12.618 10.7408 9.99157 13.3672 6.73889 13.4101ZM6.73889 2.88215C4.20901 2.91546 2.16623 4.95824 2.13292 7.48812C2.16623 10.018 4.20901 12.0608 6.73889 12.0941C9.26877 12.0608 11.3115 10.018 11.3449 7.48812C11.3115 4.95824 9.26877 2.91546 6.73889 2.88215ZM10.0289 8.14611H6.08089V4.19814H7.39688V6.83012H10.0289V8.14611ZM12.195 3.34801L10.2151 1.37403L11.1422 0.44165L13.1228 2.41564L12.195 3.34736V3.34801ZM1.28214 3.34801L0.351074 2.41564L2.31914 0.44165L3.2502 1.37403L1.28345 3.34801H1.28214Z"
-                          fill="#F00C0C"
-                        />
-                      </svg>
-                    </>
+                    )
                   )}
                 </div>
               </div>
+            ) : (
+              <div className="h-4" />
+            )}
+            <div className="flex items-center gap-1.5 ml-auto">
+              {timerText && (
+                <>
+                  <span className="text-[#F00C0C] !text-sm font-medium tracking-[0.16px]">
+                    <FlashSaleTimer
+                      expiryTimestamp={productData.flash_sale_expiry}
+                    />
+                  </span>
+                  <ClockIcon size={14} color="#F00C0C" />
+                </>
+              )}
             </div>
-          </Link>
-          <div
-            className="
-    tamkeenProduct_card_footer
-    flex items-center
-    2xl:justify-between xl:justify-center justify-between
-    2xl:flex-nowrap xl:flex-wrap flex-nowrap
-    sm:gap-2 gap-x-4 gap-y-2 mb-1 mt-3
-    [&>button]:shrink-0
-  "
-          >
-            <button
-              className="bestProButton !text-xs selected bg-[#004B7A] !text-white
-      transition-all duration-300 ease-in-out 2xl:!w-1/2 xl:!w-full sm:!w-1/2 !w-full text-nowrap"
-              onClick={() => {
-                if (fGiftType == 0) {
-                  addToCart(productData.id, 0, true, true);
-                } else if (fGift) {
-                  router.push(productSlug);
-                } else {
-                  addToCart(productData.id, 0, true, true);
-                }
-                handleGTMAddToCart();
-              }}
-            >
-              {buttonTextCheckout}
-            </button>
-            {/* <button
-              className="flex items-center flex-nowrap gap-1.5"
-              onClick={() => router.push(productSlug)}
-            >
-              <span className="!text-xs font-bold text-primary text-nowrap">
-                {btndiscoverText}
-              </span>
-              <svg
-                width="9"
-                height="15"
-                viewBox="0 0 12 20"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-                className={`${isArabic ? "rotate-0" : "rotate-180"}`}
-              >
-                <path
-                  fillRule="evenodd"
-                  clipRule="evenodd"
-                  d="M9.85159 3.39646C9.80158 3.34632 9.74217 3.30654 9.67676 3.27939C9.61135 3.25225 9.54122 3.23828 9.47041 3.23828C9.39959 3.23828 9.32946 3.25225 9.26405 3.27939C9.19864 3.30654 9.13923 3.34632 9.08922 3.39646L2.62844 9.85724C2.5783 9.90725 2.53852 9.96666 2.51138 10.0321C2.48424 10.0975 2.47026 10.1676 2.47026 10.2384C2.47026 10.3092 2.48424 10.3794 2.51138 10.4448C2.53852 10.5102 2.5783 10.5696 2.62844 10.6196L9.08922 17.0804C9.19032 17.1815 9.32743 17.2383 9.47041 17.2383C9.61338 17.2383 9.75049 17.1815 9.85159 17.0804C9.95269 16.9793 10.0095 16.8422 10.0095 16.6992C10.0095 16.5562 9.95269 16.4191 9.85159 16.318L3.77092 10.2384L9.85159 4.15883C9.90173 4.10882 9.94151 4.0494 9.96865 3.98399C9.99579 3.91858 10.0098 3.84846 10.0098 3.77764C10.0098 3.70682 9.99579 3.6367 9.96865 3.57129C9.94151 3.50588 9.90173 3.44647 9.85159 3.39646Z"
-                  fill="#004B7A"
-                />
-              </svg>
-            </button> */}
           </div>
-        </div >
-      </div >
-    </>
+        </div>
+      </Link>
+      <button
+        className="bestProButton !text-xs selected bg-[#004B7A] !text-white
+      transition-all duration-300 ease-in-out !w-full text-nowrap"
+        onClick={() => {
+          if (fGiftType == 0) {
+            addToCart(productData.id, 0, true, true);
+          } else if (fGift) {
+            router.push(productSlug);
+          } else {
+            addToCart(productData.id, 0, true, true);
+          }
+          handleGTMAddToCart();
+        }}
+      >
+        {buttonTextCheckout}
+      </button>
+    </div>
   );
 }

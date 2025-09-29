@@ -1,9 +1,11 @@
-import { disconnect, title } from "process";
-import { get, post } from "../api/ApiCalls";
+import { getCookie } from 'cookies-next';
+import { applyDiscountRule, getAvailableDeliveryDates, getCouponData, getDoorstepCart, getExpressRegional, getFeesCart, getFreeGiftCart, getPaymentCart, getProductDataCart, getShippingData, getUserLoyaltyData, getWarehouseCart, recheckCartRegionalData, submitOrderCart } from "@/lib/cartstorage/cart.client";
 
 interface product {
+    gift_quantity: number;
+    new_gift: boolean;
     key: String,
-    id: Number,
+    id: number,
     sku: String,
     name: String,
     name_arabic: String,
@@ -24,7 +26,12 @@ interface product {
     express: boolean,
     express_qty: number,
     express_total_qty: number,
-    fgcart:number,
+    discounttype: number,
+    addtionaldiscount: number,
+    fgcart: number,
+    directcashback: number,
+    directcashback_title: string,
+    directcashback_title_arabic: string,
     item_list_id: string,
     item_list_name: string,
 }
@@ -48,7 +55,7 @@ interface cart {
     discounts: {
         coupon: {},
         discuountRules: fees[],
-        additionalDiscount: {},
+        additionalDiscount: {}
     },
     fees: {
         shipping: {},
@@ -59,12 +66,12 @@ interface cart {
         doorstep: {}
     },
     loyalty: discount,
-    loyalty_shipping:any,
+    loyalty_shipping: any,
     extradata: any,
     paymentMethod: string,
     shippingAddress: any,
     orderId: any,
-    deliveryDate:any,
+    deliveryDate: any,
     storeId?: any,
     storeType?: any,
     storeCity?: any
@@ -76,7 +83,6 @@ const emptyCart = (): cart => ({
         coupon: {} as discount,
         discuountRules: [],
         additionalDiscount: {} as discount
-        
     },
     fees: {
         shipping: {} as fees,
@@ -87,7 +93,7 @@ const emptyCart = (): cart => ({
         installation: {} as fees
     },
     loyalty: {} as discount,
-    loyalty_shipping:false,
+    loyalty_shipping: false,
     extradata: false,
     paymentMethod: '',
     shippingAddress: false,
@@ -101,56 +107,6 @@ const emptyCart = (): cart => ({
 const createCart = <T extends Partial<cart>>(initialValues: T): cart & T => {
     return Object.assign(emptyCart(), initialValues);
 };
-
-const getDeliveryDate = async (city: any = false, express:any = 0) => {
-    // var proid = getProductids(true)
-    var proid = getProductidsDuplicate(true)
-    var setData: any = {
-        product_ids: proid.id,
-        quantities: proid.quantity,
-        city: city ? city : localStorage.getItem("globalcity"),
-        express: express
-    }
-    var cartdata: any = getCart();
-    var preprocount = cartdata.products.filter((element: any) => element.pre_order == 1).length
-    if (preprocount == 1) {
-        return [];
-    }
-    var EXdata: any = [];
-    await post('get-available-date-delivery', setData).then((responseJson: any) => {
-        EXdata = responseJson
-    })
-    setDeliveryDate(EXdata?.available_dates ? EXdata?.available_dates[0] : false)
-    // console.log('cartdata?.deliveryDate', cartdata?.deliveryDate)
-    // console.log('EXdata?.available_dates', EXdata?.available_dates)
-    // console.log('include dates:', EXdata?.available_dates.includes(cartdata?.deliveryDate))
-    // if(!cartdata?.deliveryDate) {
-    //     setDeliveryDate(EXdata?.available_dates ? EXdata?.available_dates[0] : false)
-    // }
-    // else if(EXdata?.available_dates && !EXdata?.available_dates.includes(cartdata?.deliveryDate)) {
-    //     console.log('setDeliveryDate', EXdata?.available_dates[0])
-    //     setDeliveryDate(EXdata?.available_dates ? EXdata?.available_dates[0] : false)
-    // }
-        // cartdata.deliveryDate = EXdata?.available_dates ? EXdata?.available_date[    0] : false
-        // setCart(cartdata)    
-
-    return EXdata;
-}
-
-const getdeliveryDateData = () => {
-    var cartdata: any = getCart();
-    if(cartdata?.deliveryDate) {
-        return cartdata?.deliveryDate
-    }
-    return false;
-}
-
-const setDeliveryDate = (date: any) => {
-    var cartdata: any = getCart();
-    cartdata.deliveryDate = date
-    setCart(cartdata)
-    return cartdata;
-}
 
 const removecheckoutdata = () => {
     var cartdata = getCart()
@@ -188,7 +144,6 @@ const searchItem = (array: any, data: any) => {
 
 const removeCart = () => {
     localStorage.removeItem('cartData');
-    
     return false
 }
 
@@ -208,7 +163,7 @@ const removeCartItemFbt = (prokey: number, fbtkey: number) => {
     return cartdata;
 }
 
-const updateCartItemFbtQty = (qty: number ,prokey: number, fbtkey: number) => {
+const updateCartItemFbtQty = (qty: number, prokey: number, fbtkey: number) => {
     var cartdata: any = getCart();
     if (cartdata.products && cartdata.products[prokey] && cartdata.products[prokey].fbt && cartdata.products[prokey].fbt[fbtkey]) {
         cartdata.products[prokey].fbt[fbtkey].quantity = qty;
@@ -272,6 +227,18 @@ const increaseQty = (cartdata: cart, qty: number, key: number, setdata = false) 
                 cartdata.products[key].gift[index].quantity = cartdata.products[key].total_quantity
         }
     }
+
+    // New free gift setting
+    // if (cartdata.products[key].gift) {
+    //     for (let index = 0; index < cartdata.products[key].gift?.length; index++) {
+    //         const elem = cartdata.products[key].gift[index]
+    //         if ((cartdata.products[key].total_quantity >= qty) && elem?.new_gift)
+    //             cartdata.products[key].gift[index].quantity = qty * elem?.gift_quantity
+    //         else
+    //             cartdata.products[key].gift[index].quantity = cartdata.products[key].total_quantity
+    //     }
+    // }
+
     if (setdata)
         setCart(cartdata)
     return cartdata;
@@ -281,7 +248,6 @@ const addBogo = (data: [product], cartdata: any) => {
     // var key = Math.random().toString(16).slice(2)
     // data.key = key
     //var cartdata = getCart();
-    // console.log(cartdata.products)
     cartdata.products = cartdata.products.concat(data)
     return cartdata
 }
@@ -381,6 +347,7 @@ const setCartItems = async (data: product, gift: [product], fbt: [product]) => {
     setCart(cartdata, true)
     // setDiscountRule()
     // setDiscountRuleBogo()
+
 }
 
 const setCartExpiry = () => {
@@ -416,23 +383,6 @@ const getCartCount = () => {
             count += element.fbt?.length
     }
     return count;
-}
-
-function calculateTimeLeft(endTime: any) {
-    const now: any = new Date();
-    const end: any = new Date(endTime);
-    const difference: any = end - now;
-
-    if (difference <= 0) {
-      return { expired: true };
-    }
-
-    return {
-      hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
-      minutes: Math.floor((difference / 1000 / 60) % 60),
-      seconds: Math.floor((difference / 1000) % 60),
-      expired: false
-    };
 }
 
 const getSubtotal = () => {
@@ -483,6 +433,45 @@ const getSubtotalSale = () => {
     return amount;
 }
 
+const getCashBackDiscount = () => {
+    var cartdata = getCart();
+    var amount = 0
+    // for (let index = 0; index < cartdata.products.length; index++) {
+    //     const element = cartdata.products[index];
+    //     if (element.discounttype === 1 || element.discounttype === 2)
+    //         amount += element.quantity * element.discounted_amount
+    // }
+    return amount;
+}
+
+const getDirectCashbackDiscount = () => {
+    var cartdata = getCart();
+    var amount = 0
+    var summary: any = []
+    if (cartdata.products.length) {
+        for (let index = 0; index < cartdata.products?.length; index++) {
+            const element: any = cartdata.products[index];
+            if (element.directcashback != null && element.directcashback >= 1) {
+                summary.push({ key: 'save', title: element?.directcashback_title, title_arabic: element?.directcashback_title_arabic, price: '- ' + (element.quantity * element.directcashback).toFixed(2) })
+                amount += element.quantity * element.directcashback;
+            }
+        }
+    }
+    return { amount: amount, summary: summary };
+}
+
+const getVatOnUsDiscount = () => {
+    var cartdata = getCart();
+    var amount = 0
+    for (let index = 0; index < cartdata.products.length; index++) {
+        const element = cartdata.products[index];
+        if (element.discounttype === 3)
+            amount += element.quantity * element.discounted_amount
+    }
+    return amount;
+}
+
+
 const getSaveAmount = () => {
     var cartdata = getCart();
     var amount = 0
@@ -508,6 +497,12 @@ const getSaveAmount = () => {
     if (getDiscountes().amount) {
         amount += getDiscountes().amount
     }
+    if (getCashBackDiscount() > 0) {
+        amount += getCashBackDiscount()
+    }
+    if (getVatOnUsDiscount()) {
+        amount += getVatOnUsDiscount()
+    }
     return amount;
 }
 
@@ -526,22 +521,6 @@ const setShippingAddress = (id: any) => {
 const getPaymentMethod = () => {
     var cartdata: any = getCart();
     return cartdata.paymentMethod
-}
-
-const getDirectCashbackDiscount = () => {
-    var cartdata = getCart();
-    var amount = 0
-    var summary: any = []
-    if (cartdata.products.length) {
-        for (let index = 0; index < cartdata.products?.length; index++) {
-            const element: any = cartdata.products[index];
-            if(element.directcashback != null && element.directcashback >= 1) {
-                summary.push({ key: 'save', title: element?.directcashback_title, title_arabic: element?.directcashback_title_arabic, price: '- ' + (element.quantity * element.directcashback).toFixed(2) })
-                amount += element.quantity * element.directcashback;
-            }
-        }
-    }
-    return { amount: amount, summary: summary };
 }
 
 const setPaymentMethod = (id: any) => {
@@ -631,15 +610,15 @@ const getDiscountes = () => {
     return { amount: amount, summary: summary };
 }
 
-const getAdditionalDiscount = () => {
-    // setAdditionalDiscount()
-    var cartdata: any = getCart();
-    var amountData = {} as discount;
-    if (cartdata.discounts.additionalDiscount) {
-        amountData = cartdata.discounts.additionalDiscount;
-    }
-    return amountData;
-}
+// const getAdditionalDiscount = () => {
+//     // setAdditionalDiscount()
+//     var cartdata: any = getCart();
+//     var amountData = {} as discount;
+//     if (cartdata.discounts.additionalDiscount) {
+//         amountData = cartdata.discounts.additionalDiscount;
+//     }
+//     return amountData;
+// }
 
 const getExtraFees = () => {
     var cartdata = getCart();
@@ -676,18 +655,17 @@ const getTotal = () => {
         total -= Number(parseFloat(getCoupon().amount).toFixed(2))
     }
 
-    if(getLoyalty().amount && getLoyalty().amount > 0){
+    if (getLoyalty().amount && getLoyalty().amount > 0) {
         total -= getLoyalty().amount
     }
 
     // if(getDirectCashbackDiscount().amount) {
     //     total -= getDirectCashbackDiscount().amount
-        
-    // }
 
-    if (getAdditionalDiscount().amount) {
-        total -= Number(parseFloat(getAdditionalDiscount().amount).toFixed(2))
-    }
+    // }
+    // if (getAdditionalDiscount().amount) {
+    //     total -= Number(parseFloat(getAdditionalDiscount().amount).toFixed(2))
+    // }
     if (getExpressDelivery().amount) {
         total += Number(parseFloat(getExpressDelivery().amount).toFixed(2))
     }
@@ -697,6 +675,8 @@ const getTotal = () => {
     if (getExtraFees().amount) {
         total += getExtraFees().amount
     }
+
+    // total -= getCashBackDiscount();
     return total;
 }
 
@@ -715,6 +695,9 @@ const getSummary = () => {
             title_arabic: 'الشحن',
             price: getShipping()
         })
+    // if (getAdditionalDiscount().amount)
+    //     summary.push({ key: 'additionalDiscount', price: '- ' + Number(parseFloat(getAdditionalDiscount().amount).toFixed(2)), title: getAdditionalDiscount().title, title_arabic: getAdditionalDiscount().title_arabic })
+
     if (getWrapper())
         summary.push({
             key: 'Packaging',
@@ -735,25 +718,19 @@ const getSummary = () => {
     if (getExtraFees().amount) {
         summary = summary.concat(getExtraFees().summary)
     }
-
     // if (getDirectCashbackDiscount().amount) {
     //     summary = summary.concat(getDirectCashbackDiscount().summary)
     // }
-
     if (getCoupon().amount)
-        // summary.push({ key: getCoupon().title, price: '- ' + Number(parseFloat(getCoupon().amount).toFixed(2)), title: getCoupon().title, title_arabic: getCoupon().title_arabic })
         summary.push({ key: 'discountCoupon', price: '- ' + Number(parseFloat(getCoupon().amount).toFixed(2)), title: getCoupon().title, title_arabic: getCoupon().title_arabic })
-    
-    if (getAdditionalDiscount().amount)
-        summary.push({ key: 'additionalDiscount', price: '- ' + Number(parseFloat(getAdditionalDiscount().amount).toFixed(2)), title: getAdditionalDiscount().title, title_arabic: getAdditionalDiscount().title_arabic })
-        
+
     if (getExpressDelivery().amount)
         summary.push({ key: getExpressDelivery().title, price: Number(parseFloat(getExpressDelivery().amount).toFixed(2)), title: getExpressDelivery().title, title_arabic: getExpressDelivery().title_arabic })
 
     if (getDoorStep().amount)
         summary.push({ key: getDoorStep().title, price: Number(parseFloat(getDoorStep().amount).toFixed(2)), title: getExpressDelivery().title, title_arabic: getExpressDelivery().title_arabic })
 
-    if(getLoyalty().amount && getLoyalty().amount > 0){
+    if (getLoyalty().amount && getLoyalty().amount > 0) {
         summary.push({
             key: 'loyalty',
             title: getLoyalty().title,
@@ -761,14 +738,32 @@ const getSummary = () => {
             price: '- ' + Number(parseFloat(getLoyalty().amount).toFixed(2))
         })
     }
-
     // if(getWrapper())
+
+
+    if (getCashBackDiscount() > 0)
+        summary.push({
+            key: 'save',
+            title: "Cashback Discount",
+            title_arabic: "خصم المنتجات",
+            price: '- ' + getCashBackDiscount()?.toFixed(2)
+        })
+
+    if (getVatOnUsDiscount() > 0)
+        summary.push({
+            key: 'save',
+            title: "Vat On US",
+            title_arabic: "خصم المنتجات",
+            price: '- ' + getVatOnUsDiscount()?.toFixed(2)
+        })
+
     summary.push({
         key: 'save',
         title: "Product's Discount",
         title_arabic: "خصم المنتجات",
-        price: '- ' + getSaveAmount()
+        price: '- ' + getSaveAmount()?.toFixed(2)
     })
+
     summary.push({
         key: 'total',
         title: 'Total',
@@ -788,23 +783,20 @@ const getLoyalty = () => {
 }
 
 const getLoyaltyData = async () => {
-    var loyaltyData:any = false;
+    var loyaltyData: any = false;
     var cartdata: any = getCart();
-    var userid = localStorage.getItem("userid");
-    await get(`get-user-loyalty-data/${userid}`).then((responseJson: any) => {
-        loyaltyData = responseJson.data;
-        if(loyaltyData && loyaltyData?.shipping_charges_eligiblity){
-            cartdata.loyalty_shipping = loyaltyData.shipping_charges_eligiblity
-            var feesdata: any = {
-                id: cartdata.fees.shipping?.id,
-                title: cartdata.fees.shipping?.name,
-                title_arabic: cartdata.fees.shipping?.name_arabic,
-                amount: 0,
-            }
-            cartdata.fees.shipping = feesdata as fees
+    var loyaltyDataResponse: any = await getUserLoyaltyData();
+    loyaltyData = loyaltyDataResponse?.loyaltyData?.data;
+    if (loyaltyData && loyaltyData?.shipping_charges_eligiblity) {
+        cartdata.loyalty_shipping = loyaltyData.shipping_charges_eligiblity
+        var feesdata: any = {
+            id: cartdata.fees.shipping?.id,
+            title: cartdata.fees.shipping?.name,
+            title_arabic: cartdata.fees.shipping?.name_arabic,
+            amount: 0,
         }
-        console.log("Loyalty Data", responseJson);
-    });
+        cartdata.fees.shipping = feesdata as fees
+    }
     setCart(cartdata);
     return loyaltyData;
 }
@@ -835,29 +827,29 @@ const setShipping = async (city: any = false) => {
             userid: localStorage.getItem("userid"),
             city: city ? city : localStorage.getItem("globalcity"),
             productids: proid.id,
+            subtotal: getTotal(),
+            extraData: cartdata,
         }
-        await post('getshipping', setData).then((responseJson: any) => {
-
-            if (responseJson.success) {
-                cartdata = getCart();
-                var feesdata: any = {
-                    id: responseJson?.data?.id,
-                    title: responseJson?.data?.name,
-                    title_arabic: responseJson?.data?.name_arabic,
-                    // loyalty work
-                    // amount: (cartdata?.loyalty_shipping) ? 0 : responseJson?.data?.amount,
-                    amount: (cartdata?.loyalty_shipping) ? 0 : (cartdata?.storeType === '1' || cartdata?.storeType === 1) ? 0 : responseJson?.data?.amount,
-                    // amount: responseJson?.data?.amount,
-                }
-                cartdata.fees.shipping = feesdata as fees
-                setCart(cartdata)
+        const shippingResponse = await getShippingData(setData);
+        const responseJson = shippingResponse?.shippingData;
+        if (responseJson.success) {
+            cartdata = getCart();
+            var feesdata: any = {
+                id: responseJson?.data?.id,
+                title: responseJson?.data?.name,
+                title_arabic: responseJson?.data?.name_arabic,
+                // loyalty work
+                amount: (cartdata?.loyalty_shipping) ? 0 : (cartdata?.storeType === '1' || cartdata?.storeType === 1) ? 0 : responseJson?.data?.amount,
+                // amount: responseJson?.data?.amount,
             }
-            else {
-                cartdata = getCart();
-                cartdata.fees.shipping = {} as fees
-                setCart(cartdata)
-            }
-        })
+            cartdata.fees.shipping = feesdata as fees
+            setCart(cartdata)
+        }
+        else {
+            cartdata = getCart();
+            cartdata.fees.shipping = {} as fees
+            setCart(cartdata)
+        }
     }
     return cartdata;
 }
@@ -870,9 +862,9 @@ const getPaymentMethodStatus = async (city: any = false) => {
         orderamount: getTotal()
     }
     var data: any;
-    await post('checkpaymentmethod', setData).then((responseJson: any) => {
-        data = responseJson.data
-    })
+    const paymentData = await getPaymentCart(setData);
+    const responseJson = paymentData?.paymentData;
+    data = responseJson.data
     return data
 }
 
@@ -887,17 +879,20 @@ const getExpressDelivery = () => {
 
 const getExpressDeliveryCart = async (city: any = false) => {
     // var proid = getProductids(true)
+    var cityId = getCookie('selectedCity')
     var proid = getProductidsDuplicate(true)
     var setData: any = {
         productids: proid.id,
         product_qty: proid.quantity,
         // city: 'Jeddah',
-        city: city ? city : localStorage.getItem("globalcity"),
+        city: city ? city : cityId,
     }
+    const localSCity = cityId
+    // const localSCity = globalCity
     var EXdata: never[] = [];
-    await post(`productextradata-regional-new-cart/${localStorage.getItem("globalcity")}`, setData).then((responseJson: any) => {
-        EXdata = responseJson
-    })
+    const productextra = await getProductDataCart(localSCity, setData)
+    const responseJson = productextra?.productData
+    EXdata = responseJson
     return EXdata;
 }
 
@@ -908,12 +903,12 @@ function hasAnyGiftWithFgcart(products: product[]): boolean {
 const getFGCart = async (city: any = false) => {
     // var proid = getProductids(true)
     var cartdata = getCart();
-    
-    if(hasAnyGiftWithFgcart(cartdata?.products)){
+
+    if (hasAnyGiftWithFgcart(cartdata?.products)) {
         return null
     }
-    if(cartdata?.products)
-    var proid = getProductids(true)
+    if (cartdata?.products)
+        var proid = getProductids(true)
     var setData: any = {
         product_ids: proid.id,
         qtys: proid.quantity,
@@ -922,9 +917,8 @@ const getFGCart = async (city: any = false) => {
         subtotal: getSubtotalSale()
     }
     var EXdata: never[] = [];
-    await post(`getfreegift-cart`, setData).then((responseJson: any) => {
-        EXdata = responseJson
-    })
+    const freegift = await getFreeGiftCart(setData)
+    EXdata = freegift?.fgData
     return EXdata;
 }
 
@@ -937,7 +931,7 @@ const setPickupStoreCart = (id: any, type: any, city: any) => {
     return cartdata;
 }
 
-const getPickupStoreCart = async (lang: any = 'ar',city: any = false) => {
+const getPickupStoreCart = async (lang: any = 'ar', city: any = false) => {
     // var proid = getProductids(true)
     var proid = getProductidsDuplicate(true)
     var setData: any = {
@@ -945,14 +939,62 @@ const getPickupStoreCart = async (lang: any = 'ar',city: any = false) => {
         qty: proid.quantity,
         city: city ? city : localStorage.getItem("globalcity"),
         store_id: localStorage.getItem("globalStore"),
-        type:localStorage.getItem("globalStore") ? 0 : 0,
+        type: localStorage.getItem("globalStore") ? 0 : 0,
         lang: lang
     }
     var EXdata: never[] = [];
-    await post(`get-warehouseCart`, setData).then((responseJson: any) => {
-        EXdata = responseJson
-    })
+    const warehouse: any = await getWarehouseCart(setData);
+    EXdata = warehouse?.warehouseData
     return EXdata;
+}
+
+const getDeliveryDate = async (city: any = false, express: any = 0) => {
+    // var proid = getProductids(true)
+    var proid = getProductidsDuplicate(true)
+    var setData: any = {
+        product_ids: proid.id,
+        quantities: proid.quantity,
+        city: city ? city : localStorage.getItem("globalcity"),
+        express: express
+    }
+    var cartdata: any = getCart();
+    var preprocount = cartdata.products.filter((element: any) => element.pre_order == 1).length
+    if (preprocount == 1) {
+        return [];
+    }
+    var EXdata: any = [];
+    const deliverydate = await getAvailableDeliveryDates(setData)
+    EXdata = deliverydate?.deliveryData
+    setDeliveryDate(EXdata?.available_dates ? EXdata?.available_dates[0] : false)
+    // console.log('cartdata?.deliveryDate', cartdata?.deliveryDate)
+    // console.log('EXdata?.available_dates', EXdata?.available_dates)
+    // console.log('include dates:', EXdata?.available_dates.includes(cartdata?.deliveryDate))
+    // if(!cartdata?.deliveryDate) {
+    //     setDeliveryDate(EXdata?.available_dates ? EXdata?.available_dates[0] : false)
+    // }
+    // else if(EXdata?.available_dates && !EXdata?.available_dates.includes(cartdata?.deliveryDate)) {
+    //     console.log('setDeliveryDate', EXdata?.available_dates[0])
+    //     setDeliveryDate(EXdata?.available_dates ? EXdata?.available_dates[0] : false)
+    // }
+    // cartdata.deliveryDate = EXdata?.available_dates ? EXdata?.available_date[    0] : false
+    // setCart(cartdata)    
+
+    return EXdata;
+}
+
+const getdeliveryDateData = () => {
+    var cartdata: any = getCart();
+    if (cartdata?.deliveryDate) {
+        return cartdata?.deliveryDate
+    }
+    return false;
+}
+
+const setDeliveryDate = (date: any) => {
+    var cartdata: any = getCart();
+    cartdata.deliveryDate = date
+    setCart(cartdata)
+    return cartdata;
 }
 
 const getExpressDeliveryData = async (city: any = false) => {
@@ -969,10 +1011,8 @@ const getExpressDeliveryData = async (city: any = false) => {
         return [];
     }
     var EXdata: never[] = [];
-    await post('getexpress-regional-new', setData).then((responseJson: any) => {
-        EXdata = responseJson
-    })
-
+    const express = await getExpressRegional(setData)
+    EXdata = express?.expressData
     return EXdata;
 }
 
@@ -1007,9 +1047,9 @@ const setExpressDelivery = (data: any = false) => {
                 var totalQty = 0;
                 for (let i = 0; i < data?.data.applied_id?.length; i++) {
                     const elm = data?.data.applied_id[i];
-                    if(elementgift?.id == elm) {
+                    if (elementgift?.id == elm) {
                         totalQty = data?.quantities[i]
-                        if(data?.data?.applied_qtys[i] >= data?.quantities[i]) {
+                        if (data?.data?.applied_qtys[i] >= data?.quantities[i]) {
                             qty = data?.quantities[i]
                         }
                         else {
@@ -1031,9 +1071,9 @@ const setExpressDelivery = (data: any = false) => {
                 var totalQty = 0;
                 for (let i = 0; i < data?.data.applied_id?.length; i++) {
                     const elm = data?.data.applied_id[i];
-                    if(elementfbt?.id == elm) {
+                    if (elementfbt?.id == elm) {
                         totalQty = data?.quantities[i]
-                        if(data?.data?.applied_qtys[i] >= data?.quantities[i]) {
+                        if (data?.data?.applied_qtys[i] >= data?.quantities[i]) {
                             qty = data?.quantities[i]
                         }
                         else {
@@ -1052,9 +1092,9 @@ const setExpressDelivery = (data: any = false) => {
             var totalQty = 0;
             for (let i = 0; i < data?.data.applied_id?.length; i++) {
                 const elm = data?.data.applied_id[i];
-                if(element?.id == elm) {
+                if (element?.id == elm) {
                     totalQty = data?.quantities[i]
-                    if(data?.data?.applied_qtys[i] >= data?.quantities[i]) {
+                    if (data?.data?.applied_qtys[i] >= data?.quantities[i]) {
                         qty = data?.quantities[i]
                     }
                     else {
@@ -1069,39 +1109,6 @@ const setExpressDelivery = (data: any = false) => {
     setCart(cartdata)
     return true;
 }
-
-// const setExpressDelivery = (data: any = false) => {
-//     var cartdata: any = getCart();
-//     var feesdata: any = {
-//         id: data?.data?.id,
-//         title: data?.data?.title,
-//         title_arabic: data?.data?.title_arabic,
-//         num_of_days: data?.data?.num_of_days,
-//         amount: data?.data?.price,
-//     }
-//     cartdata.fees.express = feesdata
-//     for (let index = 0; index < cartdata.products.length; index++) {
-//         const element = cartdata.products[index];
-//         if (data?.data?.applied_id?.includes(element.id)) {
-//             cartdata.products[index].express = true
-//             var qty = 0;
-//             for (let i = 0; i < data?.data.applied_id?.length; i++) {
-//                 const elm = data?.data.applied_id[i];
-//                 if(element?.id == elm) {
-//                     if(data?.data?.applied_qtys[i] >= data?.quantities[i]) {
-//                         qty = data?.quantities[i]
-//                     }
-//                     else {
-//                         qty = data?.data?.applied_qtys[i]
-//                     }
-//                 }
-//             }
-//             cartdata.products[index].express_qty = qty
-//         }
-//     }
-//     setCart(cartdata)
-//     return true;
-// }
 
 
 const getDoorStep = () => {
@@ -1119,10 +1126,8 @@ const getDoorStepData = async () => {
         productids: proid.id,
     }
     var EXdata: never[] = [];
-    await post('getdoorstep', setData).then((responseJson: any) => {
-        EXdata = responseJson?.data
-    })
-
+    const doorstep = await getDoorstepCart(setData)
+    EXdata = doorstep?.doorstepData?.data
     return EXdata;
 }
 
@@ -1179,104 +1184,28 @@ const setCoupon = async (city: any = false, code: any = false) => {
         // subtotal: getSubtotalSale(),
         subtotal: getTotal(),
         cartdata: cartdata,
-        device: "app",
+        device: "desktop",
     }
     var success = false
-    await post('couponData', setData).then((responseJson: any) => {
-        if (responseJson.success) {
-            cartdata = getCart();
-            var feesdata: any = {
-                id: responseJson?.data?.id,
-                title: responseJson?.data?.title,
-                title_arabic: responseJson?.data?.title_arabic,
-                amount: responseJson?.data?.amount,
-            }
-            cartdata.discounts.coupon = feesdata as discount
-            if (responseJson?.data?.extradata)
-                cartdata.extradata = responseJson?.data?.extradata
-            setCart(cartdata)
-            success = true
+    const coupon = await getCouponData(setData)
+    const responseJson = coupon?.couponData;
+    if (responseJson.success) {
+        cartdata = getCart();
+        var feesdata: any = {
+            id: responseJson?.data?.id,
+            title: responseJson?.data?.title,
+            title_arabic: responseJson?.data?.title_arabic,
+            amount: responseJson?.data?.amount,
         }
-    })
+        cartdata.discounts.coupon = feesdata as discount
+        if (responseJson?.data?.extradata)
+            cartdata.extradata = responseJson?.data?.extradata
+        setCart(cartdata)
+        success = true
+    }
 
     return success;
 }
-
-const setAdditionalDiscount = () => {
-    var cartdata = getCart();
-    var discount = 0;
-    var products = cartdata.products;
-  
-    // Exclude BOGO products
-    const validProducts = products.filter((product) => product.bogo !== 1);
-  
-    // Calculate total quantity
-    const totalQuantity = validProducts.reduce((sum, product) => sum + product.quantity, 0);
-  
-    if (totalQuantity > 1) {
-      // Check brand condition
-      const hasBrandCondition = validProducts.some(
-        (product) => product.brand && [22, 23, 42].includes((product.brand as any).id)
-      );
-  
-      if (hasBrandCondition) {
-        if (validProducts.length === 1) {
-          // Handle single product
-          const product = validProducts[0];
-          const adjustedQuantity = product.quantity > 1 ? product.quantity - 1 : product.quantity;
-  
-          const totalPrice = adjustedQuantity * product.price;
-  
-          // Calculate discount
-          discount = Math.floor(totalPrice / 1000) * 100;
-  
-          // Cap discount to product price
-          if (discount > product.price) {
-            discount = product.price;
-          }
-        } else if (validProducts.length > 1) {
-          // Handle multiple products
-          const productWithLowestAmount = validProducts.reduce((lowest, current) => {
-            const lowestAmount = lowest.quantity * lowest.price;
-            const currentAmount = current.quantity * current.price;
-            return currentAmount < lowestAmount ? current : lowest;
-          });
-  
-          // Remove the lowest-amount product
-          const remainingProducts = validProducts.filter(
-            (product) => product !== productWithLowestAmount
-          );
-  
-          // Calculate remaining total amount
-          const remainingTotalAmount = remainingProducts.reduce(
-            (sum, product) => sum + product.quantity * product.price,
-            0
-          );
-  
-          // Calculate discount
-          discount = Math.floor(remainingTotalAmount / 1000) * 100;
-  
-          // Cap discount to the amount of the removed product
-          const removedProductAmount = productWithLowestAmount.quantity * productWithLowestAmount.price;
-          if (discount > removedProductAmount) {
-            discount = removedProductAmount;
-          }
-        }
-      }
-    }
-  
-    // Apply discount to cart
-    const adddiscount: any = discount > 0
-      ? { id: 0, title: 'Gift Voucher', title_arabic: 'قسيمة هدية', amount: discount }
-      : {};
-  
-    cartdata.discounts.additionalDiscount = adddiscount;
-    setCart(cartdata);
-  
-    return true;
-};
-
-
 const setDiscountRule = async (city: any = false) => {
     var cartdata: any = getCart();
     var proid = getProductids(true)
@@ -1289,200 +1218,190 @@ const setDiscountRule = async (city: any = false) => {
             productqty: proid.quantity,
             coupon: cartdata?.discounts?.coupon ? cartdata?.discounts?.coupon?.id : false,
             paymentmethod: cartdata?.paymentMethod ? cartdata?.paymentMethod : false,
-            //subtotal: getSubtotal(),
             store_id: localStorage.getItem("globalStore"),
             subtotal: getTotal(),
             extradata: cartdata?.extradata ? cartdata?.extradata : null,
             // discountType: 0,
-            device: "app",
+            device: "desktop",
         }
-        await post('discountRule', setData).then(async (responseJson: any) => {
-            if (responseJson.success) {
-                cartdata = getCart();
-                var discounts: any = []
-                if (responseJson.data.cart.length)
-                    discounts = discounts.concat(responseJson.data.cart)
-                if (responseJson.data.bulk.length)
-                    discounts = discounts.concat(responseJson.data.bulk)
-                cartdata.discounts.discuountRules = discounts
-                cartdata.products = cartdata.products.filter((e: any) => !e?.bogo)
-                if (responseJson.data.bogo.length) {
-                    cartdata.products = cartdata.products.concat(responseJson.data.bogo)
-                }
-                // setCart(cartdata)
-                // cartdata.products = cartdata.products.filter((e: any) => !e?.bogo)
+        const discountrule = await applyDiscountRule(setData)
+        const responseJson = discountrule?.discountData;
+        if (responseJson.success) {
+            cartdata = getCart();
+            var discounts: any = []
+            if (responseJson.data.cart.length)
+                discounts = discounts.concat(responseJson.data.cart)
+            if (responseJson.data.bulk.length)
+                discounts = discounts.concat(responseJson.data.bulk)
+            cartdata.discounts.discuountRules = discounts
 
-                //cartdata = removeBogo(cartdata)
-                // for (let index = 0; index < cartdata.products.length; index++) {
-                //     const element = cartdata.products[index];
-                //     if(element?.bogo){
-                //         // console.log(index)
-                //         // console.log(cartdata.products[index])
-                //         // await cartdata.products.splice(index,1)
-                //     }
-                // }
-
-                // cartdata.products = cartdata.products.filter((e: any) => !e?.bogo)
-                // if (responseJson.data.bogo.length) {
-                //     cartdata.products = cartdata.products.concat(responseJson.data.bogo)
-                // }
-
-                //console.log(cartdata.products)
-                // if(responseJson.data.bogo.length)
-                //     cartdata = addBogo(responseJson.data.bogo, cartdata)
-                //console.log(cartdata.products)
-                //console.log(responseJson.data.bogo.length)
-                // setTimeout(function(){
-                //     if(responseJson.data.bogo.length)
-                //         addBogo(responseJson.data.bogo)
-                // }, 1000)
-                setCart(cartdata)
-                return false;
+            cartdata.products = cartdata.products.filter((e: any) => !e?.bogo)
+            if (responseJson.data.bogo.length) {
+                cartdata.products = cartdata.products.concat(responseJson.data.bogo)
             }
-        })
+            setCart(cartdata)
+            return false;
+        }
     }
     return cartdata;
 }
 
 const setDiscountRuleBogo = async (city: any = false) => {
     return false
-    var cartdata: any = getCart();
-    var proid = getProductids(true)
-    if (cartdata?.products?.length >= 1) {
-        var setData: any = {
-            userid: localStorage.getItem("userid"),
-            city: city ? city : localStorage.getItem("globalcity"),
-            productids: proid.id,
-            productprice: proid.price,
-            productqty: proid.quantity,
-            coupon: cartdata?.discounts?.coupon ? cartdata?.discounts?.coupon?.id : false,
-            paymentmethod: cartdata?.paymentMethod ? cartdata?.paymentMethod : false,
-            //subtotal: getSubtotal(),
-            // subtotal: getSubtotalSale(),
-            subtotal: getTotal(),
-            extradata: cartdata?.extradata ? cartdata?.extradata : null,
-            discountType: 1,
-            device: "app"
-        }
-        await post('discountRule', setData).then(async (responseJson: any) => {
-            if (responseJson.success) {
-                cartdata = getCart();
-                cartdata.products = cartdata.products.filter((e: any) => !e?.bogo)
-                if (responseJson.data.bogo.length) {
-                    cartdata.products = cartdata.products.concat(responseJson.data.bogo)
-                }
-                setCart(cartdata)
-                return false;
-            }
-        })
-    }
+    // var cartdata: any = getCart();
+    // var proid = getProductids(true)
+    // if (cartdata?.products?.length >= 1) {
+    //     var setData: any = {
+    //         userid: localStorage.getItem("userid"),
+    //         city: city ? city : localStorage.getItem("globalcity"),
+    //         productids: proid.id,
+    //         productprice: proid.price,
+    //         productqty: proid.quantity,
+    //         coupon: cartdata?.discounts?.coupon ? cartdata?.discounts?.coupon?.id : false,
+    //         paymentmethod: cartdata?.paymentMethod ? cartdata?.paymentMethod : false,
+    //         //subtotal: getSubtotal(),
+    //         // subtotal: getSubtotalSale(),
+    //         subtotal: getTotal(),
+    //         extradata: cartdata?.extradata ? cartdata?.extradata : null,
+    //         discountType: 1,
+    //         device: "desktop",
+    //     }
+    //     await post('discountRule', setData).then(async (responseJson: any) => {
+    //         if (responseJson.success) {
+    //             cartdata = getCart();
 
-    return cartdata;
+    //             cartdata.products = cartdata.products.filter((e: any) => !e?.bogo)
+    //             if (responseJson.data.bogo.length) {
+    //                 cartdata.products = cartdata.products.concat(responseJson.data.bogo)
+    //             }
+    //             setCart(cartdata)
+    //             return false;
+    //         }
+    //     })
+    // }
+    // return cartdata;
 }
 
-const recheckcartdata = async (lang:any = 'ar',city: any = false) => {
+function calculateTimeLeft(endTime: any) {
+    const now: any = new Date();
+    const end: any = new Date(endTime);
+    const difference: any = end - now;
+
+    if (difference <= 0) {
+        return { expired: true };
+    }
+
+    return {
+        hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
+        minutes: Math.floor((difference / 1000 / 60) % 60),
+        seconds: Math.floor((difference / 1000) % 60),
+        expired: false
+    };
+}
+
+const recheckcartdata = async (lang: any = 'ar', city: any = false) => {
     var cartdata = getCart();
     var proid = getProductids()
-    var response:any = {
+    var response: any = {
         success: true,
-        messages:[],
+        messages: [],
     }
-    var removeids:any = []
+    var removeids: any = []
     if (proid.id.length) {
         var setData: any = {
             productids: proid.id,
             city: city ? city : localStorage.getItem("globalcity")
         }
-        await post('recheckdata-regional-new', setData).then((responseJson: any) => {
-            for (let index = 0; index < cartdata.products.length; index++) {
-                const element:any = cartdata.products[index];
-                var checkdata = responseJson?.data?.filter((e:any) => e.id == element.id)
-                if(checkdata?.length){
-                    cartdata.products[index].total_quantity = checkdata[0].quantity
-                    if(checkdata[0].quantity < cartdata.products[index].quantity){
-                        response.success = false
-                        var me:any = element.name+' quantity has been changed'
-                        response.messages.push(me)
-                        cartdata.products[index].quantity = checkdata[0].quantity
+        const recheck = await recheckCartRegionalData(setData)
+        const responseJson = recheck?.recheckData;
+        for (let index = 0; index < cartdata.products.length; index++) {
+            const element: any = cartdata.products[index];
+            var checkdata = responseJson?.data?.filter((e: any) => e.id == element.id)
+            if (checkdata?.length) {
+                cartdata.products[index].total_quantity = checkdata[0].quantity
+                if (checkdata[0].quantity < cartdata.products[index].quantity) {
+                    response.success = false
+                    var me: any = element.name + ' quantity has been changed'
+                    response.messages.push(me)
+                    cartdata.products[index].quantity = checkdata[0].quantity
+                }
+                if (cartdata.products[index].quantity <= 0) {
+                    removeids.push(index)
+                    response.success = false
+                }
+                var newprice = checkdata[0].sale_price ? checkdata[0].sale_price : checkdata[0].price
+                // if(checkdata[0].promotional_price){
+                //     newprice -= checkdata[0].promotional_price
+                // }
+                if (checkdata[0]?.flash_sale_expiry && checkdata[0]?.flash_sale_price) {
+                    var timer = calculateTimeLeft(checkdata[0]?.flash_sale_expiry);
+                    if (!timer?.expired) {
+                        newprice = checkdata[0]?.flash_sale_price
                     }
-                    if(cartdata.products[index].quantity <= 0){
-                        removeids.push(index)
-                        response.success = false
-                    }
-                    var newprice = checkdata[0].sale_price ? checkdata[0].sale_price : checkdata[0].price
-                    // if(checkdata[0].promotional_price){
-                    //     newprice -= checkdata[0].promotional_price
-                    // }
-                    if (checkdata[0]?.flash_sale_expiry && checkdata[0]?.flash_sale_price) {
-                        var timer = calculateTimeLeft(checkdata[0]?.flash_sale_expiry);
-                        if (!timer?.expired) {
-                            newprice = checkdata[0]?.flash_sale_price
-                        }
-                    }
-                    if(cartdata.products[index].price != newprice){
-                        cartdata.products[index].price = newprice
-                        response.success = false
-                        var me:any = element.name+' price has been changed'
-                        response.messages.push(me)
-                    }
-                    cartdata.products[index].regular_price = checkdata[0].price
+                }
+                if (cartdata.products[index].price != newprice) {
+                    cartdata.products[index].price = newprice
+                    response.success = false
+                    var me: any = element.name + ' price has been changed'
+                    response.messages.push(me)
+                }
+                cartdata.products[index].regular_price = checkdata[0].price
 
-                    if(element?.gift?.length){
-                        if(!responseJson?.extraData[element.id]?.freegiftData){
-                            cartdata.products[index].gift = []
-                            response.success = false
-                            var me:any = element.name+' gifts has been changed'
-                            response.messages.push(me)
-                        }
-                        else if(responseJson?.extraData[element.id]?.freegiftData?.allowed_gifts < element?.gift?.length){
-                            cartdata.products[index].gift = []
-                            response.success = false
-                            var me:any = element.name+' gifts has been changed'
-                            response.messages.push(me)
-                        }
+                if (element?.gift?.length) {
+                    if (!responseJson?.extraData[element.id]?.freegiftData) {
+                        cartdata.products[index].gift = []
+                        response.success = false
+                        var me: any = element.name + ' gifts has been changed'
+                        response.messages.push(me)
                     }
+                    else if (responseJson?.extraData[element.id]?.freegiftData?.allowed_gifts < element?.gift?.length) {
+                        cartdata.products[index].gift = []
+                        response.success = false
+                        var me: any = element.name + ' gifts has been changed'
+                        response.messages.push(me)
+                    }
+                }
 
-                    if (element?.fbt?.length) {
-                        if (!responseJson?.extraData[element.id]?.fbtdata) {
+                if (element?.fbt?.length) {
+                    if (!responseJson?.extraData[element.id]?.fbtdata) {
+                        cartdata.products[index].fbt = []
+                        response.success = false
+                        var me: any = element.name + ' fbt has been changed'
+                        response.messages.push(me)
+                    } else {
+                        const elementfbt = responseJson?.extraData[element.id]?.fbtdata?.fbtlist[0];
+                        const currentfbt = element?.fbt[0]
+                        var fbtprice: number = elementfbt.productdetail.sale_price ? elementfbt.productdetail.sale_price : elementfbt.productdetail.price
+                        if (responseJson?.extraData[element.id]?.fbtdata?.discount_type == 1) {
+                            fbtprice -= (elementfbt?.discount * fbtprice) / 100;
+                        } else {
+                            // fbtprice = elementfbt?.discount;
+                            // amount type
+                            if (responseJson?.extraData[element.id]?.fbtdata?.amount_type == 1) {
+                                fbtprice = fbtprice - elementfbt?.discount;
+                            }
+                            else {
+                                fbtprice = elementfbt?.discount;
+                            }
+                        }
+
+                        if (currentfbt?.discounted_amount != fbtprice || currentfbt?.id != elementfbt.product_id) {
                             cartdata.products[index].fbt = []
                             response.success = false
                             var me: any = element.name + ' fbt has been changed'
                             response.messages.push(me)
-                        }else{
-                            const elementfbt = responseJson?.extraData[element.id]?.fbtdata?.fbtlist[0];
-                            const currentfbt = element?.fbt[0]
-                            var fbtprice: number = elementfbt.productdetail.sale_price ? elementfbt.productdetail.sale_price : elementfbt.productdetail.price
-                            if (responseJson?.extraData[element.id]?.fbtdata?.discount_type == 1) {
-                                fbtprice -= (elementfbt?.discount * fbtprice) / 100;
-                            } else {
-                                // fbtprice = elementfbt?.discount;
-                                // amount type
-                                if (responseJson?.extraData[element.id]?.fbtdata?.amount_type == 1) {
-                                    fbtprice = fbtprice - elementfbt?.discount;
-                                }
-                                else {
-                                    fbtprice = elementfbt?.discount;
-                                }
-                            }
-                            
-                            if(currentfbt?.discounted_amount != fbtprice || currentfbt?.id != elementfbt.product_id){
-                                cartdata.products[index].fbt = []
-                                response.success = false
-                                var me: any = element.name + ' fbt has been changed'
-                                response.messages.push(me)
-                            }
                         }
                     }
                 }
             }
-            setCart(cartdata)
-            if(removeids?.length){
-                for (let index = 0; index < removeids.length; index++) {
-                    const element = removeids[index];
-                    removeCartItem(element)
-                }
+        }
+        setCart(cartdata)
+        if (removeids?.length) {
+            for (let index = 0; index < removeids.length; index++) {
+                const element = removeids[index];
+                removeCartItem(element)
             }
-        })
+        }
     }
     return response
 }
@@ -1502,20 +1421,19 @@ const getProductidsDuplicate = (extra: boolean = false) => {
         // productqty.push(element.quantity)
 
         // if (!element.bogo) {
-            productids.push(element.id)
-            productprice.push(element.price)
-            productqty.push(element.quantity)
-            if(element?.gift){
-                // console.log(element?.gift.map(function (g: any) { return g.id; }));
-                productids = productids.concat(element?.gift.map(function (g: any) { return g.id; }))
-                productprice = productprice.concat(element?.gift.map(function (g: any) { return g.discounted_amount; }))
-                productqty = productqty.concat(element?.gift.map(function (g: any) { return g.quantity; }))
-            }
-            if (element?.fbt) {
-                productids = productids.concat(element?.fbt.map(function (f: any) { return f.id; }))
-                productprice = productprice.concat(element?.fbt.map(function (f: any) { return f.discounted_amount; }))
-                productqty = productqty.concat(element?.fbt.map(function (f: any) { return f.quantity; }))
-            }
+        productids.push(element.id)
+        productprice.push(element.price)
+        productqty.push(element.quantity)
+        if (element?.gift) {
+            productids = productids.concat(element?.gift.map(function (g: any) { return g.id; }))
+            productprice = productprice.concat(element?.gift.map(function (g: any) { return g.discounted_amount; }))
+            productqty = productqty.concat(element?.gift.map(function (g: any) { return g.quantity; }))
+        }
+        if (element?.fbt) {
+            productids = productids.concat(element?.fbt.map(function (f: any) { return f.id; }))
+            productprice = productprice.concat(element?.fbt.map(function (f: any) { return f.discounted_amount; }))
+            productqty = productqty.concat(element?.fbt.map(function (f: any) { return f.quantity; }))
+        }
         // }
     }
     if (extra) {
@@ -1546,12 +1464,6 @@ const getProductids = (extra: boolean = false) => {
             productids.push(element.id)
             productprice.push(element.price)
             productqty.push(element.quantity)
-            // if(element?.gift){
-            //     // console.log(element?.gift.map(function (g: any) { return g.id; }));
-            //     productids = productids.concat(element?.gift.map(function (g: any) { return g.id; }))
-            //     productprice = productprice.concat(element?.gift.map(function (g: any) { return g.discounted_amount; }))
-            //     productqty = productqty.concat(element?.gift.map(function (g: any) { return g.quantity; }))
-            // }
             if (element?.fbt) {
                 productids = productids.concat(element?.fbt.map(function (f: any) { return f.id; }))
                 productprice = productprice.concat(element?.fbt.map(function (f: any) { return f.discounted_amount; }))
@@ -1582,25 +1494,26 @@ const proceedToCheckout = async (city = false, lang: any, userDevice: any) => {
         cartdata: cartdata,
         subtotal: getSubtotal(),
         saveamounttotal: getSaveAmount(),
+        cashback_amount: getCashBackDiscount(),
+        vatonus_amount: getVatOnUsDiscount(),
         total: getTotal(),
         lang: lang,
         userDevice: userDevice,
         extradata: cartdata?.extradata ? cartdata?.extradata : null,
-        affiliationCode: localStorage.getItem("affiliationCode"),
-        mobileapp: true,
+        affiliationCode: localStorage.getItem("affiliationCode")
     }
     var response: any = {}
-    await post('submitOrder', setData).then((responseJson: any) => {
-        cartdata = getCart()
-        cartdata.orderId = responseJson.order_id
-        response = responseJson.redirection
-        if (!localStorage?.getItem('orderId')) {
-            localStorage?.setItem('orderId', responseJson.order_id)
-        }
-        setCart(cartdata)
-        if (cartdata.paymentMethod == 'cod' || cartdata.paymentMethod == 'loyalty')
-            removeCart()
-    })
+    const orderData = await submitOrderCart(setData)
+    const responseJson = orderData?.orderData;
+    cartdata = getCart()
+    cartdata.orderId = responseJson.order_id
+    response = responseJson.redirection
+    if (!localStorage?.getItem('orderId')) {
+        localStorage?.setItem('orderId', responseJson.order_id)
+    }
+    setCart(cartdata)
+    if (cartdata.paymentMethod == 'cod' || cartdata.paymentMethod == 'loyalty')
+        removeCart()
     return response;
 }
 
@@ -1617,12 +1530,14 @@ const setExtraFees = async (paymentMethod: any = false) => {
         //amount: getSubtotal(),
         amount: getSubtotalSale(),
     }
-    await post('getfees', setData).then((responseJson: any) => {
-        cartdata.fees.fee = responseJson?.data
-        setCart(cartdata)
-    })
+    const feesData = await getFeesCart(setData)
+    const responseJson = feesData?.feesData;
+    cartdata.fees.fee = responseJson?.data
+    setCart(cartdata)
     return cartdata;
 }
 
-// export { setCartExpiry, getCartItems, setCartItems, getSubtotalSale, recheckcartdata, getCart, getCartCount, getSummary, removeCartItem, removeCartItemFbt, updateCartItemFbtQty, increaseQty, setShipping, getProductids, setDiscountRule, setDiscountRuleBogo, getShippingAddress, setShippingAddress, setPaymentMethod, getPaymentMethod, getPaymentMethodStatus, getWrapper, unsetWrapper, setWrapper, getInstallation, unsetInstallation, setInstallation, getCoupon, setCoupon, unsetcoupon, proceedToCheckout, getOrderId, removeCart, getExpressDelivery, setExpressDelivery, unsetExpressDelivery, getExpressDeliveryData, getDoorStep, setDoorStep, unsetDoorStep, getDoorStepData, setExtraFees, getExtraFees, removecheckoutdata, setCart, addfbtextraitem, getExpressDeliveryCart, getLoyalty, getLoyaltyData, setLoyalty, removeLoyalty }
-export { setCartExpiry, getCartItems, setCartItems, getSubtotalSale, recheckcartdata, getCart, getCartCount, getSummary, removeCartItem, removeCartItemFbt, updateCartItemFbtQty, increaseQty, setShipping, getProductids, setDiscountRule, setDiscountRuleBogo, getShippingAddress, setShippingAddress, setPaymentMethod, getPaymentMethod, getPaymentMethodStatus, getWrapper, unsetWrapper, setWrapper, getInstallation, unsetInstallation, setInstallation, getCoupon, setCoupon, unsetcoupon, proceedToCheckout, getOrderId, removeCart, getExpressDelivery, setExpressDelivery, unsetExpressDelivery, getExpressDeliveryData, getDoorStep, setDoorStep, unsetDoorStep, getDoorStepData, setExtraFees, getExtraFees, removecheckoutdata, setCart, addfbtextraitem, getExpressDeliveryCart, setPickupStoreCart, getPickupStoreCart, getLoyalty, getLoyaltyData, setLoyalty, removeLoyalty, getDeliveryDate, getdeliveryDateData, setDeliveryDate, removeCartItemGift, addgifttextraitem, getFGCart }
+export {
+    setCartExpiry, getCartItems, getSubtotalSale, setCartItems, recheckcartdata, getCart, getCartCount, getSummary, removeCartItem, removeCartItemFbt, removeCartItemGift, increaseQty, setShipping, getProductids, setDiscountRule, setDiscountRuleBogo, getShippingAddress, setShippingAddress, setPaymentMethod, getPaymentMethod, getPaymentMethodStatus, getWrapper, unsetWrapper, setWrapper, getInstallation, unsetInstallation, setInstallation, getCoupon, setCoupon, unsetcoupon, proceedToCheckout, getOrderId, removeCart, getExpressDelivery, setExpressDelivery, unsetExpressDelivery, getExpressDeliveryData, getDoorStep, setDoorStep, unsetDoorStep, getDoorStepData, setExtraFees, getExtraFees, removecheckoutdata, setCart, addfbtextraitem, updateCartItemFbtQty, getExpressDeliveryCart, getPickupStoreCart, setPickupStoreCart, getFGCart, addgifttextraitem
+    , getLoyalty, getLoyaltyData, setLoyalty, removeLoyalty, getDeliveryDate, getdeliveryDateData, setDeliveryDate
+}

@@ -4,8 +4,7 @@ import React, { useEffect, useState, useContext } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import Select from 'react-select'
-import dynamic from 'next/dynamic'
-import { getDictionary } from "../dictionaries"
+import dynamic from 'next/dynamic'  
 
 import { useRouter } from 'next/navigation'
 import CartIcon from "@/public/icons/empty_cart.png";
@@ -114,7 +113,7 @@ export default function NewCart() {
         getDiscountType()
         getUser()
 
-    , []})
+    }, []);
 
     useEffect(() => {
         var sku: string[] = []
@@ -282,9 +281,9 @@ export default function NewCart() {
         // })
         // // abandoned cart work
         if (localStorage.getItem("userid")) {
-            router.push(`/${lang}/checkout`);
+            router.push(`${origin}/${lang}/checkout`);
         } else {
-            router.push(`/${lang}/login?type=checkout`)
+            router.push(`${origin}/${lang}/login?type=checkout`)
         }
     }
 
@@ -502,7 +501,7 @@ export default function NewCart() {
             <FullPageLoader loader={loaderStatus} />
             <MobileHeader type="Third" lang={lang} pageTitle={pageTitle} />
             {cartData?.products?.length < 1 ?
-                <div className="nc__278mainDiv">
+                <div className="nc__278mainDiv container">
                     <div className='text-center'>
                         {/* <Lottie
                             animationData={shoppingCart}
@@ -890,7 +889,7 @@ export default function NewCart() {
                                             return (
                                                 <>
                                                     <hr className="nc__278mainInnerHr" key={i} />
-                                                    <div className="nc__278mainInnerNineteenDiv" key={i}>
+                                                    <div className="nc__278mainInnerNineteenDiv" key={i + 1}>
                                                         <label className="text-dark">{itemTitletext} <small className="nc__278mainInnerSmall">({includingVatText})</small></label>
                                                         <p className={`text-[#004B7A] flex items-center gap-0.5`}><span className="font-bold">{s?.price?.toLocaleString('EN-US')}</span>{' '}{currencySymbol}</p>
                                                     </div>
@@ -949,7 +948,7 @@ export default function NewCart() {
                                 />
                             </div>
                         </div>
-                        <div className="nc__278mainInnerCheckDiv left-0 !bottom-[78px]">
+                        <div className="nc__278mainInnerCheckDiv container left-0 !bottom-[78px]">
                             <div className="nc__278mainInnerCheckFirstDiv" onClick={() => getCheckout()}>
                                 <button className="nc__278mainInnerCheckBtn" onClick={() => getCheckout()}>{proceedCheckout}</button>
                             </div>
