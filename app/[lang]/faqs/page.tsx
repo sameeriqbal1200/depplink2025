@@ -1,6 +1,6 @@
 "use client"; // This is a client component 👈🏽
 
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import dynamic from 'next/dynamic';
 import { useApp } from "@/app/_ctx/AppContext";
 import { useSlot } from '@/app/_ctx/ClientDataRegistry';
