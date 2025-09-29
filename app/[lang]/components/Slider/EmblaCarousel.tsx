@@ -9,9 +9,10 @@ import {
 } from './EmblaCarouselArrowButtons';
 import Image from 'next/image';
 import Link from 'next/link';
-import { NewMedia2 } from '../../api/Api';
 import dynamic from 'next/dynamic';
 import { DotButton, useDotButton } from './EmblaCarouselDotButton';
+
+const NewMedia2 = process.env.NEXT_PUBLIC_NEW_MEDIA2 
 
 const CountDown = dynamic(() => import('../CountDown'), { ssr: false });
 
@@ -149,7 +150,7 @@ const EmblaCarousel: React.FC<PropType> = ({
         <div className={`relative ${additionalClass ? `emblafull` : `embla`}  ${categoryClassName}`}>
           <div className="" ref={emblaRef}>
             <div className="embla__container">
-              {slides?.reduce<JSX.Element[]>((acc, _, index) => {
+              {slides?.reduce<any>((acc, _, index) => {
                 if (index % 2 === 0) {
                   acc.push(
                     <div className="embla__slide relative" key={index}>
