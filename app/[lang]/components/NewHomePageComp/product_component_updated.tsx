@@ -83,45 +83,44 @@ export default function product_component_updated(props: any) {
   const productBadgeRightBackgroundColor = productData?.badge_right_color
     ? productData?.badge_right_color
     : "#004B7A";
-  const productSlug = `${origin}/${isArabic ? "ar" : "en"}/product/${
-    productData?.slug
-  }`;
+  const productSlug = `${origin}/${isArabic ? "ar" : "en"}/product/${productData?.slug
+    }`;
   function isValidUrl(value: any) {
     return value != null && value !== "" && value !== undefined;
   }
   const productFeaturedImage: any =
     isValidUrl(productData?.featured_image?.image) &&
-    productData?.featured_image?.image
+      productData?.featured_image?.image
       ? `${NewMedia}${productData?.featured_image?.image}`
       : null;
   const productSpecificationImageOne: any =
     isValidUrl(productData?.specification_image_one) &&
-    productData?.specification_image_one
+      productData?.specification_image_one
       ? `${productData?.specification_image_one}`
       : null;
   const productSpecificationImageTwo: any =
     isValidUrl(productData?.specification_image_two) &&
-    productData?.specification_image_two
+      productData?.specification_image_two
       ? `${productData?.specification_image_two}`
       : null;
   const productSpecificationImageThree: any =
     isValidUrl(productData?.specification_image_three) &&
-    productData?.specification_image_three
+      productData?.specification_image_three
       ? `${productData?.specification_image_three}`
       : null;
   const productSpecificationImageFour: any =
     isValidUrl(productData?.specification_image_four) &&
-    productData?.specification_image_four
+      productData?.specification_image_four
       ? `${productData?.specification_image_four}`
       : null;
   const productSpecificationImageFive: any =
     isValidUrl(productData?.specification_image_five) &&
-    productData?.specification_image_five
+      productData?.specification_image_five
       ? `${productData?.specification_image_five}`
       : null;
   const productSpecificationImageSix: any =
     isValidUrl(productData?.specification_image_six) &&
-    productData?.specification_image_six
+      productData?.specification_image_six
       ? `${productData?.specification_image_six}`
       : null;
   const productTitle = isArabic ? productData?.name_arabic : productData?.name;
@@ -147,7 +146,7 @@ export default function product_component_updated(props: any) {
   }
   const salePormotionPriceSatus =
     productData?.promotional_price == null &&
-    productData?.promotional_price >= 0
+      productData?.promotional_price >= 0
       ? 0
       : 1; // 1 for sale, 0 for no sale This is for dummy value only
   const salePormotionPriceOnly = productData?.promotional_price;
@@ -158,13 +157,13 @@ export default function product_component_updated(props: any) {
   const productSalePrice =
     salePormotionPriceSatus > 0 && productFlashSalePriceStatus == 0
       ? Math.max(
-          0,
-          Number(
-            productData?.sale_price > 0
-              ? productData?.sale_price
-              : productData?.price
-          ) - Number(salePormotionPriceOnly)
-        )
+        0,
+        Number(
+          productData?.sale_price > 0
+            ? productData?.sale_price
+            : productData?.price
+        ) - Number(salePormotionPriceOnly)
+      )
       : productData?.sale_price;
   const productRegularPrice = productData?.price;
   const regularPrice = Number(productRegularPrice);
@@ -451,9 +450,9 @@ export default function product_component_updated(props: any) {
     var flashCalc = ProExtraData?.flash
       ? ProExtraData?.flash?.discount_type === 2
         ? Math.round(
-            (productData?.sale_price * ProExtraData?.flash?.discount_amount) /
-              100
-          )
+          (productData?.sale_price * ProExtraData?.flash?.discount_amount) /
+          100
+        )
         : ProExtraData?.flash?.discount_amount
       : productData?.sale_price;
     setBuyNowLoading(id);
@@ -463,7 +462,7 @@ export default function product_component_updated(props: any) {
 
     if (
       ProExtraData?.freegiftData?.freegiftlist?.length ==
-        ProExtraData?.freegiftData?.allowed_gifts &&
+      ProExtraData?.freegiftData?.allowed_gifts &&
       ProExtraData?.freegiftData?.freegiftlist?.filter(
         (e: any) => e?.discount > 0
       )?.length <= 0
@@ -479,8 +478,8 @@ export default function product_component_updated(props: any) {
         price: flashCalc
           ? flashCalc
           : productData.sale_price
-          ? productData.sale_price
-          : productData.price,
+            ? productData.sale_price
+            : productData.price,
         regular_price: productData.price,
         quantity: 1,
         total_quantity: productData.quantity,
@@ -606,8 +605,8 @@ export default function product_component_updated(props: any) {
         price: flashCalc
           ? flashCalc
           : productData.sale_price
-          ? productData.sale_price
-          : productData.price,
+            ? productData.sale_price
+            : productData.price,
         regular_price: productData.price,
         quantity: 1,
         total_quantity: productData.quantity,
@@ -854,14 +853,13 @@ export default function product_component_updated(props: any) {
   ].filter(Boolean);
 
   return (
-    <div className="proBox relative z-20 !min-h-full !rounded-2xl shadow-md !p-3.5">
+    <div className="proBox relative z-20 !min-h-full !rounded-2xl shadow-md !p-3.5 w-full">
       <button
-        className={`absolute top-3 rtl:left-3 ltr:right-3 z-10 hover:!bg-red hover:!text-white !p-1.5 rounded-2xl cursor-pointer transition-all duration-300 ease-in-out ${
-          ProWishlistData.filter((item: any) => item == productData?.id)
-            .length >= 1
-            ? "!bg-red"
-            : "!bg-white"
-        }`}
+        className={`absolute top-3 rtl:left-3 ltr:right-3 z-10 hover:!bg-red hover:!text-white !p-1.5 rounded-2xl cursor-pointer transition-all duration-300 ease-in-out ${ProWishlistData.filter((item: any) => item == productData?.id)
+          .length >= 1
+          ? "!bg-red"
+          : "!bg-white"
+          }`}
         onClick={(e: any) => {
           var type: boolean =
             ProWishlistData.filter((item: any) => item == productData?.id)
@@ -871,12 +869,11 @@ export default function product_component_updated(props: any) {
       >
         <HeartIcon
           size={13}
-          color={` ${
-            ProWishlistData.filter((item: any) => item == productData?.id)
-              .length >= 1
-              ? "#ffffff"
-              : "#004B7A"
-          }`}
+          color={` ${ProWishlistData.filter((item: any) => item == productData?.id)
+            .length >= 1
+            ? "#ffffff"
+            : "#004B7A"
+            }`}
         />
       </button>
       <Link
@@ -896,25 +893,22 @@ export default function product_component_updated(props: any) {
             width={350}
             height={350}
             quality={100}
-            className={`w-full h-full object-cover object-center rounded-2xl transition-opacity duration-300 ${
-              isImageLoaded ? "opacity-100" : "opacity-0"
-            }`}
+            className={`w-full h-full object-cover object-center rounded-2xl transition-opacity duration-300 ${isImageLoaded ? "opacity-100" : "opacity-0"
+              }`}
             onLoad={() => setImageLoaded(true)}
           />
         </div>
         {absoluteTexts.length > 0 ? (
-          <div className="flex items-center justify-center mx-8 text-nowrap overflow-hidden">
+          <div className="flex items-center justify-center mx-8 overflow-hidden whitespace-nowrap">
             {absoluteTexts.map((text, i) => (
-              <React.Fragment key={i}>
-                {i > 0 && (
-                  <div className="h-3 w-px mx-1 border border-gray opacity-20"></div>
-                )}
-                <div className="text-xxs font-semibold">{text}</div>
-              </React.Fragment>
+              <div key={`${text}-${i}`} className="flex items-center">
+                {i > 0 && <div className="mx-1 h-3 w-px bg-gray-400 opacity-20" />}
+                <span className="text-xxs font-semibold">{text}</span>
+              </div>
             ))}
           </div>
         ) : (
-          <div className="h-3.5 w-full"></div>
+          <div className="h-3.5 w-full" />
         )}
         {/* Badge Gift & Express Area */}
         <div className="flex items-end justify-between gap-1 w-full mt-3 mb-1">
@@ -929,9 +923,8 @@ export default function product_component_updated(props: any) {
                 decoding="async"
                 data-nimg="1"
                 quality={100}
-                className={`rounded-md object-contain h-3 ${
-                  giftAvailableImage != null ? "w-14" : ""
-                } lg:w-14 2xl:w-12`}
+                className={`rounded-md object-contain h-3 ${giftAvailableImage != null ? "w-14" : ""
+                  } lg:w-14 2xl:w-12`}
                 src={giftAvailableImage}
                 sizes="(max-width: 640px) 100vw, (max-width: 768px) 100vw, (max-width: 1024px) 100vw, 100vw"
                 style={{ color: "transparent" }}
@@ -952,9 +945,8 @@ export default function product_component_updated(props: any) {
           {/* Express badge on the right */}
           {ProExtraData?.expressdeliveryData && (
             <div
-              className={`${
-                isArabic ? "bg-expressAr" : "bg-expressEn"
-              } w-14 h-6`}
+              className={`${isArabic ? "bg-expressAr" : "bg-expressEn"
+                } w-14 h-6`}
             />
           )}
         </div>
@@ -1008,9 +1000,8 @@ export default function product_component_updated(props: any) {
             <div className="specificationImagesProduct_wrapper h-[45px] w-full mb-3"></div>
           )}
           <div
-            className={`p-1 rounded-md relative h-[46px] ${
-              salePormotionText ? "" : "flex items-center justify-center"
-            }`}
+            className={`p-1 rounded-md relative h-[46px] ${salePormotionText ? "" : "flex items-center justify-center"
+              }`}
             style={{ backgroundColor: productBadgeBackgroundColor }}
           >
             <div className="align__center w-full">
@@ -1052,12 +1043,12 @@ export default function product_component_updated(props: any) {
               alt={installmentMethods}
               title={installmentMethods}
               loading="lazy"
-              width={0}
-              height={0}
+              width={160}
+              height={20}
               quality={100}
               decoding="async"
               sizes="(max-width: 640px) 100vw, (max-width: 768px) 100vw, (max-width: 1024px) 100vw, 100vw"
-              className="rounded-md w-40 h-5 object-contain"
+              className="rounded-md object-contain"
               src={installmentMethodsImages}
             />
           </div>

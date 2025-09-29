@@ -104,9 +104,9 @@ export default function BadgeProductSlider(props: any) {
       >
         {productDataSlider?.map((productSlider: any, productSliderID: number) => (
           <SwiperSlide key={productSliderID}>
-            <div className={`relative w-full flex ltr:flex-row-reverse items-start mt-[1.2rem] md:mt-6`}>
-              <div className={`product_badge xl-pl-[2rem] pl-[1rem] bg-white shadow-xl rounded-tr-lg rounded-br-lg w-fit mt-[1.2rem] md:mt-6 -ml-[13px]`}>
-                <span className={`text-[13rem] ${productSliderID == 0 ? "-mr-[1.9rem] span_one" : "ltr:-mr-[0.5rem] rtl:-mr-[0.8rem]"} font-bold text-[#FF7B34] md:leading-[13.5rem] leading-[10rem]`}>
+            <div className={`relative w-[calc(100%_-_60px)] flex ltr:justify-end ltr:flex-row-reverse items-start mt-[1.2rem] md:mt-6`}>
+              <div className={`product_badge xl-pl-[2rem] pl-[1rem] bg-white shadow-xl rounded-tr-lg rounded-br-lg w-fit mt-[0.2rem] -ml-[13px]`}>
+                <span className={`!text-[5.5rem] ${productSliderID == 0 ? "-mr-[1.9rem] span_one" : "ltr:-mr-[0.5rem] rtl:-mr-[0.8rem]"} font-bold text-[#FF7B34] md:leading-[13.5rem] leading-[10rem]`}>
                   {productSliderID + 1}
                 </span>
               </div>

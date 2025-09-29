@@ -492,7 +492,7 @@ export default function MobileHeaderNew(props: any) {
                 <div className="overflow-y-auto h-screen pb-40 mt-4">
                   {/* SubCategories */}
                   {menuData?.map((data: any, i: number) => (
-                    <>
+                    <React.Fragment key={i}>
                       <button
                         key={i + 3}
                         className={`focus-visible:outline-none align__center py-3 border-b border-[#9CA4AB50] pl-4 pr-3 w-full`}
@@ -554,7 +554,7 @@ export default function MobileHeaderNew(props: any) {
                         <>
                           {/* SubSubCategories */}
                           {data?.child?.map((childcatgeory: any, i: number) => (
-                            <>
+                            <React.Fragment key={i}>
                               <button
                                 key={i + 10}
                                 className={`focus-visible:outline-none py-3 border-b border-[#9CA4AB50] ltr:pl-8 rtl:pr-8 rtl:pl-3 ltr:pr-3 w-full ${
@@ -641,7 +641,7 @@ export default function MobileHeaderNew(props: any) {
                                 <>
                                   {childcatgeory?.child?.map(
                                     (subcatgeory: any, i: number) => (
-                                      <>
+                                      <React.Fragment key={i}>
                                         <button
                                           key={i + 50}
                                           className={`focus-visible:outline-none flex items-center gap-2 py-3 border-b border-[#9CA4AB50] w-full ltr:ml-4 ltr:pl-8 rtl:pr-8 ${
@@ -672,16 +672,16 @@ export default function MobileHeaderNew(props: any) {
                                               : subcatgeory.name}
                                           </label>
                                         </button>
-                                      </>
+                                      </React.Fragment>
                                     )
                                   )}
                                 </>
                               ) : null}
-                            </>
+                            </React.Fragment>
                           ))}
                         </>
                       )}
-                    </>
+                    </React.Fragment>
                   ))}
                   <Link
                     className={`focus-visible:outline-none align__center py-3 border-b border-[#9CA4AB50] pl-4 pr-3 w-full`}
