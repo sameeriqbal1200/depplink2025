@@ -193,26 +193,52 @@ const removeBogo = (cartdata: any) => {
 }
 
 const getCart = () => {
-    if (!localStorage.getItem("cartexpiry")) {
-        removeCart()
-    } else {
-        const cartexpiry: any = localStorage.getItem("cartexpiry");
-        if (Date.now() > cartexpiry) {
-            removeCart()
-            localStorage.removeItem("cartexpiry")
+    if (typeof window !== 'undefined' && window.localStorage) {
+        if (!localStorage.getItem("cartexpiry")) {
+            removeCart();
+        } else {
+            const cartexpiry: any = localStorage.getItem("cartexpiry");
+            if (Date.now() > cartexpiry) {
+                removeCart();
+                localStorage.removeItem("cartexpiry");
+            }
         }
+        var cartdata;
+        if (localStorage.getItem('cartData')) {
+            var d: any = localStorage.getItem('cartData');
+            var decodedata = Buffer.from(d, 'base64').toString("utf-8");
+            cartdata = JSON.parse(decodedata) as cart;
+        } else {
+            cartdata = createCart({ products: [] });
+        }
+        return cartdata;
+    } else {
+        // Handle case when localStorage is not available (e.g., on server-side rendering)
+        return createCart({ products: [] });
     }
-    // removeCart()
-    var cartdata;
-    if (localStorage.getItem('cartData')) {
-        var d: any = localStorage.getItem('cartData')
-        var decodedata = Buffer.from(d, 'base64').toString("utf-8")
-        cartdata = JSON.parse(decodedata) as cart;
-    }
-    else
-        cartdata = createCart({ products: [] });
-    return cartdata;
-}
+};
+
+// const getCart = () => {
+//     if (!localStorage.getItem("cartexpiry")) {
+//         removeCart()
+//     } else {
+//         const cartexpiry: any = localStorage.getItem("cartexpiry");
+//         if (Date.now() > cartexpiry) {
+//             removeCart()
+//             localStorage.removeItem("cartexpiry")
+//         }
+//     }
+//     // removeCart()
+//     var cartdata;
+//     if (localStorage.getItem('cartData')) {
+//         var d: any = localStorage.getItem('cartData')
+//         var decodedata = Buffer.from(d, 'base64').toString("utf-8")
+//         cartdata = JSON.parse(decodedata) as cart;
+//     }
+//     else
+//         cartdata = createCart({ products: [] });
+//     return cartdata;
+// }
 
 const increaseQty = (cartdata: cart, qty: number, key: number, setdata = false) => {
     if (cartdata.products[key].total_quantity >= qty)
