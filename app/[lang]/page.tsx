@@ -10,47 +10,78 @@ import { useRouter } from "next/navigation";
 // const ProductSliderComponent = dynamic(() => import("@/components/NewHomePageComp/ProductSlider"), { ssr: false });
 const ProductSliderComponent = dynamic(
   () => import("@/components/NewHomePageComp/ProductSlider"),
-  { ssr: false, loading: () => <div className="h-40 bg-gray-100 animate-pulse" /> }
+  {
+    ssr: false,
+    loading: () => <div className="h-40 bg-gray-100 animate-pulse" />,
+  }
 );
 const CategoriesHomeMobile = dynamic(
   () => import("@/components/NewHomePageComp/CategoriesHomeMobile"),
   {
-    ssr: false, loading: () => (
+    ssr: false,
+    loading: () => (
       <div className="bg-white rounded-lg shadow-md text-center text-primary animate-pulse w-full">
         <div className="rounded-md bg-dark/10 p-2.5 h-auto w-full"></div>
       </div>
-    )
+    ),
   }
 );
-const BadgeProductSlider = dynamic(() => import("@/components/NewHomePageComp/BadgeProductSlider"), { ssr: false });
-const PriceSection = dynamic(() => import("@/components/NewHomePageComp/PriceSection"), { ssr: false });
-const BrandSlider = dynamic(() => import("@/components/NewHomePageComp/BrandSlider"), { ssr: false });
-const BadgeProductLoopComponent = dynamic(() => import("@/components/NewHomePageComp/BadgeProductLoop"), { ssr: false });
-const MainSliderMobile = dynamic(() => import("@/components/NewHomePageComp/MainSliderMobile"), { ssr: false });
+const BadgeProductSlider = dynamic(
+  () => import("@/components/NewHomePageComp/BadgeProductSlider"),
+  { ssr: false }
+);
+const PriceSection = dynamic(
+  () => import("@/components/NewHomePageComp/PriceSection"),
+  { ssr: false }
+);
+const BrandSlider = dynamic(
+  () => import("@/components/NewHomePageComp/BrandSlider"),
+  { ssr: false }
+);
+const BadgeProductLoopComponent = dynamic(
+  () => import("@/components/NewHomePageComp/BadgeProductLoop"),
+  { ssr: false }
+);
+const MainSliderMobile = dynamic(
+  () => import("@/components/NewHomePageComp/MainSliderMobile"),
+  { ssr: false }
+);
 // const CategoriesHomeMobile = dynamic(() => import("@/components/NewHomePageComp/CategoriesHomeMobile"), { ssr: false });
-const ProductLoopMobile = dynamic(() => import("@/components/NewHomePageComp/ProductLoopMobile"), { ssr: false });
-const TamkeenServices = dynamic(() => import("@/components/TamkeenServices"), { ssr: true, });
-const MobileHeaderNew = dynamic(() => import("@/components/MobileHeaderNew"), { ssr: true, });
-const Newsletter = dynamic(() => import("@/components/NewHomePageComp/Newsletter"), { ssr: true });
-const TopSectionSlider = dynamic(() => import("@/components/NewHomePageComp/TopSectionSlider"), { ssr: false });
+const ProductLoopMobile = dynamic(
+  () => import("@/components/NewHomePageComp/ProductLoopMobile"),
+  { ssr: false }
+);
+const TamkeenServices = dynamic(() => import("@/components/TamkeenServices"), {
+  ssr: true,
+});
+const MobileHeaderNew = dynamic(() => import("@/components/MobileHeaderNew"), {
+  ssr: true,
+});
+const Newsletter = dynamic(
+  () => import("@/components/NewHomePageComp/Newsletter"),
+  { ssr: true }
+);
+const TopSectionSlider = dynamic(
+  () => import("@/components/NewHomePageComp/TopSectionSlider"),
+  { ssr: false }
+);
 // const Popup = dynamic(() => import("./components/NewHomePageComp/Popup"), { ssr: true })
 
 import { useApp } from "../_ctx/AppContext";
-import { getHomePages, getLatestCategoryProducts } from "@/lib/homepage/homepage.pages";
+import {
+  getHomePages,
+  getLatestCategoryProducts,
+} from "@/lib/homepage/homepage.pages";
 
 export default function Homepage() {
-  const {
-    lang,
-    deviceType,
-    city,
-    origin, slugStr
-  } = useApp();
+  const { lang, deviceType, city, origin, slugStr } = useApp();
   const Media = process.env.NEXT_PUBLIC_MEDIA;
   const NewMedia = process.env.NEXT_PUBLIC_NEW_MEDIA;
   const NewMedia2 = process.env.NEXT_PUBLIC_NEW_MEDIA2;
   const [homepagepartonelatest, setHomepagePartOneLatest] = useState<any>(null);
   const [homepageparttwolatest, setHomepagePartTwoLatest] = useState<any>(null);
-  const [homepagepartthreelatest, setHomepagePartThreeLatest] = useState<any>(null);
+  const [homepagepartthreelatest, setHomepagePartThreeLatest] =
+    useState<any>(null);
 
   useEffect(() => {
     const observer = new MutationObserver(() => {
@@ -60,20 +91,18 @@ export default function Homepage() {
     observer.observe(document.body, { childList: true, subtree: true });
 
     // Run once initially
-    console.log("DOM nodes (initial):", document.getElementsByTagName("*").length);
+    console.log(
+      "DOM nodes (initial):",
+      document.getElementsByTagName("*").length
+    );
 
     return () => observer.disconnect();
   }, []);
 
-
-
   useEffect(() => {
     (async () => {
-      const {
-        homepageSectionOne,
-        homepageSectionTwo,
-        homepageSectionThree,
-      } = await getHomePages(lang, deviceType); // ✅ must await
+      const { homepageSectionOne, homepageSectionTwo, homepageSectionThree } =
+        await getHomePages(lang, deviceType); // ✅ must await
       setHomepagePartOneLatest(homepageSectionOne);
       setHomepagePartTwoLatest(homepageSectionTwo);
       setHomepagePartThreeLatest(homepageSectionThree);
@@ -94,7 +123,9 @@ export default function Homepage() {
   const [activeSection, setActiveSection] = useState<string | null>(null);
   const sectionProductsMap = useRef<Record<string, any[]>>({});
   const [gtmNewItemListId, setgtmNewItemListId] = useState<string | null>(null);
-  const [gtmNewItemListName, setgtmNewItemListName] = useState<string | null>(null);
+  const [gtmNewItemListName, setgtmNewItemListName] = useState<string | null>(
+    null
+  );
 
   useEffect(() => {
     if (homepagepartonelatest?.first_five_sec?.section_four?.length > 0) {
@@ -126,7 +157,7 @@ export default function Homepage() {
       hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
       minutes: Math.floor((difference / 1000 / 60) % 60),
       seconds: Math.floor((difference / 1000) % 60),
-      expired: false
+      expired: false,
     };
   }
 
@@ -138,33 +169,38 @@ export default function Homepage() {
     const secFour: any = partOne?.section_four[0]?.products ?? [];
 
     // 2. Section Two
-    const secSix: any = homepageparttwolatest?.six_eleven_sec?.section_six[0]?.products || [];
-    const secNine: any = homepageparttwolatest?.six_eleven_sec?.section_nine?.products?.data || [];
-    const secTen: any = homepageparttwolatest?.six_eleven_sec?.section_ten?.products?.data || [];
+    const secSix: any =
+      homepageparttwolatest?.six_eleven_sec?.section_six[0]?.products || [];
+    const secNine: any =
+      homepageparttwolatest?.six_eleven_sec?.section_nine?.products?.data || [];
+    const secTen: any =
+      homepageparttwolatest?.six_eleven_sec?.section_ten?.products?.data || [];
 
     // 3. Section Three
     const partThree: any = homepagepartthreelatest?.twelve_seventeen_sec || {};
     const secTwelve: any = partThree?.sec_twelve_products?.products?.data || {};
-    const secFifteen: any = partThree?.sec_fifteen_products?.products?.data || [];
-    const secSixteen: any = partThree?.sec_sixteen_products?.products?.data || [];
-    const secSeventeen: any = partThree?.sec_seventeen_products?.products?.data || [];
+    const secFifteen: any =
+      partThree?.sec_fifteen_products?.products?.data || [];
+    const secSixteen: any =
+      partThree?.sec_sixteen_products?.products?.data || [];
+    const secSeventeen: any =
+      partThree?.sec_seventeen_products?.products?.data || [];
     // allProducts.push(...secFour, ...secSix, ...secNine, ...secTen, ...secTwelve, ...secFifteen, ...secSixteen, ...secSeventeen);
     // const uniqueProducts: any = Array.from(new Map(allProducts.map(p => [p.id, p])).values());
 
     // Push to GTM's dataLayer
-    if (typeof window !== 'undefined' && window.dataLayer && activeSection) {
+    if (typeof window !== "undefined" && window.dataLayer && activeSection) {
       const sectionProducts = sectionProductsMap.current[activeSection] || [];
 
       if (sectionProducts.length === 0) return;
     }
-
   }, [activeSection, isArabic, homepagepartonelatest]);
 
   const [isSection4Visible, setIsSection4Visible] = useState(false);
   const [isSection6NewVisible, setIsSection6NewVisible] = useState(false);
   const handleIntersection = (entry: IntersectionObserverEntry) => {
     const sectionId = entry.target.getAttribute("data-section");
-    const sectionIdKey = entry.target.getAttribute('data-section-id');
+    const sectionIdKey = entry.target.getAttribute("data-section-id");
 
     // Handle existing visibility states
     if (entry.isIntersecting && sectionId) {
@@ -204,21 +240,33 @@ export default function Homepage() {
 
     // DataLayer tracking
     if (sectionIdKey && entry.intersectionRatio > 0.5) {
-      const { sectionName, itemListId, products } = getSectionData(sectionIdKey);
+      const { sectionName, itemListId, products } =
+        getSectionData(sectionIdKey);
 
       if (products.length > 0 && window.dataLayer) {
         // Clear previous ecommerce object
         window.dataLayer.push({ ecommerce: null });
 
         // Sum all prices of section products
-        const totalPrice = products.reduce((sum: number, item: { flash_sale_price?: number; sale_price?: number; price: number; }) => {
-          const itemPrice = item.flash_sale_price ?? item.sale_price ?? item.price;
-          return sum + (itemPrice || 0);
-        }, 0);
-        localStorage.setItem('item_list_id', String(itemListId))
-        localStorage.setItem('item_list_name', sectionName)
-        setgtmNewItemListId(String(itemListId))
-        setgtmNewItemListName(sectionName)
+        const totalPrice = products.reduce(
+          (
+            sum: number,
+            item: {
+              flash_sale_price?: number;
+              sale_price?: number;
+              price: number;
+            }
+          ) => {
+            const itemPrice =
+              item.flash_sale_price ?? item.sale_price ?? item.price;
+            return sum + (itemPrice || 0);
+          },
+          0
+        );
+        localStorage.setItem("item_list_id", String(itemListId));
+        localStorage.setItem("item_list_name", sectionName);
+        setgtmNewItemListId(String(itemListId));
+        setgtmNewItemListName(sectionName);
         // Push GTM-compatible event
         window.dataLayer.push({
           event: "view_item_list",
@@ -230,13 +278,18 @@ export default function Homepage() {
           ecommerce: {
             items: products.map((item: any, index: number) => {
               const getOriginalPrice = () => {
-                if (!item?.flash_sale_price && !item?.sale_price) return item?.price;
+                if (!item?.flash_sale_price && !item?.sale_price)
+                  return item?.price;
                 return item?.price;
               };
               const getDiscountedPrice = () => {
-                let salePrice = item?.sale_price > 0 ? item?.sale_price : item?.price;
+                let salePrice =
+                  item?.sale_price > 0 ? item?.sale_price : item?.price;
                 if (item?.promotional_price > 0) {
-                  salePrice = Math.max(0, Number(salePrice) - Number(item?.promotional_price));
+                  salePrice = Math.max(
+                    0,
+                    Number(salePrice) - Number(item?.promotional_price)
+                  );
                 }
                 if (item?.flash_sale_expiry && item?.flash_sale_price) {
                   const timer = calculateTimeLeft(item?.flash_sale_expiry);
@@ -255,16 +308,20 @@ export default function Homepage() {
                 shelf_price: Number(getOriginalPrice()),
                 discount: Number(discountPrice ?? 0),
                 currency: "SAR",
-                item_brand: isArabic ? item?.brand?.name_arabic : item?.brand?.name,
+                item_brand: isArabic
+                  ? item?.brand?.name_arabic
+                  : item?.brand?.name,
                 item_image_link: `${NewMedia}${item?.featured_image?.image}`,
-                item_link: `${origin}/${isArabic ? 'ar' : 'en'}/product/${item?.slug}`,
+                item_link: `${origin}/${isArabic ? "ar" : "en"}/product/${
+                  item?.slug
+                }`,
                 item_availability: "in stock",
                 index: index,
                 quantity: 1,
-                id: item?.sku
-              }
-            })
-          }
+                id: item?.sku,
+              };
+            }),
+          },
         });
       }
     }
@@ -276,61 +333,92 @@ export default function Homepage() {
 
     const observer = new IntersectionObserver(
       (entries) => {
-        entries.forEach(entry => handleIntersection(entry));
+        entries.forEach((entry) => handleIntersection(entry));
       },
-      { threshold: [0.5], rootMargin: '0px 0px -30% 0px' }
+      { threshold: [0.5], rootMargin: "0px 0px -30% 0px" }
     );
 
     observerRef.current = observer;
 
     // Observe all sections
     const allSections = [
-      section5Ref, section6Ref, section7Ref, section8Ref,
-      section9Ref, section10Ref, section11Ref, section12Ref,
-      section14Ref, section15Ref, section16Ref, section17Ref, section18Ref
+      section5Ref,
+      section6Ref,
+      section7Ref,
+      section8Ref,
+      section9Ref,
+      section10Ref,
+      section11Ref,
+      section12Ref,
+      section14Ref,
+      section15Ref,
+      section16Ref,
+      section17Ref,
+      section18Ref,
     ];
 
-    allSections.forEach(ref => {
+    allSections.forEach((ref) => {
       if (ref.current) observer.observe(ref.current);
     });
 
     // Observe product sections
     const productSections = [
-      'section4', 'section6', 'section9', 'section10',
-      'section12', 'section15', 'section16', 'section17'
+      "section4",
+      "section6",
+      "section9",
+      "section10",
+      "section12",
+      "section15",
+      "section16",
+      "section17",
     ];
 
-    productSections.forEach(sectionId => {
-      const element = document.querySelector(`[data-section-id="${sectionId}"]`);
+    productSections.forEach((sectionId) => {
+      const element = document.querySelector(
+        `[data-section-id="${sectionId}"]`
+      );
       if (element) observer.observe(element);
     });
 
     return () => observer.disconnect();
-  }, [activeSection, isArabic, homepagepartonelatest, homepageparttwolatest,
-    sec4SelectedCategory, sec6SelectedCategory, sec4SelectedProducts, sec6SelectedProducts]);
+  }, [
+    activeSection,
+    isArabic,
+    homepagepartonelatest,
+    homepageparttwolatest,
+    sec4SelectedCategory,
+    sec6SelectedCategory,
+    sec4SelectedProducts,
+    sec6SelectedProducts,
+  ]);
 
   const updateCategoryProducts = async (
     rowId: any,
     categoryIndex: any,
-    type: any,
+    type: any
   ) => {
     try {
       if (type == 1) setIsSection4Visible(true);
       if (type == 2) setIsSection6NewVisible(true);
       const city: any = localStorage.getItem("globalcity") || "Jeddah";
       const response = await getLatestCategoryProducts(type, rowId, city);
-      const data: any = response?.latestCategoryData; 
+      const data: any = response?.latestCategoryData;
       const selectedProducts = data?.[0]?.products || [];
       if (type == 2) {
         setSec6SelectedIndex(categoryIndex);
         setSec6SelectedProducts(selectedProducts);
         setIsSection6NewVisible(false);
-        var catName = homepageparttwolatest?.six_eleven_sec?.section_six?.filter((item: any) => item?.category?.id == rowId)[0]
-        setSec6SelectedCategory(catName?.category)
+        var catName =
+          homepageparttwolatest?.six_eleven_sec?.section_six?.filter(
+            (item: any) => item?.category?.id == rowId
+          )[0];
+        setSec6SelectedCategory(catName?.category);
         // Trigger dataLayer push for section6 category change
-        setActiveSection('section6');
+        setActiveSection("section6");
         // Manually trigger the observer for section6
-        const sectionElement = document.querySelector('[data-section-id="section6"]');
+        const sectionElement = document.querySelector(
+          '[data-section-id="section6"]'
+        );
         if (sectionElement && observerRef.current) {
           // Create a mock entry
           const mockEntry = {
@@ -340,7 +428,7 @@ export default function Homepage() {
             boundingClientRect: sectionElement.getBoundingClientRect(),
             intersectionRect: sectionElement.getBoundingClientRect(),
             rootBounds: null,
-            time: performance.now()
+            time: performance.now(),
           } as IntersectionObserverEntry;
 
           handleIntersection(mockEntry);
@@ -349,12 +437,17 @@ export default function Homepage() {
         setSec4SelectedIndex(categoryIndex);
         setSec4SelectedProducts(selectedProducts);
         setIsSection4Visible(false);
-        var catName = homepagepartonelatest?.first_five_sec?.section_four?.filter((item: any) => item?.category?.id == rowId)[0]
-        setSec4SelectedCategory(catName?.category)
+        var catName =
+          homepagepartonelatest?.first_five_sec?.section_four?.filter(
+            (item: any) => item?.category?.id == rowId
+          )[0];
+        setSec4SelectedCategory(catName?.category);
         // Trigger dataLayer push for section4 category change
-        setActiveSection('section4');
+        setActiveSection("section4");
         // Manually trigger the observer for section4
-        const sectionElement = document.querySelector('[data-section-id="section4"]');
+        const sectionElement = document.querySelector(
+          '[data-section-id="section4"]'
+        );
         if (sectionElement && observerRef.current) {
           // Create a mock entry
           const mockEntry = {
@@ -364,7 +457,7 @@ export default function Homepage() {
             boundingClientRect: sectionElement.getBoundingClientRect(),
             intersectionRect: sectionElement.getBoundingClientRect(),
             rootBounds: null,
-            time: performance.now()
+            time: performance.now(),
           } as IntersectionObserverEntry;
 
           handleIntersection(mockEntry);
@@ -384,7 +477,7 @@ export default function Homepage() {
   const sec1SliderData: any = homepagepartonelatest?.first_five_sec
     ?.section_one_slider_data?.slider_image
     ? homepagepartonelatest?.first_five_sec?.section_one_slider_data
-      ?.slider_image
+        ?.slider_image
     : [];
   const sec1Link: any = homepagepartonelatest?.first_five_sec?.sec_one_link
     ? homepagepartonelatest?.first_five_sec?.sec_one_link
@@ -393,17 +486,17 @@ export default function Homepage() {
   const sec2SliderLeftImage: any = homepagepartonelatest?.first_five_sec
     ?.section_two_slider_left?.slider_image
     ? homepagepartonelatest?.first_five_sec?.section_two_slider_left
-      ?.slider_image
+        ?.slider_image
     : "";
   const sec2SliderTopImage: any = homepagepartonelatest?.first_five_sec
     ?.section_two_slider_top?.slider_image
     ? homepagepartonelatest?.first_five_sec?.section_two_slider_top
-      ?.slider_image
+        ?.slider_image
     : "";
   const sec2BottomImage1: any = homepagepartonelatest?.first_five_sec
     ?.sec_two_bottom_image_one
     ? NewMedia2 +
-    homepagepartonelatest?.first_five_sec?.sec_two_bottom_image_one
+      homepagepartonelatest?.first_five_sec?.sec_two_bottom_image_one
     : "https://images.tamkeenstores.com.sa/assets/new-media/Main04-BNR2-16Apr.webp";
   const sec2BottomLink1: any = homepagepartonelatest?.first_five_sec
     ?.sec_two_bottom_link_one
@@ -412,7 +505,7 @@ export default function Homepage() {
   const sec2BottomImage2: any = homepagepartonelatest?.first_five_sec
     ?.sec_two_bottom_image_two
     ? NewMedia2 +
-    homepagepartonelatest?.first_five_sec?.sec_two_bottom_image_two
+      homepagepartonelatest?.first_five_sec?.sec_two_bottom_image_two
     : "https://images.tamkeenstores.com.sa/assets/new-media/samsung-tv--Website-24Apr.webp";
   const sec2BottomLink2: any = homepagepartonelatest?.first_five_sec
     ?.sec_two_bottom_link_two
@@ -421,7 +514,7 @@ export default function Homepage() {
   const sec2BottomImage3: any = homepagepartonelatest?.first_five_sec
     ?.sec_two_bottom_image_three
     ? NewMedia2 +
-    homepagepartonelatest?.first_five_sec?.sec_two_bottom_image_three
+      homepagepartonelatest?.first_five_sec?.sec_two_bottom_image_three
     : "https://images.tamkeenstores.com.sa/assets/new-media/Banner-5Discount-Re.webp";
   const sec2BottomLink3: any = homepagepartonelatest?.first_five_sec
     ?.sec_two_bottom_link_three
@@ -564,9 +657,10 @@ export default function Homepage() {
   //sec 13
   const sec13BgImage: any = homepagepartthreelatest?.twelve_seventeen_sec
     ?.sec_thirteen_bg_image
-    ? `url(${NewMedia2 +
-    homepagepartthreelatest.twelve_seventeen_sec.sec_thirteen_bg_image
-    })`
+    ? `url(${
+        NewMedia2 +
+        homepagepartthreelatest.twelve_seventeen_sec.sec_thirteen_bg_image
+      })`
     : "none";
   const sec13Link1: any = homepagepartthreelatest?.twelve_seventeen_sec
     ?.sec_thirteen_link_one
@@ -575,7 +669,7 @@ export default function Homepage() {
   const sec13Image1: any = homepagepartthreelatest?.twelve_seventeen_sec
     ?.sec_thirteen_image_one
     ? NewMedia2 +
-    homepagepartthreelatest?.twelve_seventeen_sec?.sec_thirteen_image_one
+      homepagepartthreelatest?.twelve_seventeen_sec?.sec_thirteen_image_one
     : "";
   const sec13Link2: any = homepagepartthreelatest?.twelve_seventeen_sec
     ?.sec_thirteen_link_two
@@ -584,7 +678,7 @@ export default function Homepage() {
   const sec13Image2: any = homepagepartthreelatest?.twelve_seventeen_sec
     ?.sec_thirteen_image_two
     ? NewMedia2 +
-    homepagepartthreelatest?.twelve_seventeen_sec?.sec_thirteen_image_two
+      homepagepartthreelatest?.twelve_seventeen_sec?.sec_thirteen_image_two
     : "";
   const sec13Link3: any = homepagepartthreelatest?.twelve_seventeen_sec
     ?.sec_thirteen_link_three
@@ -593,7 +687,7 @@ export default function Homepage() {
   const sec13Image3: any = homepagepartthreelatest?.twelve_seventeen_sec
     ?.sec_thirteen_image_three
     ? NewMedia2 +
-    homepagepartthreelatest?.twelve_seventeen_sec?.sec_thirteen_image_three
+      homepagepartthreelatest?.twelve_seventeen_sec?.sec_thirteen_image_three
     : "";
   const sec13ButtonLink: any = homepagepartthreelatest?.twelve_seventeen_sec
     ?.sec_thirteen_button_link
@@ -607,7 +701,7 @@ export default function Homepage() {
   const sec14Slider: any = homepagepartthreelatest?.twelve_seventeen_sec
     ?.section_fourteen?.slider_image
     ? homepagepartthreelatest?.twelve_seventeen_sec?.section_fourteen
-      ?.slider_image
+        ?.slider_image
     : "";
   // const sec14Heading: any = isArabic ? "اطبخ بأناقة و دقة!" : 'Cook with elegance and precision!';
   // const sec14Paragraph: any = isArabic ? "تسوق الآن افران الطبخ و الأجهزة المدمجة بأفضل الأسعار مع  تخفيضات تمكين الحصرية" : 'Shop now Cooking Ovens and Built-in Appliances at the best prices with Exclusive Tamkeen Sales';
@@ -680,25 +774,27 @@ export default function Homepage() {
   const sec18Image1: any = homepagepartthreelatest?.twelve_seventeen_sec
     ?.sec_eighteen_image_one
     ? NewMedia2 +
-    homepagepartthreelatest?.twelve_seventeen_sec?.sec_eighteen_image_one
+      homepagepartthreelatest?.twelve_seventeen_sec?.sec_eighteen_image_one
     : "";
   const sec18Link1: any = homepagepartthreelatest?.twelve_seventeen_sec
     ?.sec_eighteen_link_one
-    ? NewMedia2 + homepagepartthreelatest?.twelve_seventeen_sec?.sec_eighteen_link_one
+    ? NewMedia2 +
+      homepagepartthreelatest?.twelve_seventeen_sec?.sec_eighteen_link_one
     : "";
   const sec18Image2: any = homepagepartthreelatest?.twelve_seventeen_sec
     ?.sec_eighteen_image_two
     ? NewMedia2 +
-    homepagepartthreelatest?.twelve_seventeen_sec?.sec_eighteen_image_two
+      homepagepartthreelatest?.twelve_seventeen_sec?.sec_eighteen_image_two
     : "";
   const sec18Link2: any = homepagepartthreelatest?.twelve_seventeen_sec
     ?.sec_eighteen_link_two
-    ? NewMedia2 + homepagepartthreelatest?.twelve_seventeen_sec?.sec_eighteen_link_two
+    ? NewMedia2 +
+      homepagepartthreelatest?.twelve_seventeen_sec?.sec_eighteen_link_two
     : "";
   const sec18Image3: any = homepagepartthreelatest?.twelve_seventeen_sec
     ?.sec_eighteen_image_three
     ? NewMedia2 +
-    homepagepartthreelatest?.twelve_seventeen_sec?.sec_eighteen_image_three
+      homepagepartthreelatest?.twelve_seventeen_sec?.sec_eighteen_image_three
     : "";
   const sec18Link3: any = homepagepartthreelatest?.twelve_seventeen_sec
     ?.sec_eighteen_link_three
@@ -810,14 +906,14 @@ export default function Homepage() {
   // Initialize section-products mapping
   useEffect(() => {
     sectionProductsMap.current = {
-      'section4': sec4SelectedProducts,
-      'section6': sec6SelectedProducts,
-      'section9': sec9Products?.products?.data || [],
-      'section10': sec10Products?.products?.data || [],
-      'section12': sec12Products?.products?.data || [],
-      'section15': sec15Products?.products?.data || [],
-      'section16': sec16Products?.products?.data || [],
-      'section17': sec17Products?.products?.data || [],
+      section4: sec4SelectedProducts,
+      section6: sec6SelectedProducts,
+      section9: sec9Products?.products?.data || [],
+      section10: sec10Products?.products?.data || [],
+      section12: sec12Products?.products?.data || [],
+      section15: sec15Products?.products?.data || [],
+      section16: sec16Products?.products?.data || [],
+      section17: sec17Products?.products?.data || [],
     };
   }, [
     sec4SelectedProducts,
@@ -827,28 +923,36 @@ export default function Homepage() {
     sec12Products,
     sec15Products,
     sec16Products,
-    sec17Products
+    sec17Products,
   ]);
 
   function getSectionData(sectionId: string) {
-    const secNew = sectionId.replace('section', '');
+    const secNew = sectionId.replace("section", "");
     // Handle section3 with category names
-    if (sectionId === 'section4') {
-      const category = sec4SelectedCategory?.name || sec4SelectedCategory?.name_arabic;
+    if (sectionId === "section4") {
+      const category =
+        sec4SelectedCategory?.name || sec4SelectedCategory?.name_arabic;
       return {
-        sectionName: `${homepagepartonelatest?.first_five_sec?.sec_four_title || 'Latest Products'} - ${category}`,
-        itemListId: `${secNew}_${sec4SelectedCategory?.id || 'default'}`,
-        products: sec4SelectedProducts
+        sectionName: `${
+          homepagepartonelatest?.first_five_sec?.sec_four_title ||
+          "Latest Products"
+        } - ${category}`,
+        itemListId: `${secNew}_${sec4SelectedCategory?.id || "default"}`,
+        products: sec4SelectedProducts,
       };
     }
 
     // Handle section6 with category names
-    if (sectionId === 'section6') {
-      const category = sec6SelectedCategory?.name || sec6SelectedCategory?.name_arabic;
+    if (sectionId === "section6") {
+      const category =
+        sec6SelectedCategory?.name || sec6SelectedCategory?.name_arabic;
       return {
-        sectionName: `${homepageparttwolatest?.six_eleven_sec?.sec_six_title || 'Special Offers'} - ${category}`,
-        itemListId: `${secNew}_${sec6SelectedCategory?.id || 'default'}`,
-        products: sec6SelectedProducts
+        sectionName: `${
+          homepageparttwolatest?.six_eleven_sec?.sec_six_title ||
+          "Special Offers"
+        } - ${category}`,
+        itemListId: `${secNew}_${sec6SelectedCategory?.id || "default"}`,
+        products: sec6SelectedProducts,
       };
     }
 
@@ -857,7 +961,7 @@ export default function Homepage() {
       // sectionName: isArabic ? getArabicTitle(sectionId) : getEnglishTitle(sectionId),
       sectionName: getEnglishTitle(sectionId),
       itemListId: secNew, // Use section ID as item_list_id for other sections
-      products: getSectionProducts(sectionId)
+      products: getSectionProducts(sectionId),
     };
   }
 
@@ -865,39 +969,71 @@ export default function Homepage() {
     switch (sectionId) {
       // case 'section3':
       //   return homepagepartonelatest?.first_five_sec?.sec_three_title || 'Section 3';
-      case 'section4':
-        return homepagepartonelatest?.first_five_sec?.sec_four_title || 'Latest Products';
-      case 'section6':
-        return homepageparttwolatest?.six_eleven_sec?.sec_six_title || 'Special Offers';
-      case 'section9':
-        return homepageparttwolatest?.six_eleven_sec?.sec_nine_title || 'Tamkeen Sales';
-      case 'section10':
-        return homepageparttwolatest?.six_eleven_sec?.sec_ten_title || 'Best Sellers';
-      case 'section12':
-        return homepagepartthreelatest?.twelve_seventeen_sec?.sec_twelve_title || 'Featured';
-      case 'section15':
-        return homepagepartthreelatest?.twelve_seventeen_sec?.sec_fifteen_title || 'Today\'s Deals';
-      case 'section16':
-        return homepagepartthreelatest?.twelve_seventeen_sec?.sec_sixteen_title || 'New Arrivals';
-      case 'section17':
-        return homepagepartthreelatest?.twelve_seventeen_sec?.sec_seventeen_title || 'Our Picks';
+      case "section4":
+        return (
+          homepagepartonelatest?.first_five_sec?.sec_four_title ||
+          "Latest Products"
+        );
+      case "section6":
+        return (
+          homepageparttwolatest?.six_eleven_sec?.sec_six_title ||
+          "Special Offers"
+        );
+      case "section9":
+        return (
+          homepageparttwolatest?.six_eleven_sec?.sec_nine_title ||
+          "Tamkeen Sales"
+        );
+      case "section10":
+        return (
+          homepageparttwolatest?.six_eleven_sec?.sec_ten_title || "Best Sellers"
+        );
+      case "section12":
+        return (
+          homepagepartthreelatest?.twelve_seventeen_sec?.sec_twelve_title ||
+          "Featured"
+        );
+      case "section15":
+        return (
+          homepagepartthreelatest?.twelve_seventeen_sec?.sec_fifteen_title ||
+          "Today's Deals"
+        );
+      case "section16":
+        return (
+          homepagepartthreelatest?.twelve_seventeen_sec?.sec_sixteen_title ||
+          "New Arrivals"
+        );
+      case "section17":
+        return (
+          homepagepartthreelatest?.twelve_seventeen_sec?.sec_seventeen_title ||
+          "Our Picks"
+        );
       default:
-        return 'Products';
+        return "Products";
     }
   }
 
   function getSectionProducts(sectionId: string): any[] {
     switch (sectionId) {
       // case 'section3': return homepagepartonelatest?.first_five_sec?.section_four || [];
-      case 'section4': return sec4SelectedProducts;
-      case 'section6': return sec6SelectedProducts;
-      case 'section9': return sec9Products?.products?.data || [];
-      case 'section10': return sec10Products?.products?.data || [];
-      case 'section12': return sec12Products?.products?.data || [];
-      case 'section15': return sec15Products?.products?.data || [];
-      case 'section16': return sec16Products?.products?.data || [];
-      case 'section17': return sec17Products?.products?.data || [];
-      default: return [];
+      case "section4":
+        return sec4SelectedProducts;
+      case "section6":
+        return sec6SelectedProducts;
+      case "section9":
+        return sec9Products?.products?.data || [];
+      case "section10":
+        return sec10Products?.products?.data || [];
+      case "section12":
+        return sec12Products?.products?.data || [];
+      case "section15":
+        return sec15Products?.products?.data || [];
+      case "section16":
+        return sec16Products?.products?.data || [];
+      case "section17":
+        return sec17Products?.products?.data || [];
+      default:
+        return [];
     }
   }
 
@@ -928,82 +1064,97 @@ export default function Homepage() {
         />
       </div>
       <div className="pt-4"></div>
-      <section>
-        <MainSliderMobile
-          data={sec2SliderTopImage}
+
+      {/* Top Slider Section */}
+      <MainSliderMobile
+        data={sec2SliderTopImage}
+        lang={lang}
+        origin={origin}
+        NewMedia2={NewMedia2}
+      />
+
+      {/* Category Section */}
+      <div className={containerClass}>
+        <CategoriesHomeMobile
           lang={lang}
+          params={secCategoryData}
+          userAgent={userAgent}
+          devicetype={true}
+          isArabic={isArabic}
           origin={origin}
-          NewMedia2={NewMedia2}
+          NewMedia={NewMedia}
         />
-        <div className={containerClass}>
-          <CategoriesHomeMobile
-            lang={lang}
-            params={secCategoryData}
-            userAgent={userAgent}
-            devicetype={true}
-            isArabic={isArabic}
+      </div>
+
+      {/* TSection 2 Start */}
+      <section
+        className="tamkeenSales_sec w-full mb-8 ltr:pl-4 rtl:pr-4"
+        data-section="4"
+        data-section-id="section4"
+      >
+        <h2 className="headingHomeMain mb-4">{sec4Title}</h2>
+        <div className="tamkeenSales_btns overflow-x-auto scrollbar-hide flex items-center lg:justify-evenly 2xl:justify-start gap-x-3 md:gap-x-5 pb-3 mb-4 w-full">
+          {homepagepartonelatest?.first_five_sec?.section_four?.map(
+            (item: any, index: any) => {
+              return (
+                <button
+                  key={index}
+                  onClick={() =>
+                    updateCategoryProducts(item?.category?.id, index, 1)
+                  }
+                  className={`bestProButton w-fit whitespace-nowrap px-4 py-2 selected
+                                                ${
+                                                  index == sec4SelectedIndex
+                                                    ? "bg-primary !text-white border-primary"
+                                                    : " text-primary border-gray"
+                                                } 
+                                            hover:text-white hover:bg-primary`}
+                >
+                  {item?.category?.name ? item?.category?.name : ""}
+                </button>
+              );
+            }
+          )}
+        </div>
+        {!isSection4Visible ? (
+          <ProductLoopMobile
+            productData={sec4SelectedProducts}
+            lang={isArabic}
+            isMobileOrTablet={true}
             origin={origin}
+            gtmColumnItemListId={gtmNewItemListId}
+            gtmColumnItemListName={gtmNewItemListName}
             NewMedia={NewMedia}
+          />
+        ) : (
+          <div className="animate-pulse grid xl:grid-cols-5 lg:grid-cols-4 sm:grid-cols-2 xl:gap-x-3 xl:gap-y-0 gap-x-4 gap-y-8 items-center justify-center h-[380px] md:h-[550px] lg:h-[440px] overflow-hidden">
+            {[...Array(5)].map((_, i) => (
+              <div
+                className="bg-white h-[380px] md:h-[550px] lg:h-[440px] rounded-2xl"
+                key={i}
+              ></div>
+            ))}
+          </div>
+        )}
+        {/* New Price Section */}
+        <div className="py-8">
+          <PriceSection
+            NewMedia={NewMedia}
+            data={homepagepartonelatest?.first_five_sec}
+            isArabic={isArabic}
+            lang={lang}
+            origin={origin}
+            isMobileOrTablet={true}
           />
         </div>
       </section>
-
-      {/* TSection 2 Start */}
-      <section className="tamkeenSales_sec w-full mb-8" data-section="4" data-section-id="section4">
-        <div className={`ltr:pl-4 rtl:pr-4`}>
-          <h2 className="headingHomeMain mb-4">{sec4Title}</h2>
-          <div className="tamkeenSales_btns overflow-x-auto scrollbar-hide flex items-center lg:justify-evenly 2xl:justify-start gap-x-3 md:gap-x-5 pb-3 mb-4 w-full">
-            {homepagepartonelatest?.first_five_sec?.section_four?.map(
-              (item: any, index: any) => {
-                return (
-                  <button
-                    key={index}
-                    onClick={() =>
-                      updateCategoryProducts(item?.category?.id, index, 1)
-                    }
-                    className={`bestProButton w-fit whitespace-nowrap px-4 py-2 selected
-                                                ${index == sec4SelectedIndex
-                        ? "bg-primary !text-white border-primary"
-                        : " text-primary border-gray"
-                      } 
-                                            hover:text-white hover:bg-primary`}
-                  >
-                    {item?.category?.name ? item?.category?.name : ""}
-                  </button>
-                );
-              }
-            )}
-          </div>
-          {!isSection4Visible ? (
-            <>
-              <ProductLoopMobile
-                productData={sec4SelectedProducts}
-                lang={isArabic}
-                isMobileOrTablet={true}
-                origin={origin}
-                gtmColumnItemListId={gtmNewItemListId}
-                gtmColumnItemListName={gtmNewItemListName}
-                NewMedia={NewMedia}
-              />
-            </>
-          ) : (
-            <div className="animate-pulse">
-              <div className="tamkeenSales_cardss grid xl:grid-cols-5 lg:grid-cols-4 sm:grid-cols-2 xl:gap-x-3 xl:gap-y-0 gap-x-4 gap-y-8 items-center justify-center h-[380px] md:h-[550px] lg:h-[440px] overflow-hidden">
-                {[...Array(5)].map((_, i) => (
-                  <div className="bg-white h-[380px] md:h-[550px] lg:h-[440px] rounded-2xl" key={i}></div>
-                ))}
-              </div>
-            </div>
-          )}
-          {/* New Price Section */}
-          <div className="py-8">
-            <PriceSection NewMedia={NewMedia} data={homepagepartonelatest?.first_five_sec} isArabic={isArabic} lang={lang} origin={origin} isMobileOrTablet={true} />
-          </div>
-          {/* New Price Section */}
-        </div>
-      </section>
       {/* Section 2 End */}
-      <MainSliderMobile data={sec5Slider} lang={lang} origin={origin} NewMedia2={NewMedia2} />
+      <MainSliderMobile
+        data={sec5Slider}
+        lang={lang}
+        origin={origin}
+        NewMedia2={NewMedia2}
+      />
 
       {/* Section 4 Start */}
       <section
@@ -1011,7 +1162,12 @@ export default function Homepage() {
         data-section="6"
         data-section-id="section6"
       >
-        <div ref={section6Ref} className={`${containerClassMobile}`} data-section="6" data-section-id="section6">
+        <div
+          ref={section6Ref}
+          className={`${containerClassMobile}`}
+          data-section="6"
+          data-section-id="section6"
+        >
           {isSection6Visible ? (
             <>
               <h2 className="headingHomeMain bg-white mb-2 w-fit p-3 rounded-bl-lg rounded-br-lg -mt-8">
@@ -1026,10 +1182,11 @@ export default function Homepage() {
                         updateCategoryProducts(item?.category?.id, index, 2)
                       }
                       className={`bestProButton tamkeenBtns w-fit whitespace-nowrap px-4 py-2
-                                    ${index == sec6SelectedIndex
-                          ? "selected"
-                          : "bg-white text-primary border-gray"
-                        } `}
+                                    ${
+                                      index == sec6SelectedIndex
+                                        ? "selected"
+                                        : "bg-white text-primary border-gray"
+                                    } `}
                     >
                       {item?.category?.name ? item?.category?.name : ""}
                     </button>
@@ -1233,7 +1390,10 @@ export default function Homepage() {
             <div className="animate-pulse">
               <div className="tamkeenSales_cardss grid xl:grid-cols-5 lg:grid-cols-4 sm:grid-cols-2 xl:gap-x-3 xl:gap-y-0 gap-x-4 gap-y-8 items-center justify-center h-[380px] md:h-[550px] lg:h-[440px] overflow-hidden">
                 {[...Array(5)].map((_, i) => (
-                  <div className="bg-white h-[380px] md:h-[550px] lg:h-[440px] rounded-2xl" key={i}></div>
+                  <div
+                    className="bg-white h-[380px] md:h-[550px] lg:h-[440px] rounded-2xl"
+                    key={i}
+                  ></div>
                 ))}
               </div>
             </div>
@@ -1269,7 +1429,10 @@ export default function Homepage() {
             <div className="animate-pulse">
               <div className="tamkeenSales_cardss grid xl:grid-cols-5 lg:grid-cols-4 sm:grid-cols-2 xl:gap-x-3 xl:gap-y-0 gap-x-4 gap-y-8 items-center justify-center h-[380px] md:h-[550px] lg:h-[440px] overflow-hidden">
                 {[...Array(5)].map((_, i) => (
-                  <div className="bg-white h-[380px] md:h-[550px] lg:h-[440px] rounded-2xl" key={i}></div>
+                  <div
+                    className="bg-white h-[380px] md:h-[550px] lg:h-[440px] rounded-2xl"
+                    key={i}
+                  ></div>
                 ))}
               </div>
             </div>
@@ -1283,10 +1446,7 @@ export default function Homepage() {
         className="rounded-b-[3rem] xl:mb-14 md:mb-10 mb-8"
         data-section="11"
       >
-        <div
-          ref={section11Ref}
-          data-section="11"
-        >
+        <div ref={section11Ref} data-section="11">
           {isSection11Visible ? (
             <>
               <div className="main_banner flex gap-4 w-full">
@@ -1336,7 +1496,10 @@ export default function Homepage() {
             <div className="animate-pulse">
               <div className="tamkeenSales_cardss grid xl:grid-cols-5 lg:grid-cols-4 sm:grid-cols-2 xl:gap-x-3 xl:gap-y-0 gap-x-4 gap-y-8 items-center justify-center h-[380px] md:h-[550px] lg:h-[440px] overflow-hidden">
                 {[...Array(5)].map((_, i) => (
-                  <div className="bg-white h-[380px] md:h-[550px] lg:h-[440px] rounded-2xl" key={i}></div>
+                  <div
+                    className="bg-white h-[380px] md:h-[550px] lg:h-[440px] rounded-2xl"
+                    key={i}
+                  ></div>
                 ))}
               </div>
             </div>
@@ -1494,7 +1657,10 @@ export default function Homepage() {
             <div className="animate-pulse">
               <div className="tamkeenSales_cardss grid xl:grid-cols-5 lg:grid-cols-4 sm:grid-cols-2 xl:gap-x-3 xl:gap-y-0 gap-x-4 gap-y-8 items-center justify-center h-[380px] md:h-[550px] lg:h-[440px] overflow-hidden">
                 {[...Array(5)].map((_, i) => (
-                  <div className="bg-white h-[380px] md:h-[550px] lg:h-[440px] rounded-2xl" key={i}></div>
+                  <div
+                    className="bg-white h-[380px] md:h-[550px] lg:h-[440px] rounded-2xl"
+                    key={i}
+                  ></div>
                 ))}
               </div>
             </div>
@@ -1631,7 +1797,10 @@ export default function Homepage() {
                 <div className="w-full lg:text-left text-center"></div>
                 <div className="w-full flex items-center justify-center md:gap-4 gap-2">
                   {[...Array(3)].map((_, i) => (
-                    <div key={i} className="bg-white h-[250px] rounded-2xl w-[200px] border-[#f0f1f2] border"></div>
+                    <div
+                      key={i}
+                      className="bg-white h-[250px] rounded-2xl w-[200px] border-[#f0f1f2] border"
+                    ></div>
                   ))}
                 </div>
               </div>
@@ -1668,7 +1837,10 @@ export default function Homepage() {
             <div className="animate-pulse">
               <div className="tamkeenSales_cardss grid xl:grid-cols-5 lg:grid-cols-4 sm:grid-cols-2 xl:gap-x-3 xl:gap-y-0 gap-x-4 gap-y-8 items-center justify-center h-[380px] md:h-[550px] lg:h-[440px] overflow-hidden">
                 {[...Array(5)].map((_, i) => (
-                  <div className="bg-white h-[380px] md:h-[550px] lg:h-[440px] rounded-2xl" key={i}></div>
+                  <div
+                    className="bg-white h-[380px] md:h-[550px] lg:h-[440px] rounded-2xl"
+                    key={i}
+                  ></div>
                 ))}
               </div>
             </div>
@@ -1682,10 +1854,7 @@ export default function Homepage() {
         className="rounded-b-[3rem] xl:mb-14 md:mb-10 mb-8"
         data-section="14"
       >
-        <div
-          ref={section14Ref}
-          data-section="14"
-        >
+        <div ref={section14Ref} data-section="14">
           {isSection14Visible ? (
             <div className="main_banner flex gap-4 w-full">
               <div className="banner_slider w-full overflow-hidden">
@@ -1733,7 +1902,10 @@ export default function Homepage() {
             <div className="animate-pulse">
               <div className="tamkeenSales_cardss grid xl:grid-cols-5 lg:grid-cols-4 sm:grid-cols-2 xl:gap-x-3 xl:gap-y-0 gap-x-4 gap-y-8 items-center justify-center h-[380px] md:h-[550px] lg:h-[440px] overflow-hidden">
                 {[...Array(5)].map((_, i) => (
-                  <div className="bg-white h-[380px] md:h-[550px] lg:h-[440px] rounded-2xl" key={i}></div>
+                  <div
+                    className="bg-white h-[380px] md:h-[550px] lg:h-[440px] rounded-2xl"
+                    key={i}
+                  ></div>
                 ))}
               </div>
             </div>
