@@ -140,33 +140,59 @@ export default function AccountListing() {
             <MobileHeader type="Third" lang={lang} pageTitle={lang === 'ar' ? 'حساب تعريفي' : 'Profile'} />
             <div className="pt-16 md:py-4">
                 <div className="container">
-                    <Link href={`${origin}/${lang}/account/profile`} className="bg-white shadow-md rounded-md p-3 flex items-center gap-3">
-                        {userid ?
+                    {userid ? (
+                        <Link
+                            href={`${origin}/${lang}/account/profile`}
+                            className="bg-white shadow-md rounded-md p-3 flex items-center gap-3"
+                        >
                             <div className="w-14 h-14 rounded-full border-2 border-[#219EBC] flex justify-center items-center bg-[#219EBC]">
-                                <p className='text-white font-bold'>{firstWord}{' '}{secondWord}</p>
+                            <p className="text-white font-bold">{firstWord} {secondWord}</p>
                             </div>
-                            :
-                            <svg height="26" width="26" version="1.1" id="fi_709579" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 512 512" enableBackground="new 0 0 512 512">
-                                <path d="M256,288.389c-153.837,0-238.56,72.776-238.56,204.925c0,10.321,8.365,18.686,18.686,18.686h439.747
-                            c10.321,0,18.686-8.365,18.686-18.686C494.56,361.172,409.837,288.389,256,288.389z M55.492,474.628
-                            c7.35-98.806,74.713-148.866,200.508-148.866s193.159,50.06,200.515,148.866H55.492z"></path>
-                                <path d="M256,0c-70.665,0-123.951,54.358-123.951,126.437c0,74.19,55.604,134.54,123.951,134.54s123.951-60.35,123.951-134.534
-                            C379.951,54.358,326.665,0,256,0z M256,223.611c-47.743,0-86.579-43.589-86.579-97.168c0-51.611,36.413-89.071,86.579-89.071
-                            c49.363,0,86.579,38.288,86.579,89.071C342.579,180.022,303.743,223.611,256,223.611z"></path>
-                            </svg>
-                        }
 
-                        <div className="">
-                            <label className="text-sm font-medium">{lang === 'ar' ? 'مرحباً' : 'Welcome'}</label>
-                            {userid ?
-                                <h1 className="text-base font-semibold text-[#004B7A]">{userid && fullName != '' ? fullName : t('header?.loginSignup')}</h1>
-                                :
-                                <div className="text-sm underline font-semibold text-primary">
-                                    <Link href={`${origin}/${lang}/login`}>{lang === 'ar' ? 'Login' : 'Sign In / Sign Up'}</Link>
-                                </div>
-                            }
-                        </div>
-                    </Link>
+                            <div>
+                            <label className="text-sm font-medium">
+                                {lang === "ar" ? "مرحباً" : "Welcome"}
+                            </label>
+                            <h1 className="text-base font-semibold text-[#004B7A]">
+                                {userid && fullName !== "" ? fullName : t("header?.loginSignup")}
+                            </h1>
+                            </div>
+                        </Link>
+                        ) : (
+                        <Link
+                            href={`${origin}/${lang}/login`}
+                            className="bg-white shadow-md rounded-md p-3 flex items-center gap-3"
+                        >
+                            <svg
+                            height="26"
+                            width="26"
+                            version="1.1"
+                            id="fi_709579"
+                            xmlns="http://www.w3.org/2000/svg"
+                            x="0px"
+                            y="0px"
+                            viewBox="0 0 512 512"
+                            enableBackground="new 0 0 512 512"
+                            >
+                            <path d="M256,288.389c-153.837,0-238.56,72.776-238.56,204.925c0,10.321,8.365,18.686,18.686,18.686h439.747
+                                c10.321,0,18.686-8.365,18.686-18.686C494.56,361.172,409.837,288.389,256,288.389z M55.492,474.628
+                                c7.35-98.806,74.713-148.866,200.508-148.866s193.159,50.06,200.515,148.866H55.492z"></path>
+                            <path d="M256,0c-70.665,0-123.951,54.358-123.951,126.437c0,74.19,55.604,134.54,123.951,134.54s123.951-60.35,123.951-134.534
+                                C379.951,54.358,326.665,0,256,0z M256,223.611c-47.743,0-86.579-43.589-86.579-97.168c0-51.611,36.413-89.071,86.579-89.071
+                                c49.363,0,86.579,38.288,86.579,89.071C342.579,180.022,303.743,223.611,256,223.611z"></path>
+                            </svg>
+
+                            <div>
+                            <label className="text-sm font-medium">
+                                {lang === "ar" ? "مرحباً" : "Welcome"}
+                            </label>
+                            <div className="text-sm underline font-semibold text-primary">
+                                {lang === "ar" ? "Login" : "Sign In / Sign Up"}
+                            </div>
+                            </div>
+                        </Link>
+                        )}
+
                 </div>
                 <div className="mt-2 bg-white pb-32">
                     {/* <Link href={`${origin}/${lang}/account/loyaltyusagehistory`} className="border-b border-[#9CA4AB50] px-4 py-3 flex items-center justify-between text-[#004B7A] fill-[#004B7A]">
@@ -207,10 +233,10 @@ export default function AccountListing() {
                             </h2>
 
                         </div>
-                        <svg height="26" viewBox="0 0 24 24" width="26" className="rotate-180" xmlns="http://www.w3.org/2000/svg" id="fi_2722991"><g id="_17" data-name="17"><path d="m15 19a1 1 0 0 1 -.71-.29l-6-6a1 1 0 0 1 0-1.41l6-6a1 1 0 0 1 1.41 1.41l-5.29 5.29 5.29 5.29a1 1 0 0 1 -.7 1.71z"></path></g></svg>
+                        <svg height="26" viewBox="0 0 24 24" width="26" className={lang === 'ar' ? "" : "rotate-180"} xmlns="http://www.w3.org/2000/svg" id="fi_2722991"><g id="_17" data-name="17"><path d="m15 19a1 1 0 0 1 -.71-.29l-6-6a1 1 0 0 1 0-1.41l6-6a1 1 0 0 1 1.41 1.41l-5.29 5.29 5.29 5.29a1 1 0 0 1 -.7 1.71z"></path></g></svg>
                     </Link>
                     {
-                        localStorage.getItem("userid") ?
+                        userid ?
                             <>
                                 <Link href={`${origin}/${lang}/account/addressbook`} className="border-b border-[#9CA4AB50] px-4 py-3 flex items-center justify-between text-[#004b7a] fill-[#004B7A]">
                                     <div className="flex items-center gap-x-2">
@@ -330,7 +356,7 @@ export default function AccountListing() {
                     </div>
                 </div >
                 <div className="fixed bottom-[77px] w-full p-3 bg-white shadow-md border-t border-[#5D686F26]">
-                    {localStorage.getItem("userid") ?
+                    {userid ?
                         <button onClick={() => handleLogout()} className="focus-visible:outline-none btn border border-[#DC4E4E] bg-[#DC4E4E] p-2.5 rounded-md w-full text-white fill-white flex items-center justify-center font-medium gap-x-2">
                             {lang === 'ar' ? 'تسجيل خروج' : 'Log Out'}
                         </button>
