@@ -7,7 +7,6 @@ import dayjs from 'dayjs'
 import 'dayjs/locale/ar'
 import relativeTime from "dayjs/plugin/relativeTime";
 import dynamic from 'next/dynamic';
-import { NewMedia } from "@/lib/api/apiLinks";
 import { useApp } from '@/app/_ctx/AppContext';
 import { useSlot } from '@/app/_ctx/ClientDataRegistry';
 
@@ -16,9 +15,9 @@ const MobileHeader = dynamic(() => import('@/components/MobileHeader'), { ssr: t
 export default function BlogDetails() {
     const { lang } = useApp();
     const blogsData = useSlot<any>("blogsDetails");
-    dayjs.extend(relativeTime);
-    console.log(dayjs().fromNow()); // "a few seconds ago"
-    console.log(blogsData)
+    dayjs.extend(relativeTime)
+    const NewMedia = process.env.NEXT_PUBLIC_NEW_MEDIA;
+
     return (
         <div className='py-10'>
             <MobileHeader
