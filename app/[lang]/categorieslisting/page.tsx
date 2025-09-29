@@ -3,39 +3,27 @@
 import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { NewMedia } from '@/lib/api/apiLinks'
-import { get } from "@/lib/api/apiCalls"
-import { useRouter } from 'next-nprogress-bar';
-import { getDictionary } from "../dictionaries"
 import dynamic from 'next/dynamic';
+import { useSlot } from '@/app/_ctx/ClientDataRegistry';
+import { useApp } from '@/app/_ctx/AppContext';
 const MobileHeader = dynamic(() => import('../components/MobileHeader'), { ssr: true })
 
-export default function AboutUs({ params }: {
-    params: {
-        lang: string, data: any
-    }
-}) {
-    const [dict, setDict] = useState<any>([]);
-    const router = useRouter();
+export default function CategoriesListing() {
+    const { lang, deviceType, origin } = useApp();
+    const NewMedia = process.env.NEXT_PUBLIC_NEW_MEDIA;
+    const categoryData = useSlot<any>("categoryListingPage");
     const [categoryListingData, setCategoryListingData] = useState<any>([]);
-    const [categoryFilteredSearch, setCategoryFilteredSearch] = useState<any>(null);
+    const [categoryFilteredSearch, setCategoryFilteredSearch] = useState<any>('');
     const [categorisFilterData, setCategorisFilterData] = useState<any>([]);
 
     const getCategoryListingData = async () => {
-        await get(`mob-cat-listing`).then((responseJson: any) => {
-            setCategoryListingData(responseJson?.category)
-            setCategorisFilterData(responseJson?.category)
-        })
+        setCategoryListingData(categoryData?.category)
+        setCategorisFilterData(categoryData?.category)
     }
 
     useEffect(() => {
-        (async () => {
-            const translationdata = await getDictionary(params?.lang);
-            setDict(translationdata);
-        })();
         getCategoryListingData()
-        // setCategorisFilterData(catdata)
-    }, [params]);
+    }, [categoryData]);
 
     const filterCategory = (text: string) => {
         if (text) {
@@ -50,11 +38,6 @@ export default function AboutUs({ params }: {
             setCategorisFilterData(categoryListingData);
         }
     };
-
-    const origin =
-        typeof window !== 'undefined' && window.location.origin
-            ? window.location.origin
-            : '';
 
     return (
         <>
@@ -102,12 +85,12 @@ export default function AboutUs({ params }: {
                                     //     </div>
                                     //     <h4 className="font-semibold mt-1.5 text-sm">{params?.lang === 'ar' ? cat?.name_arabic : cat?.name}</h4>
                                     // </Link>
-                                    <Link href={`${origin}/${params?.lang}/category/${cat?.slug}`} className="text-primary text-center" key={cat?.id}>
+                                    <Link href={`${origin}/${lang}/category/${cat?.slug}`} className="text-primary text-center" key={cat?.id}>
                                         <div className="w-full">
                                             <Image
                                                 src={cat?.mobile_media_app_image ? NewMedia + cat?.mobile_media_app_image?.image : "https://partners.tamkeenstores.com.sa/public/assets/new-media/3f4a05b645bdf91af2a0d9598e9526181714129744.png"}
-                                                alt={params?.lang === 'ar' ? cat?.name_arabic : cat?.name}
-                                                title={params?.lang === 'ar' ? cat?.name_arabic : cat?.name}
+                                                alt={lang === 'ar' ? cat?.name_arabic : cat?.name}
+                                                title={lang === 'ar' ? cat?.name_arabic : cat?.name}
                                                 height={0}
                                                 sizes="100vw"
                                                 width={0}
@@ -115,7 +98,7 @@ export default function AboutUs({ params }: {
                                                 className="mx-auto shadow-md rounded-md w-full h-full"
                                             />
                                         </div>
-                                        <h4 className="font-semibold mt-1.5 text-sm">{params?.lang === 'ar' ? cat?.name_arabic : cat?.name}</h4>
+                                        <h4 className="font-semibold mt-1.5 text-sm">{lang === 'ar' ? cat?.name_arabic : cat?.name}</h4>
                                     </Link>
                                 )
                             })}
