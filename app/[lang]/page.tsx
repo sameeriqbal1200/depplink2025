@@ -1137,7 +1137,6 @@ export default function Homepage() {
           </div>
         )}
         {/* New Price Section */}
-        <div className="py-8">
           <PriceSection
             NewMedia={NewMedia}
             data={homepagepartonelatest?.first_five_sec}
@@ -1146,8 +1145,8 @@ export default function Homepage() {
             origin={origin}
             isMobileOrTablet={true}
           />
-        </div>
       </section>
+
       {/* Section 2 End */}
       <MainSliderMobile
         data={sec5Slider}

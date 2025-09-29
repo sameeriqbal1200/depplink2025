@@ -33,7 +33,7 @@ export default function PriceSectionComponent(props: any) {
     const ImageEight = sectionData?.sec_nineteen_image_eight ? `${NewMedia}${sectionData?.sec_nineteen_image_eight}` : '';
     const ImageEightLink = sectionData?.sec_nineteen_image_eight_link;
     return (
-        <div>
+        <div className="py-8">
             <h2 className="headingHomeMain mb-5">{priceHeading}</h2>
             <Swiper
                 spaceBetween={10}
