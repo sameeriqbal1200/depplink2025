@@ -856,9 +856,9 @@ export default function product_component_updated(props: any) {
     <div className="proBox relative z-20 !min-h-full !rounded-2xl shadow-md !p-3.5">
       <button
         className={`absolute top-3 rtl:left-3 ltr:right-3 z-10 hover:!bg-red hover:!text-white !p-1.5 rounded-2xl cursor-pointer transition-all duration-300 ease-in-out ${ProWishlistData.filter((item: any) => item == productData?.id)
-            .length >= 1
-            ? "!bg-red"
-            : "!bg-white"
+          .length >= 1
+          ? "!bg-red"
+          : "!bg-white"
           }`}
         onClick={(e: any) => {
           var type: boolean =
@@ -870,9 +870,9 @@ export default function product_component_updated(props: any) {
         <HeartIcon
           size={13}
           color={` ${ProWishlistData.filter((item: any) => item == productData?.id)
-              .length >= 1
-              ? "#ffffff"
-              : "#004B7A"
+            .length >= 1
+            ? "#ffffff"
+            : "#004B7A"
             }`}
         />
       </button>
@@ -899,18 +899,16 @@ export default function product_component_updated(props: any) {
           />
         </div>
         {absoluteTexts.length > 0 ? (
-          <div className="flex items-center justify-center mx-8 text-nowrap overflow-hidden">
+          <div className="flex items-center justify-center mx-8 overflow-hidden whitespace-nowrap">
             {absoluteTexts.map((text, i) => (
-              <React.Fragment key={i}>
-                {i > 0 && (
-                  <div className="h-3 w-px mx-1 border border-gray opacity-20"></div>
-                )}
-                <div className="text-xxs font-semibold">{text}</div>
-              </React.Fragment>
+              <div key={`${text}-${i}`} className="flex items-center">
+                {i > 0 && <div className="mx-1 h-3 w-px bg-gray-400 opacity-20" />}
+                <span className="text-xxs font-semibold">{text}</span>
+              </div>
             ))}
           </div>
         ) : (
-          <div className="h-3.5 w-full"></div>
+          <div className="h-3.5 w-full" />
         )}
         {/* Badge Gift & Express Area */}
         <div className="flex items-end justify-between gap-1 w-full mt-3 mb-1">
@@ -1045,12 +1043,12 @@ export default function product_component_updated(props: any) {
               alt={installmentMethods}
               title={installmentMethods}
               loading="lazy"
-              width={0}
-              height={0}
+              width={160}
+              height={20}
               quality={100}
               decoding="async"
               sizes="(max-width: 640px) 100vw, (max-width: 768px) 100vw, (max-width: 1024px) 100vw, 100vw"
-              className="rounded-md w-40 h-5 object-contain"
+              className="rounded-md object-contain"
               src={installmentMethodsImages}
             />
           </div>
