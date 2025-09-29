@@ -57,7 +57,7 @@ export default function CategoriesHomeMobile(props: any) {
                     modules={[Scrollbar, Mousewheel, Grid, FreeMode]}  // Use only Scrollbar, Mousewheel, and Grid
                     className="mySwiper !pb-6"
                 >
-                    {categories.length > 0 ? (
+                    {categories.length > 0 && (
                         categories.map((category: any, i: number) => (
                             <SwiperSlide key={i}>
                                 <Link prefetch={false} scroll={false} href={`${origin}/${props?.lang}/category/${category?.slug}`} className="rounded-md">
@@ -76,14 +76,6 @@ export default function CategoriesHomeMobile(props: any) {
                                         {renderCategoryName(category)}
                                     </h2>
                                 </Link>
-                            </SwiperSlide>
-                        ))
-                    ) : (
-                        Array.from({ length: 16 }).map((_, index) => (
-                            <SwiperSlide className="p-0.5" key={index}>
-                                <div className="bg-white rounded-lg shadow-md text-center text-primary animate-pulse w-full">
-                                    <div className="rounded-md bg-dark/10 p-2.5 h-28 lg:h-[13.5rem] w-full"></div>
-                                </div>
                             </SwiperSlide>
                         ))
                     )}
