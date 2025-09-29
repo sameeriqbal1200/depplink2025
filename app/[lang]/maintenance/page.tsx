@@ -169,7 +169,7 @@ export default function Maintenance() {
                                 leaveFrom="opacity-100 scale-100"
                                 leaveTo="opacity-0 scale-95"
                             >
-                                <DialogPanel className="w-full max-w-3xl max-md:h-[-webkit-fill-available] h-full transform overflow-hidden rounded-md bg-white text-left align-middle shadow-xl transition-all">
+                                <DialogPanel className="w-full max-w-3xl max-md:h-screen h-full transform overflow-hidden rounded-md bg-white text-left align-middle shadow-xl transition-all">
                                     <DialogTitle
                                         as="h3"
                                         className="text-lg font-medium leading-6 text-gray-900 container"
