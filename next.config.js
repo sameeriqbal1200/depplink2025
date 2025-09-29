@@ -34,7 +34,19 @@ const nextConfig = {
     );
     return config;
   },
-
+  async headers() {
+    return [
+      {
+        source: "/(.*)", // all routes
+        headers: [
+          {
+            key: "Referrer-Policy",
+            value: "strict-origin-when-cross-origin",
+          },
+        ],
+      },
+    ];
+  },
   async redirects() {
     return [
       { source: '/', destination: '/ar', permanent: true },
@@ -61,7 +73,6 @@ const nextConfig = {
     ],
 
   },
-
   eslint: { ignoreDuringBuilds: true },
   turbopack: {},
 };

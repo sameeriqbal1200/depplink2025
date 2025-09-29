@@ -18,6 +18,7 @@ import HeartIcon from "@/components/Icons/HeartIcon";
 import { useApp } from "@/app/_ctx/AppContext";
 import SARIcon from "../Icons/SARIcon";
 import StarIcon from "../Icons/StarIcon";
+import CopyIcon from "../Icons/CopyIcon";
 
 export default function product_component_updated(props: any) {
   const router = useRouter();
@@ -1001,20 +1002,10 @@ export default function product_component_updated(props: any) {
               <div className="flex items-center justify-between gap-2 my-2">
                 <h2 className="productDesc font-semibold text-start text-xs line-clamp-1">
                   <span className='font-bold after:content-["•"]'>{codeText}{" "}</span>{" "}
-                  <span className="inline-flex items-center gap-1">{productData?.sku}
-                    <svg
-                      width="18"
-                      height="18"
-                      viewBox="0 0 18 18"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M13.6223 7.23994C13.8728 7.23994 14.113 7.33944 14.2901 7.51656C14.4672 7.69368 14.5667 7.9339 14.5667 8.18438V13.851C14.5667 14.1015 14.4672 14.3418 14.2901 14.5189C14.113 14.696 13.8728 14.7955 13.6223 14.7955H7.95562C7.70514 14.7955 7.46492 14.696 7.2878 14.5189C7.11068 14.3418 7.01118 14.1015 7.01118 13.851V8.18438C7.01118 7.9339 7.11068 7.69368 7.2878 7.51656C7.46492 7.33944 7.70514 7.23994 7.95562 7.23994H13.6223ZM13.6223 8.18438H7.95562V13.851H13.6223V8.18438ZM9.84451 3.46216C10.095 3.46216 10.3352 3.56166 10.5123 3.73878C10.6895 3.9159 10.789 4.15612 10.789 4.4066V5.82327C10.789 5.94851 10.7392 6.06862 10.6506 6.15718C10.5621 6.24574 10.442 6.29549 10.3167 6.29549C10.1915 6.29549 10.0714 6.24574 9.98282 6.15718C9.89426 6.06862 9.84451 5.94851 9.84451 5.82327V4.4066H4.17784V10.0733H5.59451C5.71975 10.0733 5.83986 10.123 5.92842 10.2116C6.01698 10.3001 6.06673 10.4203 6.06673 10.5455C6.06673 10.6707 6.01698 10.7908 5.92842 10.8794C5.83986 10.968 5.71975 11.0177 5.59451 11.0177H4.17784C3.92736 11.0177 3.68714 10.9182 3.51002 10.7411C3.3329 10.564 3.2334 10.3238 3.2334 10.0733V4.4066C3.2334 4.15612 3.3329 3.9159 3.51002 3.73878C3.68714 3.56166 3.92736 3.46216 4.17784 3.46216H9.84451Z"
-                        fill="black"
-                      />
-                    </svg>
-                  </span>
+                  <button className="inline-flex items-center gap-1">
+                    {productData?.sku}{" "}
+                    <CopyIcon size={12} color="#000000" />
+                  </button>
                 </h2>
                 <Image
                   src={productBrandImage}
@@ -1086,7 +1077,7 @@ export default function product_component_updated(props: any) {
                   </div>
                 </div>
                 {(productData?.promotional_price >= 0 && productData?.promotional_price != null && productData?.sale_price) && (
-                  <span className="animated_orangePrice text-orangePrice !text-[0.55rem] font-bold animationImp">
+                  <span className="animated_orangePrice text-orangePrice text-xxs font-bold animationImp">
                     {salePormotionText}
                   </span>
                 )}

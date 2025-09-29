@@ -42,6 +42,9 @@
     --animate-spin-slow: spin 3s linear infinite;
     --animate-wiggle: wiggle 1s ease-in-out infinite;
     --animate-ping: ping 1s cubic-bezier(0, 0, 0.2, 1) infinite;
+
+    /* fonts Sizes */
+    --xxs: 0.55rem;
 }
 
 /* Keyframes from your config */
