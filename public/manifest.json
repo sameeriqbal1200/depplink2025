@@ -1,7 +1,7 @@
 {
     "name": "Tamkeen Stores",
     "short_name": "App",
-    "theme_color": "#FFFFFF",
+    "theme_color": "#004B7A",
     "background_color": "#FFFFFF",
     "start_url": "/",
     "display": "standalone",

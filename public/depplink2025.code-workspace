@@ -1,0 +1,29 @@
+{
+	"folders": [
+		{
+			"path": "../../depplink2025"
+		},
+		{
+			"path": "../../TamkeenStores"
+		},
+		{
+			"path": "../../Documents/TamkeenDeliveryApp"
+		},
+		{
+			"path": "../../TamkeenDashboard2023"
+		},
+		{
+			"path": ".."
+		},
+		{
+			"path": "../../tamkeenStoresLaravelFront2025"
+		},
+		{
+			"path": "../../TamkeenStoresMobileApp-NextJs"
+		}
+	],
+	"settings": {
+		"java.compile.nullAnalysis.mode": "automatic",
+		"java.configuration.updateBuildConfiguration": "interactive"
+	}
+}

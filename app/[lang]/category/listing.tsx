@@ -665,9 +665,9 @@ export default function SubCategoryNew({ data, slug, lang, deviceType, origin, s
                       <path
                         d="M14.1111 1.38889H0.888916L5.94447 8.51851V14.6111L9.05558 12.537V8.51851L14.1111 1.38889Z"
                         stroke="currentcolor"
-                        stroke-opacity="0.7"
-                        stroke-width="1.18056"
-                        stroke-linecap="round"
+                        strokeOpacity="0.7"
+                        strokeWidth="1.18056"
+                        strokeLinecap="round"
                         strokeLinejoin="round"
                       />
                     </svg>
