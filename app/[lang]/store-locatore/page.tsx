@@ -160,17 +160,17 @@ export default function StoreLocator(
                                         justifyContent: 'center',
                                         boxShadow: state.isFocused ? null : null,
                                     }),
-                                    valueContainer: (provided: any, state: any) => ({
+                                    valueContainer: (provided, state) => ({
                                         ...provided,
                                         height: '42px',
                                         padding: '0 0.5rem',
                                         overflow: 'visible',
                                     }),
-                                    input: (provided: any, state: any) => ({
+                                    input: (provided, state) => ({
                                         ...provided,
                                         margin: '0px',
                                     }),
-                                    indicatorSeparator: (state: any) => ({
+                                    indicatorSeparator: state => ({
                                         alignSelf: 'stretch',
                                         width: '1px',
                                         backgroundColor: 'hsl(0, 0%, 80%)',
@@ -178,7 +178,7 @@ export default function StoreLocator(
                                         marginTop: '12px',
                                         boxSizing: 'border-box',
                                     }),
-                                    indicatorsContainer: (provided: any, state: any) => ({
+                                    indicatorsContainer: (provided, state) => ({
                                         ...provided,
                                         height: '42px',
                                     }),
@@ -187,10 +187,10 @@ export default function StoreLocator(
                                 options={footer?.storesLocatorDataCore?.regions}
                                 isSearchable={true}
                                 value={city}
-                                className="text-primary font-regular text-sm focus-visible:outline-none w-full"
+                                className="stl__306mainInnerSelect"
                                 classNamePrefix="react-select"
                                 onChange={(e: any) => {
-                                    setCity(e);
+                                    setCity(e)
                                     // FilterStores()
                                 }}
                             />
