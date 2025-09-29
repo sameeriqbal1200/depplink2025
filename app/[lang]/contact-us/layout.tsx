@@ -1,13 +1,7 @@
-
-import type { Metadata, ResolvingMetadata } from 'next'
-import { headers } from 'next/headers'
+import type { Metadata } from "next";
 import { getRequestContext } from "@/lib/request-context";
+import { BridgeSlot } from "@/app/_ctx/ClientDataRegistry";
 import { getFooterCached } from "@/lib/footerpages/footer.cached";
-
-// import Loading from './loading'
-type Props = {
-    params: { slug: string, lang: string }
-}
 
 export const viewport = {
     width: 'device-width',
@@ -15,6 +9,47 @@ export const viewport = {
     maximumScale: 1,
 }
 
+export default async function ContactUsLayout({ children }: { children: React.ReactNode }) {
+    const { slugStr, lang, baseUrl } = await getRequestContext();
+    if (!slugStr) return null;
+
+    const footer = await getFooterCached(slugStr);
+    const value = footer ? JSON.parse(JSON.stringify(footer)) : null;
+
+    const jsonLd = [
+        {
+            "@id": "#breadcrumb",
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            itemListElement: [
+                {
+                    "@type": "ListItem",
+                    position: 1,
+                    name: "Homepage",
+                    item: `${baseUrl}/${lang}`,
+                },
+                {
+                    "@type": "ListItem",
+                    position: 2,
+                    name: "ContactUs",
+                    item: `${baseUrl}/${lang}/contactus`,
+                },
+            ],
+        },
+    ]
+
+    return (
+        <BridgeSlot slot="footer" value={value}>
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+            />
+            {children}
+        </BridgeSlot>
+    );
+}
+
+// ---- SEO metadata ----
 export async function generateMetadata(): Promise<Metadata | null> {
     const { slugParts, slugStr, lang, origin } = await getRequestContext();
     if (!slugStr) return null;
@@ -24,16 +59,16 @@ export async function generateMetadata(): Promise<Metadata | null> {
     const metaTitle =
         lang === "en"
             ? footer?.data?.meta_title_en ?? "Tamkeen Stores Contact Us"
-            : footer?.data?.meta_title_ar ?? "تـواصـل مـعـنــا | معارض تمكين";
+            : footer?.data?.meta_title_ar ?? "معارض تمكين اتصل بنا";
 
     const metaDescription =
         lang === "en"
             ? footer?.data?.meta_description_en ??
             "Tamkeen Stores Contact Us"
             : footer?.data?.meta_description_ar ??
-            "تـواصـل مـعـنــا معارض تمكين";
+            "معارض تمكين اتصل بنا";
 
-    // In /[lang]/contact-us/[...slug], slugParts are ONLY the [...slug] bits (not "contact-us")
+    // In /[lang]/about-us/[...slug], slugParts are ONLY the [...slug] bits (not "about-us")
     const suffix = slugParts?.length ? `/${slugParts.join("/")}` : "";
     const canonicalPath = `/${lang}${suffix}`;
     const canonicalUrl = `${origin}${canonicalPath}`;
@@ -118,12 +153,4 @@ export async function generateMetadata(): Promise<Metadata | null> {
             "developer:role": "E-commerce Applications Manager",
         },
     };
-}
-
-export default async function ContactUsLayout({ children, params }: { children: React.ReactNode, params: { slug: string, data: any, lang: string } }) {
-    return (
-        <>
-            {children}
-        </>
-    )
 }

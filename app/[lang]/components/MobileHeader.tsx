@@ -3,6 +3,7 @@
 import React, { useEffect } from 'react'
 import { RWebShare } from "react-web-share"
 import { useRouter } from "next-nprogress-bar";
+import ArrowLeftIcon from './Icons/ArrowLeftIcon';
 
 
 export default function MobileHeader(props: any) {
@@ -79,7 +80,7 @@ export default function MobileHeader(props: any) {
     };
     const BackIcon = () => (
         <button className="w-16" onClick={goBack}>
-            <svg height="30" width="30" className={props.lang === 'ar' ? 'rotate-180' : ''} viewBox="0 0 24 24"><path d="m15 19a1 1 0 0 1 -.71-.29l-6-6a1 1 0 0 1 0-1.41l6-6a1 1 0 0 1 1.41 1.41l-5.29 5.29 5.29 5.29a1 1 0 0 1 -.7 1.71z" /></svg>
+            <ArrowLeftIcon size={30} color='#000000' className={props.lang === 'ar' ? 'rotate-180' : ''} />
         </button>
     );
     const pageTitle = props?.pageTitle

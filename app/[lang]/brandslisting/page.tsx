@@ -9,7 +9,7 @@ import { useSlot } from '@/app/_ctx/ClientDataRegistry';
 
 const MobileHeader = dynamic(() => import('../components/MobileHeader'), { ssr: true })
 
-export default function AboutUs({ params }: { params: { lang: string, data: any } }) {
+export default function BrandListing() {
     const NewMedia = process.env.NEXT_PUBLIC_NEW_MEDIA;
     const { lang, deviceType, origin } = useApp();
     const [ariaLabel, setAriaLabel] = useState('/ar');

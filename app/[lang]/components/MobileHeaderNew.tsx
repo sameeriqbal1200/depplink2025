@@ -388,8 +388,8 @@ export default function MobileHeaderNew(props: any) {
             </div>
           </div>
           <div className="header_bottom flex items-center ltr:flex-row rtl:flex-row-reverse justify-between gap-x-10">
-            <div className="Icons flex items-center gap-x-5">
-              <Link
+            {/* <div className="Icons flex items-center gap-x-5"> */}
+              {/* <Link
                 prefetch={false}
                 scroll={false}
                 href={`${origin}/${lang}/cart`}
@@ -401,7 +401,7 @@ export default function MobileHeaderNew(props: any) {
                   </span>
                 )}
                 <CartIcon size={24} color="#004B7A" className="text-primary" />
-              </Link>
+              </Link> */}
               <Link
                 prefetch={false}
                 scroll={false}
@@ -414,7 +414,7 @@ export default function MobileHeaderNew(props: any) {
                   className="text-primary"
                 />
               </Link>
-            </div>
+            {/* </div> */}
             <div className="location_wrapper basis-full flex items-center justify-start gap-x-2 text-sm">
               <LocationIcon
                 size={20}

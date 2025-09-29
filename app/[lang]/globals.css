@@ -114,3 +114,10 @@
     background-size: contain;
     background-position: center;
 }
+
+.bg-payment {
+    background-image: url('/icons/installment-3.webp');
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+}
