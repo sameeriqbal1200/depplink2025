@@ -13,7 +13,7 @@ import { useSlot } from '@/app/_ctx/ClientDataRegistry';
 const MobileHeader = dynamic(() => import('../components/MobileHeader'), { ssr: true })
 
 export default function Blogs() {
-    const { lang } = useApp();
+    const { lang, origin } = useApp();
     const blogsData = useSlot<any>("blogs");
     dayjs.extend(relativeTime);
     const NewMedia = process.env.NEXT_PUBLIC_NEW_MEDIA;
