@@ -64,7 +64,7 @@ export async function generateMetadata(): Promise<Metadata | null> {
     const metaDescription =
         lang === "en"
             ? footer?.data?.meta_description_en ??
-            "Tamkeen Stores Conatct Us"
+            "Tamkeen Stores Contact Us"
             : footer?.data?.meta_description_ar ??
             "معارض تمكين اتصل بنا";
 
@@ -82,7 +82,7 @@ export async function generateMetadata(): Promise<Metadata | null> {
             "تمكين",
             "Electronics Saudi Arabia",
             "معارض تمكين",
-            "Conatct Us",
+            "Contact Us",
         ],
 
         referrer: "origin-when-cross-origin",
