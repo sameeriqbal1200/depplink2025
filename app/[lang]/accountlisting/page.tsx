@@ -138,7 +138,7 @@ export default function AccountListing() {
     return (
         <>
             <MobileHeader type="Third" lang={lang} pageTitle={lang === 'ar' ? 'حساب تعريفي' : 'Profile'} />
-            <div className="pt-16 md:py-4">
+            <div className="py-16 md:py-4">
                 <div className="container">
                     {userid ? (
                         <Link
