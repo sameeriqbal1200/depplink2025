@@ -1057,7 +1057,7 @@ export default function product_component_updated(props: any) {
               quality={100}
               decoding="async"
               sizes="(max-width: 640px) 100vw, (max-width: 768px) 100vw, (max-width: 1024px) 100vw, 100vw"
-              className="rounded-md w-32 h-5 object-cover"
+              className="rounded-md w-40 h-5 object-contain"
               src={installmentMethodsImages}
             />
           </div>
