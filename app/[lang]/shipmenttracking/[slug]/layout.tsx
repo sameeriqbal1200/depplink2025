@@ -1,42 +1,76 @@
-import type { Metadata, ResolvingMetadata } from 'next';
-import { headers } from 'next/headers';
-import { Api } from "@/lib/api/apiLinks";
+import type { Metadata } from "next";
 import { getRequestContext } from "@/lib/request-context";
-import { getFooterCached } from "@/lib/footerpages/footer.cached";
+import { BridgeSlot } from "@/app/_ctx/ClientDataRegistry";
+import { getShipmentTrackingCached } from "@/lib/shipmentTracking/shipmentTracking.cached";
 
-const fetcher = async (params: any) => {
-    const slug = params.slug
-    const res = await fetch(`${Api}shipment-tracking/${slug}`);
-    return res.json();
-};
-
-// Viewport settings
 export const viewport = {
     width: 'device-width',
     initialScale: 1,
     maximumScale: 1,
-};
+}
+
+export default async function ShipmentTrackingLayout({ children }: { children: React.ReactNode }) {
+    const { slugStr, lang, baseUrl } = await getRequestContext();
+    if (!slugStr) return null;
+
+    const shipmentTracking = await getShipmentTrackingCached(slugStr);
+    const value = shipmentTracking ? JSON.parse(JSON.stringify(shipmentTracking)) : null;
+
+    const jsonLd = [
+        {
+            "@id": "#breadcrumb",
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            itemListElement: [
+                {
+                    "@type": "ListItem",
+                    position: 1,
+                    name: lang === "ar" ? "الصفحة الرئيسية" : "Home Page",
+                    item: `${baseUrl}/${lang}`,
+                },
+                {
+                    "@type": "ListItem",
+                    position: 2,
+                    name: lang === "ar" ? "تتبع الشحنة" : "Shipment Tracking",
+                    item: `${baseUrl}/${lang}/shipment-tracking`,
+                },
+            ],
+        },
+    ];
 
 
+    return (
+        <BridgeSlot slot="shipmentTracking" value={value}>
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+            />
+            {children}
+        </BridgeSlot>
+    );
+}
+
+// ---- SEO metadata ----
 export async function generateMetadata(): Promise<Metadata | null> {
     const { slugParts, slugStr, lang, origin } = await getRequestContext();
     if (!slugStr) return null;
 
-    const footer = await getFooterCached(slugStr);
+    // ✅ Cached API call for shipment tracking page
+    const shipmentTracking = await getShipmentTrackingCached(slugStr);
 
     const metaTitle =
         lang === "en"
-            ? footer?.data?.meta_title_en ?? "Tamkeen Stores Shipment Tracking"
-            : footer?.data?.meta_title_ar ?? "تتبع الشحنة | معارض تمكين";
+            ? shipmentTracking?.data?.meta_title_en ?? "Tamkeen Stores Shipment Tracking"
+            : shipmentTracking?.data?.meta_title_ar ?? "تتبع الشحنة | معارض تمكين";
 
     const metaDescription =
         lang === "en"
-            ? footer?.data?.meta_description_en ??
-            "Tamkeen Stores Shipment Tracking"
-            : footer?.data?.meta_description_ar ??
-            "معارض تمكين تتبع الشحنة";
+            ? shipmentTracking?.data?.meta_description_en ??
+            "Track your shipment with Tamkeen Stores easily and quickly."
+            : shipmentTracking?.data?.meta_description_ar ??
+            "تتبع شحنتك من معارض تمكين بسهولة وسرعة.";
 
-    // In /[lang]/shipmenttracking/[...slug], slugParts are ONLY the [...slug] bits (not "shipmenttracking")
+    // Slug parts (shipment-tracking/[...slug])
     const suffix = slugParts?.length ? `/${slugParts.join("/")}` : "";
     const canonicalPath = `/${lang}${suffix}`;
     const canonicalUrl = `${origin}${canonicalPath}`;
@@ -51,6 +85,7 @@ export async function generateMetadata(): Promise<Metadata | null> {
             "Electronics Saudi Arabia",
             "معارض تمكين",
             "Shipment Tracking",
+            "تتبع الشحنة",
         ],
 
         referrer: "origin-when-cross-origin",
@@ -78,7 +113,7 @@ export async function generateMetadata(): Promise<Metadata | null> {
                     url: `${origin}/images/metaLogo.jpg`,
                     width: 800,
                     height: 800,
-                    alt: "logo",
+                    alt: "Tamkeen Stores Logo",
                 },
             ],
             url: canonicalUrl,
@@ -114,28 +149,11 @@ export async function generateMetadata(): Promise<Metadata | null> {
             images: [`${origin}/images/metaLogo.jpg`],
         },
 
-        // ✅ Developer Info (will render as <meta name="developer:*">)
+        // ✅ Developer Info
         other: {
             "developer:name": "Muhammad Usman Siddiqui",
             "developer:email": "usman@tamkeen-ksa.com",
             "developer:role": "E-commerce Applications Manager",
         },
     };
-}
-
-// Main component for shipment tracking layout
-export default async function ShipmentTrackingLayout({ children, params }: { children: React.ReactNode, params: { devicetype: any, slug: string, data: any, lang: string } }) {
-    const headersList = headers();
-    const deviceType: string | null = headersList.get('device-type');
-    params.devicetype = deviceType;
-    
-    // Fetch shipment data based on slug
-    const shipmentData = await fetcher(params);
-    params.data = shipmentData;
-   
-    return (
-        <>
-            {children}
-        </>
-    );
 }

@@ -1,23 +1,23 @@
 "use client"; // This is a client component 👈🏽
 
-import React, { useState, Fragment, useEffect, useCallback } from 'react'
+import React, { useState, Fragment } from 'react'
 import Image from 'next/image'
 import dayjs from 'dayjs'
 import { Dialog, Transition, RadioGroup, TransitionChild, DialogPanel, DialogTitle } from '@headlessui/react'
-import { get, post } from "@/lib/api/apiCalls"
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 import dynamic from 'next/dynamic'
 import { useRouter } from 'next-nprogress-bar'
-import { NewMedia } from '@/lib/api/apiLinks';
 import { useApp } from "@/app/_ctx/AppContext";
 import { useSlot } from '@/app/_ctx/ClientDataRegistry';
 import { getUserData, getUserOrderDetails, getMaintainanceProductDetails } from '@/lib/footerpages/maintainance.client';
+import { postMaintenanceData } from '@/lib/footerpages/maintenance.client';
 
 const MobileHeader = dynamic(() => import('../components/MobileHeader'), { ssr: true })
 
 export default function Maintenance() {
-    const { t, lang } = useApp();
+    const NewMedia = process.env.NEXT_PUBLIC_NEW_MEDIA;
+    const { t, lang, origin } = useApp();
     const footer = useSlot<any>("footer");
     const router = useRouter()
     const [activeTab1, setActiveTab1] = useState<boolean>(true);
@@ -42,7 +42,7 @@ export default function Maintenance() {
                 setShow(true)
             })
         } else {
-            router.push(`/${lang}/login`)
+            router.push(`${origin}/${lang}/login`)
         }
     }
 
@@ -52,7 +52,6 @@ export default function Maintenance() {
         })
         getMaintainanceProductDetails(orderid).then((maintainanceProduct: any) => {
             setCheckMaintenanceData(maintainanceProduct?.maintainanceProductDetails)
-            console.log(maintainanceProduct?.maintainanceProductDetails)
         })
     }
 
@@ -91,9 +90,9 @@ export default function Maintenance() {
     };
 
 
-    const SubmitData = () => {
-
-        var data = {
+    const SubmitData = async () => {
+        try {
+            var data = {
             order_no: orderNo,
             orderdetail_id: selected,
             product_id: selectedProduct,
@@ -101,9 +100,10 @@ export default function Maintenance() {
             comment: commentData,
             time: selectedTime,
             user_id: localStorage.getItem('userid'),
-        }
-        post('maintenance', data).then((responseJson: any) => {
-            if (responseJson?.success === true) {
+            }
+
+            const res = await postMaintenanceData(data);
+            if (res?.maintenanceData?.success === true) {
                 setShow(false)
                 topMessageAlartSuccess(t('maintenanceAdded'))
                 setOrderNo(false)
@@ -115,11 +115,13 @@ export default function Maintenance() {
                 setActiveTab1(true)
                 setActiveTab3(false)
                 setActiveTab2(false)
-            }
-            else {
+            } else {
                 topMessageAlartDanger(t('somethingwentwrong'))
             }
-        })
+        } catch (e) {
+            console.error("updateProfileData failed:", e);
+            topMessageAlartDanger(lang === "ar" ? "حدث خطأ غير متوقع" : "Unexpected error");
+        }
     }
     return (
         <>
