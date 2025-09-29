@@ -204,17 +204,18 @@ export default function StoreLocator(
                                         setCity(cityGet)
                                     }
                                     else {
-                                        setCity({ value: 10000, label: localStorage.getItem('globalcity') })
+                                        setCity({ value: 15, label: localStorage.getItem('globalcity') })
                                     }
                                 }
                             }
                             if (e == 'all') {
                                 setCity('')
+                                StoresData()
                             }
-                        }} className="flex items-center mb-3 gap-x-3 text-xs">
+                        }} className="stl__306mainInnerRadioGroup">
                             <RadioGroup.Option value="my_city">
                                 {({ active, checked }) => (
-                                    <button className={`${checked ? `focus-visible:outline-none border border-[#219EBC] bg-[#219EBC] text-white` : `border border-[#219EBC60] text-[#219EBC80]`} py-1.5 px-2 rounded-md flex items-center gap-x-2`}>
+                                    <button className={`${checked ? `stl__306mainInnerRadioCheckedOne` : `stl__306mainInnerRadioCheckedTwo`} stl__306mainInnerRadioOption`}>
                                         {checked ?
                                             <svg viewBox="0 0 24 24" fill="none" className="h-4 w-4">
                                                 <circle cx={12} cy={12} r={12} fill="#FFFFFF" />
@@ -238,7 +239,7 @@ export default function StoreLocator(
                             </RadioGroup.Option>
                             <RadioGroup.Option value="all">
                                 {({ active, checked }) => (
-                                    <button className={`${checked ? `focus-visible:outline-none border border-[#219EBC] bg-[#219EBC] text-white` : `border border-[#219EBC60] text-[#219EBC80]`} py-1.5 px-2 rounded-md flex items-center gap-x-2`}>
+                                    <button className={`${checked ? `stl__306mainInnerRadioCheckedOne` : `stl__306mainInnerRadioCheckedTwo`} stl__306mainInnerRadioOption`}>
                                         {checked ?
                                             <svg viewBox="0 0 24 24" fill="none" className="h-4 w-4">
                                                 <circle cx={12} cy={12} r={12} fill="#FFFFFF" />
