@@ -2116,7 +2116,7 @@ export default function Checkout() {
                                             {paymentmethods?.map((p: any, i) => {
                                                 if (paymentstatus[p.key + '_status'] || (p.key == 'madapay' && paymentstatus['hyperpay_status'])) {
                                                     return (
-                                                        <>
+                                                        <React.Fragment key={`total-${i}`}>
                                                             <RadioGroup.Option
                                                                 key={p.key}
                                                                 value={p.key}
@@ -2153,7 +2153,7 @@ export default function Checkout() {
                                                                     </>
                                                                 )}
                                                             </RadioGroup.Option>
-                                                        </>
+                                                        </React.Fragment>
                                                     )
                                                 }
                                             })
@@ -2426,13 +2426,13 @@ export default function Checkout() {
                             {summary?.map((s: any, i: number) => {
                                 if (s?.key == 'total') {
                                     return (
-                                        <>
+                                        <React.Fragment key={`total-${i}`}>
                                             <hr className="opacity-10 mb-4" key={i + 2} />
                                             <div className="flex items-center justify-between text-lg font-bold" key={i + 3}>
                                                 <h6 className="text-[#1C262D] capitalize">{lang === 'ar' ? s.title_arabic : s.title}</h6>
                                                 <span className="text-[#004B7A] flex gap-1 items-center">{s?.price?.toLocaleString('EN-US')}{currencySymbol}</span>
                                             </div>
-                                        </>
+                                        </React.Fragment>
                                     )
                                 }
                                 return (
@@ -2448,7 +2448,7 @@ export default function Checkout() {
                             <div className="flex items-center justify-between gap-x-2 mt-4">
                                 <div className="pb-3.5 pt-3 px-3 bg-white rounded-md border flex items-center border-[#5D686F30] gap-x-2 w-full">
                                     <input className="focus-visible:outline-none w-full text-sm font-normal active:border-primary focus-within:border-[#004B7A]" placeholder={lang == 'ar' ? 'رمز الكوبون' : 'Coupon Code'} type="text"
-                                        disabled={typeof window !== 'undefined' && getCoupon().amount ? true : false} value={couponcode} onChange={(e) => { setcouponcode(e.target.value) }}
+                                        disabled={typeof window !== 'undefined' && getCoupon().amount ? true : false} value={couponcode || ''} onChange={(e) => { setcouponcode(e.target.value) }}
                                     />
                                 </div>
                                 {typeof window !== 'undefined' && getCoupon().amount ?
