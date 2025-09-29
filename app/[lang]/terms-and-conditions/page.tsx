@@ -4,15 +4,11 @@ import React, { useState } from 'react'
 import dynamic from 'next/dynamic'
 import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/react';
 import { useApp } from "@/app/_ctx/AppContext";
-// import { useSlot } from '@/app/_ctx/ClientDataRegistry';
 
 const MobileHeader = dynamic(() => import('../components/MobileHeader'), { ssr: true })
 
 export default function TermsandConditions() {
     const { lang } = useApp();
-    // const footer = useSlot<any>("footer");
-
-
     return (
         <div>
             <MobileHeader type="Third" lang={lang} pageTitle={lang === 'ar' ? 'الاسئلة والاجوبة' : 'Terms and Conditions'} />
