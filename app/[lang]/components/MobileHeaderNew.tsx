@@ -21,6 +21,8 @@ import {
   getHeaderMenuData,
   getOnlyCityData,
   getSearchData,
+  getUserCompareData,
+  getUserWishlistData,
 } from "@/lib/components/component.client";
 import ArrowLeftIcon from "./Icons/ArrowLeftIcon";
 import CloseIcon from "./Icons/CloseIcon";
@@ -37,6 +39,7 @@ const ProductLoop = dynamic(() => import("./NewHomePageComp/ProductLoop"), {
 });
 
 export default function MobileHeaderNew(props: any) {
+  const { updateWishlist, setUpdateWishlist } = useContext(GlobalContext);
   const NewMedia = props?.NewMedia;
   const lang = props?.lang;
   const deviceType = props?.deviceType;
@@ -82,7 +85,36 @@ export default function MobileHeaderNew(props: any) {
 
   useEffect(() => {
     DataLocalStorage();
-  }, [updateCart]);
+    getUserData();
+  }, [updateCart, updateWishlist]);
+
+  const getUserData = async () => {
+    await new Promise(resolve => setTimeout(resolve, 100));
+    
+    const userId = localStorage.getItem("userid");
+
+    if (!localStorage.getItem("userCompare")) {
+      const getData = await getUserCompareData(userId);
+      if (getData?.userCompareData) {
+        localStorage.setItem(
+          "userCompare",
+          JSON.stringify(getData.userCompareData.comparedata)
+        );
+        window.dispatchEvent(new Event("storage"));
+      }
+    }
+
+    if (!localStorage.getItem("userWishlist")) {
+      const getDatapd = await getUserWishlistData(userId);
+      if (getDatapd?.userWishlistData) {
+        localStorage.setItem(
+          "userWishlist",
+          JSON.stringify(getDatapd.userWishlistData.wishlistdata)
+        );
+        window.dispatchEvent(new Event("storage"));
+      }
+    }
+  };
 
   useEffect(() => {
     const handleStorageChange = (e: StorageEvent) => {

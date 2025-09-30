@@ -842,7 +842,7 @@ export default function product_component_updated(props: any) {
       <button
         className={`absolute top-3 rtl:left-3 ltr:right-3 z-10 hover:!bg-red hover:!text-white !p-1.5 rounded-2xl cursor-pointer transition-all duration-300 ease-in-out ${ProWishlistData.filter((item: any) => item == productData?.id)
           .length >= 1
-          ? "!bg-red"
+          ? "!bg-red !fill-white !text-white"
           : "!bg-white"
           }`}
         onClick={(e: any) => {
