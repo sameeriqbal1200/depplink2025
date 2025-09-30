@@ -317,11 +317,11 @@ export default function MobileHeaderNew(props: any) {
       <header className="py-3 bg-white shadow-lg w-full overflow-hidden">
         <button
           onClick={() => setWhatsappBtn(true)}
-          className={`WhatsappBeforeHover ${whatsappBtn ? "hidden" : "flex"} ${
-            isArabic ? "right-0" : "left-0"
+          className={`WhatsappBeforeHover ${whatsappBtn ? "!hidden" : "!flex"} ${
+            isArabic ? "right-0  rounded-tl-2xl rounded-bl-2xl" : "left-0 rounded-tr-2xl rounded-br-2xl"
           }`}
         >
-          <ArrowLeftIcon size={16} color="#54AB60" />
+          <ArrowLeftIcon size={16} color="#54AB60" className={`${isArabic ? '' : 'rotate-180'}`} />
         </button>
         <Link
           href="https://wa.me/9668002444464"
@@ -330,8 +330,8 @@ export default function MobileHeaderNew(props: any) {
           prefetch={false}
           scroll={false}
           rel="noopener noreferrer"
-          className={`whatsappLayout ${whatsappBtn ? "flex" : "!hidden"} ${
-            isArabic ? "right-0 rounded-tl-none rounded-bl-none" : "left-0 rounded-tr-[4px] rounded-br-[4px]"
+          className={`whatsappLayout ${whatsappBtn ? "!flex" : "!hidden"} ${
+            isArabic ? "right-0 rounded-tl-2xl rounded-bl-2xl" : "left-0 rounded-tr-2xl rounded-br-2xl"
           }`}
         >
           <svg
@@ -368,7 +368,6 @@ export default function MobileHeaderNew(props: any) {
               />
             </defs>
           </svg>
-          ${isArabic ? "right-0 rounded-tl-0 rounded-bl-0" : "left-0  rounded-tr-[4px] rounded-br-[4px]"}
         </Link>
         <div className="container">
           <div className="header_top flex items-center gap-x-4 mb-4">
