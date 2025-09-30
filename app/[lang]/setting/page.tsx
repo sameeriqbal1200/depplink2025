@@ -1,9 +1,9 @@
 "use client"; // This is a client component 👈🏽
 
 import dayjs from 'dayjs';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import dynamic from 'next/dynamic'
-import { useRouter } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import { RadioGroup } from '@headlessui/react';
 import { useApp } from "@/app/_ctx/AppContext";
 
@@ -13,13 +13,13 @@ export default function Setting() {
     const router = useRouter()
     const { lang, deviceType } = useApp();
     const [selected, setSelected] = useState(lang)
-    // const [notificationEnabled, setNotificationEnabled] = useState<any>(true)
-    // const path = usePathname();
-    // const [latitude, setLatitude] = useState<number>(0);
-    // const [longitude, setLongitude] = useState<number>(0);
-    // const [cityData, setCityData] = useState<any>('')
-    // const [location, setLocation] = useState();
-    // const [BtnLoader, setBtnLoader] = useState(false)
+    const [notificationEnabled, setNotificationEnabled] = useState<any>(true)
+    const path = usePathname();
+    const [latitude, setLatitude] = useState<number>(0);
+    const [longitude, setLongitude] = useState<number>(0);
+    const [cityData, setCityData] = useState<any>('')
+    const [location, setLocation] = useState();
+    const [BtnLoader, setBtnLoader] = useState(false)
 
 
     const changeLang = (lang: string) => {
@@ -29,48 +29,48 @@ export default function Setting() {
         router.refresh()
     };
 
-    // useEffect(() => {
-    //     if (localStorage.getItem('globalcity')) {
-    //         setCityData(localStorage.getItem('globalcity'))
-    //     }
-    //     if (localStorage.getItem('globalNotification')) {
-    //         setNotificationEnabled(localStorage.getItem('globalNotification') == '1' ? true : false)
-    //     }
-    // }, [])
+    useEffect(() => {
+        if (localStorage.getItem('globalcity')) {
+            setCityData(localStorage.getItem('globalcity'))
+        }
+        if (localStorage.getItem('globalNotification')) {
+            setNotificationEnabled(localStorage.getItem('globalNotification') == '1' ? true : false)
+        }
+    }, [])
 
-    // const getLocation = () => {
-    //     setBtnLoader(true)
-    //     if ('geolocation' in navigator) {
-    //         // Retrieve latitude & longitude coordinates from `navigator.geolocation` Web API
-    //         navigator.geolocation.getCurrentPosition(({ coords }) => {
-    //             setLatitude(coords.latitude)
-    //             setLongitude(coords.longitude)
-    //             const latitude = coords.latitude;
-    //             const longitude = coords.longitude;
-    //             fetchApiData({ latitude, longitude })
-    //         })
-    //     }
-    //     if (location) {
-    //         fetchApiData(location);
-    //     }
-    // }
+    const getLocation = () => {
+        setBtnLoader(true)
+        if ('geolocation' in navigator) {
+            // Retrieve latitude & longitude coordinates from `navigator.geolocation` Web API
+            navigator.geolocation.getCurrentPosition(({ coords }) => {
+                setLatitude(coords.latitude)
+                setLongitude(coords.longitude)
+                const latitude = coords.latitude;
+                const longitude = coords.longitude;
+                fetchApiData({ latitude, longitude })
+            })
+        }
+        if (location) {
+            fetchApiData(location);
+        }
+    }
 
-    // const fetchApiData = async ({ latitude, longitude }: { latitude: number, longitude: number }) => {
-    //     const res = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&language=${lang}&sensor=true&key=AIzaSyB3ekz5eMwuRZGvFy2HUADZVhxAzTWV5Ok`);
-    //     const data = await res?.json();
+    const fetchApiData = async ({ latitude, longitude }: { latitude: number, longitude: number }) => {
+        const res = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&language=${lang}&sensor=true&key=AIzaSyB3ekz5eMwuRZGvFy2HUADZVhxAzTWV5Ok`);
+        const data = await res?.json();
 
-    //     for (var a = 0; a < data?.results[0]["address_components"]?.length; a++) {
-    //         if (
-    //             data?.results[0]["address_components"][a]?.types[0] ==
-    //             "administrative_area_level_2" &&
-    //             data?.results[0]["address_components"][a]?.types[1] == "political"
-    //         ) {
-    //             setCityData(data?.results[0]["address_components"][a]["long_name"]);
-    //             localStorage.setItem("globalcity", data?.results[0]["address_components"][a]["long_name"].toString());
-    //         }
-    //     };
-    //     setBtnLoader(false)
-    // };
+        for (var a = 0; a < data?.results[0]["address_components"]?.length; a++) {
+            if (
+                data?.results[0]["address_components"][a]?.types[0] ==
+                "administrative_area_level_2" &&
+                data?.results[0]["address_components"][a]?.types[1] == "political"
+            ) {
+                setCityData(data?.results[0]["address_components"][a]["long_name"]);
+                localStorage.setItem("globalcity", data?.results[0]["address_components"][a]["long_name"].toString());
+            }
+        };
+        setBtnLoader(false)
+    };
 
     const setGtmUserProfileAttr = (lang: any) => {
         var wind: any = typeof window !== "undefined" ? window.dataLayer : "";
@@ -183,9 +183,9 @@ export default function Setting() {
                         </div>
                     </RadioGroup>
                 </div>
-                {/* <div className="mt-8">
-                    <h3 className="font-semibold text-sm">{lang === 'ar' ? 'تحديد المكان' : 'Set Location'}</h3>
-                    <p className="text-xs my-2 text-[#5D686F]">{lang === 'ar' ? 'المدينة الحالية' : 'Current City'}: <span className='font-bold'>{cityData}</span></p>
+                <div className="mt-8">
+                    <h3 className="font-semibold text-base">{lang === 'ar' ? 'تحديد المكان' : 'Set Location'}</h3>
+                    <p className="text-xs mb-3 text-[#5D686F]">{lang === 'ar' ? 'المدينة الحالية' : 'Current City'}: <span className='font-bold'>{cityData}</span></p>
                     {BtnLoader ?
                         <button disabled={BtnLoader} className="btn border border-[#004B7A] bg-[#004B7A] p-2.5 rounded-md w-full text-white fill-white flex items-center justify-center font-medium gap-x-2">
                             {lang === 'ar' ? 'تحميل...' : 'Loading...'}
@@ -195,7 +195,7 @@ export default function Setting() {
                             {lang === 'ar' ? 'احصل على الموقع' : 'Get Location'}
                         </button>
                     }
-                </div> */}
+                </div>
             </div>
         </div>
     )
