@@ -309,7 +309,7 @@ export default function ShipmentTracking() {
                                         )}
                                     </p>
                                     <p className="sht_303mainInnerSecPara text-sm">
-                                        <LocationPinIcon size={16} color='#1C274C' />
+                                        <LocationPinIcon size={14} color='#1C274C' />
                                         {ordertype === 1 ? (
                                             <>
                                                 {address ? (
@@ -329,7 +329,7 @@ export default function ShipmentTracking() {
                                         )}
                                     </p>
                                     <p className="sht_303mainInnerThirdPara text-sm">
-                                        <PhoneIcon size={16} color="#1C274C" />
+                                        <PhoneIcon size={14} color="#1C274C" />
                                         <Link prefetch={false} scroll={false} href="">
                                             {ordertype === 1 ? (
                                                 <>
@@ -363,7 +363,7 @@ export default function ShipmentTracking() {
                                         </Link>
                                     </p>
                                     <p className="sht_303mainInnerSecPara text-sm">
-                                        <NetworkIcon size={16} color="#1C274C" />
+                                        <NetworkIcon size={14} color="#1C274C" />
                                         {ordertype === 1 ? (
                                             <>
                                                 {statecity ? (
@@ -520,7 +520,7 @@ export default function ShipmentTracking() {
                                                 )}
                                             </p>
                                             <p className="sht_303mainInnerSecPara text-sm">
-                                                <LocationPinIcon size={16} color='#1C274C' />
+                                                <LocationPinIcon size={14} color='#1C274C' />
                                                 {pickup ? (
                                                     lang === 'ar' ? (
                                                         `${pickupArabic}`
