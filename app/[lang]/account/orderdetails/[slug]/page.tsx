@@ -13,6 +13,9 @@ import { Dialog, Transition, RadioGroup, TransitionChild, DialogPanel, RadioGrou
 
 import { useApp } from "@/app/_ctx/AppContext";
 import { getCheckOutOrderReview, getOrderDetails, postProductReview, postUGCProduct, uploadVideo } from '@/lib/accounts/orderDetails.client';
+import CloseIcon from '@/app/[lang]/components/Icons/CloseIcon';
+import CheckboxIcon from '@/app/[lang]/components/Icons/CheckboxIcon';
+import SARIcon from '@/app/[lang]/components/Icons/SARIcon';
 
 const MobileHeader = dynamic(() => import('../../../components/MobileHeader'), { ssr: true })
 
@@ -36,12 +39,6 @@ export default function OrderDetails() {
     const [selectedProduct, setSelectedProduct] = useState<any>(null);
     const [videoIsLoading, setVideoIsLoading] = useState<any>(false);
     const NewMedia = process.env.NEXT_PUBLIC_NEW_MEDIA;
-
-    // CURRENCY SYMBOL //
-    const currencySymbol = <svg className="riyal-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1124.14 1256.39" width="11" height="12">
-        <path fill="currentColor" d="M699.62,1113.02h0c-20.06,44.48-33.32,92.75-38.4,143.37l424.51-90.24c20.06-44.47,33.31-92.75,38.4-143.37l-424.51,90.24Z"></path>
-        <path fill="currentColor" d="M1085.73,895.8c20.06-44.47,33.32-92.75,38.4-143.37l-330.68,70.33v-135.2l292.27-62.11c20.06-44.47,33.32-92.75,38.4-143.37l-330.68,70.27V66.13c-50.67,28.45-95.67,66.32-132.25,110.99v403.35l-132.25,28.11V0c-50.67,28.44-95.67,66.32-132.25,110.99v525.69l-295.91,62.88c-20.06,44.47-33.33,92.75-38.42,143.37l334.33-71.05v170.26l-358.3,76.14c-20.06,44.47-33.32,92.75-38.4,143.37l375.04-79.7c30.53-6.35,56.77-24.4,73.83-49.24l68.78-101.97v-.02c7.14-10.55,11.3-23.27,11.3-36.97v-149.98l132.25-28.11v270.4l424.53-90.28Z"></path>
-    </svg>;
 
 
 
@@ -437,7 +434,7 @@ export default function OrderDetails() {
                                 <div className="text-sm font-medium">
                                     <label className="font-regular text-[#5D686F]">{lang == 'ar' ? 'السعر الجزئي' : 'Sub Total'}</label>
                                     <div className="gap-x-2 mt-1 rtl:mt-2 text-[#004B7A]">
-                                        <label className="flex gap-x-1 items-center">{Intl.NumberFormat('en-US').format(orderDetails?.orderdata?.ordersummary?.filter((e: any) => e.name == 'subtotal')[0]?.price)}{' '}{currencySymbol}</label>
+                                        <label className="flex gap-x-1 items-center">{Intl.NumberFormat('en-US').format(orderDetails?.orderdata?.ordersummary?.filter((e: any) => e.name == 'subtotal')[0]?.price)}{' '}<SARIcon size={11} color="#004B7A" /></label>
                                     </div>
                                     <hr className="opacity-10 my-3" />
                                 </div>
@@ -445,7 +442,7 @@ export default function OrderDetails() {
                                     <div className="text-sm font-medium">
                                         <label className="font-regular text-[#5D686F]">{lang == 'ar' ? 'سعر التوصيل' : 'Shipping Charges'}</label>
                                         <div className="gap-x-2 mt-1 rtl:mt-2 text-[#004B7A]">
-                                            <label className="flex gap-x-1 items-center">{orderDetails?.orderdata?.ordersummary?.filter((e: any) => e.name == 'shipping')[0]?.price == 0 ? lang == 'ar' ? 'مـجـاني' : `Free` : `${Intl.NumberFormat('en-US').format(orderDetails?.orderdata?.ordersummary?.filter((e: any) => e.name == 'shipping')[0]?.price)} `}{currencySymbol}</label>
+                                            <label className="flex gap-x-1 items-center">{orderDetails?.orderdata?.ordersummary?.filter((e: any) => e.name == 'shipping')[0]?.price == 0 ? lang == 'ar' ? 'مـجـاني' : `Free` : `${Intl.NumberFormat('en-US').format(orderDetails?.orderdata?.ordersummary?.filter((e: any) => e.name == 'shipping')[0]?.price)} `}<SARIcon size={11} color="#004B7A" /></label>
                                         </div>
                                         <hr className="opacity-10 my-3" />
                                     </div>
@@ -453,7 +450,7 @@ export default function OrderDetails() {
                                 <div className="text-sm font-medium">
                                     <label className="font-regular text-[#5D686F]">{lang == 'ar' ? 'إجمالي القيمة' : 'Total Value'}</label>
                                     <div className="gap-x-2 mt-1 rtl:mt-2 text-[#004B7A]">
-                                        <label className="flex gap-x-1 items-center">{Intl.NumberFormat('en-US').format(orderDetails?.orderdata?.ordersummary?.filter((e: any) => e.name == 'total')[0]?.price)}{' '}{currencySymbol}</label>
+                                        <label className="flex gap-x-1 items-center">{Intl.NumberFormat('en-US').format(orderDetails?.orderdata?.ordersummary?.filter((e: any) => e.name == 'total')[0]?.price)}{' '}<SARIcon size={11} color="#004B7A" /></label>
                                     </div>
                                     <hr className="opacity-10 my-3" />
                                 </div>
@@ -466,7 +463,7 @@ export default function OrderDetails() {
                                                 </span>
                                             </label>
                                             <div className="gap-x-2 mt-1 rtl:mt-2 text-[#004B7A]">
-                                                <label>{text ? `${text} ${currencySymbol}` : "---"}</label>
+                                                <label>{text ? (<>${text}<SARIcon size={11} color="#004B7A" className='inline-flex ml-1' /></>) : "---"}</label>
                                             </div>
                                         </div>
                                         <Image
@@ -504,22 +501,7 @@ export default function OrderDetails() {
                                                     {({ active, checked }) => (
                                                         <div className={`bg-white rounded-md shadow-md flex items-center gap-x-4 mb-4 p-2 max-md:relative border ${checked ? 'border-[#219EBC]' : 'border-transparent'}`} key={i}>
                                                             <div className="md:relative md:w-44 flex items-center">
-                                                                {checked ?
-                                                                    <svg viewBox="0 0 24 24" fill="none" className="h-6 w-6 max-md:absolute max-md:top-2 right-2">
-                                                                        <circle cx={12} cy={12} r={12} fill="#219EBC" opacity="0.2" />
-                                                                        <path
-                                                                            d="M7 13l3 3 7-7"
-                                                                            stroke="#219EBC"
-                                                                            strokeWidth={2}
-                                                                            strokeLinecap="round"
-                                                                            strokeLinejoin="round"
-                                                                        />
-                                                                    </svg>
-                                                                    :
-                                                                    <svg viewBox="0 0 24 24" fill="#219EBC60" className="h-6 w-6 max-md:absolute max-md:top-2 right-2">
-                                                                        <circle cx={12} cy={12} r={12} fill="#219EBC60" opacity={0.2} />
-                                                                    </svg>
-                                                                }
+                                                               <CheckboxIcon checked={checked} className="h-6 w-6 max-md:absolute max-md:top-2 right-2" />
                                                                 <Image
                                                                     src={data?.product_data?.featured_image?.image ? NewMedia + data?.product_data?.featured_image?.image : 'https://partners.tamkeenstores.com.sa/public/assets/new-media/3f4a05b645bdf91af2a0d9598e9526181714129744.png'}
                                                                     alt={lang == 'ar' ? data?.product_data?.name_arabic : data?.product_data?.name}
@@ -534,7 +516,8 @@ export default function OrderDetails() {
                                                                 <h4 className="text-primary text-xs md:text-sm">{lang == 'ar' ? data?.product_data?.name_arabic : data?.product_data?.name}</h4>
                                                                 <h2 className="text-base md:text-xl font-semibold text-dark mt-2 flex gap-x-1 items-center">
                                                                     <div className='flex gap-x-1 items-center'>
-                                                                        {Intl.NumberFormat('en-US').format(data?.product_data?.sale_price)}{'  '}{currencySymbol}
+                                                                        {Intl.NumberFormat('en-US').format(data?.product_data?.sale_price)}{'  '}
+                                                                        <SARIcon size={11} color="#000000" />
                                                                     </div>
                                                                     <span className="text-xs md:text-sm text-[#DC4E4E] line-through decoration-[#DC4E4E] decoration-2 font-medium">{Intl.NumberFormat('en-US').format(data?.product_data?.price)}</span></h2>
                                                                 <div className="text-[#5D686F] text-sm flex items-center gap-x-2 mt-4 justify-between">
@@ -579,17 +562,17 @@ export default function OrderDetails() {
                 </div>
             </div>
             <div className="fixed bottom-0 w-full p-3 bg-white shadow-md border-t border-[#5D686F26]">
-                <div className="flex items-center justify-between mb-2 gap-2">
+                <div className="flex flex-col mb-2 gap-2">
                     <button
                         type="button"
                         onClick={() => setAddReviewsPop(true)}
-                        className="focus-visible:outline-none border border-[#004B7A] bg-[#004B7A] text-white text-xs font-semibold px-5 py-3 rounded-md shadow-md hover:shadow-none w-1/2"
+                        className="focus-visible:outline-none border border-[#004B7A] bg-[#004B7A] text-white text-xs font-semibold px-5 py-3 rounded-md shadow-md hover:shadow-none"
                     >
                         {lang == 'ar' ? 'إضافة التقييم على المنتج' : "Add Product Review's"}
                     </button>
                     <button
                         type="button"
-                        className="focus-visible:outline-none border border-[#004B7A] bg-[#004B7A] text-white text-xs font-semibold px-5 py-3 rounded-md shadow-md hover:shadow-none w-1/2"
+                        className="focus-visible:outline-none border border-[#004B7A] bg-[#004B7A] text-white text-xs font-semibold px-5 py-3 rounded-md shadow-md hover:shadow-none"
                     >
                         {lang == 'ar' ? 'إنشاء طلب صيانة' : "Create Maintainance Request"}
                     </button>
@@ -606,7 +589,7 @@ export default function OrderDetails() {
                 <Dialog as="div" className="relative z-20" onClose={() => setAddReviewsPop(false)}>
                     <div className="fixed inset-0 bg-dark/40" aria-hidden="true" />
                     <div className="fixed inset-0 overflow-y-auto">
-                        <div className="flex md:min-h-full h-full items-center justify-center md:p-4 text-center">
+                        <div className="flex md:min-h-full h-full items-center justify-center pmd:-4 text-center">
                             <TransitionChild
                                 as={Fragment}
                                 enter="ease-out duration-300"
@@ -630,7 +613,7 @@ export default function OrderDetails() {
                                                     {lang == 'ar' ? "تعليقات المنتج" : "Product Review's"}
                                                 </Dialog.Title>
                                                 <button onClick={() => setAddReviewsPop(false)} className="focus-visible:outline-none">
-                                                    <svg height="16" viewBox="0 0 329.26933 329" width="16" xmlns="http://www.w3.org/2000/svg" id="fi_1828778"><path d="m194.800781 164.769531 128.210938-128.214843c8.34375-8.339844 8.34375-21.824219 0-30.164063-8.339844-8.339844-21.824219-8.339844-30.164063 0l-128.214844 128.214844-128.210937-128.214844c-8.34375-8.339844-21.824219-8.339844-30.164063 0-8.34375 8.339844-8.34375 21.824219 0 30.164063l128.210938 128.214843-128.210938 128.214844c-8.34375 8.339844-8.34375 21.824219 0 30.164063 4.15625 4.160156 9.621094 6.25 15.082032 6.25 5.460937 0 10.921875-2.089844 15.082031-6.25l128.210937-128.214844 128.214844 128.214844c4.160156 4.160156 9.621094 6.25 15.082032 6.25 5.460937 0 10.921874-2.089844 15.082031-6.25 8.34375-8.339844 8.34375-21.824219 0-30.164063zm0 0"></path></svg>
+                                                   <CloseIcon size={16} color="#000000" />
                                                 </button>
                                             </div>
                                         </div>
@@ -823,20 +806,7 @@ export default function OrderDetails() {
                                     <div className="flex bg-[#fbfbfb] items-center justify-between px-5 py-3">
                                         <h5 className="font-bold text-base">{isArabic ? 'رفع فيديو جديد' : 'Upload New Video'}</h5>
                                         <button onClick={() => setUploadModal(false)} type="button" className="text-white-dark hover:text-dark">
-                                            <svg
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                width="24"
-                                                height="24"
-                                                viewBox="0 0 24 24"
-                                                fill="none"
-                                                stroke="currentColor"
-                                                strokeWidth="1.5"
-                                                strokeLinecap="round"
-                                                strokeLinejoin="round"
-                                            >
-                                                <line x1="18" y1="6" x2="6" y2="18"></line>
-                                                <line x1="6" y1="6" x2="18" y2="18"></line>
-                                            </svg>
+                                            <CloseIcon size={24} color="#000000" />
                                         </button>
                                     </div>
                                     <div className="p-5 space-y-4">
