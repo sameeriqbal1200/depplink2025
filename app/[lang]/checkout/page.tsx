@@ -904,11 +904,22 @@ export default function Checkout() {
       address_label: typeHouse == "Home" ? 0 : 1,
     };
     if (!address || !city) {
-      var errorMsgvar =
-        "Error! Please fill " +
-        (!address ? "Address, " : "") +
-        (!city ? "City, " : "") +
-        "!";
+        let errorMsgvar = "";
+
+        if (lang === "ar") {
+            errorMsgvar =
+            "خطأ! يرجى ملء " +
+            (!address ? "العنوان، " : "") +
+            (!city ? "المدينة، " : "") +
+            "!";
+        } else {
+            errorMsgvar =
+            "Error! Please fill " +
+            (!address ? "Address, " : "") +
+            (!city ? "City, " : "") +
+            "!";
+        }
+      setErrorMsg(errorMsgvar);
       topMessageAlartDangerNew(errorMsgvar);
       setLoader(false);
       return false;
@@ -942,13 +953,23 @@ export default function Checkout() {
         address_label: typeHouse == "Home" ? 0 : 1,
         };
         if (!address || !selectedCity) {
-        setErrorMsg(
+        let errorMsgvar = "";
+
+        if (lang === "ar") {
+            errorMsgvar =
+            "خطأ! يرجى ملء " +
+            (!address ? "العنوان، " : "") +
+            (!city ? "المدينة، " : "") +
+            "!";
+        } else {
+            errorMsgvar =
             "Error! Please fill " +
             (!address ? "Address, " : "") +
-            (!selectedCity ? "City, " : "") +
-            "!"
-        );
-        topMessageAlartDangerNew(errormsg);
+            (!city ? "City, " : "") +
+            "!";
+        }
+        setErrorMsg(errorMsgvar);
+        topMessageAlartDangerNew(errorMsgvar);
         setLoader(false);
         return false;
         }
