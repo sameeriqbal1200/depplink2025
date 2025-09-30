@@ -320,20 +320,6 @@ export default function MobileHeaderNew(props: any) {
           className={`WhatsappBeforeHover ${whatsappBtn ? "hidden" : "flex"}`}
         >
           <ArrowLeftIcon size={20} color="#54AB60" />
-          {/* <svg
-            height={14}
-            viewBox="0 0 24 24"
-            width={14}
-            xmlns="http://www.w3.org/2000/svg"
-            id="fi_10486749"
-            className="fill-[#54AB60] transform transition duration-150 ease-in-out rotate-90"
-          >
-            <path
-              clipRule="evenodd"
-              d="m2.58579 7.58579c.78104-.78105 2.04738-.78105 2.82842 0l6.58579 6.58581 6.5858-6.58581c.781-.78105 2.0474-.78105 2.8284 0 .7811.78104.7811 2.04738 0 2.82841l-8 8c-.781.7811-2.0474.7811-2.8284 0l-8.00001-8c-.78105-.78103-.78105-2.04737 0-2.82841z"
-              fillRule="evenodd"
-            ></path>
-          </svg> */}
         </button>
         <Link
           href="https://wa.me/9668002444464"
