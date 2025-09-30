@@ -989,6 +989,7 @@ export default function product_component_updated(props: any) {
                     <SARIcon size={7} color="#6B7280" />
                   </h3>
                 )}
+                <span className='md:!text-xs !text-[0.625rem] text-gray-500'>{isArabic ? 'شامل الضريبة' : 'Included VAT'}</span>
               </div>
 
               {/* Discount Badge */}
