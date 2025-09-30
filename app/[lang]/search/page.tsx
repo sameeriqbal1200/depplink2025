@@ -136,7 +136,7 @@ export default function Search({ params, searchParams }: SearchProps) {
       <section
         className={`relative mt-4 ${isMobileOrTablet ? "mb-24" : "mb-8"}`}
       >
-        <div className="xl:px-20 lg:px-10 px-4 flex md:flex-row flex-col items-start gap-4">
+        <div className="xl:px-20 lg:px-10 px-4 flex md:flex-row flex-col items-start gap-4 pt-12">
           <div
             className={`w-full pb-2 overflow-hidden`}
           >

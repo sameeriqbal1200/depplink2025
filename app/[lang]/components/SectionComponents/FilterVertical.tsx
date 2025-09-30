@@ -72,7 +72,7 @@ export default function FilterVertical(props: FilterProps) {
             return (
               <button
                 key={brandName}
-                className="bestProButton w-fit whitespace-nowrap border-gray text-primary hover:text-white hover:bg-primary selected !px-3 !py-1 !text-[.625rem]"
+                className="bestProButton !w-fit whitespace-nowrap border-gray text-primary hover:text-white hover:bg-primary selected !px-3 !py-1 !text-[.625rem]"
                 aria-label={isArabic ? brand?.name_arabic : brandName}
               >
                 {isArabic ? brand?.name_arabic : brandName}
@@ -84,7 +84,7 @@ export default function FilterVertical(props: FilterProps) {
             return (
               <button
                 key={tagName}
-                className="bestProButton w-fit whitespace-nowrap border-gray text-primary hover:text-white hover:bg-primary selected !px-3 !py-1 !text-[.625rem]"
+                className="bestProButton !w-fit whitespace-nowrap border-gray text-primary hover:text-white hover:bg-primary selected !px-3 !py-1 !text-[.625rem]"
                 aria-label={isArabic ? tag?.name_arabic : tagName}
               >
                 {isArabic ? tag?.name_arabic : tagName}

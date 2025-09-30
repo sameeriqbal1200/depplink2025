@@ -80,12 +80,12 @@ export default function MobileFilterNew(props: FilterProps) {
 
   return (
     <div
-      className={`filter_wrapper bg-white md:py-[1.75rem] md:px-[1.125rem] p-4 pt-8 shrink-0 overflow-hidden relative shadow-md`}
+      className={`filter_wrapper bg-white md:py-[1.75rem] md:px-[1.125rem] p-2 pt-8 shrink-0 overflow-hidden relative`}
     >
       {/* Cancel Button */}
       <button
         onClick={() => props.setFilterModal(!props.filterModal)}
-        className="absolute -top-2 right-4 p-2 z-10"
+        className="absolute -top-2 right-0 p-2 z-10"
         aria-label={isArabic ? "إغلاق" : "Close"}
       >
         <svg
@@ -126,7 +126,7 @@ export default function MobileFilterNew(props: FilterProps) {
             return (
               <button
                 key={brandName}
-                className="bestProButton w-fit whitespace-nowrap border-gray text-primary hover:text-white hover:bg-primary selected !px-3 !py-1 !text-[.625rem]"
+                className="bestProButton !w-fit whitespace-nowrap border-gray text-primary hover:text-white hover:bg-primary selected !px-3 !py-1 !text-[.625rem]"
                 aria-label={isArabic ? brand?.name_arabic : brandName}
               >
                 {isArabic ? brand?.name_arabic : brandName}
@@ -138,7 +138,7 @@ export default function MobileFilterNew(props: FilterProps) {
             return (
               <button
                 key={tagName}
-                className="bestProButton w-fit whitespace-nowrap border-gray text-primary hover:text-white hover:bg-primary selected !px-3 !py-1 !text-[.625rem]"
+                className="bestProButton !w-fit whitespace-nowrap border-gray text-primary hover:text-white hover:bg-primary selected !px-3 !py-1 !text-[.625rem]"
                 aria-label={isArabic ? tag?.name_arabic : tagName}
               >
                 {isArabic ? tag?.name_arabic : tagName}
