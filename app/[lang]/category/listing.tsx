@@ -501,7 +501,7 @@ export default function SubCategoryNew({ data, slug, lang, deviceType, origin, s
         className={`relative mt-4 ${isMobileOrTablet ? "mb-24" : "mb-8"
           }`}
       >
-        <div className="xl:px-20 lg:px-10 px-4 flex md:flex-row flex-col items-start gap-4">
+        <div className="xl:px-20 lg:px-10 px-4 flex md:flex-row flex-col items-start gap-4 pt-12">
           {!isMobileOrTablet && (
             <div className={`${!isMobileOrTablet ? "w-[24%]" : "w-full"}`}>
               <FilterVertical
