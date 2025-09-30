@@ -27,6 +27,8 @@ import HelpIcon from "../components/Icons/HelpIcon";
 import HeadphonesIcon from "../components/Icons/HeadphonesIcon";
 import AboutIcon from "../components/Icons/AboutIcon";
 import SettingsIcon from "../components/Icons/SettingsIcon";
+import CloseIcon from "../components/Icons/CloseIcon";
+import UserIcon from "../components/Icons/UserIcon";
 
 const MobileHeader = dynamic(() => import("../components/MobileHeader"), {
   ssr: true,
@@ -201,28 +203,7 @@ export default function AccountListing() {
               href={`${origin}/${lang}/login`}
               className="bg-white shadow-md rounded-md p-3 flex items-center gap-3"
             >
-              <svg
-                height="26"
-                width="26"
-                version="1.1"
-                id="fi_709579"
-                xmlns="http://www.w3.org/2000/svg"
-                x="0px"
-                y="0px"
-                viewBox="0 0 512 512"
-                enableBackground="new 0 0 512 512"
-              >
-                <path
-                  d="M256,288.389c-153.837,0-238.56,72.776-238.56,204.925c0,10.321,8.365,18.686,18.686,18.686h439.747
-                                c10.321,0,18.686-8.365,18.686-18.686C494.56,361.172,409.837,288.389,256,288.389z M55.492,474.628
-                                c7.35-98.806,74.713-148.866,200.508-148.866s193.159,50.06,200.515,148.866H55.492z"
-                ></path>
-                <path
-                  d="M256,0c-70.665,0-123.951,54.358-123.951,126.437c0,74.19,55.604,134.54,123.951,134.54s123.951-60.35,123.951-134.534
-                                C379.951,54.358,326.665,0,256,0z M256,223.611c-47.743,0-86.579-43.589-86.579-97.168c0-51.611,36.413-89.071,86.579-89.071
-                                c49.363,0,86.579,38.288,86.579,89.071C342.579,180.022,303.743,223.611,256,223.611z"
-                ></path>
-              </svg>
+              <UserIcon size={26} color="#000000" />
 
               <div>
                 <label className="text-sm font-medium">
@@ -236,24 +217,6 @@ export default function AccountListing() {
           )}
         </div>
         <div className="mt-2 bg-white pb-32">
-          {/* <Link href={`${origin}/${lang}/account/loyaltyusagehistory`} className="border-b border-[#9CA4AB50] px-4 py-3 flex items-center justify-between text-[#004B7A] fill-[#004B7A]">
-                    <div className="flex items-center gap-x-2">
-                        <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" width={23} fill="#004B7A"><g id="SVGRepo_bgCarrier" strokeWidth="0"></g><g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M0 0h48v48H0z" fill="none"></path> <g id="Shopicon"> <path d="M40,14h-8V4L4,14v26c0,2.2,1.8,4,4,4h32c2.2,0,4-1.8,4-4V18C44,15.8,42.2,14,40,14z M36,29c0,1.105-0.895,2-2,2 c-1.105,0-2-0.895-2-2c0-1.105,0.895-2,2-2C35.105,27,36,27.895,36,29z M28,9.676V14H15.893L28,9.676z"></path> </g> </g></svg>
-                        <h2 className="text-sm font-semibold">
-                            {
-                                <>
-                                {lang === 'ar' ? "لديك" : "You have"} {" "}
-                                {/* <span className="h-3.5 font-bold text-blue-500 number-animation items-center"> */}
-          {/* <span className="h-3.5 font-bold text-blue-500 items-center">
-                                {/* <span className="font-bold text-blue-500 inline-flex items-center h-full">{parseInt(loyaltyAmount)?.toLocaleString('EN-US')}</span> */}
-          {/* <span className="font-bold text-blue-500 inline-flex items-center h-full">{parseInt(loyaltyPoints)?.toLocaleString('EN-US')}</span>
-                                </span> {lang === 'ar' ? "في محفظتك." : "in your wallet."}  */}
-          {/* </> */}
-          {/* } */}
-          {/* </h2>
-                    </div>
-                    <svg height="26" viewBox="0 0 24 24" width="26" className="rotate-180" xmlns="http://www.w3.org/2000/svg" id="fi_2722991"><g id="_17" data-name="17"><path d="m15 19a1 1 0 0 1 -.71-.29l-6-6a1 1 0 0 1 0-1.41l6-6a1 1 0 0 1 1.41 1.41l-5.29 5.29 5.29 5.29a1 1 0 0 1 -.7 1.71z"></path></g></svg> */}
-          {/* // </Link>  */}
           <Link
             prefetch={false}
             scroll={false}
@@ -554,15 +517,7 @@ export default function AccountListing() {
                     className="focus-visible:outline-none text-dark hover:text-dark fill-dark absolute top-5 z-40 right-5"
                     onClick={() => setConfirmationPopup(false)}
                   >
-                    <svg
-                      height="16"
-                      viewBox="0 0 329.26933 329"
-                      width="16"
-                      xmlns="http://www.w3.org/2000/svg"
-                      id="fi_1828778"
-                    >
-                      <path d="m194.800781 164.769531 128.210938-128.214843c8.34375-8.339844 8.34375-21.824219 0-30.164063-8.339844-8.339844-21.824219-8.339844-30.164063 0l-128.214844 128.214844-128.210937-128.214844c-8.34375-8.339844-21.824219-8.339844-30.164063 0-8.34375 8.339844-8.34375 21.824219 0 30.164063l128.210938 128.214843-128.210938 128.214844c-8.34375 8.339844-8.34375 21.824219 0 30.164063 4.15625 4.160156 9.621094 6.25 15.082032 6.25 5.460937 0 10.921875-2.089844 15.082031-6.25l128.210937-128.214844 128.214844 128.214844c4.160156 4.160156 9.621094 6.25 15.082032 6.25 5.460937 0 10.921874-2.089844 15.082031-6.25 8.34375-8.339844 8.34375-21.824219 0-30.164063zm0 0"></path>
-                    </svg>
+                    <CloseIcon size={16} color="#000000" />
                   </button>
                   <div className="text-center">
                     <h2 className="text-md font-semibold">
