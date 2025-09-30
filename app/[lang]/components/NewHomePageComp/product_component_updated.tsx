@@ -171,24 +171,6 @@ export default function product_component_updated(props: any) {
   const flashSalePrice = Number(productFlashSalePrice);
   const percentage =
     productData?.save_type === "1" || productData?.save_type === 1 ? 1 : 0; // 1 for percentage, 0 for amount
-  const sarIcon = () => (
-    <svg
-      className="riyal-svg"
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 1124.14 1256.39"
-      width={isMobileOrTablet ? "9" : "11"}
-      height={isMobileOrTablet ? "10" : "12"}
-    >
-      <path
-        fill="currentColor"
-        d="M699.62,1113.02h0c-20.06,44.48-33.32,92.75-38.4,143.37l424.51-90.24c20.06-44.47,33.31-92.75,38.4-143.37l-424.51,90.24Z"
-      ></path>
-      <path
-        fill="currentColor"
-        d="M1085.73,895.8c20.06-44.47,33.32-92.75,38.4-143.37l-330.68,70.33v-135.2l292.27-62.11c20.06-44.47,33.32-92.75,38.4-143.37l-330.68,70.27V66.13c-50.67,28.45-95.67,66.32-132.25,110.99v403.35l-132.25,28.11V0c-50.67,28.44-95.67,66.32-132.25,110.99v525.69l-295.91,62.88c-20.06,44.47-33.33,92.75-38.42,143.37l334.33-71.05v170.26l-358.3,76.14c-20.06,44.47-33.32,92.75-38.4,143.37l375.04-79.7c30.53-6.35,56.77-24.4,73.83-49.24l68.78-101.97v-.02c7.14-10.55,11.3-23.27,11.3-36.97v-149.98l132.25-28.11v270.4l424.53-90.28Z"
-      ></path>
-    </svg>
-  );
   const discountPercentage =
     percentage > 0
       ? Math.round(((regularPrice - salePrice) * 100) / regularPrice)
@@ -204,11 +186,11 @@ export default function product_component_updated(props: any) {
       )
     ) : isArabic ? (
       <>
-        وفر {discountPercentage.toLocaleString("en-US")} {sarIcon()}
+        وفر {discountPercentage.toLocaleString("en-US")} {<SARIcon size={8} color="#F0660C" />}
       </>
     ) : (
       <>
-        Save {discountPercentage.toLocaleString("en-US")} {sarIcon()}
+        Save {discountPercentage.toLocaleString("en-US")} {<SARIcon size={8} color="#F0660C" />}
       </>
     );
 
@@ -975,55 +957,39 @@ export default function product_component_updated(props: any) {
               sizes="100vh"
             />
           </div>
-          {specificationImages.length > 0 ? (
-            <div
-              className="py-2 mb-3 rounded-md relative flex items-center justify-center gap-1"
-              style={{ backgroundColor: productBadgeBackgroundColor }}
-            >
-              {specificationImages.map((imgSrc, i) => (
-                <Image
+          <div className="py-1.5 mb-3 rounded-md relative flex items-center justify-center gap-1 h-10"
+            style={{ backgroundColor: specificationImages?.length > 0 ? productBadgeBackgroundColor : "#FFFFFF" }}
+          >
+            {specificationImages?.length > 0 &&
+              specificationImages.map((imgSrc, i) => (
+                <div
                   key={i}
-                  src={imgSrc as string}
-                  alt={`specification-${productTitle}-${i + 1}`}
-                  decoding="async"
-                  data-nimg="1"
-                  title={`Specification ${productTitle} - ${i + 1}`}
-                  width={0}
-                  height={0}
-                  sizes="100vw"
-                  quality={100}
-                  className="w-10 h-auto rounded-md"
+                  className="h-10 w-10 bg-center bg-no-repeat bg-contain rounded"
+                  style={{ backgroundImage: `url(${imgSrc})` }}
                 />
               ))}
-            </div>
-          ) : (
-            <div className="specificationImagesProduct_wrapper h-[45px] w-full mb-3"></div>
-          )}
-          <div
-            className={`p-1 rounded-md relative h-[46px] ${salePormotionText ? "" : "flex items-center justify-center"
-              }`}
-            style={{ backgroundColor: productBadgeBackgroundColor }}
-          >
+          </div>
+          <div className={`p-1 rounded-md relative h-[46px] ${salePormotionText ? "" : "flex items-center justify-center"}`}
+            style={{ backgroundColor: productBadgeBackgroundColor }}>
             <div className="align__center w-full">
               <div className="flex items-center gap-1">
-                <h3 className="!text-sm font-bold text-orangePrice flex gap-1 items-center">
-                  {productSalePrice > 0 ? (
-                    <>{productSalePrice.toLocaleString("en-US")}</>
-                  ) : (
-                    <>{productRegularPrice.toLocaleString("en-US")}</>
-                  )}
+                {/* Final Price */}
+                <h3 className="flex items-center gap-1 !text-sm font-bold text-orangePrice">
+                  {(productSalePrice > 0 ? productSalePrice : productRegularPrice).toLocaleString("en-US")}
                   <SARIcon size={8} color="#F0660C" />
                 </h3>
+
+                {/* Regular Price (only if on sale) */}
                 {productSalePrice > 0 && (
-                  <h3 className="text-xxs text-gray-500 line-through decoration-double decoration-red leading-3 flex items-center gap-x-0.5 mt-0.5">
-                    {productRegularPrice}
+                  <h3 className="flex items-center gap-0.5 mt-0.5 text-xxs text-gray-500 line-through decoration-double decoration-red leading-3">
+                    {productRegularPrice.toLocaleString("en-US")}
                     <SARIcon size={7} color="#6B7280" />
                   </h3>
                 )}
               </div>
-              <div
-                className={`text-xxs text-[#F0660C] flex items-center gap-1 text-nowrap font-bold px-1 py-1 bg-white rounded-sm`}
-              >
+
+              {/* Discount Badge */}
+              <div className="flex items-center gap-1 px-1 py-1 text-xxs font-bold text-nowrap text-[#F0660C] bg-white rounded-sm">
                 {productDiscountValue} {productDiscountType}
               </div>
             </div>
