@@ -13,7 +13,7 @@ export default function RepalcementandRetrievalPolicy() {
     return (
         <div>
             <MobileHeader type="Third" lang={lang} pageTitle={lang === 'ar' ? 'سياسة الاستبدال والاسترجاع' : 'Exchange and Return Policy'} />
-            <div className="container py-16 md:py-4">
+            <div className="container pt-16 pb-22 md:py-4">
                 <div className="my-2">
                     <h1 className=" font-semibold text-base 2xl:text-lg" dangerouslySetInnerHTML={{ __html: lang == 'ar' ? footer?.data?.meta_description_ar : footer?.data?.meta_description_en }}></h1>
                     <div className="text-sm text-[#5D686F]" dangerouslySetInnerHTML={{ __html: lang == 'ar' ? footer?.data?.page_content_ar : footer?.data?.page_content_en }}></div>
