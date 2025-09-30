@@ -388,20 +388,6 @@ export default function MobileHeaderNew(props: any) {
             </div>
           </div>
           <div className="header_bottom flex items-center ltr:flex-row rtl:flex-row-reverse justify-between gap-x-10">
-            {/* <div className="Icons flex items-center gap-x-5"> */}
-              {/* <Link
-                prefetch={false}
-                scroll={false}
-                href={`${origin}/${lang}/cart`}
-                className="cart_icon relative"
-              >
-                {cartCount > 0 && (
-                  <span className="badge absolute left-4 -top-3 bg-danger rounded-full bg-orange text-[10px] text-white h-5 w-5 flex justify-center items-center">
-                    {cartCount}
-                  </span>
-                )}
-                <CartIcon size={24} color="#004B7A" className="text-primary" />
-              </Link> */}
               <Link
                 prefetch={false}
                 scroll={false}

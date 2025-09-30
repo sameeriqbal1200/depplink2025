@@ -68,23 +68,23 @@ export default function BadgeProductLoopComponent(props: any) {
                     slidesPerView={6}
                     breakpoints={{
                         320: {
-                            slidesPerView: 2.2,
+                            slidesPerView: 1.2,
                             spaceBetween: 6,
                         },
                         640: {
-                            slidesPerView: 2.2,
+                            slidesPerView: 1.2,
                             spaceBetween: 6,
                         },
                         768: {
-                            slidesPerView: 2.2,
+                            slidesPerView: 1.2,
                             spaceBetween: 6,
                         },
                         1024: {
-                            slidesPerView: 4,
+                            slidesPerView: 3,
                             spaceBetween: 6,
                         },
                         1280: {
-                            slidesPerView: 5,
+                            slidesPerView: 4,
                             spaceBetween: 6,
                         },
                         1650: {
