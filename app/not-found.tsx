@@ -2,6 +2,7 @@
 "use client";
 
 import LottieAnimation from "@/components/LottieAnimation";
+import Link from "next/link";
 
 export default function NotFound() {
     return (
@@ -14,9 +15,9 @@ export default function NotFound() {
                 We are very sorry but something has gone wrong, please try again
             </p>
             {/* 👇 Use plain <a> so it doesn’t resubmit the wrong path */}
-            <a href="/" className="btn nc__278mainInnerLink !mt-6">
+            <Link href="/" className="btn nc__278mainInnerLink !mt-6">
                 Back to Home
-            </a>
+            </Link>
         </div>
     );
 }
