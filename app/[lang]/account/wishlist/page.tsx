@@ -3,7 +3,7 @@
 import React, { useEffect, useState, useContext } from 'react'
 import dynamic from 'next/dynamic'
 import { useRouter } from 'next-nprogress-bar'
-import GlobalContext from '../../GlobalContext'
+import GlobalContext from '../../../GlobalContext'
 import { useApp } from '@/app/_ctx/AppContext';
 import { getWishlistDataAPI } from '@/lib/accounts/wishlist.client';
 import Link from 'next/link';

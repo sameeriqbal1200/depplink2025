@@ -2,7 +2,7 @@
 
 import { usePathname } from "next/navigation";
 import { useRouter } from "next-nprogress-bar";
-import GlobalContext from "../GlobalContext";
+import GlobalContext from "../../GlobalContext";
 import { getCartCount } from "../cartstorage/cart";
 import React, { useState, useEffect, useContext } from "react";
 

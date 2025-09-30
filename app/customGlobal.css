@@ -4522,11 +4522,11 @@ span.flatpickr-weekday {
 }
 
 .category_topbar {
-  background-image: url("../../public/images/categoryNew/topbar_bg.png");
+  background-image: url("/images/categoryNew/topbar_bg.png");
 }
 
 .category_sec_1 {
-  background-image: url("../../public/images/categoryNew/banner_bg.png");
+  background-image: url("/images/categoryNew/banner_bg.png");
 }
 
 .testimonials_sec .swiper.swiper-initialized {
@@ -5098,6 +5098,6 @@ span.flatpickr-weekday {
   font-size: 0.55rem;
 }
 
-.text-10{
+.text-10 {
   font-size: 0.625rem;
 }

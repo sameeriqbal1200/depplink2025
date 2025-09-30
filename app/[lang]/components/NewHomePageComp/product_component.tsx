@@ -7,7 +7,7 @@ import { useRouter } from "next-nprogress-bar";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import { setCartItems } from "../../cartstorage/cart";
-import GlobalContext from "../../GlobalContext";
+import GlobalContext from "../../../GlobalContext";
 import FlashSaleTimer from "./FlashSaleTimer";
 import { addProductWishlistData, removeProductWishlistData } from "@/lib/components/component.client";
 import { useApp } from "@/app/_ctx/AppContext";

@@ -15,7 +15,7 @@ import { Swiper, SwiperSlide } from 'swiper/react'
 import { Pagination, Navigation } from 'swiper/modules';
 import 'swiper/css/pagination';
 import dynamic from 'next/dynamic'
-import GlobalContext from '../GlobalContext';
+import GlobalContext from '../../GlobalContext';
 import { getProductExtraData, removeProductWishlistData } from '@/lib/components/component.client'
 const RatingComponent = dynamic(() => import('./ProductComponents/Rating'), { ssr: false })
 

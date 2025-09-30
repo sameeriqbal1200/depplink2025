@@ -23,7 +23,7 @@ import { getCartCount, getCart, recheckcartdata, getOrderId, getSummary, setShip
 import dayjs from 'dayjs';
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
-import GlobalContext from '../GlobalContext';
+import GlobalContext from '../../GlobalContext';
 import { useApp } from '@/app/_ctx/AppContext';
 import { addAddressData, getcityData, getUserAddressData, getwarehouseData, updateAddressData } from '@/lib/checkout/checkout.client';
 import { getDiscountTypeCart } from '@/lib/cartPage/cart.client';

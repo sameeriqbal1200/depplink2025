@@ -15,7 +15,7 @@ import { Dialog, Transition, TransitionChild, DialogPanel, DisclosureButton } fr
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 import { Disclosure } from '@headlessui/react'
-import GlobalContext from '../../GlobalContext'
+import GlobalContext from '../../../GlobalContext'
 import PickupStorePopup from '../../components/PickupStorePopup';
 import { getCookie } from 'cookies-next';
 import { useApp } from '@/app/_ctx/AppContext';

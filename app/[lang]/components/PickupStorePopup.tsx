@@ -4,7 +4,7 @@ import { Dialog, Transition } from '@headlessui/react'
 import { Fragment, useState } from 'react'
 import { Tab } from '@headlessui/react'
 import { Disclosure } from '@headlessui/react'
-import GlobalContext from '../GlobalContext'
+import GlobalContext from '../../GlobalContext'
 import { useContext } from 'react';
 import withReactContent from 'sweetalert2-react-content'
 import Swal from 'sweetalert2'

@@ -4,7 +4,7 @@ import React, { useEffect, useState, Fragment, useContext } from 'react';
 import Image from 'next/image'
 import { useRouter } from 'next-nprogress-bar';
 import Swal from 'sweetalert2'
-import GlobalContext from '../GlobalContext';
+import GlobalContext from '../../GlobalContext';
 import { useApp } from '@/app/_ctx/AppContext';
 import { setCartItems } from '../cartstorage/cart';
 import { Dialog, Transition } from '@headlessui/react';

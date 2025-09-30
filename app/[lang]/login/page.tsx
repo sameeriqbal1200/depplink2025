@@ -9,7 +9,7 @@ import MaskedInput from 'react-text-mask'
 import { useRouter } from 'next/navigation'
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
-import GlobalContext from '../GlobalContext';
+import GlobalContext from '../../GlobalContext';
 import ReCAPTCHA from 'react-google-recaptcha';
 import { useApp } from "@/app/_ctx/AppContext";
 import { getSignUpData } from '@/lib/footerpages/signup.client';

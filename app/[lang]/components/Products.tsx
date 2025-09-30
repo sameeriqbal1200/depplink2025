@@ -7,7 +7,7 @@ import dynamic from 'next/dynamic'
 import withReactContent from 'sweetalert2-react-content'
 import Swal from 'sweetalert2'
 import { setCartItems } from '../cartstorage/cart'
-import GlobalContext from '../GlobalContext'
+import GlobalContext from '../../GlobalContext'
 import { addProductCompareData, addProductWishlistData, getProductExtraData, removeProductCompareData, removeProductWishlistData } from '@/lib/components/component.client'
 import { useRouter } from 'next-nprogress-bar'
 

@@ -30,7 +30,7 @@ import {
   setPickupStoreCart,
 } from "../cartstorage/cart";
 import FullPageLoader from '../components/FullPageLoader';
-import GlobalContext from '../GlobalContext'
+import GlobalContext from '../../GlobalContext'
 import PickupStorePopup from '../components/PickupStorePopup';
 import { getDiscountTypeCart, getUserProfileData, getWishlist, removeWishlist } from '@/lib/cartPage/cart.client';
 import { useApp } from '@/app/_ctx/AppContext';

@@ -3,7 +3,7 @@ import React, { useEffect, useState, useContext } from "react";
 
 import Link from "next/link";
 import Image from "next/image";
-import GlobalContext from "../../GlobalContext";
+import GlobalContext from "../../../GlobalContext";
 import withReactContent from "sweetalert2-react-content";
 import Swal from "sweetalert2";
 import { useRouter } from "next-nprogress-bar";
