@@ -1493,7 +1493,7 @@ export default function Product() {
                                         {getFormattedPrice(getOriginalPrice())}
                                     </span>
                                 )}
-                                <span className='text-sm text-gray-500 font-medium'>{isArabic ? 'شامل الضريبة' : 'Included VAT'}</span>
+                                <span className='text-sm text-[#5D686F] font-medium'>{isArabic ? 'شامل الضريبة' : 'Included VAT'}</span>
                             </h2>
                             {productDataClassic?.data?.quantity == 0 || productDataClassic?.data?.quantity == null ?
                                 <p className="text-[#DC4E4E] text-sm">{isArabic ? 'المنتج غير متوفر في منطقتك' : 'Out of Stock in your city'}</p>
