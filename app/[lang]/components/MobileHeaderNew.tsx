@@ -89,8 +89,8 @@ export default function MobileHeaderNew(props: any) {
   }, [updateCart, updateWishlist]);
 
   const getUserData = async () => {
-    await new Promise(resolve => setTimeout(resolve, 100));
-    
+    await new Promise((resolve) => setTimeout(resolve, 100));
+
     const userId = localStorage.getItem("userid");
 
     if (!localStorage.getItem("userCompare")) {
@@ -198,7 +198,7 @@ export default function MobileHeaderNew(props: any) {
     for (var a = 0; a < data?.results[0]["address_components"]?.length; a++) {
       if (
         data?.results[0]["address_components"][a]?.types[0] ==
-        "administrative_area_level_2" &&
+          "administrative_area_level_2" &&
         data?.results[0]["address_components"][a]?.types[1] == "political" &&
         !localStorage.getItem("globalcity")
       ) {
@@ -317,9 +317,11 @@ export default function MobileHeaderNew(props: any) {
       <header className="py-3 bg-white shadow-lg w-full overflow-hidden">
         <button
           onClick={() => setWhatsappBtn(true)}
-          className={`WhatsappBeforeHover ${whatsappBtn ? "hidden" : "flex"}`}
+          className={`WhatsappBeforeHover ${whatsappBtn ? "hidden" : "flex"} ${
+            isArabic ? "right-0" : "left-0"
+          }`}
         >
-          <ArrowLeftIcon size={20} color="#54AB60" />
+          <ArrowLeftIcon size={16} color="#54AB60" />
         </button>
         <Link
           href="https://wa.me/9668002444464"
@@ -328,7 +330,9 @@ export default function MobileHeaderNew(props: any) {
           prefetch={false}
           scroll={false}
           rel="noopener noreferrer"
-          className={`whatsappLayout ${whatsappBtn ? "flex" : "hidden"}`}
+          className={`whatsappLayout ${whatsappBtn ? "flex" : "!hidden"} ${
+            isArabic ? "right-0 rounded-tl-none rounded-bl-none" : "left-0 rounded-tr-[4px] rounded-br-[4px]"
+          }`}
         >
           <svg
             width="26"
@@ -364,6 +368,7 @@ export default function MobileHeaderNew(props: any) {
               />
             </defs>
           </svg>
+          ${isArabic ? "right-0 rounded-tl-0 rounded-bl-0" : "left-0  rounded-tr-[4px] rounded-br-[4px]"}
         </Link>
         <div className="container">
           <div className="header_top flex items-center gap-x-4 mb-4">
@@ -530,8 +535,9 @@ export default function MobileHeaderNew(props: any) {
                             quality={100}
                           />
                           <label
-                            className={`text-sm font-semibold ${parentCategory == data.id ? "text-[#219EBC]" : ""
-                              }`}
+                            className={`text-sm font-semibold ${
+                              parentCategory == data.id ? "text-[#219EBC]" : ""
+                            }`}
                           >
                             {lang === "ar" ? data?.name_arabic : data?.name}
                           </label>
@@ -548,8 +554,8 @@ export default function MobileHeaderNew(props: any) {
                                   ? "-rotate-90" // 270° is equivalent to -90°
                                   : ""
                                 : parentCategory === data.id
-                                  ? "-rotate-90" // 270° is equivalent to -90°
-                                  : "rotate-180"
+                                ? "-rotate-90" // 270° is equivalent to -90°
+                                : "rotate-180"
                             }
                           />
                         )}
@@ -561,10 +567,11 @@ export default function MobileHeaderNew(props: any) {
                             <React.Fragment key={i}>
                               <button
                                 key={i + 10}
-                                className={`focus-visible:outline-none py-3 border-b border-[#9CA4AB50] ltr:pl-8 rtl:pr-8 rtl:pl-3 ltr:pr-3 w-full ${parentCategory == data?.id
+                                className={`focus-visible:outline-none py-3 border-b border-[#9CA4AB50] ltr:pl-8 rtl:pr-8 rtl:pl-3 ltr:pr-3 w-full ${
+                                  parentCategory == data?.id
                                     ? "scale-100 block"
                                     : "scale-0 hidden"
-                                  }`}
+                                }`}
                                 onClick={() => {
                                   if (childcatgeory?.child?.length) {
                                     if (subCategory === childcatgeory.id) {
@@ -593,10 +600,11 @@ export default function MobileHeaderNew(props: any) {
                                       quality={100}
                                     />
                                     <label
-                                      className={`text-sm font-semibold ${subCategory === childcatgeory.id
+                                      className={`text-sm font-semibold ${
+                                        subCategory === childcatgeory.id
                                           ? "text-[#219EBC]"
                                           : ""
-                                        }`}
+                                      }`}
                                     >
                                       {lang === "ar"
                                         ? childcatgeory.name_arabic
@@ -646,10 +654,11 @@ export default function MobileHeaderNew(props: any) {
                                       <React.Fragment key={i}>
                                         <button
                                           key={i + 50}
-                                          className={`focus-visible:outline-none flex items-center gap-2 py-3 border-b border-[#9CA4AB50] w-full ltr:ml-4 ltr:pl-8 rtl:pr-8 ${subCategory == childcatgeory?.id
+                                          className={`focus-visible:outline-none flex items-center gap-2 py-3 border-b border-[#9CA4AB50] w-full ltr:ml-4 ltr:pl-8 rtl:pr-8 ${
+                                            subCategory == childcatgeory?.id
                                               ? "scale-100"
                                               : "scale-0 hidden"
-                                            }`}
+                                          }`}
                                           onClick={() => {
                                             menuRedirection(subcatgeory?.slug);
                                           }}
@@ -732,10 +741,11 @@ export default function MobileHeaderNew(props: any) {
                       <Tab as={Fragment}>
                         {({ selected }) => (
                           <button
-                            className={`${selected
+                            className={`${
+                              selected
                                 ? "!border-primary text-primary !outline-none"
                                 : ""
-                              } flex items-center justify-center border-b-2 text-base border-transparent bg-transparent py-3 before:inline-block hover:border-primary hover:text-primary font-bold w-full`}
+                            } flex items-center justify-center border-b-2 text-base border-transparent bg-transparent py-3 before:inline-block hover:border-primary hover:text-primary font-bold w-full`}
                           >
                             {lang == "ar" ? "التوصيل" : "Deliver here"}
                           </button>
@@ -786,20 +796,22 @@ export default function MobileHeaderNew(props: any) {
                                       {({ active, checked }) => (
                                         <>
                                           <div
-                                            className={`flex w-full items-center justify-between pb-3 ${i + 1 === citiesData.length
+                                            className={`flex w-full items-center justify-between pb-3 ${
+                                              i + 1 === citiesData.length
                                                 ? ""
                                                 : "border-b border-[#9CA4AB50]"
-                                              }`}
+                                            }`}
                                           >
                                             <label
-                                              className={`font-normal text-sm ${checked
+                                              className={`font-normal text-sm ${
+                                                checked
                                                   ? "text-[#219EBC]"
                                                   : "text-[#000000]"
-                                                }`}
+                                              }`}
                                             >
                                               {data.label}
                                             </label>
-                                             <CheckboxIcon checked={checked} />
+                                            <CheckboxIcon checked={checked} />
                                           </div>
                                         </>
                                       )}
@@ -901,8 +913,9 @@ export default function MobileHeaderNew(props: any) {
                                             viewBox="0 0 24 24"
                                             width="14"
                                             xmlns="http://www.w3.org/2000/svg"
-                                            className={`${open ? "-rotate-180" : ""
-                                              } tc__311mainDisclosureBtnSvg`}
+                                            className={`${
+                                              open ? "-rotate-180" : ""
+                                            } tc__311mainDisclosureBtnSvg`}
                                           >
                                             <path
                                               clipRule="evenodd"
@@ -1144,8 +1157,9 @@ export default function MobileHeaderNew(props: any) {
                                             viewBox="0 0 24 24"
                                             width="14"
                                             xmlns="http://www.w3.org/2000/svg"
-                                            className={`${open ? "-rotate-180" : ""
-                                              } tc__311mainDisclosureBtnSvg`}
+                                            className={`${
+                                              open ? "-rotate-180" : ""
+                                            } tc__311mainDisclosureBtnSvg`}
                                           >
                                             <path
                                               clipRule="evenodd"
@@ -1365,8 +1379,9 @@ export default function MobileHeaderNew(props: any) {
                     }}
                   />
                   <button
-                    className={`focus-visible:outline-none underline text-xs text-[#DC4E4E] font-semibold ${searchInput?.length ? "block" : "hidden"
-                      }`}
+                    className={`focus-visible:outline-none underline text-xs text-[#DC4E4E] font-semibold ${
+                      searchInput?.length ? "block" : "hidden"
+                    }`}
                     onClick={() => {
                       setSearchInput(""), setSearchResult([]);
                     }}
@@ -1430,7 +1445,7 @@ export default function MobileHeaderNew(props: any) {
                         ))}
                       </div>
                     </div>
-                  ):null}
+                  ) : null}
                   {searchResult?.brands?.length ? (
                     <div className="mb-4">
                       <h2 className="heading__bsm">
@@ -1450,8 +1465,9 @@ export default function MobileHeaderNew(props: any) {
                               {data?.brand_media_image?.image ? (
                                 <Image
                                   src={`${NewMedia}${data?.brand_media_image?.image}`}
-                                  alt={`${isArabic ? data?.name_arabic : data?.name
-                                    }-${data?.id + 17}`}
+                                  alt={`${
+                                    isArabic ? data?.name_arabic : data?.name
+                                  }-${data?.id + 17}`}
                                   title={
                                     isArabic ? data?.name_arabic : data?.name
                                   }
@@ -1468,11 +1484,11 @@ export default function MobileHeaderNew(props: any) {
                         })}
                       </div>
                     </div>
-                  ):null}
+                  ) : null}
 
-                  {(searchResult?.products?.length == 0 && searchInput != "") && (
+                  {searchResult?.products?.length == 0 && searchInput != "" && (
                     <div className={`w-full heading__bsm`}>
-                        {isArabic ? "قائمة المنتجات" : "no products found!"}
+                      {isArabic ? "قائمة المنتجات" : "no products found!"}
                     </div>
                   )}
                   {searchResult?.products?.length && (
@@ -1480,15 +1496,15 @@ export default function MobileHeaderNew(props: any) {
                       <h2 className="heading__bsm">
                         {isArabic ? "العلامة التجارية" : "Products"}
                       </h2>
-                        <div className="grid grid-cols-1 gap-y-4 pb-16">
-                          <ProductLoop
-                            productData={searchResult?.products}
-                            lang={isArabic}
-                            isMobileOrTablet={isMobileOrTablet}
-                            origin={origin}
-                            NewMedia={NewMedia}
-                          />
-                        </div>
+                      <div className="grid grid-cols-1 gap-y-4 pb-16">
+                        <ProductLoop
+                          productData={searchResult?.products}
+                          lang={isArabic}
+                          isMobileOrTablet={isMobileOrTablet}
+                          origin={origin}
+                          NewMedia={NewMedia}
+                        />
+                      </div>
                     </div>
                   )}
                 </div>

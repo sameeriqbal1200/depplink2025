@@ -57,12 +57,12 @@ body {
   height: 2.5rem;
   position: absolute;
   top: 13rem;
-  right: 0;
-  left: auto;
-  border-top-left-radius: 1rem;
+  /* right: 0;
+  left: auto; */
+  /* border-top-left-radius: 1rem;
   border-bottom-left-radius: 1rem;
   border-top-right-radius: 1rem;
-  border-bottom-right-radius: 1rem;
+  border-bottom-right-radius: 1rem; */
 }
 
 .whatsappLayout {
@@ -79,8 +79,8 @@ body {
   height: 2.5rem;
   position: absolute;
   top: 13rem;
-  right: 0;
-  left: auto;
+  /* right: 0;
+  left: auto; */
   border-top-left-radius: 1rem;
   border-bottom-left-radius: 1rem;
   border-top-right-radius: 1rem;
