@@ -21,7 +21,7 @@ export default function ArrowLeftIcon({
       fill={color}
       aria-hidden="true"
     >
-      <use href="#arrowRight-icon" />
+      <use href="#arrowLeft-icon" />
     </svg>
   );
 }
