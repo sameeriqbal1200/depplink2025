@@ -90,7 +90,7 @@
 @layer base {
     body {
         background-color: #fff;
-        color: #273444;
+        /* color: #273444; */
         font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
     }
 
