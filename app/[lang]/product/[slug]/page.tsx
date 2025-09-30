@@ -2079,7 +2079,7 @@ export default function Product() {
                             <div className="flex flex-nowrap items-center">
                                 <div className="text-[#5D686F] mb-2 flex gap-x-2">
                                     {[...Array(quantity?.length)].map((_, i) => (
-                                        <button className={`focus-visible:outline-none border rounded-md p-2 w-12 ${i === 1 ? 'border-[#004B7A]' : 'border-[#5D686F]'} text-sm`} onClick={() => {
+                                        <button key={i} className={`focus-visible:outline-none border rounded-md p-2 w-12 ${i === 1 ? 'border-[#004B7A]' : 'border-[#5D686F]'} text-sm`} onClick={() => {
                                             setsqty(i + 1)
                                             setQuantityBox(false)
                                         }}>{i + 1}</button>
