@@ -33,7 +33,7 @@ export default function TermsandConditions() {
                             <Disclosure>
                                 {({ open }) => (
                                     <div>
-                                        <DisclosureButton className="flex w-full justify-between rounded-md text-left text-sm font-medium focus-visible:outline-none bg-[#EEF8FC] p-2 md:p-3 mb-3 text-[#004B7A] ltr:text-left rtl:text-right">
+                                        <DisclosureButton className="flex w-full justify-between rounded-md text-left text-sm font-medium focus-visible:outline-none bg-[#EEF8FC] p-2 md:p-3 mb-1 text-[#004B7A] ltr:text-left rtl:text-right">
                                             {lang === 'ar' ? "شروط و أحكام العروض الحالية" : "Terms and conditions for current offers"}
                                             <svg height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg" id="fi_10486749" className={`transform ${open ? '-rotate-180' : ''} fill-[#004B7A] transition duration-150 ease-in-out`}><path clipRule="evenodd" d="m2.58579 7.58579c.78104-.78105 2.04738-.78105 2.82842 0l6.58579 6.58581 6.5858-6.58581c.781-.78105 2.0474-.78105 2.8284 0 .7811.78104.7811 2.04738 0 2.82841l-8 8c-.781.7811-2.0474.7811-2.8284 0l-8.00001-8c-.78105-.78103-.78105-2.04737 0-2.82841z" fillRule="evenodd"></path></svg>
                                         </DisclosureButton>
@@ -111,7 +111,7 @@ export default function TermsandConditions() {
                             <Disclosure>
                                 {({ open }) => (
                                     <div>
-                                        <DisclosureButton className="flex w-full justify-between rounded-md text-left text-sm font-medium focus-visible:outline-none bg-[#EEF8FC] p-2 md:p-3 mb-3 text-[#004B7A] ltr:text-left rtl:text-right">
+                                        <DisclosureButton className="flex w-full justify-between rounded-md text-left text-sm font-medium focus-visible:outline-none bg-[#EEF8FC] p-2 md:p-3 mb-1 text-[#004B7A] ltr:text-left rtl:text-right">
                                             {lang === 'ar' ? "شروط الاستخدام" : "TERMS of use"}
                                             <svg height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg" id="fi_10486749" className={`transform ${open ? '-rotate-180' : ''} fill-[#004B7A] transition duration-150 ease-in-out`}><path clipRule="evenodd" d="m2.58579 7.58579c.78104-.78105 2.04738-.78105 2.82842 0l6.58579 6.58581 6.5858-6.58581c.781-.78105 2.0474-.78105 2.8284 0 .7811.78104.7811 2.04738 0 2.82841l-8 8c-.781.7811-2.0474.7811-2.8284 0l-8.00001-8c-.78105-.78103-.78105-2.04737 0-2.82841z" fillRule="evenodd"></path></svg>
                                         </DisclosureButton>
@@ -145,7 +145,7 @@ export default function TermsandConditions() {
                             <Disclosure>
                                 {({ open }) => (
                                     <div>
-                                        <DisclosureButton className="flex w-full justify-between rounded-md text-left text-sm font-medium focus-visible:outline-none bg-[#EEF8FC] p-2 md:p-3 mb-3 text-[#004B7A] ltr:text-left rtl:text-right">
+                                        <DisclosureButton className="flex w-full justify-between rounded-md text-left text-sm font-medium focus-visible:outline-none bg-[#EEF8FC] p-2 md:p-3 mb-1 text-[#004B7A] ltr:text-left rtl:text-right">
                                             {lang === 'ar' ? "الحماية الأمنية للموقع الإلكتروني" : "Website security"}
                                             <svg height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg" id="fi_10486749" className={`transform ${open ? '-rotate-180' : ''} fill-[#004B7A] transition duration-150 ease-in-out`}><path clipRule="evenodd" d="m2.58579 7.58579c.78104-.78105 2.04738-.78105 2.82842 0l6.58579 6.58581 6.5858-6.58581c.781-.78105 2.0474-.78105 2.8284 0 .7811.78104.7811 2.04738 0 2.82841l-8 8c-.781.7811-2.0474.7811-2.8284 0l-8.00001-8c-.78105-.78103-.78105-2.04737 0-2.82841z" fillRule="evenodd"></path></svg>
                                         </DisclosureButton>
@@ -185,7 +185,7 @@ export default function TermsandConditions() {
                             <Disclosure>
                                 {({ open }) => (
                                     <div>
-                                        <DisclosureButton className="flex w-full justify-between rounded-md text-left text-sm font-medium focus-visible:outline-none bg-[#EEF8FC] p-2 md:p-3 mb-3 text-[#004B7A] ltr:text-left rtl:text-right">
+                                        <DisclosureButton className="flex w-full justify-between rounded-md text-left text-sm font-medium focus-visible:outline-none bg-[#EEF8FC] p-2 md:p-3 mb-1 text-[#004B7A] ltr:text-left rtl:text-right">
                                             {lang === 'ar' ? "سياسة الخصوصية" : "Privacy Policy"}
                                             <svg height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg" id="fi_10486749" className={`transform ${open ? '-rotate-180' : ''} fill-[#004B7A] transition duration-150 ease-in-out`}><path clipRule="evenodd" d="m2.58579 7.58579c.78104-.78105 2.04738-.78105 2.82842 0l6.58579 6.58581 6.5858-6.58581c.781-.78105 2.0474-.78105 2.8284 0 .7811.78104.7811 2.04738 0 2.82841l-8 8c-.781.7811-2.0474.7811-2.8284 0l-8.00001-8c-.78105-.78103-.78105-2.04737 0-2.82841z" fillRule="evenodd"></path></svg>
                                         </DisclosureButton>
@@ -209,7 +209,7 @@ export default function TermsandConditions() {
                             <Disclosure>
                                 {({ open }) => (
                                     <div>
-                                        <DisclosureButton className="flex w-full justify-between rounded-md text-left text-sm font-medium focus-visible:outline-none bg-[#EEF8FC] p-2 md:p-3 mb-3 text-[#004B7A] ltr:text-left rtl:text-right">
+                                        <DisclosureButton className="flex w-full justify-between rounded-md text-left text-sm font-medium focus-visible:outline-none bg-[#EEF8FC] p-2 md:p-3 mb-1 text-[#004B7A] ltr:text-left rtl:text-right">
                                             {lang === 'ar' ? "التسجيل – حسابي" : "Registration - your account"}
                                             <svg height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg" id="fi_10486749" className={`transform ${open ? '-rotate-180' : ''} fill-[#004B7A] transition duration-150 ease-in-out`}><path clipRule="evenodd" d="m2.58579 7.58579c.78104-.78105 2.04738-.78105 2.82842 0l6.58579 6.58581 6.5858-6.58581c.781-.78105 2.0474-.78105 2.8284 0 .7811.78104.7811 2.04738 0 2.82841l-8 8c-.781.7811-2.0474.7811-2.8284 0l-8.00001-8c-.78105-.78103-.78105-2.04737 0-2.82841z" fillRule="evenodd"></path></svg>
                                         </DisclosureButton>
@@ -233,7 +233,7 @@ export default function TermsandConditions() {
                             <Disclosure>
                                 {({ open }) => (
                                     <div>
-                                        <DisclosureButton className="flex w-full justify-between rounded-md text-left text-sm font-medium focus-visible:outline-none bg-[#EEF8FC] p-2 md:p-3 mb-3 text-[#004B7A] ltr:text-left rtl:text-right">
+                                        <DisclosureButton className="flex w-full justify-between rounded-md text-left text-sm font-medium focus-visible:outline-none bg-[#EEF8FC] p-2 md:p-3 mb-1 text-[#004B7A] ltr:text-left rtl:text-right">
                                             {lang === 'ar' ? "مراجعات المنتجات و البائعين" : "Product & Seller Reviews"}
                                             <svg height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg" id="fi_10486749" className={`transform ${open ? '-rotate-180' : ''} fill-[#004B7A] transition duration-150 ease-in-out`}><path clipRule="evenodd" d="m2.58579 7.58579c.78104-.78105 2.04738-.78105 2.82842 0l6.58579 6.58581 6.5858-6.58581c.781-.78105 2.0474-.78105 2.8284 0 .7811.78104.7811 2.04738 0 2.82841l-8 8c-.781.7811-2.0474.7811-2.8284 0l-8.00001-8c-.78105-.78103-.78105-2.04737 0-2.82841z" fillRule="evenodd"></path></svg>
                                         </DisclosureButton>
@@ -246,7 +246,7 @@ export default function TermsandConditions() {
                             <Disclosure>
                                 {({ open }) => (
                                     <div>
-                                        <DisclosureButton className="flex w-full justify-between rounded-md text-left text-sm font-medium focus-visible:outline-none bg-[#EEF8FC] p-2 md:p-3 mb-3 text-[#004B7A] ltr:text-left rtl:text-right">
+                                        <DisclosureButton className="flex w-full justify-between rounded-md text-left text-sm font-medium focus-visible:outline-none bg-[#EEF8FC] p-2 md:p-3 mb-1 text-[#004B7A] ltr:text-left rtl:text-right">
                                             {lang === 'ar' ? "عربة التسوق الخاصة بك" : "Your shopping cart"}
                                             <svg height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg" id="fi_10486749" className={`transform ${open ? '-rotate-180' : ''} fill-[#004B7A] transition duration-150 ease-in-out`}><path clipRule="evenodd" d="m2.58579 7.58579c.78104-.78105 2.04738-.78105 2.82842 0l6.58579 6.58581 6.5858-6.58581c.781-.78105 2.0474-.78105 2.8284 0 .7811.78104.7811 2.04738 0 2.82841l-8 8c-.781.7811-2.0474.7811-2.8284 0l-8.00001-8c-.78105-.78103-.78105-2.04737 0-2.82841z" fillRule="evenodd"></path></svg>
                                         </DisclosureButton>
@@ -266,7 +266,7 @@ export default function TermsandConditions() {
                             <Disclosure>
                                 {({ open }) => (
                                     <div>
-                                        <DisclosureButton className="flex w-full justify-between rounded-md text-left text-sm font-medium focus-visible:outline-none bg-[#EEF8FC] p-2 md:p-3 mb-3 text-[#004B7A] ltr:text-left rtl:text-right">
+                                        <DisclosureButton className="flex w-full justify-between rounded-md text-left text-sm font-medium focus-visible:outline-none bg-[#EEF8FC] p-2 md:p-3 mb-1 text-[#004B7A] ltr:text-left rtl:text-right">
                                             {lang === 'ar' ? "معلومات المنتجات والمخزون والتسعير" : "Product information, stock, and pricing"}
                                             <svg height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg" id="fi_10486749" className={`transform ${open ? '-rotate-180' : ''} fill-[#004B7A] transition duration-150 ease-in-out`}><path clipRule="evenodd" d="m2.58579 7.58579c.78104-.78105 2.04738-.78105 2.82842 0l6.58579 6.58581 6.5858-6.58581c.781-.78105 2.0474-.78105 2.8284 0 .7811.78104.7811 2.04738 0 2.82841l-8 8c-.781.7811-2.0474.7811-2.8284 0l-8.00001-8c-.78105-.78103-.78105-2.04737 0-2.82841z" fillRule="evenodd"></path></svg>
                                         </DisclosureButton>
@@ -298,7 +298,7 @@ export default function TermsandConditions() {
                             <Disclosure>
                                 {({ open }) => (
                                     <div>
-                                        <DisclosureButton className="flex w-full justify-between rounded-md text-left text-sm font-medium focus-visible:outline-none bg-[#EEF8FC] p-2 md:p-3 mb-3 text-[#004B7A] ltr:text-left rtl:text-right">
+                                        <DisclosureButton className="flex w-full justify-between rounded-md text-left text-sm font-medium focus-visible:outline-none bg-[#EEF8FC] p-2 md:p-3 mb-1 text-[#004B7A] ltr:text-left rtl:text-right">
                                             {lang === 'ar' ? "سياسة التوصيل والتسليم" : "Delivery terms and conditions"}
                                             <svg height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg" id="fi_10486749" className={`transform ${open ? '-rotate-180' : ''} fill-[#004B7A] transition duration-150 ease-in-out`}><path clipRule="evenodd" d="m2.58579 7.58579c.78104-.78105 2.04738-.78105 2.82842 0l6.58579 6.58581 6.5858-6.58581c.781-.78105 2.0474-.78105 2.8284 0 .7811.78104.7811 2.04738 0 2.82841l-8 8c-.781.7811-2.0474.7811-2.8284 0l-8.00001-8c-.78105-.78103-.78105-2.04737 0-2.82841z" fillRule="evenodd"></path></svg>
                                         </DisclosureButton>
@@ -338,7 +338,7 @@ export default function TermsandConditions() {
                             <Disclosure>
                                 {({ open }) => (
                                     <div>
-                                        <DisclosureButton className="flex w-full justify-between rounded-md text-left text-sm font-medium focus-visible:outline-none bg-[#EEF8FC] p-2 md:p-3 mb-3 text-[#004B7A] ltr:text-left rtl:text-right">
+                                        <DisclosureButton className="flex w-full justify-between rounded-md text-left text-sm font-medium focus-visible:outline-none bg-[#EEF8FC] p-2 md:p-3 mb-1 text-[#004B7A] ltr:text-left rtl:text-right">
                                             {lang === 'ar' ? "شروط وأحكام التوصيل السريع" : "Terms and conditions of express delivery"}
                                             <svg height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg" id="fi_10486749" className={`transform ${open ? '-rotate-180' : ''} fill-[#004B7A] transition duration-150 ease-in-out`}><path clipRule="evenodd" d="m2.58579 7.58579c.78104-.78105 2.04738-.78105 2.82842 0l6.58579 6.58581 6.5858-6.58581c.781-.78105 2.0474-.78105 2.8284 0 .7811.78104.7811 2.04738 0 2.82841l-8 8c-.781.7811-2.0474.7811-2.8284 0l-8.00001-8c-.78105-.78103-.78105-2.04737 0-2.82841z" fillRule="evenodd"></path></svg>
                                         </DisclosureButton>
@@ -358,7 +358,7 @@ export default function TermsandConditions() {
                             <Disclosure>
                                 {({ open }) => (
                                     <div>
-                                        <DisclosureButton className="flex w-full justify-between rounded-md text-left text-sm font-medium focus-visible:outline-none bg-[#EEF8FC] p-2 md:p-3 mb-3 text-[#004B7A] ltr:text-left rtl:text-right">
+                                        <DisclosureButton className="flex w-full justify-between rounded-md text-left text-sm font-medium focus-visible:outline-none bg-[#EEF8FC] p-2 md:p-3 mb-1 text-[#004B7A] ltr:text-left rtl:text-right">
                                             {lang === 'ar' ? "المدفوعات" : "Payments"}
                                             <svg height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg" id="fi_10486749" className={`transform ${open ? '-rotate-180' : ''} fill-[#004B7A] transition duration-150 ease-in-out`}><path clipRule="evenodd" d="m2.58579 7.58579c.78104-.78105 2.04738-.78105 2.82842 0l6.58579 6.58581 6.5858-6.58581c.781-.78105 2.0474-.78105 2.8284 0 .7811.78104.7811 2.04738 0 2.82841l-8 8c-.781.7811-2.0474.7811-2.8284 0l-8.00001-8c-.78105-.78103-.78105-2.04737 0-2.82841z" fillRule="evenodd"></path></svg>
                                         </DisclosureButton>
@@ -406,7 +406,7 @@ export default function TermsandConditions() {
                             <Disclosure>
                                 {({ open }) => (
                                     <div>
-                                        <DisclosureButton className="flex w-full justify-between rounded-md text-left text-sm font-medium focus-visible:outline-none bg-[#EEF8FC] p-2 md:p-3 mb-3 text-[#004B7A] ltr:text-left rtl:text-right">
+                                        <DisclosureButton className="flex w-full justify-between rounded-md text-left text-sm font-medium focus-visible:outline-none bg-[#EEF8FC] p-2 md:p-3 mb-1 text-[#004B7A] ltr:text-left rtl:text-right">
                                             {lang === 'ar' ? "الدفع عن طريق بسيطه من تسهيل" : " Payment via Baseeta"}
                                             <svg height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg" id="fi_10486749" className={`transform ${open ? '-rotate-180' : ''} fill-[#004B7A] transition duration-150 ease-in-out`}><path clipRule="evenodd" d="m2.58579 7.58579c.78104-.78105 2.04738-.78105 2.82842 0l6.58579 6.58581 6.5858-6.58581c.781-.78105 2.0474-.78105 2.8284 0 .7811.78104.7811 2.04738 0 2.82841l-8 8c-.781.7811-2.0474.7811-2.8284 0l-8.00001-8c-.78105-.78103-.78105-2.04737 0-2.82841z" fillRule="evenodd"></path></svg>
                                         </DisclosureButton>
@@ -462,7 +462,7 @@ export default function TermsandConditions() {
                             <Disclosure>
                                 {({ open }) => (
                                     <div>
-                                        <DisclosureButton className="flex w-full justify-between rounded-md text-left text-sm font-medium focus-visible:outline-none bg-[#EEF8FC] p-2 md:p-3 mb-3 text-[#004B7A] ltr:text-left rtl:text-right">
+                                        <DisclosureButton className="flex w-full justify-between rounded-md text-left text-sm font-medium focus-visible:outline-none bg-[#EEF8FC] p-2 md:p-3 mb-1 text-[#004B7A] ltr:text-left rtl:text-right">
                                             {lang === 'ar' ? "أقساط بطاقة الائتمان" : " Credit card installments"}
                                             <svg height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg" id="fi_10486749" className={`transform ${open ? '-rotate-180' : ''} fill-[#004B7A] transition duration-150 ease-in-out`}><path clipRule="evenodd" d="m2.58579 7.58579c.78104-.78105 2.04738-.78105 2.82842 0l6.58579 6.58581 6.5858-6.58581c.781-.78105 2.0474-.78105 2.8284 0 .7811.78104.7811 2.04738 0 2.82841l-8 8c-.781.7811-2.0474.7811-2.8284 0l-8.00001-8c-.78105-.78103-.78105-2.04737 0-2.82841z" fillRule="evenodd"></path></svg>
                                         </DisclosureButton>
@@ -508,7 +508,7 @@ export default function TermsandConditions() {
                             <Disclosure>
                                 {({ open }) => (
                                     <div>
-                                        <DisclosureButton className="flex w-full justify-between rounded-md text-left text-sm font-medium focus-visible:outline-none bg-[#EEF8FC] p-2 md:p-3 mb-3 text-[#004B7A] ltr:text-left rtl:text-right">
+                                        <DisclosureButton className="flex w-full justify-between rounded-md text-left text-sm font-medium focus-visible:outline-none bg-[#EEF8FC] p-2 md:p-3 mb-1 text-[#004B7A] ltr:text-left rtl:text-right">
                                             {lang === 'ar' ? "بطاقات الهدايا الترويجية بين الشركات ومن الشركة إلي المستهلك" : "Promotional & B2B gift cards"}
                                             <svg height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg" id="fi_10486749" className={`transform ${open ? '-rotate-180' : ''} fill-[#004B7A] transition duration-150 ease-in-out`}><path clipRule="evenodd" d="m2.58579 7.58579c.78104-.78105 2.04738-.78105 2.82842 0l6.58579 6.58581 6.5858-6.58581c.781-.78105 2.0474-.78105 2.8284 0 .7811.78104.7811 2.04738 0 2.82841l-8 8c-.781.7811-2.0474.7811-2.8284 0l-8.00001-8c-.78105-.78103-.78105-2.04737 0-2.82841z" fillRule="evenodd"></path></svg>
                                         </DisclosureButton>
@@ -525,7 +525,7 @@ export default function TermsandConditions() {
                             <Disclosure>
                                 {({ open }) => (
                                     <div>
-                                        <DisclosureButton className="flex w-full justify-between rounded-md text-left text-sm font-medium focus-visible:outline-none bg-[#EEF8FC] p-2 md:p-3 mb-3 text-[#004B7A] ltr:text-left rtl:text-right">
+                                        <DisclosureButton className="flex w-full justify-between rounded-md text-left text-sm font-medium focus-visible:outline-none bg-[#EEF8FC] p-2 md:p-3 mb-1 text-[#004B7A] ltr:text-left rtl:text-right">
                                             {lang === 'ar' ? "إلغاء الطلب" : "Order Cancellation"}
                                             <svg height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg" id="fi_10486749" className={`transform ${open ? '-rotate-180' : ''} fill-[#004B7A] transition duration-150 ease-in-out`}><path clipRule="evenodd" d="m2.58579 7.58579c.78104-.78105 2.04738-.78105 2.82842 0l6.58579 6.58581 6.5858-6.58581c.781-.78105 2.0474-.78105 2.8284 0 .7811.78104.7811 2.04738 0 2.82841l-8 8c-.781.7811-2.0474.7811-2.8284 0l-8.00001-8c-.78105-.78103-.78105-2.04737 0-2.82841z" fillRule="evenodd"></path></svg>
                                         </DisclosureButton>
@@ -545,7 +545,7 @@ export default function TermsandConditions() {
                             <Disclosure>
                                 {({ open }) => (
                                     <div>
-                                        <DisclosureButton className="flex w-full justify-between rounded-md text-left text-sm font-medium focus-visible:outline-none bg-[#EEF8FC] p-2 md:p-3 mb-3 text-[#004B7A] ltr:text-left rtl:text-right">
+                                        <DisclosureButton className="flex w-full justify-between rounded-md text-left text-sm font-medium focus-visible:outline-none bg-[#EEF8FC] p-2 md:p-3 mb-1 text-[#004B7A] ltr:text-left rtl:text-right">
                                             {lang === 'ar' ? "الإسترجاع / التبديل / استرداد الأموال" : "Return / Exchange / Refund"}
                                             <svg height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg" id="fi_10486749" className={`transform ${open ? '-rotate-180' : ''} fill-[#004B7A] transition duration-150 ease-in-out`}><path clipRule="evenodd" d="m2.58579 7.58579c.78104-.78105 2.04738-.78105 2.82842 0l6.58579 6.58581 6.5858-6.58581c.781-.78105 2.0474-.78105 2.8284 0 .7811.78104.7811 2.04738 0 2.82841l-8 8c-.781.7811-2.0474.7811-2.8284 0l-8.00001-8c-.78105-.78103-.78105-2.04737 0-2.82841z" fillRule="evenodd"></path></svg>
                                         </DisclosureButton>
@@ -564,7 +564,7 @@ export default function TermsandConditions() {
                             <Disclosure>
                                 {({ open }) => (
                                     <div>
-                                        <DisclosureButton className="flex w-full justify-between rounded-md text-left text-sm font-medium focus-visible:outline-none bg-[#EEF8FC] p-2 md:p-3 mb-3 text-[#004B7A] ltr:text-left rtl:text-right">
+                                        <DisclosureButton className="flex w-full justify-between rounded-md text-left text-sm font-medium focus-visible:outline-none bg-[#EEF8FC] p-2 md:p-3 mb-1 text-[#004B7A] ltr:text-left rtl:text-right">
                                             {lang === 'ar' ? "استرداد السداد" : "Payment Return"}
                                             <svg height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg" id="fi_10486749" className={`transform ${open ? '-rotate-180' : ''} fill-[#004B7A] transition duration-150 ease-in-out`}><path clipRule="evenodd" d="m2.58579 7.58579c.78104-.78105 2.04738-.78105 2.82842 0l6.58579 6.58581 6.5858-6.58581c.781-.78105 2.0474-.78105 2.8284 0 .7811.78104.7811 2.04738 0 2.82841l-8 8c-.781.7811-2.0474.7811-2.8284 0l-8.00001-8c-.78105-.78103-.78105-2.04737 0-2.82841z" fillRule="evenodd"></path></svg>
                                         </DisclosureButton>
@@ -577,7 +577,7 @@ export default function TermsandConditions() {
                             <Disclosure>
                                 {({ open }) => (
                                     <div>
-                                        <DisclosureButton className="flex w-full justify-between rounded-md text-left text-sm font-medium focus-visible:outline-none bg-[#EEF8FC] p-2 md:p-3 mb-3 text-[#004B7A] ltr:text-left rtl:text-right">
+                                        <DisclosureButton className="flex w-full justify-between rounded-md text-left text-sm font-medium focus-visible:outline-none bg-[#EEF8FC] p-2 md:p-3 mb-1 text-[#004B7A] ltr:text-left rtl:text-right">
                                             {lang === 'ar' ? "الضمان / الصيانة والإصلاح" : "Warranty / Maintenance and Repair"}
                                             <svg height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg" id="fi_10486749" className={`transform ${open ? '-rotate-180' : ''} fill-[#004B7A] transition duration-150 ease-in-out`}><path clipRule="evenodd" d="m2.58579 7.58579c.78104-.78105 2.04738-.78105 2.82842 0l6.58579 6.58581 6.5858-6.58581c.781-.78105 2.0474-.78105 2.8284 0 .7811.78104.7811 2.04738 0 2.82841l-8 8c-.781.7811-2.0474.7811-2.8284 0l-8.00001-8c-.78105-.78103-.78105-2.04737 0-2.82841z" fillRule="evenodd"></path></svg>
                                         </DisclosureButton>
@@ -594,7 +594,7 @@ export default function TermsandConditions() {
                             <Disclosure>
                                 {({ open }) => (
                                     <div>
-                                        <DisclosureButton className="flex w-full justify-between rounded-md text-left text-sm font-medium focus-visible:outline-none bg-[#EEF8FC] p-2 md:p-3 mb-3 text-[#004B7A] ltr:text-left rtl:text-right">
+                                        <DisclosureButton className="flex w-full justify-between rounded-md text-left text-sm font-medium focus-visible:outline-none bg-[#EEF8FC] p-2 md:p-3 mb-1 text-[#004B7A] ltr:text-left rtl:text-right">
                                             {lang === 'ar' ? "خدمات الضمان عن طريق الخطأ" : "Accidently warranty services"}
                                             <svg height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg" id="fi_10486749" className={`transform ${open ? '-rotate-180' : ''} fill-[#004B7A] transition duration-150 ease-in-out`}><path clipRule="evenodd" d="m2.58579 7.58579c.78104-.78105 2.04738-.78105 2.82842 0l6.58579 6.58581 6.5858-6.58581c.781-.78105 2.0474-.78105 2.8284 0 .7811.78104.7811 2.04738 0 2.82841l-8 8c-.781.7811-2.0474.7811-2.8284 0l-8.00001-8c-.78105-.78103-.78105-2.04737 0-2.82841z" fillRule="evenodd"></path></svg>
                                         </DisclosureButton>
@@ -621,7 +621,7 @@ export default function TermsandConditions() {
                             <Disclosure>
                                 {({ open }) => (
                                     <div>
-                                        <DisclosureButton className="flex w-full justify-between rounded-md text-left text-sm font-medium focus-visible:outline-none bg-[#EEF8FC] p-2 md:p-3 mb-3 text-[#004B7A] ltr:text-left rtl:text-right">
+                                        <DisclosureButton className="flex w-full justify-between rounded-md text-left text-sm font-medium focus-visible:outline-none bg-[#EEF8FC] p-2 md:p-3 mb-1 text-[#004B7A] ltr:text-left rtl:text-right">
                                             {lang === 'ar' ? "صفقات اليوم/ عروض عطلة نهاية الأسبوع واليوم الخاص" : "Deals of the day, special day and weekend offer"}
                                             <svg height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg" id="fi_10486749" className={`transform ${open ? '-rotate-180' : ''} fill-[#004B7A] transition duration-150 ease-in-out`}><path clipRule="evenodd" d="m2.58579 7.58579c.78104-.78105 2.04738-.78105 2.82842 0l6.58579 6.58581 6.5858-6.58581c.781-.78105 2.0474-.78105 2.8284 0 .7811.78104.7811 2.04738 0 2.82841l-8 8c-.781.7811-2.0474.7811-2.8284 0l-8.00001-8c-.78105-.78103-.78105-2.04737 0-2.82841z" fillRule="evenodd"></path></svg>
                                         </DisclosureButton>
@@ -639,7 +639,7 @@ export default function TermsandConditions() {
                             <Disclosure>
                                 {({ open }) => (
                                     <div>
-                                        <DisclosureButton className="flex w-full justify-between rounded-md text-left text-sm font-medium focus-visible:outline-none bg-[#EEF8FC] p-2 md:p-3 mb-3 text-[#004B7A] ltr:text-left rtl:text-right">
+                                        <DisclosureButton className="flex w-full justify-between rounded-md text-left text-sm font-medium focus-visible:outline-none bg-[#EEF8FC] p-2 md:p-3 mb-1 text-[#004B7A] ltr:text-left rtl:text-right">
                                             {lang === 'ar' ? " الطلبات المسبقة" : "Product reservation policy"}
                                             <svg height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg" id="fi_10486749" className={`transform ${open ? '-rotate-180' : ''} fill-[#004B7A] transition duration-150 ease-in-out`}><path clipRule="evenodd" d="m2.58579 7.58579c.78104-.78105 2.04738-.78105 2.82842 0l6.58579 6.58581 6.5858-6.58581c.781-.78105 2.0474-.78105 2.8284 0 .7811.78104.7811 2.04738 0 2.82841l-8 8c-.781.7811-2.0474.7811-2.8284 0l-8.00001-8c-.78105-.78103-.78105-2.04737 0-2.82841z" fillRule="evenodd"></path></svg>
                                         </DisclosureButton>
@@ -656,7 +656,7 @@ export default function TermsandConditions() {
                             <Disclosure>
                                 {({ open }) => (
                                     <div>
-                                        <DisclosureButton className="flex w-full justify-between rounded-md text-left text-sm font-medium focus-visible:outline-none bg-[#EEF8FC] p-2 md:p-3 mb-3 text-[#004B7A] ltr:text-left rtl:text-right">
+                                        <DisclosureButton className="flex w-full justify-between rounded-md text-left text-sm font-medium focus-visible:outline-none bg-[#EEF8FC] p-2 md:p-3 mb-1 text-[#004B7A] ltr:text-left rtl:text-right">
                                             {lang === 'ar' ? " سياسة حجز المنتج" : "Product reservation policy Pre-Order"}
                                             <svg height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg" id="fi_10486749" className={`transform ${open ? '-rotate-180' : ''} fill-[#004B7A] transition duration-150 ease-in-out`}><path clipRule="evenodd" d="m2.58579 7.58579c.78104-.78105 2.04738-.78105 2.82842 0l6.58579 6.58581 6.5858-6.58581c.781-.78105 2.0474-.78105 2.8284 0 .7811.78104.7811 2.04738 0 2.82841l-8 8c-.781.7811-2.0474.7811-2.8284 0l-8.00001-8c-.78105-.78103-.78105-2.04737 0-2.82841z" fillRule="evenodd"></path></svg>
                                         </DisclosureButton>
@@ -669,7 +669,7 @@ export default function TermsandConditions() {
                             <Disclosure>
                                 {({ open }) => (
                                     <div>
-                                        <DisclosureButton className="flex w-full justify-between rounded-md text-left text-sm font-medium focus-visible:outline-none bg-[#EEF8FC] p-2 md:p-3 mb-3 text-[#004B7A] ltr:text-left rtl:text-right">
+                                        <DisclosureButton className="flex w-full justify-between rounded-md text-left text-sm font-medium focus-visible:outline-none bg-[#EEF8FC] p-2 md:p-3 mb-1 text-[#004B7A] ltr:text-left rtl:text-right">
                                             {lang === 'ar' ? "تركيب مكيفات الهواء" : "Air conditioner installation"}
                                             <svg height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg" id="fi_10486749" className={`transform ${open ? '-rotate-180' : ''} fill-[#004B7A] transition duration-150 ease-in-out`}><path clipRule="evenodd" d="m2.58579 7.58579c.78104-.78105 2.04738-.78105 2.82842 0l6.58579 6.58581 6.5858-6.58581c.781-.78105 2.0474-.78105 2.8284 0 .7811.78104.7811 2.04738 0 2.82841l-8 8c-.781.7811-2.0474.7811-2.8284 0l-8.00001-8c-.78105-.78103-.78105-2.04737 0-2.82841z" fillRule="evenodd"></path></svg>
                                         </DisclosureButton>
@@ -708,7 +708,7 @@ export default function TermsandConditions() {
                             <Disclosure>
                                 {({ open }) => (
                                     <div>
-                                        <DisclosureButton className="flex w-full justify-between rounded-md text-left text-sm font-medium focus-visible:outline-none bg-[#EEF8FC] p-2 md:p-3 mb-3 text-[#004B7A] ltr:text-left rtl:text-right">
+                                        <DisclosureButton className="flex w-full justify-between rounded-md text-left text-sm font-medium focus-visible:outline-none bg-[#EEF8FC] p-2 md:p-3 mb-1 text-[#004B7A] ltr:text-left rtl:text-right">
                                             {lang === 'ar' ? "الإتصالات الإلكترونية" : "Electronic communication"}
                                             <svg height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg" id="fi_10486749" className={`transform ${open ? '-rotate-180' : ''} fill-[#004B7A] transition duration-150 ease-in-out`}><path clipRule="evenodd" d="m2.58579 7.58579c.78104-.78105 2.04738-.78105 2.82842 0l6.58579 6.58581 6.5858-6.58581c.781-.78105 2.0474-.78105 2.8284 0 .7811.78104.7811 2.04738 0 2.82841l-8 8c-.781.7811-2.0474.7811-2.8284 0l-8.00001-8c-.78105-.78103-.78105-2.04737 0-2.82841z" fillRule="evenodd"></path></svg>
                                         </DisclosureButton>
@@ -721,7 +721,7 @@ export default function TermsandConditions() {
                             <Disclosure>
                                 {({ open }) => (
                                     <div>
-                                        <DisclosureButton className="flex w-full justify-between rounded-md text-left text-sm font-medium focus-visible:outline-none bg-[#EEF8FC] p-2 md:p-3 mb-3 text-[#004B7A] ltr:text-left rtl:text-right">
+                                        <DisclosureButton className="flex w-full justify-between rounded-md text-left text-sm font-medium focus-visible:outline-none bg-[#EEF8FC] p-2 md:p-3 mb-1 text-[#004B7A] ltr:text-left rtl:text-right">
                                             {lang === 'ar' ? "القواعد الأساسية للنشر على الموقع" : "Basic rules for publishing on the site"}
                                             <svg height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg" id="fi_10486749" className={`transform ${open ? '-rotate-180' : ''} fill-[#004B7A] transition duration-150 ease-in-out`}><path clipRule="evenodd" d="m2.58579 7.58579c.78104-.78105 2.04738-.78105 2.82842 0l6.58579 6.58581 6.5858-6.58581c.781-.78105 2.0474-.78105 2.8284 0 .7811.78104.7811 2.04738 0 2.82841l-8 8c-.781.7811-2.0474.7811-2.8284 0l-8.00001-8c-.78105-.78103-.78105-2.04737 0-2.82841z" fillRule="evenodd"></path></svg>
                                         </DisclosureButton>
@@ -737,7 +737,7 @@ export default function TermsandConditions() {
                             <Disclosure>
                                 {({ open }) => (
                                     <div>
-                                        <DisclosureButton className="flex w-full justify-between rounded-md text-left text-sm font-medium focus-visible:outline-none bg-[#EEF8FC] p-2 md:p-3 mb-3 text-[#004B7A] ltr:text-left rtl:text-right">
+                                        <DisclosureButton className="flex w-full justify-between rounded-md text-left text-sm font-medium focus-visible:outline-none bg-[#EEF8FC] p-2 md:p-3 mb-1 text-[#004B7A] ltr:text-left rtl:text-right">
                                             {lang === 'ar' ? "المحتوى والتعليقات" : "Content and comments"}
                                             <svg height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg" id="fi_10486749" className={`transform ${open ? '-rotate-180' : ''} fill-[#004B7A] transition duration-150 ease-in-out`}><path clipRule="evenodd" d="m2.58579 7.58579c.78104-.78105 2.04738-.78105 2.82842 0l6.58579 6.58581 6.5858-6.58581c.781-.78105 2.0474-.78105 2.8284 0 .7811.78104.7811 2.04738 0 2.82841l-8 8c-.781.7811-2.0474.7811-2.8284 0l-8.00001-8c-.78105-.78103-.78105-2.04737 0-2.82841z" fillRule="evenodd"></path></svg>
                                         </DisclosureButton>
@@ -767,7 +767,7 @@ export default function TermsandConditions() {
                             <Disclosure>
                                 {({ open }) => (
                                     <div>
-                                        <DisclosureButton className="flex w-full justify-between rounded-md text-left text-sm font-medium focus-visible:outline-none bg-[#EEF8FC] p-2 md:p-3 mb-3 text-[#004B7A] ltr:text-left rtl:text-right">
+                                        <DisclosureButton className="flex w-full justify-between rounded-md text-left text-sm font-medium focus-visible:outline-none bg-[#EEF8FC] p-2 md:p-3 mb-1 text-[#004B7A] ltr:text-left rtl:text-right">
                                             {lang === 'ar' ? "سياسة الشكاوي" : "Complaints policy"}
                                             <svg height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg" id="fi_10486749" className={`transform ${open ? '-rotate-180' : ''} fill-[#004B7A] transition duration-150 ease-in-out`}><path clipRule="evenodd" d="m2.58579 7.58579c.78104-.78105 2.04738-.78105 2.82842 0l6.58579 6.58581 6.5858-6.58581c.781-.78105 2.0474-.78105 2.8284 0 .7811.78104.7811 2.04738 0 2.82841l-8 8c-.781.7811-2.0474.7811-2.8284 0l-8.00001-8c-.78105-.78103-.78105-2.04737 0-2.82841z" fillRule="evenodd"></path></svg>
                                         </DisclosureButton>
