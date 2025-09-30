@@ -1,15 +1,18 @@
 'use client'
 
-import React, { useEffect } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { RWebShare } from "react-web-share"
 import { useRouter } from "next-nprogress-bar";
 import ArrowLeftIcon from './Icons/ArrowLeftIcon';
 import FilterIcon from './Icons/FilterIcon';
 import ShareIcon from './Icons/ShareIcon';
+import GlobalContext from '@/app/GlobalContext';
+import { getUserCompareData, getUserWishlistData } from '@/lib/components/component.client';
 
 
 export default function MobileHeader(props: any) {
     const router = useRouter()
+    const { updateWishlist, setUpdateWishlist } = useContext(GlobalContext);
 
     var timerLoader: any = 0;
     var interval: any;
@@ -85,6 +88,39 @@ export default function MobileHeader(props: any) {
             <ArrowLeftIcon size={30} color='#000000' className={props.lang === 'ar' ? 'rotate-180' : ''} />
         </button>
     );
+
+    useEffect(() => {
+        getUserData();
+      }, [updateWishlist]);
+
+    const getUserData = async () => {
+        await new Promise(resolve => setTimeout(resolve, 100));
+        
+        const userId = localStorage.getItem("userid");
+    
+        if (!localStorage.getItem("userCompare")) {
+        const getData = await getUserCompareData(userId);
+        if (getData?.userCompareData) {
+            localStorage.setItem(
+            "userCompare",
+            JSON.stringify(getData.userCompareData.comparedata)
+            );
+            window.dispatchEvent(new Event("storage"));
+        }
+        }
+    
+        if (!localStorage.getItem("userWishlist")) {
+        const getDatapd = await getUserWishlistData(userId);
+        if (getDatapd?.userWishlistData) {
+            localStorage.setItem(
+            "userWishlist",
+            JSON.stringify(getDatapd.userWishlistData.wishlistdata)
+            );
+            window.dispatchEvent(new Event("storage"));
+        }
+        }
+    };
+
     const pageTitle = props?.pageTitle
     return (
         <>

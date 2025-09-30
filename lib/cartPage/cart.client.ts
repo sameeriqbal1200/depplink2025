@@ -49,7 +49,7 @@ export async function getWishlist(data:any) {
 }
 
 export async function removeWishlist(data:any) {
-    const wishlistData: any = await post(`addwishlist`, data)
+    const wishlistData: any = await post(`removewishlist`, data)
     if (!wishlistData) throw new Error("Failed to load Wishlist");
     return {
         wishlistData: wishlistData,

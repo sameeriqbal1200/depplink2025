@@ -904,11 +904,22 @@ export default function Checkout() {
       address_label: typeHouse == "Home" ? 0 : 1,
     };
     if (!address || !city) {
-      var errorMsgvar =
-        "Error! Please fill " +
-        (!address ? "Address, " : "") +
-        (!city ? "City, " : "") +
-        "!";
+        let errorMsgvar = "";
+
+        if (lang === "ar") {
+            errorMsgvar =
+            "خطأ! يرجى ملء " +
+            (!address ? "العنوان، " : "") +
+            (!city ? "المدينة، " : "") +
+            "!";
+        } else {
+            errorMsgvar =
+            "Error! Please fill " +
+            (!address ? "Address, " : "") +
+            (!city ? "City, " : "") +
+            "!";
+        }
+      setErrorMsg(errorMsgvar);
       topMessageAlartDangerNew(errorMsgvar);
       setLoader(false);
       return false;
@@ -942,13 +953,23 @@ export default function Checkout() {
         address_label: typeHouse == "Home" ? 0 : 1,
         };
         if (!address || !selectedCity) {
-        setErrorMsg(
+        let errorMsgvar = "";
+
+        if (lang === "ar") {
+            errorMsgvar =
+            "خطأ! يرجى ملء " +
+            (!address ? "العنوان، " : "") +
+            (!city ? "المدينة، " : "") +
+            "!";
+        } else {
+            errorMsgvar =
             "Error! Please fill " +
             (!address ? "Address, " : "") +
-            (!selectedCity ? "City, " : "") +
-            "!"
-        );
-        topMessageAlartDangerNew(errormsg);
+            (!city ? "City, " : "") +
+            "!";
+        }
+        setErrorMsg(errorMsgvar);
+        topMessageAlartDangerNew(errorMsgvar);
         setLoader(false);
         return false;
         }
@@ -2008,7 +2029,7 @@ export default function Checkout() {
                                             <div className="text-sm font-medium">
                                                 <label className="font-regular text-[#5D686F]">{lang == 'ar' ? expressDeliveryData?.data?.title_name : expressDeliveryData?.data?.title}</label>
                                                 <div className="flex items-center gap-x-2 mt-1 rtl:mt-2 text-[#004B7A] font-regular text-xs">
-                                                    <label className="">{dayjs().add(expressDeliveryData?.data?.num_of_days, 'days').locale(lang == 'ar' ? 'ar' : 'en').format("MMM  DD, YYYY")}</label>
+                                                    <label className="">{dayjs().add(Number(expressDeliveryData?.data?.num_of_days ?? 0), 'days').locale(lang == 'ar' ? 'ar' : 'en').format("MMM  DD, YYYY")}</label>
                                                 </div>
                                             </div>
                                         </>
@@ -2227,7 +2248,7 @@ export default function Checkout() {
                                         <div className="text-sm font-medium">
                                             <label className="font-regular text-[#5D686F]">{lang == 'ar' ? expressDeliveryData?.data?.title_name : expressDeliveryData?.data?.title}</label>
                                             <div className="flex items-center gap-x-2 mt-1 rtl:mt-2 text-[#004B7A] font-regular text-xs">
-                                                <label className="">{dayjs().add(expressDeliveryData?.data?.num_of_days, 'days').locale(lang == 'ar' ? 'ar' : 'en').format("MMM  DD, YYYY")}</label>
+                                                <label className="">{dayjs().add(Number(expressDeliveryData?.data?.num_of_days ?? 0), 'days').locale(lang == 'ar' ? 'ar' : 'en').format("MMM  DD, YYYY")}</label>
                                                 {/* <label className="">-</label>
                                         <label className=""> {lang == 'ar' ? 'الاثنين' : 'Monday'} 13/11/2023</label> */}
                                             </div>

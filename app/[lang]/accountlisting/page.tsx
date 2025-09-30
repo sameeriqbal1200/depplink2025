@@ -192,7 +192,7 @@ export default function AccountListing() {
                 <h1 className="text-base font-semibold text-[#004B7A]">
                   {userid && fullName !== ""
                     ? fullName
-                    : t("header?.loginSignup")}
+                    : t("header.loginSignup")}
                 </h1>
               </div>
             </Link>
