@@ -1617,13 +1617,13 @@ export default function Product() {
                                     <span className="flex items-center gap-x-1 whitespace-nowrap">
                                         {isArabic ? ' بمبلغ' : ' In the amount of '}
                                         <span className="font-bold text-[#B15533] flex items-center gap-0.5">
-                                            {getFormattedPrice(getDiscountedPrice() / 4)}{' '}{currencySymbol}
+                                            {getFormattedPrice(getDiscountedPrice() / 4)}{' '}{currencySmallSymbol}
                                         </span>
                                     </span>
                                     {isArabic ? 'بدون فوائد' : 'without interest'}.
                                     {/* <span className="text-[#5D686F] font-bold whitespace-nowrap"></span> */}
                                 </h4>
-                                <div className="flex items-center gap-2 justify-center mt-6">
+                                <div className="flex items-center gap-2 justify-center mt-4">
                                     <Link prefetch={false} scroll={false} href={`${origin}/${lang}/installment-service-methods`} aria-label="Tabby">
                                         <Image
                                             src={`/images/pro_tabby.webp`}
@@ -1631,7 +1631,7 @@ export default function Product() {
                                             title='Tabby'
                                             height={80}
                                             width={80}
-                                            className="w-full h-full"
+                                            className="w-[40px] h-full"
                                         />
                                     </Link>
                                     <Link prefetch={false} scroll={false} href={`${origin}/${lang}/installment-service-methods`} aria-label="Tamara">
@@ -1641,7 +1641,7 @@ export default function Product() {
                                             title='Tamara'
                                             height={80}
                                             width={80}
-                                            className="w-full h-full"
+                                            className="w-[40px] h-full"
                                         />
                                     </Link>
                                     <Link prefetch={false} scroll={false} href={`${origin}/${lang}/installment-service-methods`} aria-label="misspay">
@@ -1651,7 +1651,7 @@ export default function Product() {
                                             title='Mis Pay'
                                             height={80}
                                             width={80}
-                                            className="w-full h-full"
+                                            className="w-[40px] h-full"
                                         />
                                     </Link>
                                 </div>
@@ -1685,7 +1685,7 @@ export default function Product() {
                                         height={55}
                                         width={85}
                                         loading='lazy'
-                                        className='w-1/4 absolute bottom-2'
+                                        className='w-[40px] h-[30px] absolute bottom-4'
                                     />
                                 </Link>
                             </div>
