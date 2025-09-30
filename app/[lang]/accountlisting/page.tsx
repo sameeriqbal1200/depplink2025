@@ -154,7 +154,7 @@ export default function AccountListing() {
                                 {lang === "ar" ? "مرحباً" : "Welcome"}
                             </label>
                             <h1 className="text-base font-semibold text-[#004B7A]">
-                                {userid && fullName !== "" ? fullName : t("header?.loginSignup")}
+                                {userid && fullName !== "" ? fullName : t("header.loginSignup")}
                             </h1>
                             </div>
                         </Link>
