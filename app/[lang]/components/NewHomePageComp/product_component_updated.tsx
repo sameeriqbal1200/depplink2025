@@ -834,6 +834,9 @@ export default function product_component_updated(props: any) {
     imgAbsoluteTextFour,
   ].filter(Boolean);
 
+
+  const totalRating = productData?.totalrating ?? 0;
+  const rating = Math.round(productData?.rating ?? 0);
   return (
     <div className="proBox relative z-20 !min-h-full !rounded-2xl shadow-md !p-3.5 w-full">
       <button
@@ -1008,21 +1011,13 @@ export default function product_component_updated(props: any) {
             <div className="bg-payment w-40 h-5" />
           </div>
           <div className="flex items-center justify-between gap-2 mt-3">
-            {productData?.totalrating > 0 ? (
+            {totalRating > 0 ? (
               <div className="rating_div flex ltr:flex-row rtl:flex-row-reverse items-center gap-x-1">
-                <span className="!text-xs opacity-60">{ratingText}</span>
+                <span className="text-xs opacity-60">{ratingText}</span>
                 <div className="flex items-center gap-1">
-                  {Array.from({ length: Number(productData?.rating) }).map(
-                    (_, i) => (
-                      <span key={i}>
-                        <StarIcon
-                          size={16}
-                          color="gold"
-                          className="inline-block"
-                        />
-                      </span>
-                    )
-                  )}
+                  {Array.from({ length: rating }).map((_, i) => (
+                    <StarIcon key={i} size={16} color="gold" className="inline-block" />
+                  ))}
                 </div>
               </div>
             ) : (
