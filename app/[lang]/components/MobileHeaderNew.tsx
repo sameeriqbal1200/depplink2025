@@ -31,6 +31,7 @@ import CartIcon from "./Icons/CartIcon";
 import LogoIcon from "./Icons/LogoIcon";
 import SearchIcon from "./Icons/SearchIcon";
 import MenuIcon from "./Icons/MenuIcon";
+import CheckboxIcon from "./Icons/CheckboxIcon";
 const ProductLoop = dynamic(() => import("./NewHomePageComp/ProductLoop"), {
   ssr: false,
 });
@@ -780,42 +781,7 @@ export default function MobileHeaderNew(props: any) {
                                             >
                                               {data.label}
                                             </label>
-                                            {checked ? (
-                                              <svg
-                                                viewBox="0 0 24 24"
-                                                fill="none"
-                                                className="h-6 w-6"
-                                              >
-                                                <circle
-                                                  cx={12}
-                                                  cy={12}
-                                                  r={12}
-                                                  fill="#219EBC"
-                                                  opacity="0.2"
-                                                />
-                                                <path
-                                                  d="M7 13l3 3 7-7"
-                                                  stroke="#219EBC"
-                                                  strokeWidth={2}
-                                                  strokeLinecap="round"
-                                                  strokeLinejoin="round"
-                                                />
-                                              </svg>
-                                            ) : (
-                                              <svg
-                                                viewBox="0 0 24 24"
-                                                fill="#219EBC60"
-                                                className="h-6 w-6"
-                                              >
-                                                <circle
-                                                  cx={12}
-                                                  cy={12}
-                                                  r={12}
-                                                  fill="#219EBC60"
-                                                  opacity={0.2}
-                                                />
-                                              </svg>
-                                            )}
+                                             <CheckboxIcon checked={checked} />
                                           </div>
                                         </>
                                       )}
@@ -1415,7 +1381,7 @@ export default function MobileHeaderNew(props: any) {
                       </button>
                     ))}
                   </div>
-                  {searchResult?.cats?.length && (
+                  {searchResult?.cats?.length ? (
                     <div className="mb-4">
                       <h2 className="heading__bsm">
                         {isArabic ? "فئات ذات صلة" : "Related Categories"}
@@ -1446,8 +1412,8 @@ export default function MobileHeaderNew(props: any) {
                         ))}
                       </div>
                     </div>
-                  )}
-                  {searchResult?.brands?.length && (
+                  ):null}
+                  {searchResult?.brands?.length ? (
                     <div className="mb-4">
                       <h2 className="heading__bsm">
                         {isArabic ? "العلامة التجارية" : "Brands"}
@@ -1484,13 +1450,11 @@ export default function MobileHeaderNew(props: any) {
                         })}
                       </div>
                     </div>
-                  )}
+                  ):null}
 
                   {(searchResult?.products?.length == 0 && searchInput != "") && (
-                    <div className={`w-full`}>
-                      <h2 className="heading__bsm">
+                    <div className={`w-full heading__bsm`}>
                         {isArabic ? "قائمة المنتجات" : "no products found!"}
-                      </h2>
                     </div>
                   )}
                   {searchResult?.products?.length && (
@@ -1498,8 +1462,7 @@ export default function MobileHeaderNew(props: any) {
                       <h2 className="heading__bsm">
                         {isArabic ? "العلامة التجارية" : "Products"}
                       </h2>
-                      <div className="pb-16">
-                        <div className="grid grid-cols-2 gap-x-2 gap-y-10">
+                        <div className="grid grid-cols-1 gap-y-4 pb-16">
                           <ProductLoop
                             productData={searchResult?.products}
                             lang={isArabic}
@@ -1508,7 +1471,6 @@ export default function MobileHeaderNew(props: any) {
                             NewMedia={NewMedia}
                           />
                         </div>
-                      </div>
                     </div>
                   )}
                 </div>
