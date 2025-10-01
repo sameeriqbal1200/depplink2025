@@ -2,7 +2,6 @@
 
 import React, { useEffect, useState } from 'react';
 import dynamic from 'next/dynamic';
-import Select from 'react-select';
 import { useRouter } from 'next-nprogress-bar';
 import { RadioGroup } from '@headlessui/react'
 import Swal from 'sweetalert2'
@@ -12,6 +11,7 @@ import { useApp } from "@/app/_ctx/AppContext";
 import { getCitiesList, getUserAddress, getUserEditAddress, postAddAddress, postUpdateAddress, userDeleteAddress } from '@/lib/accounts/addressBook.client';
 
 const MobileHeader = dynamic(() => import('../../components/MobileHeader'), { ssr: true })
+const Select = dynamic(() => import('react-select'), { ssr: false })
 
 export default function AddressBook() {
     const { t, lang } = useApp();

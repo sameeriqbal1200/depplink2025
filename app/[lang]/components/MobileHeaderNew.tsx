@@ -1392,6 +1392,7 @@ export default function MobileHeaderNew(props: any) {
                   <div className="mb-6 flex flex-wrap gap-2">
                     {searchResult?.cats?.map((d: any, i: any) => (
                       <button
+                        key={i}
                         onClick={() => {
                           router.push(`/${lang}/category/${d?.slug}`);
                           router.refresh();
@@ -1403,6 +1404,7 @@ export default function MobileHeaderNew(props: any) {
                     ))}
                     {searchResult?.brands?.map((d: any, i: any) => (
                       <button
+                        key={i}
                         onClick={() => {
                           router.push(`/${lang}/brand/${d?.slug}`);
                           router.refresh();
@@ -1421,6 +1423,7 @@ export default function MobileHeaderNew(props: any) {
                       <div className="flex flex-wrap items-center gap-3">
                         {searchResult?.cats?.map((d: any, i: any) => (
                           <Link
+                            key={i}
                             href={`${origin}/${lang}/category/${d.slug}`}
                             onClick={() => {
                               setSearchDialoug(false), setSearchInput("");
@@ -1485,12 +1488,12 @@ export default function MobileHeaderNew(props: any) {
                     </div>
                   ) : null}
 
-                  {searchResult?.products?.length == 0 && searchInput != "" && (
+                  {searchResult?.products?.length == 0 && searchInput != "" ? (
                     <div className={`w-full heading__bsm`}>
                       {isArabic ? "قائمة المنتجات" : "no products found!"}
                     </div>
-                  )}
-                  {searchResult?.products?.length && (
+                  ) : null}
+                  {searchResult?.products?.length ? (
                     <div className={`w-full`}>
                       <h2 className="heading__bsm">
                         {isArabic ? "العلامة التجارية" : "Products"}
@@ -1505,7 +1508,7 @@ export default function MobileHeaderNew(props: any) {
                         />
                       </div>
                     </div>
-                  )}
+                  ): null}
                 </div>
               </Dialog.Panel>
             </Transition.Child>
