@@ -930,7 +930,7 @@ export default function product_component_updated(props: any) {
           {/* Express badge on the right */}
           {ProExtraData?.expressdeliveryData && (
             <div
-              className={`${isArabic ? "bg-expressAr" : "bg-expressEn"
+              className={`${isArabic ? "bg-expressAr mr-auto" : "bg-expressEn ml-auto"
                 } w-14 h-6`}
             />
           )}
