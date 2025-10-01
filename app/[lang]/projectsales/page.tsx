@@ -181,9 +181,9 @@ export default function ProjectSales() {
                                         valueContainer: (provided, state) => ({
                                             ...provided,
                                             height: '42px',
-                                            padding: '0px',
                                             overflow: 'visible',
-                                            paddingLeft: '0.5rem',
+                                            padding: '0 0.5rem',
+                                            
                                         }),
 
                                         input: (provided, state) => ({
