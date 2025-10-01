@@ -359,7 +359,11 @@ export default function ProductLoopFilterComponent({
             ))}
             {/* Brand Filter */}
             {brands.length > 0 && (
-              <div className="relative">
+              <div
+                key="brand-filter" 
+                ref={(node) => setDropdownRef("brand", node)}
+                className={`relative`}
+              >
                 <button
                   onClick={() => toggleDropdown("brand")}
                   className="bestProButton w-fit whitespace-nowrap px-4 py-2 text-primary fill-primary border-gray hover:text-white hover:fill-white hover:bg-primary flex items-center justify-between gap-3 lg:gap-5 !transition-none"
@@ -385,11 +389,12 @@ export default function ProductLoopFilterComponent({
                   <div className={`absolute top-full left-0 z-30 w-max bg-white rounded-xl shadow-md p-4 ${brands.length > 4 ? 'h-40' : 'h-auto'} xl:min-w-32 min-w-20 overflow-y-auto custom_scrollbarStyle mt-2`}>
                     <ul className="space-y-3">
                       {brands.map((brand: Brand) => (
-                        <li key={brand.id} className="flex items-center gap-3">
+                        <li key={brand.id}>
                           <label
                             htmlFor={`brand-${brand.id}`}
-                            className="inline-flex justify-center items-center w-5 h-5 rounded border border-gray-300 peer-checked:border-primary cursor-pointer transition-all duration-200"
+                            className="flex items-center gap-3 cursor-pointer"
                           >
+                            <span className="inline-flex justify-center items-center w-5 h-5 rounded border border-gray-300 peer-checked:border-primary transition-all duration-200">
                             <input
                               type="checkbox"
                               id={`brand-${brand.id}`}
@@ -412,10 +417,11 @@ export default function ProductLoopFilterComponent({
                                 strokeWidth="0.5"
                               />
                             </svg>
-                          </label>
+                            </span>
                           <span className="sm:text-sm text-xs text-primary">
                             {isArabic ? brand.name_arabic : brand.name}
                           </span>
+                          </label>
                         </li>
                       ))}
                     </ul>
