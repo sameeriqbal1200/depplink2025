@@ -463,7 +463,7 @@ export default function OrderDetails() {
                                                 </span>
                                             </label>
                                             <div className="gap-x-2 mt-1 rtl:mt-2 text-[#004B7A]">
-                                                <label>{text ? (<>${text}<SARIcon size={11} color="#004B7A" className='inline-flex ml-1' /></>) : "---"}</label>
+                                                <label>{text ? text : "---"}</label>
                                             </div>
                                         </div>
                                         <Image
