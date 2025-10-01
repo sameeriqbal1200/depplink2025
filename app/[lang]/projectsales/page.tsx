@@ -1,7 +1,6 @@
 "use client"; // This is a client component 👈🏽
 
 import React, { useEffect, useState } from 'react'
-import Select from 'react-select'
 import dynamic from 'next/dynamic'
 import MaskedInput from 'react-text-mask'
 import Swal from 'sweetalert2'
@@ -10,6 +9,7 @@ import { useApp } from "@/app/_ctx/AppContext";
 import { getCitiesData, postProjectSalesData } from '@/lib/footerpages/project-sales.server';
 
 const MobileHeader = dynamic(() => import('../components/MobileHeader'), { ssr: true })
+const Select = dynamic(() => import('react-select'), { ssr: false })
 
 export default function ProjectSales() {
     const { t, lang, deviceType } = useApp();
