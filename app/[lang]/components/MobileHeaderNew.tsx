@@ -1404,6 +1404,7 @@ export default function MobileHeaderNew(props: any) {
                     ))}
                     {searchResult?.brands?.map((d: any, i: any) => (
                       <button
+                        key={i}
                         onClick={() => {
                           router.push(`/${lang}/brand/${d?.slug}`);
                           router.refresh();
