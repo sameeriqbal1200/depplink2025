@@ -589,7 +589,7 @@ export default function SubCategoryNew({
                 <div
                   className={`absolute top-full ${
                     isArabic ? "right-0" : "left-0"
-                  } mt-2 z-30 w-max bg-white rounded-xl shadow-md p-4`}
+                  } mt-3 z-30 w-max bg-white rounded-xl p-4 shadow-[0_0_4px_rgb(0,75,122)]`}
                   onClick={(e) => e.stopPropagation()}
                 >
                   <ul className="space-y-3">
@@ -1126,7 +1126,7 @@ export default function SubCategoryNew({
                         <div
                           className={`absolute top-full ${
                             isArabic ? "left-0" : "right-0"
-                          } mt-2 z-30 w-max bg-white rounded-xl shadow-md p-4`}
+                          } mt-3 z-30 w-max bg-white rounded-xl shadow-[0_0_4px_rgb(0,75,122)] p-4`}
                           onClick={(e) => e.stopPropagation()}
                         >
                           <ul className="space-y-3">
