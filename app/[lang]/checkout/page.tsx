@@ -388,7 +388,7 @@ export default function Checkout() {
     useEffect(() => {
         if(loyaltyData?.t_loyaltypoints >= 1) {
             setupLoyalty(true)
-            setpaymentMethod('loyalty')
+            // setpaymentMethod('loyalty')
         }
     }, [loyaltyData])
 
@@ -1113,8 +1113,7 @@ export default function Checkout() {
     ];
 
     
-    const loyaltyPointsDB: any = loyaltyData?.t_loyaltypoints || 0;
-    const loyaltyAmount = loyaltyPointsDB / 100;
+    const loyaltyAmount = loyaltyData?.total_amount;
     const currentLoyaltyamount = getLoyalty()?.amount || 0
     var usableloyaltyAmount:any = false;
     if(loyaltyAmount >= summary?.filter((item: any ) => item?.key == 'total')[0]?.price)
@@ -2067,7 +2066,7 @@ export default function Checkout() {
                                     : "Choose your payment method"}
                                 </div>
                                 <div className="mt-4">
-                                    {loyaltyData && loyaltyData?.t_loyaltypoints >= 1 ?
+                                    {loyaltyData && loyaltyData?.t_loyaltypoints >= 1 && loyaltyData?.total_amount >= 1 ?
                                         <>
                                         {/* loyalty work */}
                                         <button 
@@ -2132,8 +2131,8 @@ export default function Checkout() {
                                         </button>
                                         </>
                                         : null}
-                                    <RadioGroup value={paymentMethod} onChange={setpaymentMethod} className={`mt-3 ${(paymentMethod === 'loyalty' && summary?.filter((item: any) => item?.key === 'total')[0]?.amount === 0) ? 'opacity-20' : ''}`}
-                                     disabled={(paymentMethod === 'loyalty' && summary?.filter((item: any) => item?.key === 'total')[0]?.amount === 0) ? true : false}
+                                    <RadioGroup value={paymentMethod} onChange={setpaymentMethod} className={`mt-3 ${(paymentMethod === 'loyalty') ? 'opacity-20' : ''}`}
+                                     disabled={(paymentMethod === 'loyalty') ? true : false}
                                     // disabled={false}
                                     >
                                         <div className="grid grid-cols-3 md:grid-cols-4 2xl:grid-cols-6 gap-x-3">
