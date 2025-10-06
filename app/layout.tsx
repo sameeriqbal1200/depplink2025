@@ -498,7 +498,7 @@ export default async function RootLayout({
           <ReloadRefresh lang={lang} idleMs={30 * 60 * 1000} />
           <GlobalProvider>
             <Providers>
-              {/* <DebugDOM />  */}
+              <DebugDOM /> 
               <LayoutWrapper>
                 <LoginGuard />
                 <CityBootstrapper lang={lang} googleApiKey={googleApiKey} />

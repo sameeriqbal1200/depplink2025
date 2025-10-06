@@ -82,6 +82,22 @@ export default function Homepage() {
   const [homepageparttwolatest, setHomepagePartTwoLatest] = useState<any>(null);
   const [homepagepartthreelatest, setHomepagePartThreeLatest] =
     useState<any>(null);
+  
+  useEffect(() => {
+    const observer = new MutationObserver(() => {
+      console.log("DOM nodes Page:", document.getElementsByTagName("*").length);
+    });
+
+    observer.observe(document.body, { childList: true, subtree: true });
+
+    // Run once initially
+    console.log(
+      "DOM nodes (initial):",
+      document.getElementsByTagName("*").length
+    );
+
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
     (async () => {
