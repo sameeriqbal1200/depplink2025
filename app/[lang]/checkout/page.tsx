@@ -2027,7 +2027,7 @@ export default function Checkout() {
                                     }
                                     {cartData?.storeType == 0 && cartData?.storeId == false && (
                                     <>
-                                        {expressDeliveryData?.data && expressDeliveryDataStatus ?
+                                        {expressDeliveryData?.data?.length && expressDeliveryDataStatus ?
                                         <>
                                             <div className="text-sm font-medium">
                                                 <label className="font-regular text-[#5D686F]">{lang == 'ar' ? expressDeliveryData?.data?.title_name : expressDeliveryData?.data?.title}</label>
@@ -2042,7 +2042,7 @@ export default function Checkout() {
                                                 <div className="flex items-center gap-x-2 mt-1 rtl:mt-2 text-[#004B7A] font-regular text-xs">
                                                     <label className="">{dayjs().add(7, 'days').locale(lang == 'ar' ? 'ar' : 'en').format("MMM  DD, YYYY")}</label>
                                                 </div>
-                                                {paymentMethod != 'loyalty' ? <hr className="opacity-10 my-3" /> : null}
+                                                {/* {paymentMethod != 'loyalty' ? <hr className="opacity-10 my-3" /> : null} */}
                                             </div>
                                         }
                                     </>
