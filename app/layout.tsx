@@ -475,7 +475,7 @@ export default async function RootLayout({
           <ReloadRefresh lang={lang} idleMs={30 * 60 * 1000} />
           <GlobalProvider>
             <Providers>
-              <DebugDOM /> {/* 👈 Logs DOM size after hydration */}
+              {/* <DebugDOM />  */}
               <LayoutWrapper>
                 <LoginGuard />
                 <CityBootstrapper lang={lang} googleApiKey={googleApiKey} />
