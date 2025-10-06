@@ -85,28 +85,13 @@ export function middleware(req: NextRequest) {
     // Skip APIs
     if (pathname.startsWith("/api/")) return NextResponse.next();
 
-    // Skip Next.js internal paths
-    if (pathname.startsWith('/_next/') || pathname.includes('__next') || pathname.includes('/_not-found')) {
-        return NextResponse.next();
-    }
-
-    // 1) Ensure locale prefix - but only for valid paths
+    // 1) Ensure locale prefix
     if (!isPrefixedWithSupportedLocale(pathname)) {
         const detected = detectPreferredLocale(req);
         const url = req.nextUrl.clone();
-        
-        // For root path, redirect to localized root
-        if (pathname === '/') {
-            url.pathname = `/${detected}`;
-            return NextResponse.redirect(url);
-        }
-        
-        // For other paths, redirect to localized version
         url.pathname = `/${detected}${pathname.startsWith("/") ? pathname : `/${pathname}`}`;
         return NextResponse.redirect(url);
     }
-
-    // At this point, we have a localized path like /ar/something or /en/something
 
     // Locale from path
     const localeFromPath = (pathname.split("/")[1] || DEFAULT_LOCALE) as (typeof SUPPORTED_LOCALES)[number];

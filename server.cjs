@@ -4,33 +4,29 @@ const { parse } = require("url");
 const next = require("next");
 
 const dev = process.env.NODE_ENV !== "production";
-// Explicitly fallback to "3000" if PORT is undefined
-const PORT = parseInt(process.env.PORT || "3000", 10);
-const HOST = "0.0.0.0";
+// Use environment variable with proper fallback
+const PORT = parseInt(process.env.PORT || "3001", 10);
+const HOST = process.env.HOST || "0.0.0.0";
 
-const app = next({ dev });
+const app = next({ 
+  dev,
+  // Explicitly set hostname and port for Next.js
+  hostname: HOST,
+  port: PORT
+});
+
 const handle = app.getRequestHandler();
 
 app.prepare().then(() => {
-  createServer(async (req, res) => {
+  const server = createServer(async (req, res) => {
     try {
       const parsedUrl = parse(req.url || "/", true);
       const { pathname, query } = parsedUrl;
 
-      // ✅ DigitalOcean health check
+      // ✅ Health check
       if (pathname === "/healthz") {
         res.statusCode = 200;
         res.end("ok");
-        return;
-      }
-
-      // ✅ Example custom routes
-      if (pathname === "/a") {
-        await app.render(req, res, "/a", query);
-        return;
-      }
-      if (pathname === "/b") {
-        await app.render(req, res, "/b", query);
         return;
       }
 
@@ -41,15 +37,17 @@ app.prepare().then(() => {
       res.statusCode = 500;
       res.end("internal server error");
     }
-  })
-    .once("error", (err) => {
-      console.error("Server error:", err);
-      process.exit(1);
-    })
-    .listen(PORT, HOST, () => {
-      console.log(
-        `> Ready on http://${HOST}:${PORT} (NODE_ENV=${process.env.NODE_ENV || "unset"
-        })`
-      );
-    });
+  });
+
+  server.once('error', (err) => {
+    console.error("Server error:", err);
+    process.exit(1);
+  });
+
+  server.listen(PORT, HOST, () => {
+    console.log(
+      `> Server running on http://${HOST}:${PORT} (NODE_ENV=${process.env.NODE_ENV || "development"})`
+    );
+    console.log(`> Ready on http://localhost:${PORT}`);
+  });
 });

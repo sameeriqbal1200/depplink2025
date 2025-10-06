@@ -327,10 +327,10 @@ export default function Checkout() {
     useEffect(() => {
         (async () => {
         if(activeTab3 == 2){
-            // var points = getLoyalty()
-            // var loyaltydata = await getLoyaltyData()
-            // // setloyaltyPoints(points)
-            // setloyaltyData(loyaltydata)
+            var points = getLoyalty()
+            var loyaltydata = await getLoyaltyData()
+            setloyaltyPoints(points)
+            setloyaltyData(loyaltydata)
         }
         })();
     }, [activeTab3]);
@@ -583,6 +583,9 @@ export default function Checkout() {
         } else {
             UserDeviceData = "Desktop - " + browserName;
         }
+        // console.log('isMobile', isMobile)
+        // console.log('mobileType', mobileType)
+        // console.log('UserDeviceData', UserDeviceData)
         setUserDevice(UserDeviceData)
     }
 
@@ -2129,8 +2132,8 @@ export default function Checkout() {
                                         </button>
                                         </>
                                         : null}
-                                    <RadioGroup value={paymentMethod} onChange={setpaymentMethod} className={`mt-3 ${paymentMethod == 'loyalty' ? 'opacity-20' : ''}`}
-                                     disabled={paymentMethod == 'loyalty' ? true : false}
+                                    <RadioGroup value={paymentMethod} onChange={setpaymentMethod} className={`mt-3 ${(paymentMethod === 'loyalty' && summary?.filter((item: any) => item?.key === 'total')[0]?.amount === 0) ? 'opacity-20' : ''}`}
+                                     disabled={(paymentMethod === 'loyalty' && summary?.filter((item: any) => item?.key === 'total')[0]?.amount === 0) ? true : false}
                                     // disabled={false}
                                     >
                                         <div className="grid grid-cols-3 md:grid-cols-4 2xl:grid-cols-6 gap-x-3">
