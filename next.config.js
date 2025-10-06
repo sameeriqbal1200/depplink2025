@@ -6,7 +6,6 @@ const withPWA = require('next-pwa')({
   disable: process.env.NODE_ENV === 'development',
   register: true,
   skipWaiting: true,
-  // swSrc: "service-worker.js", // ✅ our custom SW
 });
 
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
@@ -17,7 +16,12 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 const nextConfig = {
   output: 'standalone',
   outputFileTracingRoot: path.resolve(__dirname),
-  allowedDevOrigins: ['127.0.0.1', 'localhost', 'app.localhost', '0.0.0.0'],
+  
+  // For development, allow all origins to avoid port issues
+  allowedDevOrigins: process.env.NODE_ENV === 'development' 
+    ? ['127.0.0.1', 'localhost', '0.0.0.0', 'app.localhost'] // Remove port restrictions in dev
+    : ['127.0.0.1', 'localhost', 'app.localhost', '0.0.0.0'],
+  
   reactStrictMode: true,
   productionBrowserSourceMaps: false,
   compress: true,
@@ -26,18 +30,27 @@ const nextConfig = {
 
   transpilePackages: ['crypto-js'],
 
-  webpack: (config, { webpack }) => {
+  webpack: (config, { webpack, isServer }) => {
     config.plugins.push(
       new webpack.DefinePlugin({
         'process.env.CUSTOM_VARIABLE': JSON.stringify('value'),
       })
     );
+
+    if (!isServer) {
+      config.resolve.fallback = {
+        ...config.resolve.fallback,
+        fs: false,
+      };
+    }
+
     return config;
   },
+
   async headers() {
     return [
       {
-        source: "/(.*)", // all routes
+        source: "/(.*)",
         headers: [
           {
             key: "Referrer-Policy",
@@ -47,6 +60,7 @@ const nextConfig = {
       },
     ];
   },
+
   async redirects() {
     return [
       { source: '/', destination: '/ar', permanent: true },
@@ -55,7 +69,7 @@ const nextConfig = {
   },
 
   images: {
-    unoptimized: false,
+    unoptimized: process.env.NODE_ENV === 'development', // Important for multi-port dev
     formats: ['image/avif', 'image/webp'],
     deviceSizes: [680, 780, 1040, 1280, 1540, 1650, 1920],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
@@ -71,10 +85,11 @@ const nextConfig = {
       { protocol: 'https', hostname: 'media.tamkeenstores.com.sa', pathname: '/specificicons/**' },
       { protocol: 'https', hostname: 'onelink.to', pathname: '/**' },
     ],
-
   },
+
   eslint: { ignoreDuringBuilds: true },
-  turbopack: {},
+  
+  ...(process.env.NODE_ENV === 'development' && { turbopack: {} }),
 };
 
 module.exports = withBundleAnalyzer(withPWA(nextConfig));
