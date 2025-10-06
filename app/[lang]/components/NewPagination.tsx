@@ -48,7 +48,7 @@ const Pagination: React.FC<PaginationProps> = ({
   const pageText = isArabic ? "صفحة" : "Page";
   const dir = isArabic ? "rtl" : "ltr";
   const textClass = isArabic ? "ml-2" : "mr-2";
-  const numberFormatter = (num: number) => isArabic ? num.toLocaleString("ar-EG") : num;
+  const numberFormatter = (num: number) => num;
 
   if (isMobileOrTablet) {
     const nextIcon = (
