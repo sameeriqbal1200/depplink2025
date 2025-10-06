@@ -2,6 +2,8 @@
 
 import React, { useState } from "react";
 import Image from "next/image";
+import CloseIcon from "../Icons/CloseIcon";
+import ArrowLeftIcon from "../Icons/ArrowLeftIcon";
 
 interface FilterProps {
   isArabic: boolean;
@@ -46,18 +48,7 @@ export default function MobileFilterNew(props: FilterProps) {
 
   // Dropdown Icon (same as MobileFilterNew.tsx)
   const smallDropdownIcon = (
-    <svg
-      width="14"
-      height="8"
-      viewBox="0 0 14 8"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path
-        d="M13.1962 0.81355C13.109 0.725724 13.0054 0.656013 12.8912 0.608441C12.777 0.560869 12.6546 0.536377 12.5309 0.536377C12.4072 0.536377 12.2847 0.560869 12.1705 0.608441C12.0563 0.656013 11.9527 0.725724 11.8656 0.81355L7.57393 5.10517C7.48682 5.193 7.38318 5.26271 7.269 5.31028C7.15481 5.35785 7.03233 5.38234 6.90863 5.38234C6.78493 5.38234 6.66246 5.35785 6.54827 5.31028C6.43409 5.26271 6.33045 5.193 6.24334 5.10517L1.95171 0.81355C1.8646 0.725724 1.76096 0.656013 1.64678 0.608441C1.53259 0.560869 1.41011 0.536377 1.28641 0.536377C1.16271 0.536377 1.04024 0.560869 0.92605 0.608441C0.811863 0.656013 0.708226 0.725724 0.621116 0.81355C0.446592 0.989116 0.348633 1.22661 0.348633 1.47416C0.348633 1.72171 0.446592 1.9592 0.621116 2.13477L4.92212 6.43576C5.4492 6.96219 6.16369 7.25788 6.90863 7.25788C7.65358 7.25788 8.36807 6.96219 8.89515 6.43576L13.1962 2.13477C13.3707 1.9592 13.4686 1.72171 13.4686 1.47416C13.4686 1.22661 13.3707 0.989116 13.1962 0.81355Z"
-        fill="currentColor"
-      />
-    </svg>
+    <ArrowLeftIcon size={14} color="#ffffff" className="-rotate-90" />
   );
 
   // Const For Text
@@ -88,21 +79,7 @@ export default function MobileFilterNew(props: FilterProps) {
         className="absolute -top-2 right-0 p-2 z-10"
         aria-label={isArabic ? "إغلاق" : "Close"}
       >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-          strokeWidth={2}
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M6 18L18 6M6 6l12 12"
-          />
-        </svg>
+        <CloseIcon size={14} color="#121212" /> 
       </button>
 
       {/* Filter Header */}
@@ -169,7 +146,7 @@ export default function MobileFilterNew(props: FilterProps) {
                   <button
                     key={brand.id}
                     onClick={() => props.setBrandData(brand.id, brand.name)}
-                    className={`relative w-16 h-8 px-4 py-[9px] rounded-full cursor-pointer outline-none ${isSelected ? "border-primary border-2 bg-white" : "bg-[#F3F3F3] border-white"}`}
+                    className={`relative w-26 h-8 px-4 py-[9px] rounded-full cursor-pointer outline-none ${isSelected ? "border-primary border-2 bg-white" : "bg-[#F3F3F3] border-white"}`}
                     aria-label={isArabic ? brand.name_arabic : brand.name}
                   >
                     <Image
@@ -215,7 +192,7 @@ export default function MobileFilterNew(props: FilterProps) {
                   <button
                     key={tagchild.name}
                     onClick={() => props.onChangetags(tagchild)}
-                    className={`relative w-16 h-8 rounded-full cursor-pointer outline-none border flex items-center justify-center px-2  ${isSelected ? "border-primary border-2 text-primary bg-white" : "bg-[#F3F3F3] border-white text-[#121212]"}`}
+                    className={`relative w-26 h-8 rounded-full cursor-pointer outline-none border flex items-center justify-center px-2  ${isSelected ? "border-primary border-2 text-primary bg-white" : "bg-[#F3F3F3] border-white text-[#121212]"}`}
                     aria-label={isArabic ? tagchild.name_arabic : tagchild.name}
                   >
                     {tagchild.icon ? (

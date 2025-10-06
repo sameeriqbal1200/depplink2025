@@ -7,6 +7,13 @@ import "swiper/css/navigation";
 import { useRouter } from "next-nprogress-bar";
 import { getSearchData } from "@/lib/searchPage/search.server";
 import { useApp } from "@/app/_ctx/AppContext";
+import Link from "next/link";
+import LogoIcon from "../components/Icons/LogoIcon";
+import SearchIcon from "../components/Icons/SearchIcon";
+import StickyPagination from "../components/StickyPagination";
+import FilterIconTwo from "../components/Icons/FilterIcon2";
+import SortIcon from "../components/Icons/SortIcon";
+import MobileFilterNew from "../components/SectionComponents/MobileFilterNew";
 
 const MobileHeader = dynamic(() => import('../components/MobileHeader'), { ssr: true })
 
@@ -128,15 +135,142 @@ export default function Search({ params, searchParams }: SearchProps) {
 
   const  titleHeadingText = (CatData?.productData?.products?.total + (isArabic ? " منتج" : " Products"));
   const subHeadingFiveText = isArabic ? "ترتيب حسب" : "Sort by";
+  const applyFiltersText = isArabic ? "تطبيق الفلاتر" : "Apply Filters";
+  const [filterModal, setFilterModal] = useState(false);
+  
 
   return (
     <>
-        <MobileHeader type="Third" lang={lang} dict={dict} pageTitle={`"${resolvedSearchParams?.text}"`} />
+        {/* <MobileHeader type="Third" lang={lang} dict={dict} pageTitle={`"${resolvedSearchParams?.text}"`} /> */}
+        {/* Header Section */}
+          <header className="pt-3 bg-white shadow-lg w-full sticky top-0 z-50">
+            <div className="container">
+              <div className="header_top flex items-center gap-x-4 mb-4">
+                <Link
+                  prefetch={false}
+                  scroll={false}
+                  href={`${origin}/${lang}`}
+                  className="logo"
+                >
+                  <LogoIcon size={57} color="#004B7A" className="text-primary" />
+                </Link>
+                <div className="searchBox flex items-center gap-x-2 bg-white px-4 py-[9px] border-[1px] rounded-lg border-[#5D686F] basis-full">
+                  <div className="flex items-center gap-x-2">
+                    <SearchIcon
+                      size={20}
+                      color="#004B7A"
+                      className="text-primary"
+                    />
+                    <svg
+                      width="2"
+                      height="22"
+                      viewBox="0 0 2 22"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M0.791992 0V22"
+                        stroke="#004B7A"
+                        strokeOpacity="0.7"
+                      />
+                    </svg>
+                  </div>
+                  <input
+                    type="text"
+                    placeholder={
+                      lang === "ar" ? "ابحث هنا" : "What are you looking for?"
+                    }
+                    className="border-none outline-none w-full px-2 text-xs text-[#004B7A] placeholder:text-[#6B7280]"
+                  />
+                </div>
+              </div>
+            </div>
+              <div className="sticky_pagination px-2 flex ltr:flex-row rtl:flex-row-reverse items-center justify-between gap-2 bg-primary">
+                  {CatData?.productData?.products && (
+                    <>
+                      {CatData?.productData?.products?.last_page > 1 && (
+                        <StickyPagination
+                          setCurrentPage={(newpage) => {
+                            setLoaderStatus(true);
+                            window.scrollTo(0, 0);
+                            setcurrentPage(newpage);
+                          }}
+                          isMobileOrTablet={isMobileOrTablet}
+                          isArabic={isArabic}
+                          currentPage={CatData?.productData?.products?.current_page}
+                          lastPage={CatData?.productData?.products?.last_page}
+                        />
+                      )}
+                    </>
+                  )}
+                <div className="w-px h-8 border border-white"></div>
+                <div className="h-full">
+                <button
+                  onClick={() => {
+                    setFilterModal(!filterModal);
+                  }}
+                  className="text-white text-10 !font-semibold flex gap-1 items-center !w-fit whitespace-nowrap selected !border-0 outline-0 hover:text-primary  hover:bg-white !transition-none"
+                >
+                  <FilterIconTwo size={12} color="#ffffff" />
+                  {applyFiltersText}
+                </button>
+                </div>
+                <div className="w-px h-8 border border-white"></div>
+                <div className="relative inline-block">
+                  <button
+                    onClick={() => setSortPopup(!sortPopup)}
+                    className="text-white text-10 !font-semibold flex gap-1 items-center !w-fit whitespace-nowrap selected !border-0 outline-0 hover:text-primary  hover:bg-white !transition-none"
+                  >
+                    <SortIcon size={12} color="#ffffff" />
+                    {subHeadingFiveText}
+                  </button>
+    
+                  {sortPopup && (
+                    <div
+                      className={`absolute top-full ${
+                        isArabic ? "right-0" : "left-0"
+                      } mt-3 z-30 w-max bg-white rounded-xl p-4 shadow-[0_0_4px_rgb(0,75,122)]`}
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <ul className="space-y-3">
+                        {SortingProduct.map((filter) => (
+                          <li key={filter?.value} className="">
+                            <label
+                              htmlFor={filter?.label.toLowerCase().replace(" ", "_")}
+                              className="flex items-center gap-3 cursor-pointer"
+                            >
+                              <span className="inline-flex justify-center items-center w-5 h-5 rounded border border-gray-300 peer-checked:border-primary cursor-pointer transition-all duration-200">
+                                <input
+                                  type="checkbox"
+                                  id={filter?.label.toLowerCase().replace(" ", "_")}
+                                  className="hidden peer"
+                                  checked={sort == filter?.value}
+                                  onChange={() => setsort(filter?.value)}
+                                />
+                                <div className="w-4 h-4 rounded bg-primary scale-0 peer-checked:scale-100 transition-all duration-200">
+                                </div>
+                                {/* <CheckIcon
+                                  size={14}
+                                  className="hidden peer-checked:block"
+                                /> */}
+                              </span>
+                              <span className="text-xs text-primary">
+                                {filter?.label}
+                              </span>
+                            </label>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                </div>
+              </div>
+          </header>
       {/* Section 2 */}
       <section
         className={`relative mt-4 ${isMobileOrTablet ? "mb-24" : "mb-8"}`}
       >
-        <div className="xl:px-20 lg:px-10 px-4 flex md:flex-row flex-col items-start gap-4 pt-12">
+        <div className="xl:px-20 lg:px-10 px-4 flex md:flex-row flex-col items-start gap-4">
           <div
             className={`w-full pb-2 overflow-hidden`}
           >
@@ -145,7 +279,7 @@ export default function Search({ params, searchParams }: SearchProps) {
             }
             {isMobileOrTablet ? (
               <div className="mb-5">
-                <div className="flex items-center justify-between gap-4 mb-5">
+                {/* <div className="flex items-center justify-between gap-4 mb-5">
                   <div className="relative inline-block">
                     <button
                       onClick={() => setSortPopup(!sortPopup)}
@@ -226,12 +360,12 @@ export default function Search({ params, searchParams }: SearchProps) {
                       </div>
                     )}
                   </div>
-                </div>
+                </div> */}
                 <div className="flex items-center justify-between gap-4">
                   <h2 className="headingHomeMain !text-base !text-dark text-nowrap order-0">
                     {titleHeadingText}
                   </h2>
-                  {CatData?.productData?.products && (
+                  {/* {CatData?.productData?.products && (
                     <>
                       {CatData?.productData?.products?.last_page > 1 && (
                         <Pagination
@@ -247,7 +381,7 @@ export default function Search({ params, searchParams }: SearchProps) {
                         />
                       )}
                     </>
-                  )}
+                  )} */}
                 </div>
                 <hr className="w-full h-px border border-gray my-2.5 opacity-40"></hr>
               </div>
@@ -385,7 +519,7 @@ export default function Search({ params, searchParams }: SearchProps) {
                       </button>
                       {sortPopup && (
                         <div
-                          className="absolute top-full right-0 mt-2 z-30 w-max bg-white rounded-xl shadow-md p-4"
+                          className="absolute top-full right-0 mt-3 z-30 w-max bg-white rounded-xl p-4 shadow-[0_0_4px_rgb(0,75,122)]"
                           onClick={(e) => e.stopPropagation()}
                         >
                           <ul className="space-y-3">
@@ -537,6 +671,64 @@ export default function Search({ params, searchParams }: SearchProps) {
             )}
           </div>
         </div>
+      </section>
+
+      {/* Mobile Filter Modal */}
+      <section
+        className={`fixed inset-0 bg-white z-50 p-4 overflow-y-auto transform transition-transform duration-300 ease-in-out
+    ${filterModal ? "translate-x-0" : "-translate-x-full"}`}
+      >
+        <MobileFilterNew
+          NewMedia={NewMedia}
+          filterModal={filterModal}
+          setFilterModal={setFilterModal}
+          tags={CatData?.productData?.tags}
+          isArabic={isArabic}
+          deviceType={deviceType}
+          isMobileOrTablet={isMobileOrTablet}
+          selectedtags={selectedtags}
+          onChangetags={(tagchild: any) => {
+            var tagnames = selectedtags;
+            if (!tagnames[tagchild.name]) {
+              tagnames[tagchild.name] = true;
+            } else {
+              delete tagnames[tagchild.name];
+              window.scrollTo(0, 0);
+            }
+            setLoaderStatus(true);
+            setselectedtags({ ...tagnames });
+            setcurrentPage(1);
+            filter();
+          }}
+          brands={CatData?.productData?.brands}
+          selectedbrands={selectedbrands}
+          setBrandData={(id: any, name: string) => {
+            var bdata = selectedbrands;
+            if (!bdata[name]) {
+              bdata[name] = true;
+            } else {
+              delete bdata[name];
+            }
+            setLoaderStatus(true);
+            setselectedbrands({ ...bdata });
+            setcurrentPage(1);
+            filter();
+          }}
+          setClear={() => {
+            setLoaderStatus(true);
+            setselectedbrands({});
+            setselectedrating({});
+            setselectedcats({});
+            setcurrentPage(1);
+            setselectedtags({});
+            // setFilterMobile(false)
+            window.scrollTo(0, 0);
+            // router.push(`${origin}/${lang}/category/${slug}`, {
+            //   scroll: true,
+            // });
+            router.refresh();
+          }}
+        />
       </section>
     </>
   )
