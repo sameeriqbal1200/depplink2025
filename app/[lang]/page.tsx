@@ -84,22 +84,6 @@ export default function Homepage() {
     useState<any>(null);
 
   useEffect(() => {
-    const observer = new MutationObserver(() => {
-      console.log("DOM nodes Page:", document.getElementsByTagName("*").length);
-    });
-
-    observer.observe(document.body, { childList: true, subtree: true });
-
-    // Run once initially
-    console.log(
-      "DOM nodes (initial):",
-      document.getElementsByTagName("*").length
-    );
-
-    return () => observer.disconnect();
-  }, []);
-
-  useEffect(() => {
     (async () => {
       const { homepageSectionOne, homepageSectionTwo, homepageSectionThree } =
         await getHomePages(lang, deviceType); // ✅ must await

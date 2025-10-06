@@ -293,7 +293,7 @@ export default function MobileFooterNew(props: any) {
                     )}
                     </div>
                     <span
-                    className={`text-xs duration-200 ${activeIndex === index ? "text-[#004b7a]" : "text-black"}`}
+                    className={`text-xs duration-200 text-black`}
                     >
                     {item.label}
                   </span>

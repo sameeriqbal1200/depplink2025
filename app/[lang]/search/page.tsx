@@ -182,7 +182,7 @@ export default function Search({ params, searchParams }: SearchProps) {
                     </button>
                     {sortPopup && (
                       <div
-                        className="absolute top-full left-0 mt-2 z-30 w-max bg-white rounded-xl shadow-md p-4"
+                        className="absolute top-full ltr:left-0 rtl:right-0 mt-2 z-30 w-max bg-white rounded-xl shadow-md p-4"
                         onClick={(e) => e.stopPropagation()}
                       >
                         <ul className="space-y-3">

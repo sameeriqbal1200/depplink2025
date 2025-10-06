@@ -946,7 +946,7 @@ export default function product_component_updated(props: any) {
             <button className="font-semibold text-start text-xs line-clamp-1">
               <span className='font-bold after:content-["•"]'>{codeText} </span>{" "}
               <span className="inline-flex items-center gap-1">
-                {productData?.sku} <CopyIcon size={12} color="#000000" />
+                {productData?.sku} <CopyIcon size={12} className="rotate-90" color="#000000" />
               </span>
             </button>
             <Image
@@ -1013,7 +1013,7 @@ export default function product_component_updated(props: any) {
           </div>
           <div className="flex items-center justify-between gap-2 mt-3">
             {totalRating > 0 ? (
-              <div className="rating_div flex ltr:flex-row rtl:flex-row-reverse items-center gap-x-1">
+              <div className="rating_div flex flex-row items-center gap-x-1">
                 <span className="text-xs opacity-60">{ratingText}</span>
                 <div className="flex items-center gap-1">
                   {Array.from({ length: rating }).map((_, i) => (

@@ -50,6 +50,7 @@ const CategoriesSlider: React.FC<CategoriesSliderProps> = ({ params, userAgent, 
             <div className="relative">
                 <Swiper
                     slidesPerView={8}
+                    loop={false}
                     breakpoints={{
                         350: { slidesPerView: 4.5, spaceBetween: 2 },
                         768: { slidesPerView: 7.2, spaceBetween: 4 },
