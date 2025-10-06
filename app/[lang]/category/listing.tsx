@@ -611,10 +611,12 @@ export default function SubCategoryNew({
                             checked={sort == filter?.value}
                             onChange={() => setsort(filter?.value)}
                           />
-                          <CheckIcon
+                          <div className="w-4 h-4 rounded bg-primary scale-0 peer-checked:scale-100 transition-all duration-200">
+                          </div>
+                          {/* <CheckIcon
                             size={14}
                             className="hidden peer-checked:block"
-                          />
+                          /> */}
                         </span>
                         <span className="text-xs text-primary">
                           {filter?.label}
