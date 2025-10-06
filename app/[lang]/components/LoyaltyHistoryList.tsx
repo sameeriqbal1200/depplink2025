@@ -1,23 +1,26 @@
 "use client";
 
+import dayjs from "dayjs";
+import 'dayjs/locale/ar'
 import React from "react";
 
 export default function LoyaltyHistoryList(props: any) {
     const loyalData = props?.data;
-    const fullName = localStorage.getItem("fullName") || "Guest User";
+    const isArabic = props?.isArabic;
+    const isDeducted = loyalData?.type == 0 ? true : false;
   return (
     <>
       <div className="flex items-center gap-5 p-3 rounded-md bg-white shadow-md mb-3 w-full">
         <div className="flex flex-col items-center shrink-0 bg-[#EBEBEB] py-3 px-4 rounded-md">
-          <span className="text-base font-bold text-dark">15</span>
-          <span className="text-base font-bold text-dark">yolyo</span>
+          <span className="text-base font-bold text-dark">{dayjs(loyalData?.date).locale(isArabic ? "ar" : "en").format("DD")}</span>
+          <span className="text-base font-bold text-dark">{dayjs(loyalData?.date).locale(isArabic ? "ar" : "en").format("MMM")}</span>
         </div>
         <div className="grow">
           <p className="text-sm font-semibold text-dark ml-3 mb-1">
-            {loyalData?.date} {loyalData?.order_number} {fullName}
+            {loyalData?.earning_against}
           </p>
           <span className="text-xs text-dark flex items-center gap-1 font-semibold">
-            Text:19.95
+            {isArabic ? 'المبلغ:' : 'Amount:'} {loyalData?.total_amount}
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="12"
@@ -37,10 +40,13 @@ export default function LoyaltyHistoryList(props: any) {
           </span>
         </div>
         <div className="flex flex-col shrink-0 pr-4">
-          <span className="text-base text-primary font-semibold mb-1 ml-2">
-            20 points
+          <span className={`text-base ${!isDeducted ? "text-primary" : "text-red-600"} font-semibold mb-1 ml-2`}>
+            {loyalData?.t_loyaltypoints} {isArabic ? 'نقاط' : 'pts' }
           </span>
-          <span className="text-xs text-primary font-semibold">here text</span>
+          <span className={`text-xs ${!isDeducted ? "text-primary" : "text-red-600"} font-semibold`}>{isDeducted
+            ? (isArabic ? "تم الخصم" : "DEDUCTED")
+            : (isArabic ? "تم الإضافة" : "CREDITED")}
+          </span>
         </div>
       </div>
     </>
