@@ -236,9 +236,7 @@ export default function Search({ params, searchParams }: SearchProps) {
                         {SortingProduct.map((filter) => (
                           <li key={filter?.value} className="">
                             <label
-                              htmlFor={filter?.label
-                                .toLowerCase()
-                                .replace(" ", "_")}
+                              htmlFor={filter?.label.toLowerCase().replace(" ", "_")}
                               className="flex items-center gap-3 cursor-pointer"
                             >
                               <span className="inline-flex justify-center items-center w-5 h-5 rounded border border-gray-300 peer-checked:border-primary cursor-pointer transition-all duration-200">
@@ -249,21 +247,12 @@ export default function Search({ params, searchParams }: SearchProps) {
                                   checked={sort == filter?.value}
                                   onChange={() => setsort(filter?.value)}
                                 />
-                                <svg
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  width="14"
-                                  height="10"
-                                  viewBox="0 0 14 10"
-                                  fill="none"
+                                <div className="w-4 h-4 rounded bg-primary scale-0 peer-checked:scale-100 transition-all duration-200">
+                                </div>
+                                {/* <CheckIcon
+                                  size={14}
                                   className="hidden peer-checked:block"
-                                >
-                                  <path
-                                    d="M12.5029 0.569855C12.7684 0.569955 13.0232 0.675132 13.2109 0.862823C13.3986 1.05052 13.5038 1.3054 13.5039 1.57083C13.5039 1.83623 13.3985 2.09109 13.2109 2.27884L5.20898 9.2769C5.11608 9.3701 5.00632 9.4452 4.88477 9.4956C4.76325 9.5461 4.63254 9.5718 4.50098 9.5718C4.36962 9.5718 4.2395 9.546 4.11816 9.4956C4.02717 9.4579 3.94204 9.4066 3.86621 9.3443L0.792969 6.77786C0.70008 6.68492 0.62646 6.57407 0.576172 6.45267C0.52595 6.33129 0.5 6.20121 0.5 6.06985C0.50001 5.93848 0.52594 5.80843 0.576172 5.68704C0.62647 5.56562 0.70005 5.4548 0.792969 5.36185C0.885938 5.26888 0.9967 5.19537 1.11816 5.14505C1.23955 5.09477 1.36959 5.06892 1.50098 5.06888C1.63247 5.06888 1.76328 5.09473 1.88477 5.14505C2.00604 5.19533 2.11613 5.26904 2.20898 5.36185L4.50195 7.65482L11.7949 0.862823C11.9827 0.675263 12.2375 0.569855 12.5029 0.569855Z"
-                                    fill="#004B7A"
-                                    stroke="#004B7A"
-                                    strokeWidth="0.5"
-                                  />
-                                </svg>
+                                /> */}
                               </span>
                               <span className="text-xs text-primary">
                                 {filter?.label}
