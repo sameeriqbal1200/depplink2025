@@ -471,7 +471,7 @@ export default function Profile() {
                                                 {/* <svg id="fi_5319951" height="34" viewBox="0 0 20 20" width="34" xmlns="http://www.w3.org/2000/svg" data-name="Layer 2"><circle cx="10" cy="5" r="4"></circle><path d="m10 11a7.008 7.008 0 0 0 -7 7 1 1 0 0 0 1 1h12a1 1 0 0 0 1-1 7.008 7.008 0 0 0 -7-7z"></path></svg> */}
                                             </div>
                                         </button>
-                                        <h3 className="text-xl mt-8 font-bold">{lang == 'ar' ? 'قم بإنشاء حساب الأن' : 'Edit Profile'}</h3>
+                                        <h3 className="text-xl mt-1 font-bold">{lang == 'ar' ? 'قم بإنشاء حساب الأن' : 'Edit Profile'}</h3>
                                         <p className="text-xs font-regular mt-1.5">{lang == 'ar' ? 'برجاء ادخال بياناتك بالحقول التالية' : 'You can add or update data in your profile'}</p>
                                     </div>
                                     <div className="bg-white p-3 w-full flex items-center justify-center">
