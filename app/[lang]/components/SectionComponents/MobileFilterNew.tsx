@@ -169,7 +169,7 @@ export default function MobileFilterNew(props: FilterProps) {
                   <button
                     key={brand.id}
                     onClick={() => props.setBrandData(brand.id, brand.name)}
-                    className={`relative w-16 h-8 px-4 py-[9px] rounded-full cursor-pointer outline-none border-primary bg-[#F3F3F3] ${isSelected ? "border-2" : "border"}`}
+                    className={`relative w-16 h-8 px-4 py-[9px] rounded-full cursor-pointer outline-none ${isSelected ? "border-primary border-2 bg-white" : "bg-[#F3F3F3] border-white"}`}
                     aria-label={isArabic ? brand.name_arabic : brand.name}
                   >
                     <Image
@@ -215,12 +215,12 @@ export default function MobileFilterNew(props: FilterProps) {
                   <button
                     key={tagchild.name}
                     onClick={() => props.onChangetags(tagchild)}
-                    className={`relative w-16 h-8 rounded-full cursor-pointer outline-none border-primary flex items-center justify-center px-2 bg-[#F3F3F3] ${isSelected ? "border-2" : "border"}`}
+                    className={`relative w-16 h-8 rounded-full cursor-pointer outline-none border flex items-center justify-center px-2  ${isSelected ? "border-primary border-2 text-primary bg-white" : "bg-[#F3F3F3] border-white text-[#121212]"}`}
                     aria-label={isArabic ? tagchild.name_arabic : tagchild.name}
                   >
                     {tagchild.icon ? (
                       // <div dangerouslySetInnerHTML={{ __html: tagchild.icon }} />
-                      <div className="text-[#121212] font-bold tracking-[0.00544rem]">
+                      <div className="font-bold tracking-[0.00544rem]">
                         <p className="text-[.5rem] leading-[.625rem]">
                           {isArabic ? tagchild.name_arabic : tagchild.name}
                         </p>
