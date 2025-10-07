@@ -69,6 +69,7 @@ const nextConfig = {
       { protocol: 'https', hostname: 'images.tamkeenstores.com.sa', pathname: '/assets/new-media/**' },
       { protocol: 'https', hostname: 'media.tamkeenstores.com.sa', pathname: '/assets/**' },
       { protocol: 'https', hostname: 'media.tamkeenstores.com.sa', pathname: '/specificicons/**' },
+      { protocol: 'https', hostname: 'media.tamkeenstores.com.sa', pathname: '/**' }, 
       { protocol: 'https', hostname: 'onelink.to', pathname: '/**' },
     ],
 
