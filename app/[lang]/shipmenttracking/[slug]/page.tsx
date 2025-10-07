@@ -433,48 +433,48 @@ export default function ShipmentTracking() {
                     <div className="sht_303mainInnerElevenDiv">
                         <div className="sht_303mainInnerTwelveDiv">
                             <div className="flex">
-                                <div className="relative after:absolute after:-bottom-[15px] after:left-1/2 after:top-[38px] after:h-[28px] after:w-0 after:-translate-x-1/2 after:rounded-full after:border-l-2 after:border-primary">
-                                    <div className={`sht_303mainInnenSSTDiv bg-primary absolute top-[14px] left-1/2 -translate-x-1/2`}></div>
+                                <div className="w-6 h-6 relative after:absolute after:-bottom-[15px] after:left-1/2 after:top-[38px] after:h-[28px] after:w-0 after:-translate-x-1/2 after:rounded-full after:border-l-2 after:border-primary">
+                                    <div className={`sht_303mainInnenSSTDiv bg-primary absolute top-[14px]`}></div>
                                 </div>
                                 <div className="self-center p-4 ltr:ml-2.5 rtl:ml-2.5 rtl:ltr:mr-2.5">
                                     <p className="text-[13px] font-semibold text-[#3b3f5c] dark:text-white-light">{lang === 'ar' ? 'يعالج' : 'Processing'}</p>
                                 </div>
                             </div>
                             <div className="flex">
-                                <div className="relative after:absolute after:-bottom-[15px] after:left-1/2 after:top-[38px] after:h-[28px] after:w-0 after:-translate-x-1/2 after:rounded-full after:border-l-2 after:border-primary">
-                                    <div className={`sht_303mainInnenSSTDiv bg-primary absolute top-[14px] left-1/2 -translate-x-1/2`}></div>
+                                <div className="w-6 h-6 relative after:absolute after:-bottom-[15px] after:left-1/2 after:top-[38px] after:h-[28px] after:w-0 after:-translate-x-1/2 after:rounded-full after:border-l-2 after:border-primary">
+                                    <div className={`sht_303mainInnenSSTDiv bg-primary absolute top-[14px]`}></div>
                                 </div>
                                 <div className="self-center p-4 ltr:ml-2.5 rtl:ml-2.5 rtl:ltr:mr-2.5">
                                     <p className="text-[13px] font-semibold text-[#3b3f5c] dark:text-white-light">{lang === 'ar' ? 'تلقى' : 'Received'}</p>
                                 </div>
                             </div>
                             {/* <div className="flex">
-                                <div className={`relative after:absolute after:-bottom-[15px] after:left-1/2 after:top-[38px] after:h-[28px] after:w-0 after:-translate-x-1/2 after:rounded-full after:border-l-2 ${shipmentTracking?.data?.status >= 2 ? 'after:border-primary' : 'after:border-[#D9D9D9]'}`}>
-                                    <div className={`sht_303mainInnenSSTDiv bg-primary absolute top-[14px] left-1/2 -translate-x-1/2 `}></div>
+                                <div className={`w-6 h-6 relative after:absolute after:-bottom-[15px] after:left-1/2 after:top-[38px] after:h-[28px] after:w-0 after:-translate-x-1/2 after:rounded-full after:border-l-2 ${shipmentTracking?.data?.status >= 2 ? 'after:border-primary' : 'after:border-[#D9D9D9]'}`}>
+                                    <div className={`sht_303mainInnenSSTDiv bg-primary absolute top-[14px] `}></div>
                                 </div>
                                 <div className="self-center p-4 ltr:ml-2.5 rtl:ml-2.5 rtl:ltr:mr-2.5">
                                     <p className="text-[13px] font-semibold text-[#3b3f5c] dark:text-white-light">{lang === 'ar' ? 'تم إنشاء الشحنة' : 'Shipment Created'}</p>
                                 </div>
                             </div>
                             <div className="flex">
-                                <div className={`relative after:absolute after:-bottom-[15px] after:left-1/2 after:top-[38px] after:h-[28px] after:w-0 after:-translate-x-1/2 after:rounded-full after:border-l-2 ${shipmentTracking?.data?.status >= 3 ? 'after:border-primary' : 'after:border-[#D9D9D9]'}`}>
-                                    <div className={`sht_303mainInnenSSTDiv absolute top-[14px] left-1/2 -translate-x-1/2 ${status >= 2 ? 'bg-primary' : 'bg-[#D9D9D9]'}`}></div>
+                                <div className={`w-6 h-6 relative after:absolute after:-bottom-[15px] after:left-1/2 after:top-[38px] after:h-[28px] after:w-0 after:-translate-x-1/2 after:rounded-full after:border-l-2 ${shipmentTracking?.data?.status >= 3 ? 'after:border-primary' : 'after:border-[#D9D9D9]'}`}>
+                                    <div className={`sht_303mainInnenSSTDiv absolute top-[14px] ${status >= 2 ? 'bg-primary' : 'bg-[#D9D9D9]'}`}></div>
                                 </div>
                                 <div className="self-center p-4 ltr:ml-2.5 rtl:ml-2.5 rtl:ltr:mr-2.5">
                                     <p className="text-[13px] font-semibold text-[#3b3f5c] dark:text-white-light">{lang === 'ar' ? 'في العبور' : '⁠In Transit'}</p>
                                 </div>
                             </div> */}
                             <div className="flex">
-                                <div className={`relative after:absolute after:-bottom-[15px] after:left-1/2 after:top-[38px] after:h-[28px] after:w-0 after:-translate-x-1/2 after:rounded-full after:border-l-2 ${shipmentTracking?.data?.status == 4 ? 'after:border-primary' : 'after:border-[#D9D9D9]'}`}>
-                                    <div className={`sht_303mainInnenSSTDiv absolute top-[14px] left-1/2 -translate-x-1/2 ${status >= 3 ? 'bg-primary' : 'bg-[#D9D9D9]'}`}></div>
+                                <div className={`w-6 h-6 relative after:absolute after:-bottom-[15px] after:left-1/2 after:top-[38px] after:h-[28px] after:w-0 after:-translate-x-1/2 after:rounded-full after:border-l-2 ${shipmentTracking?.data?.status == 4 ? 'after:border-primary' : 'after:border-[#D9D9D9]'}`}>
+                                    <div className={`sht_303mainInnenSSTDiv absolute top-[14px] ${status >= 3 ? 'bg-primary' : 'bg-[#D9D9D9]'}`}></div>
                                 </div>
                                 <div className="self-center p-4 ltr:ml-2.5 rtl:ml-2.5 rtl:ltr:mr-2.5">
                                     <p className="text-[13px] font-semibold text-[#3b3f5c] dark:text-white-light">{lang === 'ar' ? 'خارج للتسليم' : 'Out for delivery'}</p>
                                 </div>
                             </div>
                             <div className="flex">
-                                <div className="relative">
-                                    <div className={`sht_303mainInnenSSTDiv absolute top-[14px] left-1/2 -translate-x-1/2 ${status >= 4 ? 'bg-primary' : 'bg-[#D9D9D9]'}`}></div>
+                                <div className="relative w-6 h-6">
+                                    <div className={`sht_303mainInnenSSTDiv absolute top-[14px] ${status >= 4 ? 'bg-primary' : 'bg-[#D9D9D9]'}`}></div>
                                 </div>
                                 <div className="self-center p-4 ltr:ml-2.5 rtl:ml-2.5 rtl:ltr:mr-2.5">
                                     <p className="text-[13px] font-semibold text-[#3b3f5c] dark:text-white-light">{lang === 'ar' ? 'تم التوصيل' : 'Delivered'}</p>

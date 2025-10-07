@@ -230,7 +230,7 @@ export default function Search({ params, searchParams }: SearchProps) {
                       )}
                     </>
                   )}
-                <div className="w-px h-8 border border-white"></div>
+                  {(CatData?.productData?.products && (CatData?.productData?.products?.last_page > 1)) && <div className="w-px h-8 border border-white"></div>}
                 <div className="h-full">
                 <button
                   onClick={() => {
@@ -242,7 +242,7 @@ export default function Search({ params, searchParams }: SearchProps) {
                   {applyFiltersText}
                 </button>
                 </div>
-                <div className="w-px h-8 border border-white"></div>
+                  {(CatData?.productData?.products && (CatData?.productData?.products?.last_page > 1)) && <div className="w-px h-8 border border-white"></div>}
                 <div className="relative inline-block">
                   <button
                     onClick={() => setSortPopup(!sortPopup)}
@@ -907,10 +907,10 @@ export default function Search({ params, searchParams }: SearchProps) {
                                     isArabic ? data?.name_arabic : data?.name
                                   }
                                   loading="lazy"
-                                  width={60}
+                                  width={0}
                                   quality={100}
-                                  height={50}
-                                  className="mx-auto"
+                                  height={0}
+                                  className="mx-auto w-15 h-8 object-contain"
                                   sizes="(max-width: 640px) 100vw, (max-width: 768px) 100vw, (max-width: 1024px) 100vw, 100vw"
                                 />
                               ) : null}
