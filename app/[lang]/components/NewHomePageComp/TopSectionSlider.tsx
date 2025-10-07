@@ -34,7 +34,8 @@ const TopSectionSlider: React.FC<TopSectionSliderData> = ({
           pauseOnMouseEnter: true,
         }}
         pagination={{ clickable: true }}
-        loop={true}
+        // loop={true}
+        loop={(data?.length || 0) > 1}
         modules={[Autoplay, Navigation, Pagination]}
         className="mySwiper cursor-grab active:cursor-grabbing"
       >

@@ -1321,7 +1321,8 @@ export default function Homepage() {
                     quality={100}
                     decoding="async"
                     data-nimg="1"
-                    loading="lazy"
+                    priority
+                    // loading="lazy"
                     className="h-auto w-full mx-auto rounded-2xl mb-4"
                     src={sec8Image}
                     style={{ color: "transparent" }}

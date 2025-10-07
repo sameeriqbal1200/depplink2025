@@ -38,7 +38,8 @@ const MainSliderMobile: React.FC<MainSliderMobileProps> = ({
         }}
         autoHeight={true}
         pagination={{ clickable: true }}
-        loop={true}
+        // loop={true}
+        loop={(data?.length || 0) > 2}
         onSlideChange={(swiper) => {
           setActiveIndex(swiper.realIndex); // Correct real index
         }}

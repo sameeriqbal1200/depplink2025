@@ -108,7 +108,8 @@ export default function ProductSliderComponent(props: any) {
             pauseOnMouseEnter: true,
           }}
           pagination={false}
-          loop={true}
+          // loop={true}
+          loop={(productDataSlider?.length || 0) > 2}
           mousewheel={{
             forceToAxis: true,
             releaseOnEdges: true,

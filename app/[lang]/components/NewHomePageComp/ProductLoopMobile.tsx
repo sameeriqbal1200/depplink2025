@@ -87,7 +87,8 @@ export default function ProductLoopMobile(props: any) {
                     pauseOnMouseEnter: true,
                 }}
                 pagination={false}
-                loop={true}
+                // loop={true}
+                loop={(productData?.length || 0) > 2}
                 mousewheel={{
                     forceToAxis: true,
                     releaseOnEdges: true,
