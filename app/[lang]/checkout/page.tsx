@@ -130,8 +130,6 @@ export default function Checkout() {
             onChange={([date]: any) => {
             if (date) {
                 const formattedDate = dayjs(date).format('YYYY-MM-DD'); // Always correct, no timezone shift
-                // console.log(formattedDate)
-                // console.log(date.toString().split('T')[0])
                 setDeliverySelect(date);
                 setDeliveryDate(formattedDate)
                 setdeliverydate(formattedDate)
@@ -416,7 +414,6 @@ export default function Checkout() {
             var storeCity = isArabic ? globalStore?.waybill_city_data?.name_arabic : globalStore?.waybill_city_data?.name
             city = storeCity
         }
-        console.log('payment city:', city)
         var pstatus = await getPaymentMethodStatus(city)
         setpaymentstatus(pstatus)
     }
@@ -583,9 +580,6 @@ export default function Checkout() {
         } else {
             UserDeviceData = "Desktop - " + browserName;
         }
-        // console.log('isMobile', isMobile)
-        // console.log('mobileType', mobileType)
-        // console.log('UserDeviceData', UserDeviceData)
         setUserDevice(UserDeviceData)
     }
 
