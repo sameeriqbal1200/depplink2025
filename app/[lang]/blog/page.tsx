@@ -5,18 +5,68 @@ import Link from 'next/link'
 import Image from 'next/image'
 import dayjs from 'dayjs'
 import 'dayjs/locale/ar'
-import relativeTime from "dayjs/plugin/relativeTime";
 import dynamic from 'next/dynamic';
 import { useApp } from '@/app/_ctx/AppContext';
 import { useSlot } from '@/app/_ctx/ClientDataRegistry';
-dayjs.extend(relativeTime);
 
 const MobileHeader = dynamic(() => import('../components/MobileHeader'), { ssr: true })
+
+const getRelativeTime = (dateString: string, lang: string): string => {
+  const date = new Date(dateString);
+  const now = new Date();
+  const diffInMs = now.getTime() - date.getTime();
+  const diffInSeconds = Math.floor(diffInMs / 1000);
+  const diffInMinutes = Math.floor(diffInSeconds / 60);
+  const diffInHours = Math.floor(diffInMinutes / 60);
+  const diffInDays = Math.floor(diffInHours / 24);
+  const diffInWeeks = Math.floor(diffInDays / 7);
+  const diffInMonths = Math.floor(diffInDays / 30);
+  const diffInYears = Math.floor(diffInDays / 365);
+
+  if (lang === 'ar') {
+    if (diffInYears > 0) {
+      return `منذ ${diffInYears} ${diffInYears === 1 ? 'سنة' : 'سنوات'}`;
+    } else if (diffInMonths > 0) {
+      return `منذ ${diffInMonths} ${diffInMonths === 1 ? 'شهر' : 'أشهر'}`;
+    } else if (diffInWeeks > 0) {
+      return `منذ ${diffInWeeks} ${diffInWeeks === 1 ? 'أسبوع' : 'أسابيع'}`;
+    } else if (diffInDays > 0) {
+      return `منذ ${diffInDays} ${diffInDays === 1 ? 'يوم' : 'أيام'}`;
+    } else if (diffInHours > 0) {
+      return `منذ ${diffInHours} ${diffInHours === 1 ? 'ساعة' : 'ساعات'}`;
+    } else if (diffInMinutes > 0) {
+      return `منذ ${diffInMinutes} ${diffInMinutes === 1 ? 'دقيقة' : 'دقائق'}`;
+    } else {
+      return 'الآن';
+    }
+  } else {
+    if (diffInYears > 0) {
+      return `${diffInYears} ${diffInYears === 1 ? 'year' : 'years'} ago`;
+    } else if (diffInMonths > 0) {
+      return `${diffInMonths} ${diffInMonths === 1 ? 'month' : 'months'} ago`;
+    } else if (diffInWeeks > 0) {
+      return `${diffInWeeks} ${diffInWeeks === 1 ? 'week' : 'weeks'} ago`;
+    } else if (diffInDays > 0) {
+      return `${diffInDays} ${diffInDays === 1 ? 'day' : 'days'} ago`;
+    } else if (diffInHours > 0) {
+      return `${diffInHours} ${diffInHours === 1 ? 'hour' : 'hours'} ago`;
+    } else if (diffInMinutes > 0) {
+      return `${diffInMinutes} ${diffInMinutes === 1 ? 'minute' : 'minutes'} ago`;
+    } else {
+      return 'Just now';
+    }
+  }
+};
 
 export default function Blogs() {
     const { lang, origin } = useApp();
     const blogsData = useSlot<any>("blogs");
     const NewMedia = process.env.NEXT_PUBLIC_NEW_MEDIA;
+
+    const formatDate = (dateString: string) => {
+        const dateLocale = lang === 'ar' ? 'ar' : 'en';
+        return dayjs(dateString).locale(dateLocale).format("MMM DD, YYYY");
+    };
 
     return (
         <div className='pt-10'>
@@ -49,9 +99,9 @@ export default function Blogs() {
                                     />
                                     <div className='mt-5 pb-5 px-3'>
                                         <ul className="text-[0.60rem] flex items-center gap-x-1 font-medium">
-                                            <li>{dayjs(data?.created_at).locale(lang == 'ar' ? 'ar' : 'en').format("MMM  DD, YYYY")}</li>
+                                            <li>{formatDate(data?.created_at)}</li>
                                             <li>|</li>
-                                            <li>{dayjs(data?.created_at).locale(lang == 'ar' ? 'ar' : 'en').endOf('day').fromNow()}</li>
+                                            <li>{getRelativeTime(data?.created_at, lang)}</li>
                                         </ul>
                                         <h2 className="mt-2 font-bold text-xs text-[#004B7A] line-clamp-2">{lang == 'ar' ? data?.name_arabic : data?.name}</h2>
                                         <div className="text-[0.60rem] mt-1.5 line-clamp-3 leading-4" dangerouslySetInnerHTML={{ __html: lang == 'ar' ? data?.description_arabic : data?.description }} />
