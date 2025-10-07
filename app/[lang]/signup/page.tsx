@@ -4,7 +4,6 @@ import React, { useContext, useEffect, useRef, useState, use } from 'react'
 import dayjs from 'dayjs'
 import Link from 'next/link'
 import Image from 'next/image'
-import Select from 'react-select'
 import dynamic from 'next/dynamic'
 import MaskedInput from 'react-text-mask'
 import { usePathname } from "next/navigation"
@@ -17,12 +16,13 @@ import { useApp } from '@/app/_ctx/AppContext';
 import { postCheckResendOtpData } from '@/lib/login/login.client';
 
 const MobileHeader = dynamic(() => import('../components/MobileHeader'), { ssr: true })
+const Select = dynamic(() => import('react-select'), { ssr: false })
 
 export default function Register(
     props: { searchParams: Promise<any>}
 ) {
     const searchParams = use(props.searchParams);
-    const { t, lang, deviceType } = useApp();
+    const { t, lang, deviceType, origin } = useApp();
 
     const router = useRouter()
     const path = usePathname()
@@ -341,7 +341,7 @@ export default function Register(
                                     :
                                     <p className="text-xs font-normal mt-1 text-center text-[#5D686F]">{lang === 'ar' ? 'هذا الكود صالح ل ' + minutes + ': ' + seconds + ' Mins' : 'The code is valid for ' + minutes + ': ' + seconds + ' Mins'}</p>
                                 }
-                                <button className={`${loginBtnStatus === true ? 'opacity-30' : "opacity-100"} focus-visible:outline-none btn border border-[#004B7A] bg-[#004B7A] p-2.5 rounded-md w-full text-center text-white fill-white font-medium text-sm mt-4`}
+                                <button className={`${loginBtnStatus === true ? 'opacity-30' : "opacity-100"} focus-visible:outline-none btn border border-[#004B7A] bg-[#004B7A] p-2.5 rounded-md w-full flex justify-center text-white fill-white font-medium text-sm mt-4`}
                                     disabled={loginBtnStatus}
                                     onClick={
                                         () => {
@@ -350,7 +350,7 @@ export default function Register(
                                         }
                                     }
                                 >
-                                    {loginBtnLoading ? <svg height="24" viewBox="0 0 24 24" className="animate-spin h-6 w-6 mr-3 fill-white mx-auto" width="24" xmlns="http://www.w3.org/2000/svg" id="fi_7235860"><path d="m12 22c5.421 0 10-4.579 10-10h-2c0 4.337-3.663 8-8 8s-8-3.663-8-8c0-4.336 3.663-8 8-8v-2c-5.421 0-10 4.58-10 10 0 5.421 4.579 10 10 10z"></path></svg> : null}
+                                    {loginBtnLoading ? <svg height="24" viewBox="0 0 24 24" className="animate-spin h-6 w-6 fill-white" width="24" xmlns="http://www.w3.org/2000/svg" id="fi_7235860"><path d="m12 22c5.421 0 10-4.579 10-10h-2c0 4.337-3.663 8-8 8s-8-3.663-8-8c0-4.336 3.663-8 8-8v-2c-5.421 0-10 4.58-10 10 0 5.421 4.579 10 10 10z"></path></svg> : null}
                                     {loginBtnLoading == false ? lang == 'ar' ? 'استمرار' : 'Verify Otp' : null}
                                 </button>
                             </div>
