@@ -58,6 +58,15 @@ export default function UserLoyaltyHistory() {
         }
       />
       <div className="container py-16">
+        <div className="flex p-3 rounded-md bg-white shadow-md mb-3 w-full">
+          <div className="flex items-center gap-4">
+             <div>
+                <p className="text-sm leading-3.5 font-bold text-dark">Points Available</p>
+                <span className="text-xs text-dark flex items-center gap-1"></span>
+             </div>
+          </div>
+          <span>Show this card to earn at Tamkeen store.</span>
+        </div>
         {loyaltyData?.map((item: any, i: number) => {
           return (
             <LoyaltyHistoryList

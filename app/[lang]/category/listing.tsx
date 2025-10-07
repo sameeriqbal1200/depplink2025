@@ -591,9 +591,7 @@ export default function SubCategoryNew({
 
             {sortPopup && (
               <div
-                className={`absolute top-full ${
-                  isArabic ? "right-0" : "left-0"
-                } mt-3 z-30 w-max bg-white rounded-xl p-4 shadow-[0_0_4px_rgb(0,75,122)]`}
+                className={`absolute top-full right-0 mt-3 z-30 w-max bg-white rounded-xl p-4 shadow-[0_0_4px_rgb(0,75,122)]`}
                 onClick={(e) => e.stopPropagation()}
               >
                 <ul className="space-y-3">
