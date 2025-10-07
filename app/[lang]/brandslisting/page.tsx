@@ -45,6 +45,7 @@ export default function BrandListing() {
                     className="bg-white h-auto relative p-2 rounded-lg shadow-md text-sm"
                     key={data?.id}
                   >
+                    <div className='flex items-center justify-center w-[134px] h-[42px] mx-auto'>
                     <Link
                       replace={true}
                       prefetch={true}
@@ -61,18 +62,19 @@ export default function BrandListing() {
                         title={lang === "ar" ? data?.name_arabic : data?.name}
                         quality={100}
                         width={134}
-                        height={42}
+                        height={58}
                         style={{
                           maxWidth: "134px",
-                          height: "42px",
+                          height: "58px",
                         }}
                         loading="lazy"
-                        className="mx-auto"
+                        className="mx-auto object-contain"
                         sizes="100vw"
                       />
                     </Link>
+                    </div>
                     {data?.categories?.length ? (
-                      <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 mt-8 gap-y-4 h-40 overflow-y-auto">
+                      <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 mt-3 h-40 overflow-y-auto">
                         {data?.categories?.map(
                           (categoryData: any, k: number) => {
                             return (
@@ -90,7 +92,7 @@ export default function BrandListing() {
                                     ? categoryData?.name_arabic
                                     : categoryData?.name
                                 }
-                                className="text-center p-3 bg-white hover:bg-[#219EBC40] hover:fill-primary rounded-md opacity-50 hover:opacity-100"
+                                className="text-center h-[64px] w-full p-1 md:p-2 bg-white hover:bg-[#219EBC40] hover:fill-primary rounded-md hover:opacity-100"
                               >
                                 {/*  <div className="flex items-center justify-center" dangerouslySetInnerHTML={{ __html: categoryData?.icon }}></div> */}
                                 <div className="flex items-center justify-center">
@@ -107,10 +109,10 @@ export default function BrandListing() {
                                     }
                                     width={32}
                                     height={32}
-                                    className="object-contain"
+                                    className="w-6 h-6 mx-auto"
                                   />
                                 </div>
-                                <p className="mt-3 text-xs font-[500] text-primary line-clamp-1">
+                                <p className="mt-1 max-md:text-[0.65rem] text-xs font-[500] text-primary line-clamp-1">
                                   {lang == "ar"
                                     ? categoryData?.name_arabic
                                     : categoryData?.name}

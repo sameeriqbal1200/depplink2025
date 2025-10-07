@@ -142,7 +142,7 @@ export default function BrandCategories({
                   className="object-contain mx-auto"
                   loading="lazy"
                   quality={100}
-                  style={{ maxWidth: "200px", height: "60px" }}
+                  style={{ maxWidth: "134px", height: "42px" }}
                 />
                 {/* <p className="mt-2 text-sm font-medium text-center">
                   {isArabic ? brand.name_arabic : brand.name || brand.name_arabic}
