@@ -3,8 +3,11 @@ import React, { useEffect, useState, Fragment } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import Link from "next/link";
 import LottieAnimation from "./LottieAnimation";
+import { useApp } from "@/app/_ctx/AppContext";
+import CheckIcon from "./Icons/CheckIcon";
 
 const ConnectionStatus = () => {
+  const { lang } = useApp();
   const [isOnline, setIsOnline] = useState<boolean>(true);
   const [showOfflineNotification, setShowOfflineNotification] =
     useState<boolean>(false);
@@ -85,18 +88,24 @@ const ConnectionStatus = () => {
                       height={200}
                     />
                     <h1 className="text-[#404553] text-[22px] font-semibold">
-                      Connection Lost
+                      {lang === "ar" ? "انقطع الاتصال" : "Connection Lost"}
                     </h1>
+
                     <p className="text-[#7e859b] text-sm mt-2">
-                      Your internet connection appears to be offline
+                      {lang === "ar"
+                        ? "يبدو أن اتصالك بالإنترنت غير متصل"
+                        : "Your internet connection appears to be offline"}
                     </p>
                     <p className="text-[#7e859b] text-sm mt-2">
-                      Some features may not be available until your connection
-                      is restored.
+                      {lang === "ar"
+                        ? "قد لا تتوفر بعض الميزات حتى يتم استعادة الاتصال."
+                        : "Some features may not be available until your connection is restored."}
                     </p>
                     {/* 👇 Use plain <a> so it doesn’t resubmit the wrong path */}
                     <Link href="/" className="btn nc__278mainInnerLink mt-6">
-                      Back to Home
+                      {lang === "ar"
+                        ? "العودة إلى الصفحة الرئيسية"
+                        : "Back to Home"}
                     </Link>
                   </div>
                 </Dialog.Panel>
@@ -119,10 +128,10 @@ const ConnectionStatus = () => {
       >
         <div className="fixed top-2 right-4 z-50 max-w-sm w-full bg-[#20831E] shadow-lg rounded-lg pointer-events-auto ring-1 ring-green-200 overflow-hidden border border-[#20831E]">
           <div className="p-4">
-            <div className="flex items-start">
+            <div className="flex items-start gap-3">
               <div className="flex-shrink-0">
                 <div className="w-10 h-10 flex items-center justify-center rounded-full bg-gradient-to-br from-green-100 to-teal-100 shadow-md">
-                  <svg
+                  {/* <svg
                     className="w-6 h-6"
                     fill="none"
                     stroke="white"
@@ -135,15 +144,18 @@ const ConnectionStatus = () => {
                       strokeWidth={2}
                       d="M5 13l4 4L19 7"
                     />
-                  </svg>
+                  </svg> */}
+                  <CheckIcon color="20831E" className="w-6 h-6" />
                 </div>
               </div>
               <div className="ml-3 w-0 flex-1 pt-0.5">
                 <p className="text-sm font-bold text-white">
-                  Connection Restored
+                  {lang === "ar" ? "تم استعادة الاتصال" : "Connection Restored"}
                 </p>
                 <p className="mt-1 text-sm text-white">
-                  Your internet connection is back online.
+                  {lang === "ar"
+                    ? "اتصالك بالإنترنت متصل الآن."
+                    : "Your internet connection is back online."}
                 </p>
               </div>
               <div className="ml-4 flex-shrink-0 flex">
@@ -151,7 +163,10 @@ const ConnectionStatus = () => {
                   className="bg-white rounded-md inline-flex text-green-700 hover:text-green-900 focus:outline-none focus:ring-2 focus:ring-green-500"
                   onClick={() => setShowOnlineNotification(false)}
                 >
-                  <span className="sr-only">Close</span>
+                  <span className="sr-only">
+                    {lang === "ar" ? "إغلاق" : "Close"}
+                  </span>
+
                   <svg
                     className="h-5 w-5"
                     xmlns="http://www.w3.org/2000/svg"
