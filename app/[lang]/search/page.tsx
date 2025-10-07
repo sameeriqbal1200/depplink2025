@@ -236,7 +236,7 @@ export default function Search({ params, searchParams }: SearchProps) {
                   onClick={() => {
                     setFilterModal(!filterModal);
                   }}
-                  className="text-white text-10 !font-semibold flex gap-1 items-center !w-fit whitespace-nowrap selected !border-0 outline-0 hover:text-primary  hover:bg-white !transition-none"
+                  className="text-white text-10 !font-semibold flex gap-1 items-center !w-fit whitespace-nowrap selected !border-0 outline-0 hover:text-primary  hover:bg-white !transition-none py-2"
                 >
                   <FilterIconTwo size={12} color="#ffffff" />
                   {applyFiltersText}
@@ -246,7 +246,7 @@ export default function Search({ params, searchParams }: SearchProps) {
                 <div className="relative inline-block">
                   <button
                     onClick={() => setSortPopup(!sortPopup)}
-                    className="text-white text-10 !font-semibold flex gap-1 items-center !w-fit whitespace-nowrap selected !border-0 outline-0 hover:text-primary  hover:bg-white !transition-none"
+                    className="text-white text-10 !font-semibold flex gap-1 items-center !w-fit whitespace-nowrap selected !border-0 outline-0 hover:text-primary  hover:bg-white !transition-none py-2"
                   >
                     <SortIcon size={12} color="#ffffff" />
                     {subHeadingFiveText}
@@ -254,9 +254,7 @@ export default function Search({ params, searchParams }: SearchProps) {
     
                   {sortPopup && (
                     <div
-                      className={`absolute top-full ${
-                        isArabic ? "right-0" : "left-0"
-                      } mt-3 z-30 w-max bg-white rounded-xl p-4 shadow-[0_0_4px_rgb(0,75,122)]`}
+                      className={`absolute top-full right-0 mt-3 z-30 w-max bg-white rounded-xl p-4 shadow-[0_0_4px_rgb(0,75,122)]`}
                       onClick={(e) => e.stopPropagation()}
                     >
                       <ul className="space-y-3">
