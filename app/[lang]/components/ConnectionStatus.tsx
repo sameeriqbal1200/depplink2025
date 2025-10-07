@@ -128,7 +128,7 @@ const ConnectionStatus = () => {
       >
         <div className="fixed top-2 right-4 z-50 max-w-sm w-full bg-[#20831E] shadow-lg rounded-lg pointer-events-auto ring-1 ring-green-200 overflow-hidden border border-[#20831E]">
           <div className="p-4">
-            <div className="flex items-start">
+            <div className="flex items-start gap-3">
               <div className="flex-shrink-0">
                 <div className="w-10 h-10 flex items-center justify-center rounded-full bg-gradient-to-br from-green-100 to-teal-100 shadow-md">
                   {/* <svg
