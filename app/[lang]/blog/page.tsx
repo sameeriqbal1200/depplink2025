@@ -78,10 +78,10 @@ export default function Blogs() {
             <div className="container py-4">
                 <div className="py-6">
                     <div className="text-xs text-white font-bold flex items-center justify-between gap-2 mb-3">
-                        <button className="focus-visible:outline-none bg-[#004B7A] hover:bg-[#00446f] px-1 py-2 w-40 rounded-md line-clamp-1">{lang === 'ar' ? 'حلول منزلية' : 'Home solutions'}</button>
-                        <button className="focus-visible:outline-none bg-[#004B7A] hover:bg-[#00446f] px-1 py-2 w-40 rounded-md line-clamp-1">{lang === 'ar' ? ' دليل المرأة' : `Women's guide`}</button>
-                        <button className="focus-visible:outline-none bg-[#004B7A] hover:bg-[#00446f] px-1 py-2 w-40 rounded-md line-clamp-1">{lang === 'ar' ? 'دليل التسوق' : 'Shopping guide'}</button>
-                        <button className="focus-visible:outline-none bg-[#004B7A] hover:bg-[#00446f] px-1 py-2 w-40 rounded-md line-clamp-1">{lang === 'ar' ? 'الصفحة الرئيسية' : 'Homepage'}</button>
+                        <button className="focus-visible:outline-none bg-[#004B7A] hover:bg-[#00446f] px-1 py-2 w-fit rounded-md line-clamp-1">{lang === 'ar' ? 'حلول منزلية' : 'Home solutions'}</button>
+                        <button className="focus-visible:outline-none bg-[#004B7A] hover:bg-[#00446f] px-1 py-2 w-fit rounded-md line-clamp-1">{lang === 'ar' ? ' دليل المرأة' : `Women's guide`}</button>
+                        <button className="focus-visible:outline-none bg-[#004B7A] hover:bg-[#00446f] px-1 py-2 w-fit rounded-md line-clamp-1">{lang === 'ar' ? 'دليل التسوق' : 'Shopping guide'}</button>
+                        <button className="focus-visible:outline-none bg-[#004B7A] hover:bg-[#00446f] px-1 py-2 w-fit rounded-md line-clamp-1">{lang === 'ar' ? 'الصفحة الرئيسية' : 'Homepage'}</button>
                     </div>
                     <div className="grid grid-cols-2 gap-3 pb-40">
                         {blogsData?.data?.map((data: any, i: React.Key | null | undefined) => {
@@ -95,7 +95,7 @@ export default function Blogs() {
                                         height={300}
                                         width={300}
                                         loading='lazy'
-                                        className="rounded-tl-md rounded-tr-md min-w-full"
+                                        className="rounded-tl-md rounded-tr-md min-w-full object-contain"
                                     />
                                     <div className='mt-5 pb-5 px-3'>
                                         <ul className="text-[0.60rem] flex items-center gap-x-1 font-medium">
