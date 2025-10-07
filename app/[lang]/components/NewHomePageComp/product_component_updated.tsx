@@ -872,6 +872,7 @@ export default function product_component_updated(props: any) {
             <div className="absolute inset-0 bg-primary/10 animate-pulse rounded-2xl z-10"></div>
           )}
           <Image
+            priority={true}
             src={productFeaturedImage}
             alt={productTitle}
             title={productTitle}
