@@ -579,20 +579,20 @@ export default function SubCategoryNew({
               )}
             </>
           )}
-          <div className="w-px h-8 border border-white"></div>
+          {(data?.productData?.products && (data?.productData?.products?.last_page > 1)) && <div className="w-px h-8 border border-white"></div>}
           <div className="h-full">
             <button
               onClick={() => {
                 setFilterModal(!filterModal);
               }}
-              className="text-white text-10 !font-semibold flex gap-1 items-center !w-fit whitespace-nowrap selected !border-0 outline-0 hover:text-primary  hover:bg-white !transition-none"
+              className="text-white text-10 !font-semibold flex gap-1 items-center !w-fit whitespace-nowrap selected !border-0 outline-0 hover:text-primary  hover:bg-white !transition-none py-2"
             >
               <FilterIconTwo size={12} color="#ffffff" />
               {applyFiltersText}
             </button>
           </div>
-          <div className="w-px h-8 border border-white"></div>
-          <div className="relative inline-block">
+          {(data?.productData?.products && (data?.productData?.products?.last_page > 1)) && <div className="w-px h-8 border border-white"></div>}
+          <div className="relative inline-block py-2">
             <button
               onClick={() => setSortPopup(!sortPopup)}
               className="text-white text-10 !font-semibold flex gap-1 items-center !w-fit whitespace-nowrap selected !border-0 outline-0 hover:text-primary  hover:bg-white !transition-none"
