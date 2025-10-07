@@ -1327,7 +1327,7 @@ export default function Product() {
                                         title={isArabic ? productDataClassic?.data?.name_arabic : productDataClassic?.data?.name}
                                         height={600}
                                         width={600}
-                                        loading='lazy'
+                                        priority={true}
                                         className="rounded-md max-md:shadow-md overflow-hidden"
                                         sizes='(max-width: 640px) 150px, (max-width: 768px) 150px, (max-width: 1024px) 150px, 100vw'
                                     />
