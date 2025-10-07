@@ -20,7 +20,7 @@ const NewMedia = process.env.NEXT_PUBLIC_NEW_MEDIA
 const MobileHeader = dynamic(() => import('../components/MobileHeader'), { ssr: true })
 
 export default function Login(searchParams: any) {
-    const { t, lang, deviceType } = useApp();
+    const { t, lang, deviceType, origin } = useApp();
     const router = useRouter()
     const [notificationsListing, setNotificationsListing] = useState<any>([])
     const [isOpen, setIsOpen] = useState(false)
