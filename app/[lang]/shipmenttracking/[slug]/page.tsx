@@ -14,9 +14,12 @@ import LocationPinIcon from '../../components/Icons/PinLocationIcon';
 import PhoneIcon from '../../components/Icons/PhoneIcon';
 import ChatIcon from '../../components/Icons/ChatIcon';
 import NetworkIcon from '../../components/Icons/NetworkIcon';
+import { postShipmentLocation } from '@/lib/shipmentTracking/shipmentTracking.page';
+import { useRouter } from "next/navigation";
 
 export default function ShipmentTracking() {
     const { lang, origin } = useApp();
+    const router = useRouter();
     const shipmentTracking = useSlot<any>("shipmentTracking");
     const [dict, setDict] = useState<any>([]);
     const [firstName, setFirstName] = useState<string>('');
@@ -149,101 +152,75 @@ export default function ShipmentTracking() {
         });
     };
 
-    // const handleSaveLocation = async (location: any) => {
-    //     if (location) {
-    //         setLoadingSave(true);
-    //         try {
-    //             const response = await fetch(`${Api}shipment-tracking/location/${shipmentnumber}`, {
-    //                 method: 'POST',
-    //                 headers: {
-    //                     'Content-Type': 'application/json',
-    //                 },
-    //                 body: JSON.stringify({
-    //                     current_location: {
-    //                         latitude: location.lat,
-    //                         longitude: location.lng,
-    //                     },
-    //                 }),
-    //             });
+    const handleSaveLocation = async (location: any) => {
+        if (location) {
+            setLoadingSave(true);
+            try {
+                const response = await postShipmentLocation(shipmentnumber);
+                if (!response) {
+                    throw new Error('Failed to update location');
+                }
 
-    //             if (!response.ok) {
-    //                 throw new Error('Failed to update location');
-    //             }
+                topMessageAlartSuccess(lang === 'ar' ? 'تمت إضافة الموقع بنجاح!' : 'Location Added successfully!');
+                setisOpen(false);
+                setButtonHide(true);
+                router.refresh()
+            } catch (err) {
+                console.error('Error saving location:', err);
+                topMessageAlartDanger(lang === 'ar' ? 'خطأ في حفظ الموقع' : 'Error Saving Location!');
+            } finally {
+                setLoadingSave(false);
+            }
+        }
+    };
 
-    //             topMessageAlartSuccess(lang === 'ar' ? 'تمت إضافة الموقع بنجاح!' : 'Location Added successfully!');
-    //             setisOpen(false);
-    //             setButtonHide(true);
-    //             router.refresh()
-    //         } catch (err) {
-    //             console.error('Error saving location:', err);
-    //             topMessageAlartDanger(lang === 'ar' ? 'خطأ في حفظ الموقع' : 'Error Saving Location!');
-    //         } finally {
-    //             setLoadingSave(false);
-    //         }
-    //     }
-    // };
-
-    // const handleCurrentLocation = () => {
-    //     if (navigator.geolocation) {
-    //         navigator.geolocation.getCurrentPosition(
-    //             async (position) => {
-    //                 const { latitude, longitude } = position.coords;
-    //                 try {
-    //                     const response = await fetch(`${Api}shipment-tracking/location/${shipmentnumber}`, {
-    //                         method: 'POST',
-    //                         headers: {
-    //                             'Content-Type': 'application/json',
-    //                         },
-    //                         body: JSON.stringify({
-    //                             current_location: {
-    //                                 latitude,
-    //                                 longitude,
-    //                             },
-    //                         }),
-    //                     });
-
-    //                     if (!response.ok) {
-    //                         throw new Error('Failed to update location');
-    //                     }
-
-    //                     const data = await response.json();
-    //                     topMessageAlartSuccess(lang === 'ar' ? 'تمت إضافة الموقع بنجاح!' : 'Location Added successfully!');
-    //                 } catch (err) {
-    //                     console.error('Error saving location:', err);
-    //                     topMessageAlartDanger(lang === 'ar' ? 'خطأ في حفظ الموقع' : 'Error Saving Location!');
-    //                     setError('Error saving location');
-    //                 }
-    //             },
-    //             (error) => {
-    //                 if (error.code === error.PERMISSION_DENIED) {
-    //                     setLocationStatus(
-    //                         'Geolocation permission has been blocked. Please reset it in your browser settings. For instructions, see the documentation.'
-    //                     );
-    //                     setError('Geolocation permission has been blocked.');
-    //                 } else if (error.code === error.POSITION_UNAVAILABLE) {
-    //                     setLocationStatus('Position unavailable. Ensure you have location services enabled.');
-    //                     setError('Position unavailable.');
-    //                 } else if (error.code === error.TIMEOUT) {
-    //                     setLocationStatus('The request to get user location timed out.');
-    //                     setError('Request timed out.');
-    //                 } else {
-    //                     setLocationStatus('Error getting location.');
-    //                     setError('Error getting location.');
-    //                 }
-    //             },
-    //             {
-    //                 enableHighAccuracy: true,
-    //                 timeout: 5000,
-    //                 maximumAge: 0
-    //             }
-    //         );
-    //         setIsLocationAllowed(true);
-    //         setButtonHide(true);
-    //     } else {
-    //         alert('Geolocation is not supported by this browser.');
-    //         setIsLocationAllowed(false);
-    //     }
-    // };
+    const handleCurrentLocation = () => {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                async (position) => {
+                    const { latitude, longitude } = position.coords;
+                    try {
+                        const response = await postShipmentLocation(shipmentnumber);
+                        if (!response) {
+                            throw new Error('Failed to update location');
+                        }
+                        topMessageAlartSuccess(lang === 'ar' ? 'تمت إضافة الموقع بنجاح!' : 'Location Added successfully!');
+                    } catch (err) {
+                        console.error('Error saving location:', err);
+                        topMessageAlartDanger(lang === 'ar' ? 'خطأ في حفظ الموقع' : 'Error Saving Location!');
+                        setError('Error saving location');
+                    }
+                },
+                (error) => {
+                    if (error.code === error.PERMISSION_DENIED) {
+                        setLocationStatus(
+                            'Geolocation permission has been blocked. Please reset it in your browser settings. For instructions, see the documentation.'
+                        );
+                        setError('Geolocation permission has been blocked.');
+                    } else if (error.code === error.POSITION_UNAVAILABLE) {
+                        setLocationStatus('Position unavailable. Ensure you have location services enabled.');
+                        setError('Position unavailable.');
+                    } else if (error.code === error.TIMEOUT) {
+                        setLocationStatus('The request to get user location timed out.');
+                        setError('Request timed out.');
+                    } else {
+                        setLocationStatus('Error getting location.');
+                        setError('Error getting location.');
+                    }
+                },
+                {
+                    enableHighAccuracy: true,
+                    timeout: 5000,
+                    maximumAge: 0
+                }
+            );
+            setIsLocationAllowed(true);
+            setButtonHide(true);
+        } else {
+            alert('Geolocation is not supported by this browser.');
+            setIsLocationAllowed(false);
+        }
+    };
 
     return (
         <>
@@ -422,7 +399,7 @@ export default function ShipmentTracking() {
                             <div className="sht_303mainInnerEightDiv mt-3 gap-3">
                                 {!currentLocation && buttonhide === false ? (
                                     <>
-                                        <button className="bg-secondary flex items-center justify-center text-white text-sm w-full p-2.5 rounded-md mx-auto" /*onClick={handleCurrentLocation}*/>
+                                        <button className="bg-secondary flex items-center justify-center text-white text-sm w-full p-2.5 rounded-md mx-auto" onClick={handleCurrentLocation}>
                                             <i className="fas fa-map-marker-alt mr-2"></i>
                                             {lang == 'ar' ? 'الموقع الحالي' : 'Current Location'}
                                             {error && <p className="text-red-500">{error}</p>}
@@ -688,7 +665,7 @@ export default function ShipmentTracking() {
                                                     </button>
                                                     <button
                                                         className="sht_303mainSaveBtn"
-                                                        // onClick={() => handleSaveLocation(position)}
+                                                        onClick={() => handleSaveLocation(position)}
                                                         disabled={!position || loadingsave}
                                                     >
                                                         {loadingsave ? (
