@@ -14,8 +14,10 @@ const MobileHeader = dynamic(() => import("../../components/MobileHeader"), {
 });
 
 export default function UserLoyaltyHistory() {
-  const { lang, deviceType } = useApp();
+  const { lang, deviceType, origin } = useApp();
   const footer = useSlot<any>("footer");
+  const [totalAvailablePoint, setTotalAvailablePoint] = useState<any>(0);
+  const [totalRedeemPoint, setTotalRedeemPoint] = useState<any>(0);
   const router = useRouter();
   const path = usePathname();
   const isArabic = lang === "ar";
@@ -36,6 +38,17 @@ export default function UserLoyaltyHistory() {
 
       const userLoyaltyData = await getLoyaltyHistoryData();
       setLoyaltyData(userLoyaltyData?.userLoyaltyData?.data ?? []);
+      const redeemData = userLoyaltyData?.userLoyaltyData?.data?.filter((item: any) => item.type == 0);
+
+      // Calculate the sum of redeem points
+      const redeemPointSum = redeemData?.reduce((acc: any, item: any) => {
+        return acc + (parseInt(item?.loyalty_points) || 0); 
+      }, 0); 
+
+      const lastLoyaltyData = userLoyaltyData?.userLoyaltyData?.data?.slice(-1)[0];
+      const totalPoints = lastLoyaltyData?.t_loyaltypoints ?? 0;
+      setTotalAvailablePoint(totalPoints);
+      setTotalRedeemPoint(redeemPointSum);
     } catch (err) {
       console.error("Failed to fetch loyalty history:", err);
       setLoyaltyData([]); // fallback
@@ -71,20 +84,19 @@ export default function UserLoyaltyHistory() {
             </svg>
             <div className="flex flex-col">
               <p className="text-sm leading-3.5 font-bold text-white mb-0.5">
-                Points Available
+                {isArabic ? "إجمالي النقاط المستردة" : "Total redeemed points"}
               </p>
-              <span className="text-xs text-white">Points Redeemed</span>
             </div>
             <div className="flex flex-col">
               <p className="text-sm leading-3.5 font-bold text-white mb-0.5">
-                3,185 pts
+                {totalRedeemPoint}
               </p>
-              <span className="text-xs text-white">-4,431 pts</span>
+              {/* <span className="text-xs text-white">-4,431 pts</span> */}
             </div>
           </div>
-          <p className="text-base text-dark font-bold text-center mb-4">1235264773777</p>
+          <p className="text-base text-dark font-bold text-center mb-4">{totalAvailablePoint}</p>
           <span className="text-xs text-dark block text-center">
-            Show this card to earn at Tamkeen store.
+            {isArabic ? "النقاط المتاحة" : "Total Available Points"}
           </span>
         </div>
         {loyaltyData?.map((item: any, i: number) => {
