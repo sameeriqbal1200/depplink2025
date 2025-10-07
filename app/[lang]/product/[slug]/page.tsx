@@ -20,6 +20,7 @@ import PickupStorePopup from '../../components/PickupStorePopup';
 import { getCookie } from 'cookies-next';
 import { useApp } from '@/app/_ctx/AppContext';
 import { useSlot } from '@/app/_ctx/ClientDataRegistry';
+import { getPickupFromStoreProduct, getProductExtraDataRegional } from '@/lib/productpages/product.client';
 
 
 // const LoginSingup = dynamic(() => import('../../components/LoginSignup'), { ssr: false })
@@ -118,17 +119,16 @@ export default function Product() {
     const { updateWishlist, setUpdateWishlist } = useContext(GlobalContext);
 
     {/* Commented Pickup Store */ }
-    const getStoreData = () => {
-        get(`pickup-from-store/${productDataClassic?.data?.sku}/${getCookie('selectedCity')}/${localStorage.getItem('globalStore') ? 0 : 0}?lang=${lang}&sortCity=${getCookie('selectedCity')}&product_qty=${sqty}`).then((responseJson: any) => {
-            if (responseJson?.warehouse_single) {
-                setfoundStore(true)
-                // var check = setglobalStore(responseJson?.warehouse_single)
-                localStorage.setItem('globalStore', responseJson?.warehouse_single?.id)
-            }
-            if (responseJson?.warehouse) {
-                setallStores(responseJson?.warehouse)
-            }
-        })
+    const getStoreData = async() => {
+        const res = await getPickupFromStoreProduct(productDataClassic?.data?.sku, getCookie('selectedCity'), lang, sqty)
+        if (res?.pickupStoreData?.warehouse_single) {
+            setfoundStore(true)
+            var check = setglobalStore(res?.pickupStoreData?.warehouse_single)
+            localStorage.setItem('globalStore', res?.pickupStoreData?.warehouse_single?.id)
+        }
+        if (res?.pickupStoreData?.warehouse) {
+            setallStores(res?.pickupStoreData?.warehouse)
+        }
     }
     useEffect(() => {
         if (eligiblePickup) {
@@ -611,36 +611,35 @@ export default function Product() {
     //     router.push(`${origin}/${lang}/cart`);
     // }
 
-    const productExtraData: any = () => {
-        get(`productextradata-regional-new/${productDataClassic?.data?.id}/${localStorage.getItem("globalcity")}`).then((responseJson: any) => {
-            if (responseJson && responseJson?.expressdeliveryData) {
-                const numOfDays = responseJson?.expressdeliveryData?.num_of_days;
-                // const lang = lang;
-                setexpDeliveryQty(responseJson?.expressdeliveryData?.qty)
-            }
-            else {
-                setCheckexpDelivery(false)
-            }
+    const productExtraData: any = async() => {
+        const responseExtra = await getProductExtraDataRegional(productDataClassic?.data?.id,localStorage.getItem("globalcity"))
+        if (responseExtra?.productextradata && responseExtra?.productextradata?.expressdeliveryData) {
+            const numOfDays = responseExtra?.productextradata?.expressdeliveryData?.num_of_days;
+            // const lang = lang;
+            setexpDeliveryQty(responseExtra?.productextradata?.expressdeliveryData?.qty)
+        }
+        else {
+            setCheckexpDelivery(false)
+        }
 
-            setExtraData(responseJson)
-            if (responseJson?.freegiftdata)
-                setallowed_gifts(responseJson?.freegiftdata?.allowed_gifts)
-            if (responseJson?.freegiftdata?.allowed_gifts == responseJson?.freegiftdata?.freegiftlist.length && responseJson?.freegiftdata?.discount_type == 1) {
-                var gifts = selectedGifts
-                for (let index = 0; index < responseJson?.freegiftdata?.freegiftlist.length; index++) {
-                    const element = responseJson?.freegiftdata?.freegiftlist[index];
-                    gifts[element.id] = true
-                }
-                setselectedGifts(gifts)
+        setExtraData(responseExtra?.productextradata)
+        if (responseExtra?.productextradata?.freegiftdata)
+            setallowed_gifts(responseExtra?.productextradata?.freegiftdata?.allowed_gifts)
+        if (responseExtra?.productextradata?.freegiftdata?.allowed_gifts == responseExtra?.productextradata?.freegiftdata?.freegiftlist.length && responseExtra?.productextradata?.freegiftdata?.discount_type == 1) {
+            var gifts = selectedGifts
+            for (let index = 0; index < responseExtra?.productextradata?.freegiftdata?.freegiftlist.length; index++) {
+                const element = responseExtra?.productextradata?.freegiftdata?.freegiftlist[index];
+                gifts[element.id] = true
             }
-            if (responseJson?.fbtdata) {
-                var fbtlist = responseJson?.fbtdata?.fbtlist[0]
-                var newfbtdata = fbtProCheck
-                newfbtdata[fbtlist?.id] = true
-                setfbtProId(fbtlist?.id)
-                setfbtProCheck({ ...newfbtdata })
-            }
-        })
+            setselectedGifts(gifts)
+        }
+        if (responseExtra?.productextradata?.fbtdata) {
+            var fbtlist = responseExtra?.productextradata?.fbtdata?.fbtlist[0]
+            var newfbtdata = fbtProCheck
+            newfbtdata[fbtlist?.id] = true
+            setfbtProId(fbtlist?.id)
+            setfbtProCheck({ ...newfbtdata })
+        }
     }
 
     const addfbt = (fbtid: number) => {
@@ -1575,7 +1574,7 @@ export default function Product() {
                                     </div>
                                     <span className='bg-[#fde18d] px-2 py-1 mt-3 text-primary text-[0.60rem] rounded-md font-semibold animate-pulse float-end'>{stockText}</span>
                                 </button>
-                                : null}
+                            : null}
                         </div>
                         <div className="w-full mt-3">
                             {productDataClassic?.data?.short_description ?
