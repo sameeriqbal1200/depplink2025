@@ -1,6 +1,6 @@
 "use client"; // This is a client component 👈🏽
 
-import React, { useEffect, useState } from "react";
+import React from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import dayjs from 'dayjs'
@@ -17,12 +17,6 @@ export default function Blogs() {
     const { lang, origin } = useApp();
     const blogsData = useSlot<any>("blogs");
     const NewMedia = process.env.NEXT_PUBLIC_NEW_MEDIA;
-
-    const [hydrated, setHydrated] = useState(false);
-
-    useEffect(() => {
-        setHydrated(true);
-    }, []);
 
     return (
         <div className='pt-10'>
@@ -57,13 +51,7 @@ export default function Blogs() {
                                         <ul className="text-[0.60rem] flex items-center gap-x-1 font-medium">
                                             <li>{dayjs(data?.created_at).locale(lang == 'ar' ? 'ar' : 'en').format("MMM  DD, YYYY")}</li>
                                             <li>|</li>
-                                            <li>
-                                                {hydrated &&
-                                                dayjs(data?.created_at)
-                                                    .locale(lang === "ar" ? "ar" : "en")
-                                                    .endOf("day")
-                                                    .fromNow()}
-                                            </li>
+                                            <li>{dayjs(data?.created_at).locale(lang == 'ar' ? 'ar' : 'en').endOf('day').fromNow()}</li>
                                         </ul>
                                         <h2 className="mt-2 font-bold text-xs text-[#004B7A] line-clamp-2">{lang == 'ar' ? data?.name_arabic : data?.name}</h2>
                                         <div className="text-[0.60rem] mt-1.5 line-clamp-3 leading-4" dangerouslySetInnerHTML={{ __html: lang == 'ar' ? data?.description_arabic : data?.description }} />
