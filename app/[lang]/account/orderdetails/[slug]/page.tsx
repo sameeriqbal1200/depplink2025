@@ -470,9 +470,11 @@ export default function OrderDetails() {
                                             src={lang === "ar" ? logo.ar : logo.en}
                                             alt={method}
                                             title={method}
-                                            width={60}
-                                            height={60}
+                                            width={0}
+                                            height={0}
+                                            style={{ width: "60px", height: "auto" }}
                                             loading="lazy"
+                                            sizes="100vw"
                                             className="rounded-md"
                                         />
                                     </div>
@@ -508,8 +510,9 @@ export default function OrderDetails() {
                                                                     title={lang == 'ar' ? data?.product_data?.name_arabic : data?.product_data?.name}
                                                                     height={50}
                                                                     width={50}
+                                                                    style={{ width: "50px", height: "50px" }}
                                                                     loading='lazy'
-                                                                    className="mx-auto"
+                                                                    className="mx-auto shrink-0"
                                                                 />
                                                             </div>
                                                             <div className="p-3 w-full">
@@ -528,10 +531,12 @@ export default function OrderDetails() {
                                                                                 src={data?.product_data?.brand?.brand_media_image?.image ? NewMedia + data?.product_data?.brand?.brand_media_image?.image : 'https://partners.tamkeenstores.com.sa/public/assets/new-media/3f4a05b645bdf91af2a0d9598e9526181714129744.png'}
                                                                                 alt={lang == 'ar' ? data?.product_data?.brand?.name_arabic : data?.product_data?.brand?.name}
                                                                                 title={lang == 'ar' ? data?.product_data?.brand?.name_arabic : data?.product_data?.brand?.name}
-                                                                                height={60}
-                                                                                width={60}
+                                                                                height={0}
+                                                                                width={0}
+                                                                                style={{ width: "60px", height: "auto" }}
                                                                                 className="h-full"
                                                                                 loading='lazy'
+                                                                                sizes='100vw'
                                                                             />
                                                                             :
                                                                             <p className="font-bold text-xs">{lang == 'ar' ? data?.product_data?.brand?.name_arabic : data?.product_data?.brand?.name}</p>

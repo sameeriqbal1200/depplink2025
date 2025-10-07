@@ -237,6 +237,7 @@ export default function ShipmentTracking() {
                                 decoding="async"
                                 data-nimg="1"
                                 src="/images/logo.webp"
+                                style={{width: "auto", height: "auto"}}
                             />
                         </Link>
                         <Link prefetch={false} scroll={false} href={`${origin}/${lang}`} as={`${origin}/${lang}`} className="btn sht_303mainContinueShopBtn">
@@ -539,6 +540,7 @@ export default function ShipmentTracking() {
                                                     height={80}
                                                     decoding="async"
                                                     data-nimg="1"
+                                                    style={{ width: "80px", height: "80px" }}
                                                     src={product.product_image.replace('/public', '') || 'https://images.tamkeenstores.com.sa/assets/new-media/GS55WOST-1W.webp'}
                                                 />
                                                 <div>
@@ -557,6 +559,7 @@ export default function ShipmentTracking() {
                                                     loading="lazy"
                                                     width={80}
                                                     height={80}
+                                                    style={{ width: "80px", height: "80px" }}
                                                     decoding="async"
                                                     data-nimg="1"
                                                     src={product.product_image.replace('/public', '') || 'https://images.tamkeenstores.com.sa/assets/new-media/GS55WOST-1W.webp'}
@@ -574,6 +577,7 @@ export default function ShipmentTracking() {
                                                         width={65}
                                                         loading='lazy'
                                                         className='rounded-md'
+                                                        style={{ width: "auto", height: "auto" }}
                                                         sizes='(max-width: 640px) 100vw, (max-width: 768px) 100vw, (max-width: 1024px) 100vw, 100vw'
                                                     />
                                                     : null}
