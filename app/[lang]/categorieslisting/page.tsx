@@ -51,7 +51,7 @@ export default function CategoriesListing() {
                         onChange={(e) => {
                             filterCategory(e.target.value)
                             if (e.target.value == '') {
-                                setCategoryFilteredSearch('')
+                                setCategoryFilteredSearch(null)
                                 return false;
                             }
                         }}
@@ -94,7 +94,8 @@ export default function CategoriesListing() {
                                                 height={0}
                                                 sizes="100vw"
                                                 width={0}
-                                                priority={true}
+                                                priority 
+                                                // loading="lazy"
                                                 className="mx-auto shadow-md rounded-md w-full h-full"
                                             />
                                         </div>
