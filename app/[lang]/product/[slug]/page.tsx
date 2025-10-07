@@ -1391,7 +1391,7 @@ export default function Product() {
                                                     title={isArabic ? productDataClassic?.data?.brand?.name_arabic : productDataClassic?.data?.brand?.name}
                                                     height={45}
                                                     width={45}
-                                                    className="h-full"
+                                                    style={{ width: 'auto', height: 'auto' }}
                                                     loading='lazy'
                                                 />
                                                 :
@@ -1773,7 +1773,7 @@ export default function Product() {
                     <div className="w-full">
                         {extraData?.freegiftdata?.freegiftlist?.slice(0, 1).map((freegiftdatapro: any, i: number) => {
                             return (
-                                <button onClick={openModal} className="focus-visible:outline-none bg-[#EEF8FC] shadow-md rounded-md p-3 w-full h-auto max-md:my-3">
+                                <button key={freegiftdatapro?.id ?? i} onClick={openModal} className="focus-visible:outline-none bg-[#EEF8FC] shadow-md rounded-md p-3 w-full h-auto max-md:my-3">
                                     <p className="text-[#004B7A] fill-[#004B7A] text-sm font-bold flex items-center gap-x-1.5 mb-3">
                                         <svg id="fi_3850991" enableBackground="new 0 0 512 512" height="16" viewBox="0 0 512 512" width="16" fill="#219EBC" xmlns="http://www.w3.org/2000/svg"><g><path d="m359.42 20.97c13.36-8.94 29.92-6.83 38.21.38 3.59 3.13 7.1 8.46 3.4 16.1-7.77 16.12-24.32 26.53-42.14 26.53h-51.02c2.4 6.2 3.73 12.93 3.73 19.97 0 6.27-1.06 12.3-2.98 17.93h119.99c8-15.2 8.58-32.65 1.45-48.64l-14.62-32.82c-1.71-3.8-4.33-7.34-7.89-10.44-12.42-10.78-36.42-14.98-56.52-1.54l-55.1 36.89c3.5 3.62 6.52 7.7 8.94 12.15z"></path><path d="m203.4 101.87c-1.92-5.63-2.98-11.66-2.98-17.93 0-7.04 1.33-13.77 3.73-19.97h-50.99c-17.82 0-34.37-10.42-42.18-26.54-3.7-7.63-.19-12.96 3.41-16.08 4.46-3.88 11.31-6.28 18.77-6.28 6.41 0 13.26 1.77 19.43 5.9l54.54 36.51c2.42-4.46 5.45-8.54 8.94-12.15l-55.1-36.89c-20.1-13.44-44.1-9.24-56.49 1.54-3.97 3.45-6.79 7.44-8.45 11.74l-14.07 31.51c-7.14 15.99-6.56 33.44 1.45 48.64z"></path><path d="m219.67 101.87h72.65c2.68-5.41 4.2-11.5 4.2-17.93 0-22.33-18.2-40.53-40.53-40.53s-40.53 18.2-40.53 40.53c.01 6.44 1.53 12.52 4.21 17.93z"></path><path d="m16.2 148.65v49.55c0 14.89 10.32 27.41 24.17 30.8h187.69v-112.07h-180.15c-17.48 0-31.71 14.23-31.71 31.72z"></path><path d="m40.38 469.91c0 23.21 18.88 42.09 42.09 42.09h145.6v-267.95h-187.69z"></path><path d="m464.09 116.93h-180.13v112.06h187.66c13.86-3.39 24.17-15.91 24.17-30.8v-49.55c.01-17.48-14.22-31.71-31.7-31.71z"></path><path d="m283.96 512h145.57c23.21 0 42.09-18.88 42.09-42.09v-225.86h-187.66z"></path></g></svg>
                                         {extraData?.freegiftdata?.freegiftlist.length === extraData?.freegiftdata?.allowed_gifts ?
@@ -1793,12 +1793,12 @@ export default function Product() {
                                                 fgprice -= (freegiftdatapro?.discount * fgprice) / 100;
                                             }
                                             return (
-                                                <div className={`rounded-md bg-white ${selectedGifts[freegiftdatapro.id] ? " border" : ""}`}>
+                                                <div key={freegiftdatapro?.id ?? i} className={`rounded-md bg-white ${selectedGifts[freegiftdatapro.id] ? " border" : ""}`}>
                                                     {/* <div className="overflow-x-auto flex gap-4 mx-4 no-scrollbar" id="scroll-container"> */}
                                                     <Image
                                                         src={freegiftdatapro?.productdetail?.featured_image ? NewMedia + freegiftdatapro?.productdetail?.featured_image?.image : 'https://images.tamkeenstores.com.sa/assets/new-media/3f4a05b645bdf91af2a0d9598e9526181714129744.png'}
-                                                        alt={freegiftdatapro?.productdetail?.featured_image ? isArabic ? freegiftdatapro?.productdetail?.featured_image?.alt_arabic : freegiftdatapro?.productdetail?.featured_image?.alt : ''}
-                                                        title={freegiftdatapro?.productdetail?.featured_image ? isArabic ? freegiftdatapro?.productdetail?.featured_image?.alt_arabic : freegiftdatapro?.productdetail?.featured_image?.title : ''}
+                                                        alt={freegiftdatapro?.productdetail ? (isArabic ? freegiftdatapro?.productdetail?.name_arabic : freegiftdatapro?.productdetail?.name) : ''}
+                                                        title={freegiftdatapro?.productdetail ? (isArabic ? freegiftdatapro?.productdetail?.name_arabic : freegiftdatapro?.productdetail?.name) : ''}
                                                         height={80}
                                                         width={80}
                                                         loading='lazy'
