@@ -45,16 +45,16 @@ export default function BrandListing() {
                                                 alt={lang === 'ar' ? data?.name_arabic : data?.name}
                                                 title={lang === 'ar' ? data?.name_arabic : data?.name}
                                                 quality={100}
-                                                width={150} // fixed width
-                                                height={0} // allow flexible height
-                                                style={{ height: 'auto' }} // fix the warning
+                                                width={134} // fixed width
+                                                height={42} // allow flexible height
+                                                style={{ maxWidth: "134px", height: "42px",}}
                                                 loading='lazy'
-                                                className='mx-auto'
+                                                className='mx-auto object-contain'
                                                 sizes='100vw'
                                             />
                                         </Link>
                                         {data?.categories?.length ?
-                                            <div className='grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 mt-8 gap-y-4 h-40 overflow-y-auto'>
+                                            <div className='grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 mt-8 gap-y-2 h-40 overflow-y-auto'>
                                                 {data?.categories?.map((categoryData: any, k: number) => {
                                                     return (
                                                         <Link
@@ -70,8 +70,8 @@ export default function BrandListing() {
                                                                 <Image
                                                                     src={categoryData?.image_link_app ? categoryData?.image_link_app : ''}
                                                                     alt={categoryData?.slug ? categoryData?.slug : 'Category Icon'}
-                                                                    width={40} 
-                                                                    height={40} 
+                                                                    width={32} 
+                                                                    height={32} 
                                                                     className="object-contain"
                                                                 />
                                                             </div>
