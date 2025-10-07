@@ -9,7 +9,7 @@ export default async function PrivacyPolicyLayout({ children }: { children: Reac
 
     const footer = await getFooterCached(slugStr);
     const value = footer ? JSON.parse(JSON.stringify(footer)) : null;
-    return <BridgeSlot slot="footer" value={value}>{children}</BridgeSlot>;
+    return <BridgeSlot slot="privacy_policy" value={value}>{children}</BridgeSlot>;
 }
 
 // ---- SEO metadata ----
