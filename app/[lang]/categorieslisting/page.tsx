@@ -94,7 +94,8 @@ export default function CategoriesListing() {
                                                 height={0}
                                                 sizes="100vw"
                                                 width={0}
-                                                loading="lazy"
+                                                priority 
+                                                // loading="lazy"
                                                 className="mx-auto shadow-md rounded-md w-full h-full"
                                             />
                                         </div>
