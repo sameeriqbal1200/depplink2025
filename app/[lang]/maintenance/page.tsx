@@ -152,7 +152,7 @@ export default function Maintenance() {
                     </button>
                     <button className="focus-visible:outline-none border-[#219EBC] border text-[#219EBC] py-3 px-8 rounded-md hover:bg-[#219EBC] hover:text-white max-md:w-1/2" type="button" aria-label={lang == 'ar' ? 'تواصل معنا' : 'Contact with Us'}
                         onClick={() => {
-                            router.push(`${origin}${lang}/contact-us`)
+                            router.push(`${origin}/${lang}/contact-us`)
                         }}
                     >{lang == 'ar' ? 'تواصل معنا' : 'Contact with Us'}</button>
                 </div>
