@@ -63,7 +63,8 @@ export default function SliderWithCategories({
         alt={isArabic ? "بانر الفئة" : "Category Banner"}
         width={0}
         height={0}
-        loading="lazy"
+        priority
+        // loading="lazy"
         className="w-full h-full min-h-[25rem] object-cover"
         sizes="(max-width: 640px) 100vw, (max-width: 768px) 100vw, (max-width: 1024px) 100vw, 100vw"
       />
