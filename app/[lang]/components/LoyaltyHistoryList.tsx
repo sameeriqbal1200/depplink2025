@@ -30,11 +30,13 @@ export default function LoyaltyHistoryList(props: any) {
         <p className="text-sm font-semibold text-dark">
           {loyalData?.earning_against}
         </p>
+        {/* {isDeducted && ( */}
         <span className="text-xs text-dark flex items-center gap-1">
           {isArabic ? "المبلغ:" : "Amount:"}{" "}
           <SARIcon size={9} color="#000000" />{" "}
           {Number(loyalData?.total_amount).toLocaleString()}
         </span>
+        {/* )} */}
       </div>
       <div className="flex flex-col shrink-0 pr-4">
         <span
@@ -42,10 +44,10 @@ export default function LoyaltyHistoryList(props: any) {
             !isDeducted ? "text-greenDark" : "text-red-600"
           } font-semibold mb-1`}
         >
-          {loyalData?.t_loyaltypoints ? (
+          {loyalData?.loyalty_points ? (
             <>
               {isDeducted ? "-" : "+"}
-              {Number(loyalData.t_loyaltypoints).toLocaleString()}{" "}
+              {Number(loyalData.loyalty_points).toLocaleString()}{" "}
             </>
           ) : (
             "0 "

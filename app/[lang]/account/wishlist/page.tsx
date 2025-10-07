@@ -129,18 +129,20 @@ export default function Wishlist() {
                 </div>
               ) : (
                 <div className="container my-10 flex items-center justify-center text-center">
-                  <p className="text-base text-[#5D686F] m-auto">
-                    {lang === "ar"
-                      ? "لم يتم إضافة أي منتج إلى قائمة المفضلة!"
-                      : "No product added to wishlist!"}
-                  </p>
-                  <Link
-                    href={`${origin}/${lang}`}
-                    prefetch
-                    className="btn bg-[#004B7A] w-72 p-2.5 rounded-md text-sm text-white mt-6 inline-block text-center"
-                  >
-                    {lang === "ar" ? "تسوق المنتجات" : "Shop products"}
-                  </Link>
+                  <div className="text-center">
+                    <p className="text-base text-[#5D686F] m-auto">
+                      {lang === "ar"
+                        ? "لم يتم إضافة أي منتج إلى قائمة المفضلة!"
+                        : "No product added to wishlist!"}
+                    </p>
+                    <Link
+                      href={`${origin}/${lang}`}
+                      prefetch
+                      className="btn bg-[#004B7A] w-72 p-2.5 rounded-md text-sm text-white mt-6 inline-block text-center"
+                    >
+                      {lang === "ar" ? "تسوق المنتجات" : "Shop products"}
+                    </Link>
+                  </div>
                 </div>
               )}
             </div>
