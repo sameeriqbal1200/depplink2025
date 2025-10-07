@@ -385,7 +385,7 @@ export default function AddressBook() {
                                 />
                             </div>
                             <div className="rounded-md border border-[#dfdfdf] focus-visible:outline-[#00243c] p-2.5 text-sm w-full mb-3 bg-white">
-                                <textarea id="iconLeft" rows={3} value={shippinginstructions} placeholder={lang === 'ar' ? 'تعليمات الشحن' : 'Shipping Instructions'} className="focus-visible:outline-none w-full font-regular"
+                                <textarea id="iconLeft" rows={3} value={shippinginstructions || ''} placeholder={lang === 'ar' ? 'تعليمات الشحن' : 'Shipping Instructions'} className="focus-visible:outline-none w-full font-regular"
                                     onChange={(e: any) => {
                                         setShippingInstructions(e.target.value)
                                     }} />
