@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, Fragment } from "react";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import "swiper/css";
@@ -16,28 +16,23 @@ import FilterIcon from "../components/Icons/FilterIcon";
 import FilterIconTwo from "../components/Icons/FilterIcon2";
 import Pagination from "../components/NewPagination";
 import CheckIcon from "../components/Icons/CheckIcon";
+import {
+  Dialog,
+  Transition,
+  RadioGroup,
+  Tab,
+  Disclosure,
+} from "@headlessui/react";
+import CloseIcon from "../components/Icons/CloseIcon";
+import { getSearchData } from "@/lib/components/component.client";
 
 // Import Images
 const MobileHeader = dynamic(() => import("@/components/MobileHeader"), {
   ssr: true,
 });
 
-const FilterVertical = dynamic(
-  () => import("@/components/SectionComponents/FilterVertical"),
-  {
-    ssr: true,
-  }
-);
-
 const MobileFilterNew = dynamic(
   () => import("@/components/SectionComponents/MobileFilterNew"),
-  {
-    ssr: true,
-  }
-);
-
-const FilterHorizontal = dynamic(
-  () => import("@/components/SectionComponents/FilterHorizontal"),
   {
     ssr: true,
   }
@@ -100,6 +95,10 @@ export default function SubCategoryNew({
   const [sort, setsort] = useState<any>(false);
   const [products, setproducts] = useState<any>([]);
   const [view, setview] = useState<any>("grid");
+  const [searchPop, setSearchPop] = useState<boolean>(false);
+  const [searchInput, setSearchInput] = useState<any>("");
+  const [searchResult, setSearchResult] = useState<any>(null);
+  const [searchDialoug, setSearchDialoug] = useState(false);
   const [min, setMin] = useState<any>(data?.productData?.min || 0); // Adjust default as needed
   const [max, setMax] = useState<any>(data?.productData?.max || 0); // Adjust default as needed
   const SortingProduct = [
@@ -115,6 +114,18 @@ export default function SubCategoryNew({
         lang == "ar" ? "السعر (من الأعلى إلى الأقل)" : "Price (Hight to Low)",
     },
   ];
+  const SearchData: any = async (e: any) => {
+    if (e?.length == 0) {
+      setSearchDialoug(false);
+    } else {
+      setSearchDialoug(true);
+      var searchcity = await localStorage.getItem("city");
+      const getData = await getSearchData(e, searchcity, lang);
+      if (getData?.getUserSearchData) {
+        setSearchResult(getData?.getUserSearchData);
+      }
+    }
+  };
   useEffect(() => {
     if (!deviceType) {
       router.refresh();
@@ -443,7 +454,7 @@ export default function SubCategoryNew({
         />
       )} */}
       {/* Header Section */}
-      <header className="pt-3 bg-white shadow-lg w-full sticky top-0 z-50">
+      <header className="pt-3 bg-white shadow-lg w-full sticky top-0 z-40">
         <button
           onClick={() => setWhatsappBtn(true)}
           className={`WhatsappBeforeHover ${
@@ -545,6 +556,7 @@ export default function SubCategoryNew({
                   lang === "ar" ? "ابحث هنا" : "What are you looking for?"
                 }
                 className="border-none outline-none w-full px-2 text-xs text-[#004B7A] placeholder:text-[#6B7280]"
+                onClick={() => setSearchPop(!searchPop)}
               />
             </div>
           </div>
@@ -630,122 +642,11 @@ export default function SubCategoryNew({
       </header>
 
       {/* <div className={`${isMobileOrTablet ? "mt-32" : "mt-24"}`}></div> */}
-
-      {/* Section 1 */}
-      {!isMobileOrTablet && (
-        <section className={`filter_sec relative`}>
-          <div className="xl:px-20 lg:px-10 px-4 py-5">
-            <FilterHorizontal
-              NewMedia={NewMedia}
-              isArabic={isArabic}
-              isMobileOrTablet={isMobileOrTablet}
-              deviceType={deviceType}
-              tags={CatData?.productData?.tags}
-              selectedtags={selectedtags}
-              onChangetags={(tagchild: any) => {
-                var tagnames = selectedtags;
-                if (!tagnames[tagchild.name]) {
-                  tagnames[tagchild.name] = true;
-                } else {
-                  delete tagnames[tagchild.name];
-                  window.scrollTo(0, 0);
-                }
-                setLoaderStatus(true);
-                setselectedtags({ ...tagnames });
-                setcurrentPage(1);
-                filter();
-              }}
-              brands={CatData?.productData?.brands}
-              selectedbrands={selectedbrands}
-              setBrandData={(id: any, name: string) => {
-                var bdata = selectedbrands;
-                if (!bdata[name]) {
-                  bdata[name] = true;
-                } else {
-                  delete bdata[name];
-                }
-                setLoaderStatus(true);
-                setselectedbrands({ ...bdata });
-                setcurrentPage(1);
-                filter();
-              }}
-              setClear={() => {
-                setLoaderStatus(true);
-                setselectedbrands({});
-                setselectedrating({});
-                setselectedcats({});
-                setcurrentPage(1);
-                setselectedtags({});
-                // setFilterMobile(false)
-                window.scrollTo(0, 0);
-                router.push(`${origin}/${lang}/category/${slug}`, {
-                  scroll: true,
-                });
-                router.refresh();
-              }}
-            />
-          </div>
-        </section>
-      )}
-
       {/* Section 2 */}
       <section
         className={`relative mt-4 ${isMobileOrTablet ? "mb-24" : "mb-8"}`}
       >
         <div className="xl:px-20 lg:px-10 px-4 flex md:flex-row flex-col items-start gap-4">
-          {!isMobileOrTablet && (
-            <div className={`${!isMobileOrTablet ? "w-[24%]" : "w-full"}`}>
-              <FilterVertical
-                isArabic={isArabic}
-                NewMedia={NewMedia}
-                isMobileOrTablet={isMobileOrTablet}
-                deviceType={deviceType}
-                tags={CatData?.productData?.tags}
-                selectedtags={selectedtags}
-                onChangetags={(tagchild: any) => {
-                  var tagnames = selectedtags;
-                  if (!tagnames[tagchild.name]) {
-                    tagnames[tagchild.name] = true;
-                  } else {
-                    delete tagnames[tagchild.name];
-                    window.scrollTo(0, 0);
-                  }
-                  setLoaderStatus(true);
-                  setselectedtags({ ...tagnames });
-                  setcurrentPage(1);
-                  filter();
-                }}
-                brands={CatData?.productData?.brands}
-                selectedbrands={selectedbrands}
-                setBrandData={(id: any, name: string) => {
-                  var bdata = selectedbrands;
-                  if (!bdata[name]) {
-                    bdata[name] = true;
-                  } else {
-                    delete bdata[name];
-                  }
-                  setLoaderStatus(true);
-                  setselectedbrands({ ...bdata });
-                  setcurrentPage(1);
-                  filter();
-                }}
-                setClear={() => {
-                  setLoaderStatus(true);
-                  setselectedbrands({});
-                  setselectedrating({});
-                  setselectedcats({});
-                  setcurrentPage(1);
-                  setselectedtags({});
-                  // setFilterMobile(false)
-                  window.scrollTo(0, 0);
-                  router.push(`${origin}/${lang}/category/${slug}`, {
-                    scroll: true,
-                  });
-                  router.refresh();
-                }}
-              />
-            </div>
-          )}
           <div
             className={`${
               !isMobileOrTablet ? "w-[76%]" : "w-full"
@@ -1343,6 +1244,197 @@ export default function SubCategoryNew({
       {/* <section className="px-20 py-10">
         <Accordion isArabic={isArabic} origin={origin} isMobileOrTablet={isMobileOrTablet} />
       </section> */}
+
+      {/* Search Modal */}
+      <Transition appear show={searchPop} as={Fragment}>
+        <Dialog
+          as="div"
+          className="relative z-40"
+          onClose={() => setSearchPop(false)}
+        >
+          <div className="fixed inset-0 overflow-y-auto">
+            <Transition.Child
+              as={Fragment}
+              enter="transition ease-in-out duration-300 transform"
+              enterFrom={isArabic ? "translate-x-full" : "-translate-x-full"}
+              enterTo={isArabic ? "-translate-x-0" : "translate-x-0"}
+              leave="transition ease-in-out duration-300 transform"
+              leaveFrom={isArabic ? "-translate-x-0" : "translate-x-0"}
+              leaveTo={isArabic ? "translate-x-full" : "-translate-x-full"}
+            >
+              <Dialog.Panel className="w-full h-screen container transform overflow-hidden bg-white text-left align-middle shadow-xl transition-all">
+                <div className="align__center py-3.5 border-b mb-3 border-[#9CA4AB50]">
+                  <Dialog.Title
+                    as="h4"
+                    className="text-lg font-bold leading-6 text-gray-900"
+                  >
+                    {isArabic ? "البحث" : "Search Here ..."}
+                  </Dialog.Title>
+                  <button
+                    onClick={() => setSearchPop(false)}
+                    className="focus-visible:outline-none"
+                  >
+                    <CloseIcon size={16} color="#000000" />
+                  </button>
+                </div>
+                <div
+                  className="border rounded px-2 flex items-center border-[#004B7A] focus::border-[#000] h-10 gap-2 relative z-20 bg-white"
+                  onChange={(e: any) => SearchData(e.target.value)}
+                >
+                  <input
+                    id="productSearch"
+                    type="text"
+                    name="shipping-charge"
+                    className="form-input focus-visible:outline-none focus:ring-transparent text-sm h-9 border-none w-full"
+                    value={searchInput}
+                    placeholder={isArabic ? "البحث" : "Search Here ..."}
+                    onChange={(e: any) => {
+                      setSearchInput(e.target.value);
+                    }}
+                    onPaste={(e: any) => {
+                      const pastedText = e.clipboardData.getData("text");
+                      setSearchInput(e.target.value);
+                      SearchData(pastedText);
+                    }}
+                  />
+                  <button
+                    className={`focus-visible:outline-none underline text-xs text-[#DC4E4E] font-semibold ${
+                      searchInput?.length ? "block" : "hidden"
+                    }`}
+                    onClick={() => {
+                      setSearchInput(""), setSearchResult([]);
+                    }}
+                  >
+                    {isArabic ? "مسح" : "Clear"}
+                  </button>
+                </div>
+                <div className="overflow-y-auto h-screen pb-40 mt-4">
+                  <div className="mb-6 flex flex-wrap gap-2">
+                    {searchResult?.cats?.map((d: any, i: any) => (
+                      <button
+                        key={i}
+                        onClick={() => {
+                          router.push(`/${lang}/category/${d?.slug}`);
+                          router.refresh();
+                        }}
+                        className="text-[#5D686F] text-xs font-medium bg-[#F0F5FA] py-2 px-3.5 rounded-full hover:bg-[#004B7A] hover:text-white"
+                      >
+                        {isArabic ? d.name_arabic : d.name}
+                      </button>
+                    ))}
+                    {searchResult?.brands?.map((d: any, i: any) => (
+                      <button
+                        key={i}
+                        onClick={() => {
+                          router.push(`/${lang}/brand/${d?.slug}`);
+                          router.refresh();
+                        }}
+                        className="text-[#5D686F] text-xs font-medium bg-[#F0F5FA] py-2 px-3.5 rounded-full hover:bg-[#004B7A] hover:text-white"
+                      >
+                        {isArabic ? d.name_arabic : d.name}
+                      </button>
+                    ))}
+                  </div>
+                  {searchResult?.cats?.length ? (
+                    <div className="mb-4">
+                      <h2 className="heading__bsm">
+                        {isArabic ? "فئات ذات صلة" : "Related Categories"}
+                      </h2>
+                      <div className="flex flex-wrap items-center gap-3">
+                        {searchResult?.cats?.map((d: any, i: any) => (
+                          <Link
+                            key={i}
+                            href={`${origin}/${lang}/category/${d.slug}`}
+                            onClick={() => {
+                              setSearchDialoug(false), setSearchInput("");
+                            }}
+                            className="bg-[#F0F5FA] border border-[#D9D9D920] flex items-center gap-2 p-2.5 text-xs rounded-md hover:border-[#004B7A] hover:text-[#004B7A] hover:bg-white font-semibold"
+                          >
+                            <Image
+                              src={
+                                d?.image_link_app
+                                  ? d?.image_link_app
+                                  : "https://images.tamkeenstores.com.sa/assets/new-media/3f4a05b645bdf91af2a0d9598e9526181714129744.png"
+                              }
+                              height={18}
+                              width={18}
+                              alt={isArabic ? d?.name_arabic : d?.name}
+                              quality={100}
+                              sizes="(max-width: 640px) 100vw, (max-width: 768px) 100vw, (max-width: 1024px) 100vw, 100vw"
+                            />
+                            {isArabic ? d.name_arabic : d.name}
+                          </Link>
+                        ))}
+                      </div>
+                    </div>
+                  ) : null}
+                  {searchResult?.brands?.length ? (
+                    <div className="mb-4">
+                      <h2 className="heading__bsm">
+                        {isArabic ? "العلامة التجارية" : "Brands"}
+                      </h2>
+                      <div className="grid grid-cols-4 gap-3">
+                        {searchResult?.brands?.map((data: any) => {
+                          return (
+                            <Link
+                              key={data?.id}
+                              href={`${origin}/${lang}/brand/${data?.slug}`}
+                              onClick={() => {
+                                setSearchDialoug(false), setSearchInput("");
+                              }}
+                              className="py-2 rounded shadow-md transition-shadow duration-300 ease-in-out border border-[#9CA4AB50]"
+                            >
+                              {data?.brand_media_image?.image ? (
+                                <Image
+                                  src={`${NewMedia}${data?.brand_media_image?.image}`}
+                                  alt={`${
+                                    isArabic ? data?.name_arabic : data?.name
+                                  }-${data?.id + 17}`}
+                                  title={
+                                    isArabic ? data?.name_arabic : data?.name
+                                  }
+                                  loading="lazy"
+                                  width={60}
+                                  quality={100}
+                                  height={50}
+                                  className="mx-auto"
+                                  sizes="(max-width: 640px) 100vw, (max-width: 768px) 100vw, (max-width: 1024px) 100vw, 100vw"
+                                />
+                              ) : null}
+                            </Link>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  ) : null}
+
+                  {searchResult?.products?.length == 0 && searchInput != "" ? (
+                    <div className={`w-full heading__bsm`}>
+                      {isArabic ? "قائمة المنتجات" : "no products found!"}
+                    </div>
+                  ) : null}
+                  {searchResult?.products?.length ? (
+                    <div className={`w-full`}>
+                      <h2 className="heading__bsm">
+                        {isArabic ? "العلامة التجارية" : "Products"}
+                      </h2>
+                      <div className="grid grid-cols-1 gap-y-4 pb-16">
+                        <ProductLoop
+                          productData={searchResult?.products}
+                          lang={isArabic}
+                          isMobileOrTablet={isMobileOrTablet}
+                          origin={origin}
+                          NewMedia={NewMedia}
+                        />
+                      </div>
+                    </div>
+                  ): null}
+                </div>
+              </Dialog.Panel>
+            </Transition.Child>
+          </div>
+        </Dialog>
+      </Transition>
     </>
   );
 }

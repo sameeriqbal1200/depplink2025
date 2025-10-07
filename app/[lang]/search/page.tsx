@@ -42,7 +42,7 @@ type SearchProps = {
 
 export default function Search({ params, searchParams }: SearchProps) {
   const router = useRouter()
-  const { lang, deviceType } = useApp();
+  const { lang, deviceType, origin } = useApp();
   const [view, setview] = useState<any>("grid");
   const [sortPopup, setSortPopup] = useState(false);
   const NewMedia = process.env.NEXT_PUBLIC_MEDIA;
