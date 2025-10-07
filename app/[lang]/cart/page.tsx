@@ -377,12 +377,13 @@ export default function NewCart() {
             <div className={`${title == "Baseeta" ? "!w-full mt-6 !border-[#8782b8]" : ""} nc__278mainInnerFifthDiv`}>
                 <Image
                     src={src}
-                    height={68}
+                    height={46}
                     width={68}
                     alt={alt}
                     title={title}
-                    className={`${title == "Baseeta" ? "!top-[-35%]" : ""} nc__278mainInnerImg`}
+                    className={`${title == "Baseeta" ? "!top-[-32%]" : ""} nc__278mainInnerImg`}
                     loading="lazy"
+                    style={{width: "68px", height: "46px"}}
                 />
                 <p className="mt-3">
                     {lang === "ar"
@@ -600,7 +601,7 @@ export default function NewCart() {
                                         <div className="nc__278mainInnerSixthDiv">
                                             <Image src={pro?.image}
                                                 alt={proImgAlt}
-                                                title={proImgAlt} height={200} width={100} />
+                                                title={proImgAlt} height={100} width={100} style={{width: "100px", height: "100px"}} />
                                             <div className="w-full">
                                                 <div>
                                                     <div className="nc__278mainInnerSevDiv">
@@ -610,7 +611,11 @@ export default function NewCart() {
                                                                 src={brandMediaImg}
                                                                 alt={proBrandText}
                                                                 title={proBrandText}
-                                                                height={0} width={80}
+                                                                height={0} width={0}
+                                                                style={{width: "80px", height: "40px"}}
+                                                                sizes='100vw'
+                                                                quality={100}
+                                                                className='object-contain'
                                                             />
                                                             :
                                                             <p>{proBrandText}</p>
