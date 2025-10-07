@@ -17,6 +17,7 @@ import { AppProvider } from "@/app/_ctx/AppContext";
 import CityBootstrapper from "@/app/(site)/CityBootstrapper";
 import { getHomepageServerSide } from "@/lib/homepage/homepage.server";
 import DebugDOM from "@/components/DebugDOM";
+import ConnectionStatus from "./[lang]/components/ConnectionStatus";
 
 const notoSans = Noto_Sans({
   weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
@@ -513,6 +514,7 @@ export default async function RootLayout({
                 <LoginGuard />
                 <CityBootstrapper lang={lang} googleApiKey={googleApiKey} />
                 {children}
+                <ConnectionStatus />
               </LayoutWrapper>
             </Providers>
 
