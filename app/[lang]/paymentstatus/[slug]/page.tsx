@@ -56,7 +56,7 @@ export default function PaymentStatus(
         window.dataLayer.push({ ecommerce: null });
 
         window.dataLayer.push({
-            event: "Payment_failed",
+            event: "payment_failed",
             platform: deviceType,
             method: paymentmethod,
             reason: "insufficent balance", // currency
