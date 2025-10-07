@@ -1536,7 +1536,7 @@ export default function Product() {
                                     <div className='text-sm font-normal'>
                                         <h6 className='font-bold'>{lang == "ar" ? "احصل عليه في غضون 24 الى 48 ساعة" : "Get it in 24 to 48 hours"}</h6>
                                         <p className='text-xs'>
-                                            {lang
+                                            {lang == "ar"
                                                 ? <>فقط <span className="text-[#219EBC] font-bold">{expDeliveryQty}</span> حبه متاحه للتوصيل السريع خلال 24 إلى 48 ساعة</>
                                                 : <>Only <span className="text-[#219EBC] font-bold">{expDeliveryQty}</span> quantity is available in 24 to 48 hours express delivery</>
                                             }
