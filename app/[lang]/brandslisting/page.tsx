@@ -54,7 +54,7 @@ export default function BrandListing() {
                                             />
                                         </Link>
                                         {data?.categories?.length ?
-                                            <div className='grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 mt-8 gap-y-4'>
+                                            <div className='grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 mt-8 gap-y-4 h-40 overflow-y-auto'>
                                                 {data?.categories?.map((categoryData: any, k: number) => {
                                                     return (
                                                         <Link
