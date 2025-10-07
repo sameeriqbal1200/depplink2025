@@ -418,7 +418,8 @@ export default function AccountListing() {
                 title="Vat Certificate"
                 height={80}
                 width={80}
-                loading="lazy"
+                priority
+                style={{ width: "auto", height: "auto" }}
               />
             </Link>
             <Link
@@ -432,7 +433,8 @@ export default function AccountListing() {
                 title="Maroof Certificate"
                 height={80}
                 width={80}
-                loading="lazy"
+                priority
+                style={{ width: "auto", height: "auto" }}
               />
             </Link>
             <Link
@@ -446,7 +448,8 @@ export default function AccountListing() {
                 title="Saudi Business Center Certificate"
                 height={80}
                 width={80}
-                loading="lazy"
+                priority
+                style={{ width: "auto", height: "auto" }}
               />
             </Link>
             {/*<Link href="https://images.tamkeenstores.com.sa/assets/pdf/Online_COC-23Nov.pdf" target='_blank' aria-label="">
