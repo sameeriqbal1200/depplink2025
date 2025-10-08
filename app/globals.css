@@ -20,6 +20,7 @@
  --color-lightGray: #f3f3f3; 
   --color-darkText: #121212; 
     --color-border: #E8E8E8;
+    --color-darkBlue: #252B42; 
 
   /* Border radius (rounded, rounded-md, rounded-2xl, etc.) */
   --radius-none: 0;
