@@ -4,6 +4,8 @@
 import { useEffect } from "react";
 import LottieAnimation from "@/components/LottieAnimation";
 import Link from "next/link";
+import { useApp } from "./_ctx/AppContext";
+import { getPushMessageData } from "@/lib/not_found/not_found.client";
 
 export default function GlobalError({
     error,
@@ -15,6 +17,15 @@ export default function GlobalError({
     useEffect(() => {
         console.error(error);
     }, [error]);
+    const { origin } = useApp();
+    useEffect(()=> {
+        getData()
+    })
+    const getData = async () =>{
+        const PreRoute = sessionStorage.getItem('preLoginRoute');
+        const fullUrl = `${origin}${PreRoute}`
+        const res = await getPushMessageData(fullUrl)
+    }
 
     return (
         <div className="flex flex-col items-center justify-center text-center p-14">

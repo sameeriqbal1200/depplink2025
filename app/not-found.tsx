@@ -2,9 +2,21 @@
 "use client";
 
 import LottieAnimation from "@/components/LottieAnimation";
+import { getPushMessageData } from "@/lib/not_found/not_found.client";
 import Link from "next/link";
+import { useEffect } from "react";
+import { useApp } from "./_ctx/AppContext";
 
 export default function NotFound() {
+    const { origin } = useApp();
+    useEffect(()=> {
+        getData()
+    })
+    const getData = async () =>{
+        const PreRoute = sessionStorage.getItem('preLoginRoute');
+        const fullUrl = `${origin}${PreRoute}`
+        const res = await getPushMessageData(fullUrl)
+    }
     return (
         <div className="flex flex-col items-center justify-center text-center p-14">
             <LottieAnimation src="/json/404-error.json" loop width={200} height={200} />
