@@ -94,7 +94,7 @@ export default function Blogs() {
                                         quality={100}
                                         height={300}
                                         width={300}
-                                        loading='lazy'
+                                        priority={true}
                                         className="rounded-tl-md rounded-tr-md min-w-full object-contain"
                                     />
                                     <div className='mt-5 pb-5 px-3'>
