@@ -173,7 +173,6 @@ export default function MobileFilterNew(props: FilterProps) {
             <div className="flex items-center flex-wrap gap-2">
               {props.brands.map((brand) => {
                 const isSelected = props.selectedbrands[brand.name] === true;
-                console.log('isSelected', isSelected);
                 return (
                   <button
                     key={brand.id}
