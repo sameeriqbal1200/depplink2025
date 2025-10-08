@@ -8,63 +8,27 @@ import { userAgent } from "next/server";
 import { useRouter } from "next/navigation";
 
 // const ProductSliderComponent = dynamic(() => import("@/components/NewHomePageComp/ProductSlider"), { ssr: false });
-const ProductSliderComponent = dynamic(
-  () => import("@/components/NewHomePageComp/ProductSlider"),
-  {
-    ssr: false,
-    loading: () => <div className="h-40 bg-gray-100 animate-pulse" />,
-  }
-);
-const CategoriesHomeMobile = dynamic(
-  () => import("@/components/NewHomePageComp/CategoriesHomeMobile"),
-  {
-    ssr: false,
-    loading: () => (
-      <div className="bg-white rounded-lg shadow-md text-center text-primary animate-pulse w-full">
-        <div className="rounded-md bg-dark/10 p-2.5 h-auto w-full"></div>
-      </div>
-    ),
-  }
-);
-const BadgeProductSlider = dynamic(
-  () => import("@/components/NewHomePageComp/BadgeProductSlider"),
-  { ssr: false }
-);
-const PriceSection = dynamic(
-  () => import("@/components/NewHomePageComp/PriceSection"),
-  { ssr: false }
-);
-const BrandSlider = dynamic(
-  () => import("@/components/NewHomePageComp/BrandSlider"),
-  { ssr: false }
-);
-const BadgeProductLoopComponent = dynamic(
-  () => import("@/components/NewHomePageComp/BadgeProductLoop"),
-  { ssr: false }
-);
-const MainSliderMobile = dynamic(
-  () => import("@/components/NewHomePageComp/MainSliderMobile"),
-  { ssr: false }
-);
-// const CategoriesHomeMobile = dynamic(() => import("@/components/NewHomePageComp/CategoriesHomeMobile"), { ssr: false });
-const ProductLoopMobile = dynamic(
-  () => import("@/components/NewHomePageComp/ProductLoopMobile"),
-  { ssr: false }
-);
-const TamkeenServices = dynamic(() => import("@/components/TamkeenServices"), {
-  ssr: true,
-});
-const MobileHeaderNew = dynamic(() => import("@/components/MobileHeaderNew"), {
-  ssr: true,
-});
-const Newsletter = dynamic(
-  () => import("@/components/NewHomePageComp/Newsletter"),
-  { ssr: true }
-);
-const TopSectionSlider = dynamic(
-  () => import("@/components/NewHomePageComp/TopSectionSlider"),
-  { ssr: false }
-);
+/* 🔹 Product Components */
+const ProductSliderComponent = dynamic(() => import("@/components/NewHomePageComp/ProductSlider"), { ssr: false, loading: () => <div className="h-40 bg-gray-100 animate-pulse" /> });
+const BadgeProductSlider = dynamic(() => import("@/components/NewHomePageComp/BadgeProductSlider"), { ssr: false });
+const BadgeProductLoopComponent = dynamic(() => import("@/components/NewHomePageComp/BadgeProductLoop"), { ssr: false });
+const ProductLoopMobile = dynamic(() => import("@/components/NewHomePageComp/ProductLoopMobile"), { ssr: false });
+
+/* 🔹 Category Components */
+const CategoriesHomeMobile = dynamic(() => import("@/components/NewHomePageComp/CategoriesHomeMobile"), { ssr: false, loading: () => <div className="bg-white rounded-lg shadow-md text-center text-primary animate-pulse w-full"><div className="rounded-md bg-dark/10 p-2.5 h-auto w-full" /></div> });
+
+/* 🔹 Slider Components */
+const MainSliderMobile = dynamic(() => import("@/components/NewHomePageComp/MainSliderMobile"), { ssr: false });
+const TopSectionSlider = dynamic(() => import("@/components/NewHomePageComp/TopSectionSlider"), { ssr: false });
+const BrandSlider = dynamic(() => import("@/components/NewHomePageComp/BrandSlider"), { ssr: false });
+
+/* 🔹 Section Components */
+const PriceSection = dynamic(() => import("@/components/NewHomePageComp/PriceSection"), { ssr: false });
+const Newsletter = dynamic(() => import("@/components/NewHomePageComp/Newsletter"), { ssr: true });
+
+/* 🔹 Layout / Shared Components */
+const TamkeenServices = dynamic(() => import("@/components/TamkeenServices"), { ssr: true });
+const MobileHeaderNew = dynamic(() => import("@/components/MobileHeaderNew"), { ssr: true });
 // const Popup = dynamic(() => import("./components/NewHomePageComp/Popup"), { ssr: true })
 
 import { useApp } from "../_ctx/AppContext";
@@ -166,25 +130,25 @@ export default function Homepage() {
 
     // 1. Section One
     const partOne: any = homepagepartonelatest?.first_five_sec;
-    const secFour: any = partOne?.section_four[0]?.products ?? [];
+    // const secFour: any = partOne?.section_four[0]?.products ?? [];
 
     // 2. Section Two
-    const secSix: any =
-      homepageparttwolatest?.six_eleven_sec?.section_six[0]?.products || [];
-    const secNine: any =
-      homepageparttwolatest?.six_eleven_sec?.section_nine?.products?.data || [];
-    const secTen: any =
-      homepageparttwolatest?.six_eleven_sec?.section_ten?.products?.data || [];
+    // const secSix: any =
+    //   homepageparttwolatest?.six_eleven_sec?.section_six[0]?.products || [];
+    // const secNine: any =
+    //   homepageparttwolatest?.six_eleven_sec?.section_nine?.products?.data || [];
+    // const secTen: any =
+    //   homepageparttwolatest?.six_eleven_sec?.section_ten?.products?.data || [];
 
     // 3. Section Three
     const partThree: any = homepagepartthreelatest?.twelve_seventeen_sec || {};
-    const secTwelve: any = partThree?.sec_twelve_products?.products?.data || {};
-    const secFifteen: any =
-      partThree?.sec_fifteen_products?.products?.data || [];
-    const secSixteen: any =
-      partThree?.sec_sixteen_products?.products?.data || [];
-    const secSeventeen: any =
-      partThree?.sec_seventeen_products?.products?.data || [];
+    // const secTwelve: any = partThree?.sec_twelve_products?.products?.data || {};
+    // const secFifteen: any =
+    //   partThree?.sec_fifteen_products?.products?.data || [];
+    // const secSixteen: any =
+    //   partThree?.sec_sixteen_products?.products?.data || [];
+    // const secSeventeen: any =
+    //   partThree?.sec_seventeen_products?.products?.data || [];
     // allProducts.push(...secFour, ...secSix, ...secNine, ...secTen, ...secTwelve, ...secFifteen, ...secSixteen, ...secSeventeen);
     // const uniqueProducts: any = Array.from(new Map(allProducts.map(p => [p.id, p])).values());
 
@@ -469,341 +433,82 @@ export default function Homepage() {
     }
   };
 
-  //sec 1
-  const sec1Image: any = homepagepartonelatest?.first_five_sec?.sec_one_image
-    ? NewMedia2 + homepagepartonelatest?.first_five_sec?.sec_one_image
-    : "";
-  const sec1SliderData: any = homepagepartonelatest?.first_five_sec
-    ?.section_one_slider_data?.slider_image
-    ? homepagepartonelatest?.first_five_sec?.section_one_slider_data
-      ?.slider_image
-    : [];
-  const sec1Link: any = homepagepartonelatest?.first_five_sec?.sec_one_link
-    ? homepagepartonelatest?.first_five_sec?.sec_one_link
-    : "#";
-  //sec 2
-  const sec2SliderLeftImage: any = homepagepartonelatest?.first_five_sec
-    ?.section_two_slider_left?.slider_image
-    ? homepagepartonelatest?.first_five_sec?.section_two_slider_left
-      ?.slider_image
-    : "";
-  const sec2SliderTopImage: any = homepagepartonelatest?.first_five_sec
-    ?.section_two_slider_top?.slider_image
-    ? homepagepartonelatest?.first_five_sec?.section_two_slider_top
-      ?.slider_image
-    : "";
-  const sec2BottomImage1: any = homepagepartonelatest?.first_five_sec
-    ?.sec_two_bottom_image_one
-    ? NewMedia2 +
-    homepagepartonelatest?.first_five_sec?.sec_two_bottom_image_one
-    : "https://images.tamkeenstores.com.sa/assets/new-media/Main04-BNR2-16Apr.webp";
-  const sec2BottomLink1: any = homepagepartonelatest?.first_five_sec
-    ?.sec_two_bottom_link_one
-    ? homepagepartonelatest?.first_five_sec?.sec_two_bottom_link_one
-    : "";
-  const sec2BottomImage2: any = homepagepartonelatest?.first_five_sec
-    ?.sec_two_bottom_image_two
-    ? NewMedia2 +
-    homepagepartonelatest?.first_five_sec?.sec_two_bottom_image_two
-    : "https://images.tamkeenstores.com.sa/assets/new-media/samsung-tv--Website-24Apr.webp";
-  const sec2BottomLink2: any = homepagepartonelatest?.first_five_sec
-    ?.sec_two_bottom_link_two
-    ? homepagepartonelatest?.first_five_sec?.sec_two_bottom_link_two
-    : "";
-  const sec2BottomImage3: any = homepagepartonelatest?.first_five_sec
-    ?.sec_two_bottom_image_three
-    ? NewMedia2 +
-    homepagepartonelatest?.first_five_sec?.sec_two_bottom_image_three
-    : "https://images.tamkeenstores.com.sa/assets/new-media/Banner-5Discount-Re.webp";
-  const sec2BottomLink3: any = homepagepartonelatest?.first_five_sec
-    ?.sec_two_bottom_link_three
-    ? homepagepartonelatest?.first_five_sec?.sec_two_bottom_link_three
-    : "";
-  //sec 3
-  const secCategoryData: any = homepagepartonelatest?.first_five_sec
-    ? homepagepartonelatest?.first_five_sec
-    : null;
-  //sec 4
-  const sec4Title: any = homepagepartonelatest?.first_five_sec?.sec_four_title
-    ? homepagepartonelatest?.first_five_sec?.sec_four_title
-    : "Section 4";
-  //sec 5
-  const sec5Slider: any = homepagepartonelatest?.first_five_sec
-    ?.section_five_slider?.slider_image
-    ? homepagepartonelatest?.first_five_sec?.section_five_slider?.slider_image
-    : "";
-  const sec5Link1: any = homepagepartonelatest?.first_five_sec
-    ?.sec_five_link_one
-    ? homepagepartonelatest?.first_five_sec?.sec_five_link_one
-    : "";
-  const sec5Image1: any = homepagepartonelatest?.first_five_sec
-    ?.sec_five_image_one
-    ? NewMedia2 + homepagepartonelatest?.first_five_sec?.sec_five_image_one
-    : "";
-  const sec5Link2: any = homepagepartonelatest?.first_five_sec
-    ?.sec_five_link_two
-    ? homepagepartonelatest?.first_five_sec?.sec_five_link_two
-    : "";
-  const sec5Image2: any = homepagepartonelatest?.first_five_sec
-    ?.sec_five_image_two
-    ? NewMedia2 + homepagepartonelatest?.first_five_sec?.sec_five_image_two
-    : "";
-  const sec5Link3: any = homepagepartonelatest?.first_five_sec
-    ?.sec_five_link_three
-    ? homepagepartonelatest?.first_five_sec?.sec_five_link_three
-    : "";
-  const sec5Image3: any = homepagepartonelatest?.first_five_sec
-    ?.sec_five_image_three
-    ? NewMedia2 + homepagepartonelatest?.first_five_sec?.sec_five_image_three
-    : "";
-  const sec5Link4: any = homepagepartonelatest?.first_five_sec
-    ?.sec_five_link_four
-    ? homepagepartonelatest?.first_five_sec?.sec_five_link_four
-    : "";
-  const sec5Image4: any = homepagepartonelatest?.first_five_sec
-    ?.sec_five_image_four
-    ? NewMedia2 + homepagepartonelatest?.first_five_sec?.sec_five_image_four
-    : "";
-  //sec6
-  const sec6Title: any = homepageparttwolatest?.six_eleven_sec?.sec_six_title
-    ? homepageparttwolatest?.six_eleven_sec?.sec_six_title
-    : "Section 6";
-  //sec 7
-  //sec 8
-  const sec8Link: any = homepageparttwolatest?.six_eleven_sec?.sec_eight_link
-    ? homepageparttwolatest?.six_eleven_sec?.sec_eight_link
-    : "";
-  const sec8MobileLink2: any = homepageparttwolatest?.six_eleven_sec
-    ?.sec_eight_second_mobile_link
-    ? homepageparttwolatest?.six_eleven_sec?.sec_eight_second_mobile_link
-    : "";
-  const sec8Image: any = homepageparttwolatest?.six_eleven_sec?.sec_eight_image
-    ? NewMedia2 + homepageparttwolatest?.six_eleven_sec?.sec_eight_image
-    : "https://images.tamkeenstores.com.sa/assets/new-media/27-4-2025-web-ac.webp";
-  const sec8Video: any = homepageparttwolatest?.six_eleven_sec?.sec_eight_video
-    ? NewMedia2 + homepageparttwolatest?.six_eleven_sec?.sec_eight_video
-    : "https://images.tamkeenstores.com.sa/assets/new-media/7de85ade39cc1ac50224613b396b5fff1745748611.mp4";
-  const sec8Heading: any = homepageparttwolatest?.six_eleven_sec
-    ?.sec_eight_heading
-    ? isArabic
-      ? homepageparttwolatest?.six_eleven_sec?.sec_eight_heading
-      : "Fresh Air, Fresh Savings!"
-    : "";
-  const sec8Para: any = homepageparttwolatest?.six_eleven_sec
-    ?.sec_eight_paragraph
-    ? isArabic
-      ? homepageparttwolatest?.six_eleven_sec?.sec_eight_paragraph
-      : "High Performance Cooling, Low Energy Consumption."
-    : "";
-  const sec8ButtonTitle: any = homepageparttwolatest?.six_eleven_sec
-    ?.sec_eight_button_title
-    ? isArabic
-      ? homepageparttwolatest?.six_eleven_sec?.sec_eight_button_title
-      : "View More"
-    : "";
-  //sec 9
-  const Sec9Heading: any = homepageparttwolatest?.six_eleven_sec?.sec_nine_title
-    ? homepageparttwolatest?.six_eleven_sec?.sec_nine_title
-    : "Tamkeen Exclusive Sales";
-  const Sec9ButtonTitle: any = homepageparttwolatest?.six_eleven_sec
-    ?.sec_nine_button_title
-    ? homepageparttwolatest?.six_eleven_sec?.sec_nine_button_title
-    : "View All";
-  const Sec9ButtonLink: any = homepageparttwolatest?.six_eleven_sec
-    ?.sec_nine_button_link
-    ? homepageparttwolatest?.six_eleven_sec?.sec_nine_button_link
-    : "";
-  const sec9Products: any = homepageparttwolatest?.six_eleven_sec?.section_nine
-    ? homepageparttwolatest?.six_eleven_sec?.section_nine
-    : [];
-  //sec 10
-  const Sec10Heading: any = homepageparttwolatest?.six_eleven_sec?.sec_ten_title
-    ? homepageparttwolatest?.six_eleven_sec?.sec_ten_title
-    : "Tamkeen Exclusive Sales";
-  const Sec10ButtonTitle: any = homepageparttwolatest?.six_eleven_sec
-    ?.sec_ten_button_title
-    ? homepageparttwolatest?.six_eleven_sec?.sec_ten_button_title
-    : "View All";
-  const Sec10ButtonLink: any = homepageparttwolatest?.six_eleven_sec
-    ?.sec_ten_button_link
-    ? homepageparttwolatest?.six_eleven_sec?.sec_ten_button_link
-    : "";
-  const sec10Products: any = homepageparttwolatest?.six_eleven_sec?.section_ten
-    ? homepageparttwolatest?.six_eleven_sec?.section_ten
-    : "";
-  //sec 11
-  const sec11Slider: any = homepageparttwolatest?.six_eleven_sec?.section_eleven
-    ?.slider_image
-    ? homepageparttwolatest?.six_eleven_sec?.section_eleven?.slider_image
-    : "";
-  //sec 12
-  const Sec12Heading: any = homepagepartthreelatest?.twelve_seventeen_sec
-    ?.sec_twelve_title
-    ? homepagepartthreelatest?.twelve_seventeen_sec?.sec_twelve_title
-    : "Tamkeen Exclusive Sales";
-  const Sec12ButtonTitle: any = homepagepartthreelatest?.twelve_seventeen_sec
-    ?.sec_twelve_button_title
-    ? homepagepartthreelatest?.twelve_seventeen_sec?.sec_twelve_button_title
-    : "View All";
-  const Sec12ButtonLink: any = homepageparttwolatest?.six_eleven_sec
-    ?.sec_ten_button_link
-    ? homepageparttwolatest?.six_eleven_sec?.sec_ten_button_link
-    : "";
-  const sec12Products: any = homepagepartthreelatest?.twelve_seventeen_sec
-    ?.sec_twelve_products
-    ? homepagepartthreelatest?.twelve_seventeen_sec?.sec_twelve_products
-    : "";
-  //sec 13
-  const sec13BgImage: any = homepagepartthreelatest?.twelve_seventeen_sec
-    ?.sec_thirteen_bg_image
-    ? `url(${NewMedia2 +
-    homepagepartthreelatest.twelve_seventeen_sec.sec_thirteen_bg_image
-    })`
-    : "none";
-  const sec13Link1: any = homepagepartthreelatest?.twelve_seventeen_sec
-    ?.sec_thirteen_link_one
-    ? homepagepartthreelatest?.twelve_seventeen_sec?.sec_thirteen_link_one
-    : "";
-  const sec13Image1: any = homepagepartthreelatest?.twelve_seventeen_sec
-    ?.sec_thirteen_image_one
-    ? NewMedia2 +
-    homepagepartthreelatest?.twelve_seventeen_sec?.sec_thirteen_image_one
-    : "";
-  const sec13Link2: any = homepagepartthreelatest?.twelve_seventeen_sec
-    ?.sec_thirteen_link_two
-    ? homepagepartthreelatest?.twelve_seventeen_sec?.sec_thirteen_link_two
-    : "";
-  const sec13Image2: any = homepagepartthreelatest?.twelve_seventeen_sec
-    ?.sec_thirteen_image_two
-    ? NewMedia2 +
-    homepagepartthreelatest?.twelve_seventeen_sec?.sec_thirteen_image_two
-    : "";
-  const sec13Link3: any = homepagepartthreelatest?.twelve_seventeen_sec
-    ?.sec_thirteen_link_three
-    ? homepagepartthreelatest?.twelve_seventeen_sec?.sec_thirteen_link_three
-    : "";
-  const sec13Image3: any = homepagepartthreelatest?.twelve_seventeen_sec
-    ?.sec_thirteen_image_three
-    ? NewMedia2 +
-    homepagepartthreelatest?.twelve_seventeen_sec?.sec_thirteen_image_three
-    : "";
-  const sec13ButtonLink: any = homepagepartthreelatest?.twelve_seventeen_sec
-    ?.sec_thirteen_button_link
-    ? homepagepartthreelatest?.twelve_seventeen_sec?.sec_thirteen_button_link
-    : "";
-  const sec13ButtonTitle: any = homepagepartthreelatest?.twelve_seventeen_sec
-    ?.sec_thirteen_button_title
-    ? homepagepartthreelatest?.twelve_seventeen_sec?.sec_thirteen_button_title
-    : "View More";
-  //sec 14
-  const sec14Slider: any = homepagepartthreelatest?.twelve_seventeen_sec
-    ?.section_fourteen?.slider_image
-    ? homepagepartthreelatest?.twelve_seventeen_sec?.section_fourteen
-      ?.slider_image
-    : "";
+  const sec1SliderData: string = homepagepartonelatest?.first_five_sec?.section_one_slider_data?.slider_image || [];
+  const sec2SliderTopImage: string = homepagepartonelatest?.first_five_sec?.section_two_slider_top?.slider_image || "";
+
+  const secCategoryData: any = homepagepartonelatest?.first_five_sec || null;
+  const sec4Title: string = homepagepartonelatest?.first_five_sec?.sec_four_title || "Section 4";
+  const sec5Slider: any = homepagepartonelatest?.first_five_sec?.section_five_slider?.slider_image || "";
+  const sec6Title: string = homepageparttwolatest?.six_eleven_sec?.sec_six_title || "Section 6";
+
+  const sec8Link: any = homepageparttwolatest?.six_eleven_sec?.sec_eight_link || "";
+  const sec8Image: any = homepageparttwolatest?.six_eleven_sec?.sec_eight_image ? `${NewMedia2}${homepageparttwolatest.six_eleven_sec.sec_eight_image}` : "/images/placeholder.webp";
+  const sec8Heading: any = isArabic ? homepageparttwolatest?.six_eleven_sec?.sec_eight_heading || "" : "Fresh Air, Fresh Savings!";
+  const sec8Para: any = isArabic ? homepageparttwolatest?.six_eleven_sec?.sec_eight_paragraph || "" : "High Performance Cooling, Low Energy Consumption.";
+  const sec8ButtonTitle: any = isArabic ? homepageparttwolatest?.six_eleven_sec?.sec_eight_button_title || "" : "View More";
+
+
+  const Sec9Heading: any = homepageparttwolatest?.six_eleven_sec?.sec_nine_title || "Tamkeen Exclusive Sales";
+  const Sec9ButtonTitle: any = homepageparttwolatest?.six_eleven_sec?.sec_nine_button_title || "View All";
+  const Sec9ButtonLink: any = homepageparttwolatest?.six_eleven_sec?.sec_nine_button_link || "";
+  const sec9Products: any = homepageparttwolatest?.six_eleven_sec?.section_nine || [];
+
+  const Sec10Heading: any = homepageparttwolatest?.six_eleven_sec?.sec_ten_title || "Tamkeen Exclusive Sales";
+  const Sec10ButtonTitle: any = homepageparttwolatest?.six_eleven_sec?.sec_ten_button_title || "View All";
+  const Sec10ButtonLink: any = homepageparttwolatest?.six_eleven_sec?.sec_ten_button_link || "";
+  const sec10Products: any = homepageparttwolatest?.six_eleven_sec?.section_ten || "";
+
+  const sec11Slider: any = homepageparttwolatest?.six_eleven_sec?.section_eleven?.slider_image || "";
+
+  const Sec12Heading: any = homepagepartthreelatest?.twelve_seventeen_sec?.sec_twelve_title || "Tamkeen Exclusive Sales";
+  const Sec12ButtonTitle: any = homepagepartthreelatest?.twelve_seventeen_sec?.sec_twelve_button_title || "View All";
+  const Sec12ButtonLink: any = homepageparttwolatest?.six_eleven_sec?.sec_ten_button_link || "";
+  const sec12Products: any = homepagepartthreelatest?.twelve_seventeen_sec?.sec_twelve_products || "";
+
+  const sec13BgImage: any = homepagepartthreelatest?.twelve_seventeen_sec?.sec_thirteen_bg_image ? `url(${NewMedia2}${homepagepartthreelatest.twelve_seventeen_sec.sec_thirteen_bg_image})` : "none";
+  const sec13Link1: any = homepagepartthreelatest?.twelve_seventeen_sec?.sec_thirteen_link_one || "";
+  const sec13Image1: any = homepagepartthreelatest?.twelve_seventeen_sec?.sec_thirteen_image_one ? `${NewMedia2}${homepagepartthreelatest.twelve_seventeen_sec.sec_thirteen_image_one}` : "";
+  const sec13Link2: any = homepagepartthreelatest?.twelve_seventeen_sec?.sec_thirteen_link_two || "";
+  const sec13Image2: any = homepagepartthreelatest?.twelve_seventeen_sec?.sec_thirteen_image_two ? `${NewMedia2}${homepagepartthreelatest.twelve_seventeen_sec.sec_thirteen_image_two}` : "";
+  const sec13Link3: any = homepagepartthreelatest?.twelve_seventeen_sec?.sec_thirteen_link_three || "";
+  const sec13Image3: any = homepagepartthreelatest?.twelve_seventeen_sec?.sec_thirteen_image_three ? `${NewMedia2}${homepagepartthreelatest.twelve_seventeen_sec.sec_thirteen_image_three}` : "";
+  const sec13ButtonLink: any = homepagepartthreelatest?.twelve_seventeen_sec?.sec_thirteen_button_link || "";
+  const sec13ButtonTitle: any = homepagepartthreelatest?.twelve_seventeen_sec?.sec_thirteen_button_title || "View More";
+  const sec14Slider: any = homepagepartthreelatest?.twelve_seventeen_sec?.section_fourteen?.slider_image || "";
+
   // const sec14Heading: any = isArabic ? "اطبخ بأناقة و دقة!" : 'Cook with elegance and precision!';
   // const sec14Paragraph: any = isArabic ? "تسوق الآن افران الطبخ و الأجهزة المدمجة بأفضل الأسعار مع  تخفيضات تمكين الحصرية" : 'Shop now Cooking Ovens and Built-in Appliances at the best prices with Exclusive Tamkeen Sales';
   // const sec14ButtonTitle: any = isArabic ? "عرض المزيد" : 'View More';
-  //sec 15
-  const Sec15Heading: any = homepagepartthreelatest?.twelve_seventeen_sec
-    ?.sec_fifteen_title
-    ? homepagepartthreelatest?.twelve_seventeen_sec?.sec_fifteen_title
-    : "Tamkeen Exclusive Sales";
-  const Sec15ButtonTitle: any = homepagepartthreelatest?.twelve_seventeen_sec
-    ?.sec_fifteen_button_title
-    ? homepagepartthreelatest?.twelve_seventeen_sec?.sec_fifteen_button_title
-    : "View All";
-  const Sec15ButtonLink: any = homepagepartthreelatest?.twelve_seventeen_sec
-    ?.sec_fifteen_button_link
-    ? homepagepartthreelatest?.twelve_seventeen_sec?.sec_fifteen_button_link
-    : "";
-  const sec15Products: any = homepagepartthreelatest?.twelve_seventeen_sec
-    ?.sec_fifteen_products
-    ? homepagepartthreelatest?.twelve_seventeen_sec?.sec_fifteen_products
-    : "";
-  //sec 16
-  const Sec16Heading: any = homepagepartthreelatest?.twelve_seventeen_sec
-    ?.sec_sixteen_title
-    ? homepagepartthreelatest?.twelve_seventeen_sec?.sec_sixteen_title
-    : "Tamkeen Exclusive Sales";
-  const Sec16ButtonTitle: any = homepagepartthreelatest?.twelve_seventeen_sec
-    ?.sec_sixteen_button_title
-    ? homepagepartthreelatest?.twelve_seventeen_sec?.sec_sixteen_button_title
-    : "View All";
-  const Sec16ButtonLink: any = homepagepartthreelatest?.twelve_seventeen_sec
-    ?.sec_sixteen_button_link
-    ? homepagepartthreelatest?.twelve_seventeen_sec?.sec_sixteen_button_link
-    : "";
-  const sec16Products: any = homepagepartthreelatest?.twelve_seventeen_sec
-    ?.sec_sixteen_products
-    ? homepagepartthreelatest?.twelve_seventeen_sec?.sec_sixteen_products
-    : "";
-  //sec 17
-  const Sec17Heading: any = homepagepartthreelatest?.twelve_seventeen_sec
-    ?.sec_seventeen_title
-    ? homepagepartthreelatest?.twelve_seventeen_sec?.sec_seventeen_title
-    : "Tamkeen Exclusive Sales";
-  const Sec17ButtonTitle: any = homepagepartthreelatest?.twelve_seventeen_sec
-    ?.sec_seventeen_button_title
-    ? homepagepartthreelatest?.twelve_seventeen_sec?.sec_seventeen_button_title
-    : "View All";
-  const Sec17ButtonLink: any = homepagepartthreelatest?.twelve_seventeen_sec
-    ?.sec_seventeen_button_link
-    ? homepagepartthreelatest?.twelve_seventeen_sec?.sec_seventeen_button_link
-    : "";
-  const sec17Products: any = homepagepartthreelatest?.twelve_seventeen_sec
-    ?.sec_seventeen_products
-    ? homepagepartthreelatest?.twelve_seventeen_sec?.sec_seventeen_products
-    : "";
-  //sec 18
-  const sec18Heading: any = homepagepartthreelatest?.twelve_seventeen_sec
-    ?.sec_eighteen_heading
-    ? homepagepartthreelatest?.twelve_seventeen_sec?.sec_eighteen_heading
-    : "Cook with elegance and precision!";
-  const sec18Paragraph: any = homepagepartthreelatest?.twelve_seventeen_sec
-    ?.sec_eighteen_sub_heading
-    ? homepagepartthreelatest?.twelve_seventeen_sec?.sec_eighteen_sub_heading
-    : "Shop now Cooking Ovens and Built-in Appliances at the best prices with Exclusive Tamkeen Sales";
-  const sec18ButtonTitle: any = isArabic ? "عرض المزيد" : "View More";
-  const sec18ButtonLink: any = homepagepartthreelatest?.twelve_seventeen_sec
-    ?.sec_eighteen_button_link
-    ? homepagepartthreelatest?.twelve_seventeen_sec?.sec_eighteen_button_link
-    : "";
-  const sec18Image1: any = homepagepartthreelatest?.twelve_seventeen_sec
-    ?.sec_eighteen_image_one
-    ? NewMedia2 +
-    homepagepartthreelatest?.twelve_seventeen_sec?.sec_eighteen_image_one
-    : "";
-  const sec18Link1: any = homepagepartthreelatest?.twelve_seventeen_sec
-    ?.sec_eighteen_link_one
-    ? NewMedia2 +
-    homepagepartthreelatest?.twelve_seventeen_sec?.sec_eighteen_link_one
-    : "";
-  const sec18Image2: any = homepagepartthreelatest?.twelve_seventeen_sec
-    ?.sec_eighteen_image_two
-    ? NewMedia2 +
-    homepagepartthreelatest?.twelve_seventeen_sec?.sec_eighteen_image_two
-    : "";
-  const sec18Link2: any = homepagepartthreelatest?.twelve_seventeen_sec
-    ?.sec_eighteen_link_two
-    ? NewMedia2 +
-    homepagepartthreelatest?.twelve_seventeen_sec?.sec_eighteen_link_two
-    : "";
-  const sec18Image3: any = homepagepartthreelatest?.twelve_seventeen_sec
-    ?.sec_eighteen_image_three
-    ? NewMedia2 +
-    homepagepartthreelatest?.twelve_seventeen_sec?.sec_eighteen_image_three
-    : "";
-  const sec18Link3: any = homepagepartthreelatest?.twelve_seventeen_sec
-    ?.sec_eighteen_link_three
-    ? homepagepartthreelatest?.twelve_seventeen_sec?.sec_eighteen_link_three
-    : "";
+  const Sec15Heading: any = homepagepartthreelatest?.twelve_seventeen_sec?.sec_fifteen_title || "Tamkeen Exclusive Sales";
+  const Sec15ButtonTitle: any = homepagepartthreelatest?.twelve_seventeen_sec?.sec_fifteen_button_title || "View All";
+  const Sec15ButtonLink: any = homepagepartthreelatest?.twelve_seventeen_sec?.sec_fifteen_button_link || "";
+  const sec15Products: any = homepagepartthreelatest?.twelve_seventeen_sec?.sec_fifteen_products || "";
 
-  const brandHeading: any = isArabic
-    ? "تـصـفـح بالعـلامـات التـجـاريـــة"
-    : "Shop by Brands";
+  const Sec16Heading: any = homepagepartthreelatest?.twelve_seventeen_sec?.sec_sixteen_title || "Tamkeen Exclusive Sales";
+  const Sec16ButtonTitle: any = homepagepartthreelatest?.twelve_seventeen_sec?.sec_sixteen_button_title || "View All";
+  const Sec16ButtonLink: any = homepagepartthreelatest?.twelve_seventeen_sec?.sec_sixteen_button_link || "";
+  const sec16Products: any = homepagepartthreelatest?.twelve_seventeen_sec?.sec_sixteen_products || "";
+
+  const Sec17Heading: any = homepagepartthreelatest?.twelve_seventeen_sec?.sec_seventeen_title || "Tamkeen Exclusive Sales";
+  const Sec17ButtonTitle: any = homepagepartthreelatest?.twelve_seventeen_sec?.sec_seventeen_button_title || "View All";
+  const Sec17ButtonLink: any = homepagepartthreelatest?.twelve_seventeen_sec?.sec_seventeen_button_link || "";
+  const sec17Products: any = homepagepartthreelatest?.twelve_seventeen_sec?.sec_seventeen_products || "";
+
+  const sec18Heading: any = homepagepartthreelatest?.twelve_seventeen_sec?.sec_eighteen_heading || "Cook with elegance and precision!";
+  const sec18Paragraph: any = homepagepartthreelatest?.twelve_seventeen_sec?.sec_eighteen_sub_heading || "Shop now Cooking Ovens and Built-in Appliances at the best prices with Exclusive Tamkeen Sales";
+  const sec18ButtonTitle: any = isArabic ? "عرض المزيد" : "View More";
+  const sec18ButtonLink: any = homepagepartthreelatest?.twelve_seventeen_sec?.sec_eighteen_button_link || "";
+  const sec18Image1: any = homepagepartthreelatest?.twelve_seventeen_sec?.sec_eighteen_image_one ? `${NewMedia2}${homepagepartthreelatest.twelve_seventeen_sec.sec_eighteen_image_one}` : "";
+  const sec18Link1: any = homepagepartthreelatest?.twelve_seventeen_sec?.sec_eighteen_link_one ? `${NewMedia2}${homepagepartthreelatest.twelve_seventeen_sec.sec_eighteen_link_one}` : "";
+  const sec18Image2: any = homepagepartthreelatest?.twelve_seventeen_sec?.sec_eighteen_image_two ? `${NewMedia2}${homepagepartthreelatest.twelve_seventeen_sec.sec_eighteen_image_two}` : "";
+  const sec18Link2: any = homepagepartthreelatest?.twelve_seventeen_sec?.sec_eighteen_link_two ? `${NewMedia2}${homepagepartthreelatest.twelve_seventeen_sec.sec_eighteen_link_two}` : "";
+  const sec18Image3: any = homepagepartthreelatest?.twelve_seventeen_sec?.sec_eighteen_image_three ? `${NewMedia2}${homepagepartthreelatest.twelve_seventeen_sec.sec_eighteen_image_three}` : "";
+  const sec18Link3: any = homepagepartthreelatest?.twelve_seventeen_sec?.sec_eighteen_link_three || "";
+
+  const brandHeading: any = isArabic ? "تـصـفـح بالعـلامـات التـجـاريـــة" : "Shop by Brands";
   const brandButtonTitle: any = isArabic ? "عـرض الكــل" : "View All";
   const brandButtonLink: any = "brandslisting";
+
 
   // This is for loading on scroll
   const section5Ref = useRef<HTMLDivElement | null>(null);
@@ -963,51 +668,27 @@ export default function Homepage() {
 
   function getEnglishTitle(sectionId: string): string {
     switch (sectionId) {
-      // case 'section3':
-      //   return homepagepartonelatest?.first_five_sec?.sec_three_title || 'Section 3';
       case "section4":
-        return (
-          homepagepartonelatest?.first_five_sec?.sec_four_title ||
-          "Latest Products"
-        );
+        return homepagepartonelatest?.first_five_sec?.sec_four_title || "Latest Products";
       case "section6":
-        return (
-          homepageparttwolatest?.six_eleven_sec?.sec_six_title ||
-          "Special Offers"
-        );
+        return homepageparttwolatest?.six_eleven_sec?.sec_six_title || "Special Offers";
       case "section9":
-        return (
-          homepageparttwolatest?.six_eleven_sec?.sec_nine_title ||
-          "Tamkeen Sales"
-        );
+        return homepageparttwolatest?.six_eleven_sec?.sec_nine_title || "Tamkeen Sales";
       case "section10":
-        return (
-          homepageparttwolatest?.six_eleven_sec?.sec_ten_title || "Best Sellers"
-        );
+        return homepageparttwolatest?.six_eleven_sec?.sec_ten_title || "Best Sellers";
       case "section12":
-        return (
-          homepagepartthreelatest?.twelve_seventeen_sec?.sec_twelve_title ||
-          "Featured"
-        );
+        return homepagepartthreelatest?.twelve_seventeen_sec?.sec_twelve_title || "Featured";
       case "section15":
-        return (
-          homepagepartthreelatest?.twelve_seventeen_sec?.sec_fifteen_title ||
-          "Today's Deals"
-        );
+        return homepagepartthreelatest?.twelve_seventeen_sec?.sec_fifteen_title || "Today's Deals";
       case "section16":
-        return (
-          homepagepartthreelatest?.twelve_seventeen_sec?.sec_sixteen_title ||
-          "New Arrivals"
-        );
+        return homepagepartthreelatest?.twelve_seventeen_sec?.sec_sixteen_title || "New Arrivals";
       case "section17":
-        return (
-          homepagepartthreelatest?.twelve_seventeen_sec?.sec_seventeen_title ||
-          "Our Picks"
-        );
+        return homepagepartthreelatest?.twelve_seventeen_sec?.sec_seventeen_title || "Our Picks";
       default:
         return "Products";
     }
   }
+
 
   function getSectionProducts(sectionId: string): any[] {
     switch (sectionId) {
