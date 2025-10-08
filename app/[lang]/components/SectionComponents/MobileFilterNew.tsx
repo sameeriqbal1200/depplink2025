@@ -17,6 +17,7 @@ interface FilterProps {
   setBrandData: (id: string, name: string) => void;
   onChangetags: (tag: { name: string; name_arabic: string; icon?: string }) => void;
   setFilterModal: (value: boolean) => void;
+  setApplyFilter: any;
   filterModal: boolean;
   NewMedia: any;
 }
@@ -142,6 +143,7 @@ export default function MobileFilterNew(props: FilterProps) {
             <div className="flex items-center flex-wrap gap-2">
               {props.brands.map((brand) => {
                 const isSelected = props.selectedbrands[brand.name] === true;
+                console.log('isSelected', isSelected);
                 return (
                   <button
                     key={brand.id}
@@ -223,7 +225,7 @@ export default function MobileFilterNew(props: FilterProps) {
         <button
           className="bestProButton w-fit whitespace-nowrap !px-6 !py-2 bg-primary !text-white border-primary hover:!text-primary hover:bg-white"
           aria-label={isArabic ? "تطبيق" : "Apply"}
-          onClick={() => props.setFilterModal(false)}
+          onClick={() => {props?.setApplyFilter(true); props.setFilterModal(false)}}
         >
           {isArabic ? "تطبيق" : "Apply"}
         </button>

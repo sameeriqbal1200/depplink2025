@@ -101,6 +101,7 @@ export default function SubCategoryNew({
   const [searchDialoug, setSearchDialoug] = useState(false);
   const [min, setMin] = useState<any>(data?.productData?.min || 0); // Adjust default as needed
   const [max, setMax] = useState<any>(data?.productData?.max || 0); // Adjust default as needed
+  const [applyFilter, setApplyFilter] = useState<any>(false);
   const SortingProduct = [
     { value: "", label: lang == "ar" ? "الأكثر تطابقاً" : "Relevance" },
     {
@@ -114,6 +115,16 @@ export default function SubCategoryNew({
         lang == "ar" ? "السعر (من الأعلى إلى الأقل)" : "Price (Hight to Low)",
     },
   ];
+
+  useEffect(() => {
+    if (applyFilter) {
+      filter();
+      setApplyFilter(false);
+    }
+  }, [applyFilter]);
+
+
+  
   const SearchData: any = async (e: any) => {
     if (e?.length == 0) {
       setSearchDialoug(false);
@@ -250,7 +261,7 @@ export default function SubCategoryNew({
 
   useEffect(() => {
     (async () => {
-      if (searchParams?.brand) {
+      if (searchParams?.brand && applyFilter) {
         setBrandfilterHide(true);
         var br = searchParams?.brand.split(",");
         var brandnames: any = {};
@@ -267,7 +278,7 @@ export default function SubCategoryNew({
         }
       }
 
-      if (searchParams?.cats) {
+      if (searchParams?.cats && applyFilter) {
         setFilterHide(true);
         var cats = searchParams?.cats.split(",");
         var scats: any = {};
@@ -300,7 +311,7 @@ export default function SubCategoryNew({
         setsort(searchParams?.sort);
       }
 
-      if (searchParams?.tags) {
+      if (searchParams?.tags && applyFilter) {
         var tagdata = searchParams?.tags.split(",");
         var shitems: any = {};
         //var maintag = itemsToShowTag
@@ -373,11 +384,11 @@ export default function SubCategoryNew({
     //   filterdata['max'] = max
     if (Object.keys(selectedcats).length)
       filterdata["cats"] = Object.keys(selectedcats).join(",");
-    if (Object.keys(selectedbrands).length)
+    if (Object.keys(selectedbrands).length && applyFilter)
       filterdata["brand"] = Object.keys(selectedbrands).join(",");
     if (Object.keys(selectedrating).length)
       filterdata["rating"] = Object.keys(selectedrating).join(",");
-    if (Object.keys(selectedtags).length)
+    if (Object.keys(selectedtags).length && applyFilter)
       filterdata["tags"] = Object.keys(selectedtags).join(",");
     if (sort) filterdata["sort"] = sort;
     const result = "?" + new URLSearchParams(filterdata).toString();
@@ -980,34 +991,28 @@ export default function SubCategoryNew({
           tags={CatData?.productData?.tags}
           isArabic={isArabic}
           deviceType={deviceType}
+          setApplyFilter={setApplyFilter}
           isMobileOrTablet={isMobileOrTablet}
           selectedtags={selectedtags}
           onChangetags={(tagchild: any) => {
-            var tagnames = selectedtags;
-            if (!tagnames[tagchild.name]) {
-              tagnames[tagchild.name] = true;
+            const updatedTags = { ...selectedtags };
+            if (!updatedTags[tagchild.name]) {
+              updatedTags[tagchild.name] = true;
             } else {
-              delete tagnames[tagchild.name];
-              window.scrollTo(0, 0);
+              delete updatedTags[tagchild.name];
             }
-            setLoaderStatus(true);
-            setselectedtags({ ...tagnames });
-            setcurrentPage(1);
-            filter();
+            setselectedtags(updatedTags);
           }}
           brands={CatData?.productData?.brands}
           selectedbrands={selectedbrands}
           setBrandData={(id: any, name: string) => {
-            var bdata = selectedbrands;
-            if (!bdata[name]) {
-              bdata[name] = true;
+            const updatedBrands = { ...selectedbrands };
+            if (!updatedBrands[name]) {
+              updatedBrands[name] = true;
             } else {
-              delete bdata[name];
+              delete updatedBrands[name];
             }
-            setLoaderStatus(true);
-            setselectedbrands({ ...bdata });
-            setcurrentPage(1);
-            filter();
+            setselectedbrands(updatedBrands);
           }}
           setClear={() => {
             setLoaderStatus(true);
