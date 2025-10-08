@@ -970,7 +970,7 @@ export default function SubCategoryNew({
 
       {/* Mobile Filter Modal */}
       <section
-        className={`fixed inset-0 bg-white z-50 p-4 overflow-y-auto transform transition-transform duration-300 ease-in-out
+        className={`fixed inset-0 bg-white z-50 p-4 overflow-hidden transform transition-transform duration-300 ease-in-out
     ${filterModal ? "translate-x-0" : "-translate-x-full"}`}
       >
         <MobileFilterNew

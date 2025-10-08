@@ -113,7 +113,7 @@ export default function MobileFilterNew(props: FilterProps) {
           )}
         </div>
 
-        <div className="flex items-center flex-wrap gap-2">
+        <div className="flex items-center flex-wrap gap-2 max-h-[10vh] overflow-y-auto ltr:pr-1 rtl:pl-1">
           {Object.keys(props.selectedbrands).map((brandName) => {
             const brand = props.brands.find((b) => b.name === brandName);
             return (
@@ -143,6 +143,7 @@ export default function MobileFilterNew(props: FilterProps) {
         </div>
       </div>
 
+      <div className="max-h-[60vh] overflow-y-auto ltr:pr-1 rtl:pl-1">
       {/* Brand Section */}
       {props.brands?.length > 0 && (
         <div
@@ -276,6 +277,7 @@ export default function MobileFilterNew(props: FilterProps) {
           )}
         </div>
       ))}
+      </div>
 
       {/* Apply Button */}
       <div className="flex justify-center mt-5">
