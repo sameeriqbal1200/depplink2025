@@ -579,7 +579,7 @@ export default function SubCategoryNew({
                     </>
                   )}
                 </div>
-                <hr className="w-full h-px border border-gray my-2.5 opacity-40"></hr>
+                <hr className="w-full h-px my-2.5 opacity-10"></hr>
               </div>
             ) : (
               <div className="mb-10">

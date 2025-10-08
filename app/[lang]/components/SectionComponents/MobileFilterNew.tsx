@@ -103,7 +103,7 @@ export default function MobileFilterNew(props: FilterProps) {
             return (
               <button
                 key={brandName}
-                className="bestProButton !w-fit whitespace-nowrap border-gray text-primary hover:text-white hover:bg-primary selected !px-3 !py-1 !text-[.625rem]"
+                className="bestProButton !w-fit whitespace-nowrap border-gray text-primary hover:text-white hover:bg-primary selected !px-3 !py-1 !text-2.5"
                 aria-label={isArabic ? brand?.name_arabic : brandName}
               >
                 {isArabic ? brand?.name_arabic : brandName}
@@ -115,7 +115,7 @@ export default function MobileFilterNew(props: FilterProps) {
             return (
               <button
                 key={tagName}
-                className="bestProButton !w-fit whitespace-nowrap border-gray text-primary hover:text-white hover:bg-primary selected !px-3 !py-1 !text-[.625rem]"
+                className="bestProButton !w-fit whitespace-nowrap border-gray text-primary hover:text-white hover:bg-primary selected !px-3 !py-1 !text-2.5"
                 aria-label={isArabic ? tag?.name_arabic : tagName}
               >
                 {isArabic ? tag?.name_arabic : tagName}
@@ -127,7 +127,7 @@ export default function MobileFilterNew(props: FilterProps) {
 
       {/* Brand Section */}
       {props.brands?.length > 0 && (
-        <div className="mb-4 p-4 rounded-[.25rem] border border-[#E8E8E8]"  onClick={() => toggleFilter("FilterByBrand")}>
+        <div className="mb-4 p-4 rounded-[.25rem] border border-[var(--color-border)]"  onClick={() => toggleFilter("FilterByBrand")}>
           <div className={`text-xs text-[#252B42] font-bold flex items-center justify-between gap-4 w-full ${openFilter["FilterByBrand"] ? 'mb-4' : ''}`}>
             <span className="line-clamp-1">{brandText}</span>
             <button
@@ -173,7 +173,7 @@ export default function MobileFilterNew(props: FilterProps) {
 
       {/* Tags Section */}
       {props.tags?.map((tagdata, t) => (
-        <div key={t} className="mb-4 p-4 rounded-[.25rem] border border-[#E8E8E8]"  onClick={() => toggleFilter(`FilterBy${tagdata.name}`)}>
+        <div key={t} className="mb-4 p-4 rounded-[.25rem] border border-[var(--color-border)]"  onClick={() => toggleFilter(`FilterBy${tagdata.name}`)}>
           <div className={`text-xs text-[#252B42] font-bold flex items-center justify-between gap-4 w-full ${openFilter[`FilterBy${tagdata.name}`] ? 'mb-4' : ''} `}>
             <span className="line-clamp-1">{isArabic ? tagdata.name_arabic : tagdata.name}</span>
             <button
@@ -192,19 +192,19 @@ export default function MobileFilterNew(props: FilterProps) {
                   <button
                     key={tagchild.name}
                     onClick={() => props.onChangetags(tagchild)}
-                    className={`relative px-2 py-2 rounded-full cursor-pointer outline-none border flex items-center justify-center  ${isSelected ? "border-primary border-2 text-primary bg-white" : "bg-[#F3F3F3] border-white text-[#121212]"}`}
+                    className={`relative px-2 py-2 rounded-full cursor-pointer outline-none border flex items-center justify-center  ${isSelected ? "border-primary border-2 text-primary bg-white" : "bg-[var(--color-lightGray)] border-white text-[var(--color-darkText)]"}`}
                     aria-label={isArabic ? tagchild.name_arabic : tagchild.name}
                   >
                     {tagchild.icon ? (
                       // <div dangerouslySetInnerHTML={{ __html: tagchild.icon }} />
                       <div className="font-bold tracking-[0.00544rem]">
-                        <p className="text-[.5rem] leading-[.625rem]">
+                        <p className="text-[.5rem] leading-2.5">
                           {isArabic ? tagchild.name_arabic : tagchild.name}
                         </p>
                       </div>
                     ) : (
                       <div className="text-[#121212] font-bold tracking-[0.00544rem]">
-                        <p className="text-[.5rem] leading-[.625rem]">
+                        <p className="text-[.5rem] leading-2.5">
                           {isArabic ? tagchild.name_arabic : tagchild.name}
                         </p>
                       </div>
