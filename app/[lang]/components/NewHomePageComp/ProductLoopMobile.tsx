@@ -59,15 +59,15 @@ export default function ProductLoopMobile(props: any) {
                         spaceBetween: 6,
                     },
                     640: {
-                        slidesPerView: 1.2,
+                        slidesPerView: 1.6,
                         spaceBetween: 6,
                     },
                     768: {
-                        slidesPerView: 3,
+                        slidesPerView: 2.2,
                         spaceBetween: 6,
                     },
                     1024: {
-                        slidesPerView: 4,
+                        slidesPerView: 3,
                         spaceBetween: 6,
                     },
                     1650: {
@@ -88,7 +88,7 @@ export default function ProductLoopMobile(props: any) {
                 }}
                 pagination={false}
                 // loop={true}
-                loop={(productData?.length || 0) > 2}
+                loop={(productData?.length || 0) > 6}
                 mousewheel={{
                     forceToAxis: true,
                     releaseOnEdges: true,
