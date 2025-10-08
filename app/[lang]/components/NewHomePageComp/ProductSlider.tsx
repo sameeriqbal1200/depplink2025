@@ -3,20 +3,25 @@
 import React, { useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay, FreeMode, Mousewheel, Navigation, Pagination, Scrollbar } from "swiper/modules";
-import 'swiper/css/free-mode';
-import 'swiper/css/scrollbar';
-import './scrollBar.css';
-import 'swiper/css/pagination';
+import {
+  Autoplay,
+  FreeMode,
+  Mousewheel,
+  Navigation,
+  Pagination,
+  Scrollbar,
+} from "swiper/modules";
+import "swiper/css/free-mode";
+import "swiper/css/scrollbar";
+import "./scrollBar.css";
+import "swiper/css/pagination";
 import Link from "next/link";
 import { getCookie } from "cookies-next";
 import { getProductExtraData } from "@/lib/components/component.client";
 
-
-const ProductComponent = dynamic(
-  () => import("./product_component_updated"),
-  { ssr: true }
-);
+const ProductComponent = dynamic(() => import("./product_component_updated"), {
+  ssr: true,
+});
 
 export default function ProductSliderComponent(props: any) {
   const origin = props?.origin;
@@ -31,37 +36,40 @@ export default function ProductSliderComponent(props: any) {
   const gtmNewListId = props?.gtmColumnItemListId;
   const gtmNewListName = props?.gtmColumnItemListName;
 
-  const [ProExtraData, setProExtraData] = useState<any>([])
+  const [ProExtraData, setProExtraData] = useState<any>([]);
 
   useEffect(() => {
     if (props?.productDataSlider) {
-      extraproductdata()
+      extraproductdata();
     }
-  }, [props?.productDataSlider])
+  }, [props?.productDataSlider]);
 
   const extraproductdata = async () => {
-
-    var a: number[] = []
+    var a: number[] = [];
     if (productDataSlider?.length >= 1) {
       productDataSlider?.forEach((item: any) => {
-        a.push(item.id)
+        a.push(item.id);
       });
     }
-    var city = getCookie('selectedCity')
+    var city = getCookie("selectedCity");
     // localStorage.getItem("globalcity")
     if (a?.length >= 1) {
       const dataExtra = await getProductExtraData(a?.join(","), city);
-      setProExtraData(dataExtra?.extraDataDetails?.data)
+      setProExtraData(dataExtra?.extraDataDetails?.data);
     }
-  }
-
+  };
 
   return (
     <>
       <div className={`${containerClass}`}>
         <div className="flex justify-between items-start">
           <h2 className="headingHomeMain mb-5">{props?.sliderHeading}</h2>
-          <Link prefetch={false} scroll={false} href={`${origin}/${isArabic ? "ar" : "en"}/${props?.buttonLink}`} className="text-primary text-sm md:text-xl font-medium underline px-1.5 md:bg-white bg-[#EBEBEB] py-1 md:shadow-none rounded-md shadow-sm text-nowrap">
+          <Link
+            prefetch={false}
+            scroll={false}
+            href={`${origin}/${isArabic ? "ar" : "en"}/${props?.buttonLink}`}
+            className="text-primary text-sm md:text-xl font-medium underline px-1.5 md:bg-white bg-[#EBEBEB] py-1 md:shadow-none rounded-md shadow-sm text-nowrap"
+          >
             {props?.buttonTitle}
           </Link>
         </div>
@@ -76,11 +84,11 @@ export default function ProductSliderComponent(props: any) {
               spaceBetween: 6,
             },
             640: {
-              slidesPerView: 1.2,
+              slidesPerView: 2,
               spaceBetween: 6,
             },
             768: {
-              slidesPerView: 1.2,
+              slidesPerView: 2.2,
               spaceBetween: 6,
             },
             1024: {
@@ -109,7 +117,7 @@ export default function ProductSliderComponent(props: any) {
           }}
           pagination={false}
           // loop={true}
-          loop={(productDataSlider?.length || 0) > 2}
+          loop={(productDataSlider?.length || 0) > 6}
           mousewheel={{
             forceToAxis: true,
             releaseOnEdges: true,
@@ -121,7 +129,14 @@ export default function ProductSliderComponent(props: any) {
             hide: isMobileOrTablet ? false : true, // Show scrollbar
           }}
           freeMode={true}
-          modules={[Autoplay, Navigation, Pagination, FreeMode, Scrollbar, Mousewheel]}
+          modules={[
+            Autoplay,
+            Navigation,
+            Pagination,
+            FreeMode,
+            Scrollbar,
+            Mousewheel,
+          ]}
           // navigation={{ nextEl: `.arrow-left-${idRandom}`, prevEl: `.arrow-right-${idRandom}` }}
           onBeforeInit={(swiper) => {
             if (swiper.params.navigation) {
@@ -136,11 +151,22 @@ export default function ProductSliderComponent(props: any) {
           }}
           className="swiperProductSlider !pb-4"
         >
-          {productDataSlider?.map((productSlider: any, productSliderID: number) => (
-            <SwiperSlide key={productSliderID}>
-              <ProductComponent NewMedia={NewMedia} productData={productSlider} lang={isArabic} isMobileOrTablet={isMobileOrTablet} origin={origin} ProExtraData={ProExtraData[productSlider?.id]} gtmColumnItemListId={gtmNewListId} gtmColumnItemListName={gtmNewListName}/>
-            </SwiperSlide>
-          ))}
+          {productDataSlider?.map(
+            (productSlider: any, productSliderID: number) => (
+              <SwiperSlide key={productSliderID}>
+                <ProductComponent
+                  NewMedia={NewMedia}
+                  productData={productSlider}
+                  lang={isArabic}
+                  isMobileOrTablet={isMobileOrTablet}
+                  origin={origin}
+                  ProExtraData={ProExtraData[productSlider?.id]}
+                  gtmColumnItemListId={gtmNewListId}
+                  gtmColumnItemListName={gtmNewListName}
+                />
+              </SwiperSlide>
+            )
+          )}
         </Swiper>
       </div>
     </>

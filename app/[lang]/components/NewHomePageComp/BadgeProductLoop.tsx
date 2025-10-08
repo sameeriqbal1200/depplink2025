@@ -68,21 +68,21 @@ export default function BadgeProductLoopComponent(props: any) {
                     slidesPerView={6}
                     breakpoints={{
                         320: {
-                            slidesPerView: 1.2,
-                            spaceBetween: 6,
-                        },
-                        640: {
-                            slidesPerView: 1.2,
-                            spaceBetween: 6,
-                        },
-                        768: {
-                            slidesPerView: 1.2,
-                            spaceBetween: 6,
-                        },
-                        1024: {
-                            slidesPerView: 3,
-                            spaceBetween: 6,
-                        },
+                        slidesPerView: 1.2,
+                        spaceBetween: 6,
+                    },
+                    640: {
+                        slidesPerView: 2,
+                        spaceBetween: 6,
+                    },
+                    768: {
+                        slidesPerView: 2.2,
+                        spaceBetween: 6,
+                    },
+                    1024: {
+                        slidesPerView: 3,
+                        spaceBetween: 6,
+                    },
                         1280: {
                             slidesPerView: 4,
                             spaceBetween: 6,
@@ -105,7 +105,7 @@ export default function BadgeProductLoopComponent(props: any) {
                     }}
                     pagination={false}
                     // loop={true}
-                    loop={(productDataSlider?.length || 0) > 2}
+                    loop={(productDataSlider?.length || 0) > 6}
                     mousewheel={{
                         forceToAxis: true,
                         releaseOnEdges: true,
