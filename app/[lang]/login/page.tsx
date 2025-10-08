@@ -468,7 +468,7 @@ export default function Login(searchParams: any) {
                                 <div>
                                     <Link href={`/${lang}/${notificationsListing?.link}`} className="focus-visible:outline-none w-full ltr:text-left rtl:text-right">
                                         {notificationsListing?.image ?
-                                            <Image loading='lazy' src={notificationsListing?.image} alt={lang === 'ar' ? notificationsListing?.title_arabic : notificationsListing?.title} title={lang === 'ar' ? notificationsListing?.title_arabic : notificationsListing?.title} height={0} width={0} className="h-auto w-full rounded-tl-md rounded-tr-md" sizes="(max-width: 640px) 100vw, (max-width: 768px) 100vw, (max-width: 1024px) 100vw, 100vw" />
+                                            <Image priority={true} src={notificationsListing?.image} alt={lang === 'ar' ? notificationsListing?.title_arabic : notificationsListing?.title} title={lang === 'ar' ? notificationsListing?.title_arabic : notificationsListing?.title} height={0} width={0} className="h-auto w-full rounded-tl-md rounded-tr-md" sizes="(max-width: 640px) 100vw, (max-width: 768px) 100vw, (max-width: 1024px) 100vw, 100vw" />
                                             :
                                             <div className="animate-pulse">
                                                 <div className="rounded-md bg-dark/10 p-2.5 h-[194px] mt-2"></div>
