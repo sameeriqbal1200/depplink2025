@@ -40,7 +40,7 @@ const TopSectionSlider: React.FC<TopSectionSliderData> = ({
         className="mySwiper cursor-grab active:cursor-grabbing"
       >
         {data?.map((item: any) => {
-          const sliderImage: any = item?.image ? `${NewMedia2}${item?.image}` : '';
+          const sliderImage: any = item?.image ? `${NewMedia2}${item?.image}` : '/images/';
           const sliderLink: any = item?.redirection_link ? `${origin}/${lang}/${item?.redirection_link}` : '';
           return (
             <SwiperSlide key={item?.id}>

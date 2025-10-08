@@ -82,7 +82,7 @@ export default function Homepage() {
   const [homepageparttwolatest, setHomepagePartTwoLatest] = useState<any>(null);
   const [homepagepartthreelatest, setHomepagePartThreeLatest] =
     useState<any>(null);
-  
+
   useEffect(() => {
     const observer = new MutationObserver(() => {
       console.log("DOM nodes Page:", document.getElementsByTagName("*").length);
@@ -312,9 +312,8 @@ export default function Homepage() {
                   ? item?.brand?.name_arabic
                   : item?.brand?.name,
                 item_image_link: `${NewMedia}${item?.featured_image?.image}`,
-                item_link: `${origin}/${isArabic ? "ar" : "en"}/product/${
-                  item?.slug
-                }`,
+                item_link: `${origin}/${isArabic ? "ar" : "en"}/product/${item?.slug
+                  }`,
                 item_availability: "in stock",
                 index: index,
                 quantity: 1,
@@ -477,7 +476,7 @@ export default function Homepage() {
   const sec1SliderData: any = homepagepartonelatest?.first_five_sec
     ?.section_one_slider_data?.slider_image
     ? homepagepartonelatest?.first_five_sec?.section_one_slider_data
-        ?.slider_image
+      ?.slider_image
     : [];
   const sec1Link: any = homepagepartonelatest?.first_five_sec?.sec_one_link
     ? homepagepartonelatest?.first_five_sec?.sec_one_link
@@ -486,17 +485,17 @@ export default function Homepage() {
   const sec2SliderLeftImage: any = homepagepartonelatest?.first_five_sec
     ?.section_two_slider_left?.slider_image
     ? homepagepartonelatest?.first_five_sec?.section_two_slider_left
-        ?.slider_image
+      ?.slider_image
     : "";
   const sec2SliderTopImage: any = homepagepartonelatest?.first_five_sec
     ?.section_two_slider_top?.slider_image
     ? homepagepartonelatest?.first_five_sec?.section_two_slider_top
-        ?.slider_image
+      ?.slider_image
     : "";
   const sec2BottomImage1: any = homepagepartonelatest?.first_five_sec
     ?.sec_two_bottom_image_one
     ? NewMedia2 +
-      homepagepartonelatest?.first_five_sec?.sec_two_bottom_image_one
+    homepagepartonelatest?.first_five_sec?.sec_two_bottom_image_one
     : "https://images.tamkeenstores.com.sa/assets/new-media/Main04-BNR2-16Apr.webp";
   const sec2BottomLink1: any = homepagepartonelatest?.first_five_sec
     ?.sec_two_bottom_link_one
@@ -505,7 +504,7 @@ export default function Homepage() {
   const sec2BottomImage2: any = homepagepartonelatest?.first_five_sec
     ?.sec_two_bottom_image_two
     ? NewMedia2 +
-      homepagepartonelatest?.first_five_sec?.sec_two_bottom_image_two
+    homepagepartonelatest?.first_five_sec?.sec_two_bottom_image_two
     : "https://images.tamkeenstores.com.sa/assets/new-media/samsung-tv--Website-24Apr.webp";
   const sec2BottomLink2: any = homepagepartonelatest?.first_five_sec
     ?.sec_two_bottom_link_two
@@ -514,7 +513,7 @@ export default function Homepage() {
   const sec2BottomImage3: any = homepagepartonelatest?.first_five_sec
     ?.sec_two_bottom_image_three
     ? NewMedia2 +
-      homepagepartonelatest?.first_five_sec?.sec_two_bottom_image_three
+    homepagepartonelatest?.first_five_sec?.sec_two_bottom_image_three
     : "https://images.tamkeenstores.com.sa/assets/new-media/Banner-5Discount-Re.webp";
   const sec2BottomLink3: any = homepagepartonelatest?.first_five_sec
     ?.sec_two_bottom_link_three
@@ -657,10 +656,9 @@ export default function Homepage() {
   //sec 13
   const sec13BgImage: any = homepagepartthreelatest?.twelve_seventeen_sec
     ?.sec_thirteen_bg_image
-    ? `url(${
-        NewMedia2 +
-        homepagepartthreelatest.twelve_seventeen_sec.sec_thirteen_bg_image
-      })`
+    ? `url(${NewMedia2 +
+    homepagepartthreelatest.twelve_seventeen_sec.sec_thirteen_bg_image
+    })`
     : "none";
   const sec13Link1: any = homepagepartthreelatest?.twelve_seventeen_sec
     ?.sec_thirteen_link_one
@@ -669,7 +667,7 @@ export default function Homepage() {
   const sec13Image1: any = homepagepartthreelatest?.twelve_seventeen_sec
     ?.sec_thirteen_image_one
     ? NewMedia2 +
-      homepagepartthreelatest?.twelve_seventeen_sec?.sec_thirteen_image_one
+    homepagepartthreelatest?.twelve_seventeen_sec?.sec_thirteen_image_one
     : "";
   const sec13Link2: any = homepagepartthreelatest?.twelve_seventeen_sec
     ?.sec_thirteen_link_two
@@ -678,7 +676,7 @@ export default function Homepage() {
   const sec13Image2: any = homepagepartthreelatest?.twelve_seventeen_sec
     ?.sec_thirteen_image_two
     ? NewMedia2 +
-      homepagepartthreelatest?.twelve_seventeen_sec?.sec_thirteen_image_two
+    homepagepartthreelatest?.twelve_seventeen_sec?.sec_thirteen_image_two
     : "";
   const sec13Link3: any = homepagepartthreelatest?.twelve_seventeen_sec
     ?.sec_thirteen_link_three
@@ -687,7 +685,7 @@ export default function Homepage() {
   const sec13Image3: any = homepagepartthreelatest?.twelve_seventeen_sec
     ?.sec_thirteen_image_three
     ? NewMedia2 +
-      homepagepartthreelatest?.twelve_seventeen_sec?.sec_thirteen_image_three
+    homepagepartthreelatest?.twelve_seventeen_sec?.sec_thirteen_image_three
     : "";
   const sec13ButtonLink: any = homepagepartthreelatest?.twelve_seventeen_sec
     ?.sec_thirteen_button_link
@@ -701,7 +699,7 @@ export default function Homepage() {
   const sec14Slider: any = homepagepartthreelatest?.twelve_seventeen_sec
     ?.section_fourteen?.slider_image
     ? homepagepartthreelatest?.twelve_seventeen_sec?.section_fourteen
-        ?.slider_image
+      ?.slider_image
     : "";
   // const sec14Heading: any = isArabic ? "اطبخ بأناقة و دقة!" : 'Cook with elegance and precision!';
   // const sec14Paragraph: any = isArabic ? "تسوق الآن افران الطبخ و الأجهزة المدمجة بأفضل الأسعار مع  تخفيضات تمكين الحصرية" : 'Shop now Cooking Ovens and Built-in Appliances at the best prices with Exclusive Tamkeen Sales';
@@ -774,27 +772,27 @@ export default function Homepage() {
   const sec18Image1: any = homepagepartthreelatest?.twelve_seventeen_sec
     ?.sec_eighteen_image_one
     ? NewMedia2 +
-      homepagepartthreelatest?.twelve_seventeen_sec?.sec_eighteen_image_one
+    homepagepartthreelatest?.twelve_seventeen_sec?.sec_eighteen_image_one
     : "";
   const sec18Link1: any = homepagepartthreelatest?.twelve_seventeen_sec
     ?.sec_eighteen_link_one
     ? NewMedia2 +
-      homepagepartthreelatest?.twelve_seventeen_sec?.sec_eighteen_link_one
+    homepagepartthreelatest?.twelve_seventeen_sec?.sec_eighteen_link_one
     : "";
   const sec18Image2: any = homepagepartthreelatest?.twelve_seventeen_sec
     ?.sec_eighteen_image_two
     ? NewMedia2 +
-      homepagepartthreelatest?.twelve_seventeen_sec?.sec_eighteen_image_two
+    homepagepartthreelatest?.twelve_seventeen_sec?.sec_eighteen_image_two
     : "";
   const sec18Link2: any = homepagepartthreelatest?.twelve_seventeen_sec
     ?.sec_eighteen_link_two
     ? NewMedia2 +
-      homepagepartthreelatest?.twelve_seventeen_sec?.sec_eighteen_link_two
+    homepagepartthreelatest?.twelve_seventeen_sec?.sec_eighteen_link_two
     : "";
   const sec18Image3: any = homepagepartthreelatest?.twelve_seventeen_sec
     ?.sec_eighteen_image_three
     ? NewMedia2 +
-      homepagepartthreelatest?.twelve_seventeen_sec?.sec_eighteen_image_three
+    homepagepartthreelatest?.twelve_seventeen_sec?.sec_eighteen_image_three
     : "";
   const sec18Link3: any = homepagepartthreelatest?.twelve_seventeen_sec
     ?.sec_eighteen_link_three
@@ -933,10 +931,9 @@ export default function Homepage() {
       const category =
         sec4SelectedCategory?.name || sec4SelectedCategory?.name_arabic;
       return {
-        sectionName: `${
-          homepagepartonelatest?.first_five_sec?.sec_four_title ||
+        sectionName: `${homepagepartonelatest?.first_five_sec?.sec_four_title ||
           "Latest Products"
-        } - ${category}`,
+          } - ${category}`,
         itemListId: `${secNew}_${sec4SelectedCategory?.id || "default"}`,
         products: sec4SelectedProducts,
       };
@@ -947,10 +944,9 @@ export default function Homepage() {
       const category =
         sec6SelectedCategory?.name || sec6SelectedCategory?.name_arabic;
       return {
-        sectionName: `${
-          homepageparttwolatest?.six_eleven_sec?.sec_six_title ||
+        sectionName: `${homepageparttwolatest?.six_eleven_sec?.sec_six_title ||
           "Special Offers"
-        } - ${category}`,
+          } - ${category}`,
         itemListId: `${secNew}_${sec6SelectedCategory?.id || "default"}`,
         products: sec6SelectedProducts,
       };
@@ -1103,11 +1099,10 @@ export default function Homepage() {
                     updateCategoryProducts(item?.category?.id, index, 1)
                   }
                   className={`bestProButton w-fit whitespace-nowrap px-4 py-2 selected
-                                                ${
-                                                  index == sec4SelectedIndex
-                                                    ? "bg-primary !text-white border-primary"
-                                                    : " text-primary border-gray"
-                                                } 
+                                                ${index == sec4SelectedIndex
+                      ? "bg-primary !text-white border-primary"
+                      : " text-primary border-gray"
+                    } 
                                             hover:text-white hover:bg-primary`}
                 >
                   {item?.category?.name ? item?.category?.name : ""}
@@ -1137,14 +1132,14 @@ export default function Homepage() {
           </div>
         )}
         {/* New Price Section */}
-          <PriceSection
-            NewMedia={NewMedia}
-            data={homepagepartonelatest?.first_five_sec}
-            isArabic={isArabic}
-            lang={lang}
-            origin={origin}
-            isMobileOrTablet={true}
-          />
+        <PriceSection
+          NewMedia={NewMedia}
+          data={homepagepartonelatest?.first_five_sec}
+          isArabic={isArabic}
+          lang={lang}
+          origin={origin}
+          isMobileOrTablet={true}
+        />
       </section>
 
       {/* Section 2 End */}
@@ -1181,11 +1176,10 @@ export default function Homepage() {
                         updateCategoryProducts(item?.category?.id, index, 2)
                       }
                       className={`bestProButton tamkeenBtns w-fit whitespace-nowrap px-4 py-2
-                                    ${
-                                      index == sec6SelectedIndex
-                                        ? "selected"
-                                        : "bg-white text-primary border-gray"
-                                    } `}
+                                    ${index == sec6SelectedIndex
+                          ? "selected"
+                          : "bg-white text-primary border-gray"
+                        } `}
                     >
                       {item?.category?.name ? item?.category?.name : ""}
                     </button>
@@ -1207,21 +1201,21 @@ export default function Homepage() {
                   )}
                 </>
               ) : (
-                  <div className="animate-pulse flex items-center xl:justify-between justify-start xl:gap-4 gap-x-4 gap-y-8 overflow-hidden">
-                    {[...Array(4)].map((_, i) => (
-                      <div
-                        key={i}
-                        className="relative w-full flex rtl:flex-row-reverse items-start mt-[1.2rem] md:mt-6"
-                      >
-                        <div className="bg-white h-[410px] sm:h-[500px] lg:h-[420px] 2xl:h-[500px] relative rounded-2xl w-[200px] sm:w-[280px] lg:w-[190px] xl:w-[210px] 2xl:w-[280px]"></div>
-                        <div className="pl-[2rem] bg-white shadow-xl rounded-tr-lg rounded-br-lg w-fit -ml-[10px]">
-                          <span className="text-[7rem] lg:text-[10rem] -mr-[1.6rem] font-bold text-primary opacity-0">
-                            {i + 1}
-                          </span>
-                        </div>
+                <div className="animate-pulse flex items-center xl:justify-between justify-start xl:gap-4 gap-x-4 gap-y-8 overflow-hidden">
+                  {[...Array(4)].map((_, i) => (
+                    <div
+                      key={i}
+                      className="relative w-full flex rtl:flex-row-reverse items-start mt-[1.2rem] md:mt-6"
+                    >
+                      <div className="bg-white h-[410px] sm:h-[500px] lg:h-[420px] 2xl:h-[500px] relative rounded-2xl w-[200px] sm:w-[280px] lg:w-[190px] xl:w-[210px] 2xl:w-[280px]"></div>
+                      <div className="pl-[2rem] bg-white shadow-xl rounded-tr-lg rounded-br-lg w-fit -ml-[10px]">
+                        <span className="text-[7rem] lg:text-[10rem] -mr-[1.6rem] font-bold text-primary opacity-0">
+                          {i + 1}
+                        </span>
                       </div>
-                    ))}
-                  </div>
+                    </div>
+                  ))}
+                </div>
               )}
             </>
           ) : (
