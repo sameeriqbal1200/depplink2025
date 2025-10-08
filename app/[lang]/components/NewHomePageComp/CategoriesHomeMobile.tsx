@@ -37,7 +37,7 @@ export default function CategoriesHomeMobile(props: any) {
             {isClient && (
                 <Swiper
                     direction="horizontal"
-                    slidesPerView={5}  // 2 slides per row
+                    slidesPerView={4}  // 2 slides per row
                     spaceBetween={8}  // Space between slides
                     scrollbar={{
                         draggable: false,
@@ -70,7 +70,7 @@ export default function CategoriesHomeMobile(props: any) {
                                         quality={100}
                                         sizes='(max-width: 140px) 100vw, (max-width: 1068px) 1150px, (max-width: 1024px) 1, 100vw'
                                         priority={true}
-                                        className="mx-auto h-auto bg-white w-full border rounded-xl shadow-sm border-[#ff7b345e]"
+                                        className="mx-auto h-auto bg-white w-20 border rounded-xl shadow-sm border-[#ff7b345e]"
                                     />
                                     <h2 className="font-bold mt-2 text-[0.65rem] xl:text-xs line-clamp-1 md:line-clamp-2 leading-4 text-xs text-center">
                                         {renderCategoryName(category)}

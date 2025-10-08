@@ -9,13 +9,26 @@ interface FilterProps {
   isArabic: boolean;
   isMobileOrTablet: boolean;
   deviceType: string;
-  brands: { id: string; name: string; name_arabic: string; brand_media_image?: { image: string } }[];
+  brands: {
+    id: string;
+    name: string;
+    name_arabic: string;
+    brand_media_image?: { image: string };
+  }[];
   selectedbrands: Record<string, boolean>;
-  tags: { name: string; name_arabic: string; childs: { name: string; name_arabic: string; icon?: string }[] }[];
+  tags: {
+    name: string;
+    name_arabic: string;
+    childs: { name: string; name_arabic: string; icon?: string }[];
+  }[];
   selectedtags: Record<string, boolean>;
   setClear: () => void;
   setBrandData: (id: string, name: string) => void;
-  onChangetags: (tag: { name: string; name_arabic: string; icon?: string }) => void;
+  onChangetags: (tag: {
+    name: string;
+    name_arabic: string;
+    icon?: string;
+  }) => void;
   setFilterModal: (value: boolean) => void;
   setApplyFilter: any;
   filterModal: boolean;
@@ -61,12 +74,12 @@ export default function MobileFilterNew(props: FilterProps) {
 
   const toggleFilter = (name: any) => {
     setOpenFilter((prev) => {
-        const newState:any = {};
-        Object.keys(prev).forEach((key) => {
-          newState[key] = false;
-        });
-        newState[name] = !prev[name];
-        return newState;
+      const newState: any = {};
+      Object.keys(prev).forEach((key) => {
+        newState[key] = false;
+      });
+      newState[name] = !prev[name];
+      return newState;
     });
   };
 
@@ -80,14 +93,17 @@ export default function MobileFilterNew(props: FilterProps) {
         className="absolute -top-2 right-0 p-2 z-10"
         aria-label={isArabic ? "إغلاق" : "Close"}
       >
-        <CloseIcon size={14} color="#121212" /> 
+        <CloseIcon size={14} color="var()" />
       </button>
 
       {/* Filter Header */}
       <div className="mb-4">
         <div className="flex items-center justify-between mb-2.5">
-          <h2 className="headingHomeMain !text-base !text-dark">{filterText}</h2>
-          {(Object.keys(props.selectedbrands).length > 0 || Object.keys(props.selectedtags).length > 0) &&
+          <h2 className="headingHomeMain !text-base !text-dark">
+            {filterText}
+          </h2>
+          {(Object.keys(props.selectedbrands).length > 0 ||
+            Object.keys(props.selectedtags).length > 0) && (
             <button
               className="clear_all text-xs text-[#BE0404] font-semibold"
               onClick={props.setClear}
@@ -95,16 +111,16 @@ export default function MobileFilterNew(props: FilterProps) {
             >
               {clearText}
             </button>
-          }
+          )}
         </div>
 
-        <div className="flex items-center flex-wrap gap-2">
+        <div className="flex items-center flex-wrap gap-2 max-h-[10vh] overflow-y-auto ltr:pr-1 rtl:pl-1">
           {Object.keys(props.selectedbrands).map((brandName) => {
             const brand = props.brands.find((b) => b.name === brandName);
             return (
               <button
                 key={brandName}
-                className="bestProButton !w-fit whitespace-nowrap border-gray text-primary hover:text-white hover:bg-primary selected !px-3 !py-1 !text-[.625rem]"
+                className="bestProButton !w-fit whitespace-nowrap border-gray text-primary hover:text-white hover:bg-primary selected !px-3 !py-1 !text-2.5"
                 aria-label={isArabic ? brand?.name_arabic : brandName}
               >
                 {isArabic ? brand?.name_arabic : brandName}
@@ -112,11 +128,13 @@ export default function MobileFilterNew(props: FilterProps) {
             );
           })}
           {Object.keys(props.selectedtags).map((tagName) => {
-            const tag = props.tags.flatMap((t) => t.childs).find((c) => c.name === tagName);
+            const tag = props.tags
+              .flatMap((t) => t.childs)
+              .find((c) => c.name === tagName);
             return (
               <button
                 key={tagName}
-                className="bestProButton !w-fit whitespace-nowrap border-gray text-primary hover:text-white hover:bg-primary selected !px-3 !py-1 !text-[.625rem]"
+                className="bestProButton !w-fit whitespace-nowrap border-gray text-primary hover:text-white hover:bg-primary selected !px-3 !py-1 !text-2.5"
                 aria-label={isArabic ? tag?.name_arabic : tagName}
               >
                 {isArabic ? tag?.name_arabic : tagName}
@@ -126,13 +144,25 @@ export default function MobileFilterNew(props: FilterProps) {
         </div>
       </div>
 
+      <div className="max-h-[70vh] overflow-y-auto ltr:pr-1 rtl:pl-1">
       {/* Brand Section */}
       {props.brands?.length > 0 && (
-        <div className="mb-4 p-4 rounded-[.25rem] border border-[#E8E8E8]"  onClick={() => toggleFilter("FilterByBrand")}>
-          <div className={`text-xs text-[#252B42] font-bold flex items-center justify-between gap-4 w-full ${openFilter["FilterByBrand"] ? 'mb-4' : ''}`}>
+        <div
+          className="mb-4 p-4 rounded-[.25rem] border border-[var(--color-border)]"
+          onClick={() => toggleFilter("FilterByBrand")}
+        >
+          <div
+            className={`text-xs text-[var(--color-darkBlue)] font-bold flex items-center justify-between gap-4 w-full ${
+              openFilter["FilterByBrand"] ? "mb-4" : ""
+            }`}
+          >
             <span className="line-clamp-1">{brandText}</span>
             <button
-              className="text-xs text-white fill-white bg-primary font-bold flex items-center justify-center w-[22px] h-[22px] rounded-full p-1"
+              className={`text-xs text-white fill-white font-bold flex items-center justify-center w-5.5 h-5.5 rounded-full p-1 ${
+                Object.keys(props.selectedbrands).length > 0
+                  ? "bg-greenDark"
+                  : "bg-primary"
+              }`}
             >
               {Object.keys(props.selectedbrands).length > 0
                 ? Object.keys(props.selectedbrands).length
@@ -148,13 +178,21 @@ export default function MobileFilterNew(props: FilterProps) {
                   <button
                     key={brand.id}
                     onClick={() => props.setBrandData(brand.id, brand.name)}
-                    className={`relative px-4 py-2 rounded-full cursor-pointer outline-none ${isSelected ? "border-primary border-2 bg-white" : "bg-[#F3F3F3] border-white"}`}
+                    className={`relative px-4 py-2 rounded-full cursor-pointer outline-none ${
+                      isSelected
+                        ? "border-primary border-2 bg-white"
+                        : "bg-[var(--color-lightGray)] border-white"
+                    }`}
                     aria-label={isArabic ? brand.name_arabic : brand.name}
                   >
                     <Image
                       alt={isArabic ? brand.name_arabic : brand.name}
                       title={isArabic ? brand.name_arabic : brand.name}
-                      src={brand.brand_media_image ? `${NewMedia}${brand.brand_media_image.image}` : "https://images.tamkeenstores.com.sa/assets/new-media/3f4a05b645bdf91af2a0d9598e9526181714129744.png"}
+                      src={
+                        brand.brand_media_image
+                          ? `${NewMedia}${brand.brand_media_image.image}`
+                          : "https://images.tamkeenstores.com.sa/assets/new-media/3f4a05b645bdf91af2a0d9598e9526181714129744.png"
+                      }
                       width={0}
                       height={0}
                       decoding="async"
@@ -175,14 +213,32 @@ export default function MobileFilterNew(props: FilterProps) {
 
       {/* Tags Section */}
       {props.tags?.map((tagdata, t) => (
-        <div key={t} className="mb-4 p-4 rounded-[.25rem] border border-[#E8E8E8]"  onClick={() => toggleFilter(`FilterBy${tagdata.name}`)}>
-          <div className={`text-xs text-[#252B42] font-bold flex items-center justify-between gap-4 w-full ${openFilter[`FilterBy${tagdata.name}`] ? 'mb-4' : ''} `}>
-            <span className="line-clamp-1">{isArabic ? tagdata.name_arabic : tagdata.name}</span>
+        <div
+          key={t}
+          className="mb-4 p-4 rounded-[.25rem] border border-[var(--color-border)]"
+          onClick={() => toggleFilter(`FilterBy${tagdata.name}`)}
+        >
+          <div
+            className={`text-xs text-[var(--color-darkBlue)] font-bold flex items-center justify-between gap-4 w-full ${
+              openFilter[`FilterBy${tagdata.name}`] ? "mb-4" : ""
+            } `}
+          >
+            <span className="line-clamp-1">
+              {isArabic ? tagdata.name_arabic : tagdata.name}
+            </span>
             <button
-              className="text-xs text-white fill-white bg-primary font-bold flex items-center justify-center w-[22px] h-[22px] rounded-full p-1"
+              className={`text-xs text-white fill-white font-bold flex items-center justify-center w-5.5 h-5.5 rounded-full p-1 ${
+                tagdata.childs.filter((child) => props.selectedtags[child.name])
+                  .length > 0
+                  ? "bg-greenDark"
+                  : "bg-primary"
+              }`}
             >
-              {tagdata.childs.filter((child) => props.selectedtags[child.name]).length > 0
-                ? tagdata.childs.filter((child) => props.selectedtags[child.name]).length
+              {tagdata.childs.filter((child) => props.selectedtags[child.name])
+                .length > 0
+                ? tagdata.childs.filter(
+                    (child) => props.selectedtags[child.name]
+                  ).length
                 : smallDropdownIcon}
             </button>
           </div>
@@ -194,19 +250,23 @@ export default function MobileFilterNew(props: FilterProps) {
                   <button
                     key={tagchild.name}
                     onClick={() => props.onChangetags(tagchild)}
-                    className={`relative px-2 py-2 rounded-full cursor-pointer outline-none border flex items-center justify-center  ${isSelected ? "border-primary border-2 text-primary bg-white" : "bg-[#F3F3F3] border-white text-[#121212]"}`}
+                    className={`relative px-2 py-2 rounded-full cursor-pointer outline-none border flex items-center justify-center  ${
+                      isSelected
+                        ? "border-primary border-2 text-primary bg-white"
+                        : "bg-[var(--color-lightGray)] border-white text-[var(--color-darkText)]"
+                    }`}
                     aria-label={isArabic ? tagchild.name_arabic : tagchild.name}
                   >
                     {tagchild.icon ? (
                       // <div dangerouslySetInnerHTML={{ __html: tagchild.icon }} />
                       <div className="font-bold tracking-[0.00544rem]">
-                        <p className="text-[.5rem] leading-[.625rem]">
+                        <p className="text-[.5rem] leading-2.5">
                           {isArabic ? tagchild.name_arabic : tagchild.name}
                         </p>
                       </div>
                     ) : (
-                      <div className="text-[#121212] font-bold tracking-[0.00544rem]">
-                        <p className="text-[.5rem] leading-[.625rem]">
+                      <div className="text-[var(--color-darkText)] font-bold tracking-[0.00544rem]">
+                        <p className="text-[.5rem] leading-2.5">
                           {isArabic ? tagchild.name_arabic : tagchild.name}
                         </p>
                       </div>
@@ -219,11 +279,12 @@ export default function MobileFilterNew(props: FilterProps) {
           )}
         </div>
       ))}
+      </div>
 
       {/* Apply Button */}
-      <div className="flex justify-center mt-5">
+      <div className="flex justify-center mt-5 p-4 fixed bottom-4 left-1/2 -translate-x-1/2 w-full">
         <button
-          className="bestProButton w-fit whitespace-nowrap !px-6 !py-2 bg-primary !text-white border-primary hover:!text-primary hover:bg-white"
+          className="bestProButton w-fit whitespace-nowrap !px-6 !py-2.5 bg-primary !text-white border-primary hover:!text-primary hover:bg-white !rounded-md"
           aria-label={isArabic ? "تطبيق" : "Apply"}
           onClick={() => {props?.setApplyFilter(true); props.setFilterModal(false)}}
         >

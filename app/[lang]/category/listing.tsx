@@ -590,7 +590,7 @@ export default function SubCategoryNew({
                     </>
                   )}
                 </div>
-                <hr className="w-full h-px border border-gray my-2.5 opacity-40"></hr>
+                <hr className="w-full h-px my-2.5 opacity-10"></hr>
               </div>
             ) : (
               <div className="mb-10">
@@ -981,7 +981,7 @@ export default function SubCategoryNew({
 
       {/* Mobile Filter Modal */}
       <section
-        className={`fixed inset-0 bg-white z-50 p-4 overflow-y-auto transform transition-transform duration-300 ease-in-out
+        className={`fixed inset-0 bg-white z-50 p-4 overflow-hidden transform transition-transform duration-300 ease-in-out
     ${filterModal ? "translate-x-0" : "-translate-x-full"}`}
       >
         <MobileFilterNew
