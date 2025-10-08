@@ -143,7 +143,7 @@ export default function MobileFilterNew(props: FilterProps) {
         </div>
       </div>
 
-      <div className="max-h-[60vh] overflow-y-auto ltr:pr-1 rtl:pl-1">
+      <div className="max-h-[70vh] overflow-y-auto ltr:pr-1 rtl:pl-1">
       {/* Brand Section */}
       {props.brands?.length > 0 && (
         <div
@@ -280,9 +280,9 @@ export default function MobileFilterNew(props: FilterProps) {
       </div>
 
       {/* Apply Button */}
-      <div className="flex justify-center mt-5">
+      <div className="flex justify-center mt-5 p-4 fixed bottom-4 left-1/2 -translate-x-1/2 w-full">
         <button
-          className="bestProButton w-fit whitespace-nowrap !px-6 !py-2 bg-primary !text-white border-primary hover:!text-primary hover:bg-white"
+          className="bestProButton w-fit whitespace-nowrap !px-6 !py-2.5 bg-primary !text-white border-primary hover:!text-primary hover:bg-white !rounded-md"
           aria-label={isArabic ? "تطبيق" : "Apply"}
           onClick={() => props.setFilterModal(false)}
         >
