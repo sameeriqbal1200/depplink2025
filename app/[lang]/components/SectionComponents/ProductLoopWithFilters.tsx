@@ -88,6 +88,7 @@ interface Product {
 interface ProductLoopFilterComponentProps {
   origin: string;
   isArabic: boolean;
+  lang: any;
   isMobileOrTablet: boolean;
   productDataSlider: { products?: { data: Product[] }; tags?: Tag[]; brands?: Brand[] };
   gtmColumnItemListId?: string;
@@ -101,6 +102,7 @@ interface ProductLoopFilterComponentProps {
 
 export default function ProductLoopFilterComponent({
   origin,
+  lang,
   isArabic,
   isMobileOrTablet,
   productDataSlider,
@@ -498,6 +500,7 @@ export default function ProductLoopFilterComponent({
               <SwiperSlide key={product.id}>
                 <div className="relative h-full">
                   <ProductComponent
+                    lang={isArabic}
                     productData={product}
                     NewMedia={NewMedia}
                     isArabic={isArabic}

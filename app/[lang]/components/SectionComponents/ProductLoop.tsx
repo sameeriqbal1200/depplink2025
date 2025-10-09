@@ -19,6 +19,7 @@ const ProductComponent = dynamic(
 );
 
 export default function ProductLoopComponent(props: any) {
+  const lang = props?.lang;
   const origin = props?.origin;
   const NewMedia = props?.NewMedia;
   const isArabic = props?.isArabic;
@@ -171,7 +172,7 @@ export default function ProductLoopComponent(props: any) {
         >
           {productDataSlider?.map((productSlider: any, productSliderID: number) => (
             <SwiperSlide key={productSliderID}>
-              <ProductComponent NewMedia={NewMedia} productData={productSlider} isArabic={isArabic} isMobileOrTablet={isMobileOrTablet} origin={origin} ProExtraData={ProExtraData?.[productSlider?.id]} gtmColumnItemListId={gtmNewListId} gtmColumnItemListName={gtmNewListName}/>
+              <ProductComponent lang={isArabic} NewMedia={NewMedia} productData={productSlider} isArabic={isArabic} isMobileOrTablet={isMobileOrTablet} origin={origin} ProExtraData={ProExtraData?.[productSlider?.id]} gtmColumnItemListId={gtmNewListId} gtmColumnItemListName={gtmNewListName}/>
             </SwiperSlide>
           ))}
         </Swiper>

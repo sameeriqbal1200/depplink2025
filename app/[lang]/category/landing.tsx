@@ -33,7 +33,7 @@ type LandingProps = {
   searchParams?: Record<string, string>;
 };
 
-export default function NewCategory({ data,slug, lang, deviceType, origin, searchParams }: LandingProps) {
+export default function NewCategory({ data, slug, lang, deviceType, origin, searchParams }: LandingProps) {
   const isMobileOrTablet = deviceType === "mobile" || deviceType === "tablet";
   const containerClass = isMobileOrTablet ? "container" : "px-20";
   const isArabic = lang === "ar" ? true : false;
@@ -99,6 +99,7 @@ export default function NewCategory({ data,slug, lang, deviceType, origin, searc
                   isArabic={isArabic}
                   isMobileOrTablet={isMobileOrTablet}
                   origin={origin}
+                  lang={lang}
                 />
               </section>
             );
@@ -133,6 +134,7 @@ export default function NewCategory({ data,slug, lang, deviceType, origin, searc
                   isMobileOrTablet={isMobileOrTablet}
                   origin={origin}
                   filters={element.data.tags} // Pass filter tags
+                  lang={lang}
                 />
               </section>
             );
@@ -152,6 +154,7 @@ export default function NewCategory({ data,slug, lang, deviceType, origin, searc
                   timerHeading={element.timer_heading || ""}
                   day={element.day || ""}
                   date={element.date || ""}
+                  lang={lang}
                 />
               </section>
             );

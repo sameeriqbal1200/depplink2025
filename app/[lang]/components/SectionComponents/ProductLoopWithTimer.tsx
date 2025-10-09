@@ -46,6 +46,7 @@ interface Product {
 interface ProductLoopTimerComponentProps {
   origin: string;
   isArabic: boolean;
+  lang: any;
   isMobileOrTablet: boolean;
   productDataSlider: { products?: { data: Product[] } };
   gtmColumnItemListId?: string;
@@ -62,6 +63,7 @@ interface ProductLoopTimerComponentProps {
 export default function ProductLoopTimerComponent({
   origin,
   isArabic,
+  lang,
   isMobileOrTablet,
   productDataSlider,
   gtmColumnItemListId,
@@ -275,6 +277,7 @@ export default function ProductLoopTimerComponent({
               <SwiperSlide key={product.id}>
                 <div className="relative h-full">
                   <ProductComponent
+                    lang={isArabic}
                     productData={product} 
                     isArabic={isArabic} 
                     NewMedia={NewMedia}
