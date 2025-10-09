@@ -21,6 +21,7 @@ import { getCookie } from 'cookies-next';
 import { useApp } from '@/app/_ctx/AppContext';
 import { useSlot } from '@/app/_ctx/ClientDataRegistry';
 import { getPickupFromStoreProduct, getProductExtraDataRegional } from '@/lib/productpages/product.client';
+import SARIcon from '../../components/Icons/SARIcon';
 
 
 // const LoginSingup = dynamic(() => import('../../components/LoginSignup'), { ssr: false })
@@ -1231,21 +1232,11 @@ export default function Product() {
         if (!productDataClassic?.data?.flash_sale_price && !productDataClassic?.data?.sale_price) return '';
         return productDataClassic?.data?.price;
     };
-    const currencySymbol =
-        <svg className="riyal-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1124.14 1256.39" width="22" height="22" style={{ display: 'inline-block', verticalAlign: '-0.125em' }}>
-            <path fill="currentColor" d="M699.62,1113.02h0c-20.06,44.48-33.32,92.75-38.4,143.37l424.51-90.24c20.06-44.47,33.31-92.75,38.4-143.37l-424.51,90.24Z"></path>
-            <path fill="currentColor" d="M1085.73,895.8c20.06-44.47,33.32-92.75,38.4-143.37l-330.68,70.33v-135.2l292.27-62.11c20.06-44.47,33.32-92.75,38.4-143.37l-330.68,70.27V66.13c-50.67,28.45-95.67,66.32-132.25,110.99v403.35l-132.25,28.11V0c-50.67,28.44-95.67,66.32-132.25,110.99v525.69l-295.91,62.88c-20.06,44.47-33.33,92.75-38.42,143.37l334.33-71.05v170.26l-358.3,76.14c-20.06,44.47-33.32,92.75-38.4,143.37l375.04-79.7c30.53-6.35,56.77-24.4,73.83-49.24l68.78-101.97v-.02c7.14-10.55,11.3-23.27,11.3-36.97v-149.98l132.25-28.11v270.4l424.53-90.28Z"></path>
-        </svg>;
+    const currencySymbol = <SARIcon size={18} />
 
-    const currencySmallSymbol = <svg className="riyal-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1124.14 1256.39" width="14" height="14">
-        <path fill="currentColor" d="M699.62,1113.02h0c-20.06,44.48-33.32,92.75-38.4,143.37l424.51-90.24c20.06-44.47,33.31-92.75,38.4-143.37l-424.51,90.24Z"></path>
-        <path fill="currentColor" d="M1085.73,895.8c20.06-44.47,33.32-92.75,38.4-143.37l-330.68,70.33v-135.2l292.27-62.11c20.06-44.47,33.32-92.75,38.4-143.37l-330.68,70.27V66.13c-50.67,28.45-95.67,66.32-132.25,110.99v403.35l-132.25,28.11V0c-50.67,28.44-95.67,66.32-132.25,110.99v525.69l-295.91,62.88c-20.06,44.47-33.33,92.75-38.42,143.37l334.33-71.05v170.26l-358.3,76.14c-20.06,44.47-33.32,92.75-38.4,143.37l375.04-79.7c30.53-6.35,56.77-24.4,73.83-49.24l68.78-101.97v-.02c7.14-10.55,11.3-23.27,11.3-36.97v-149.98l132.25-28.11v270.4l424.53-90.28Z"></path>
-    </svg>;
+    const currencySmallSymbol =  <SARIcon size={12} />
 
-    const currencyExtraSmallSymbol = <svg className="riyal-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1124.14 1256.39" width="12" height="12">
-        <path fill="currentColor" d="M699.62,1113.02h0c-20.06,44.48-33.32,92.75-38.4,143.37l424.51-90.24c20.06-44.47,33.31-92.75,38.4-143.37l-424.51,90.24Z"></path>
-        <path fill="currentColor" d="M1085.73,895.8c20.06-44.47,33.32-92.75,38.4-143.37l-330.68,70.33v-135.2l292.27-62.11c20.06-44.47,33.32-92.75,38.4-143.37l-330.68,70.27V66.13c-50.67,28.45-95.67,66.32-132.25,110.99v403.35l-132.25,28.11V0c-50.67,28.44-95.67,66.32-132.25,110.99v525.69l-295.91,62.88c-20.06,44.47-33.33,92.75-38.42,143.37l334.33-71.05v170.26l-358.3,76.14c-20.06,44.47-33.32,92.75-38.4,143.37l375.04-79.7c30.53-6.35,56.77-24.4,73.83-49.24l68.78-101.97v-.02c7.14-10.55,11.3-23.27,11.3-36.97v-149.98l132.25-28.11v270.4l424.53-90.28Z"></path>
-    </svg>;
+    const currencyExtraSmallSymbol = <SARIcon size={10} />
 
     var productFlashSalePriceStatus = 0; // 1 for flash sale price, 0 for no flash sale price
     var productFlashSalePrice = 0;
@@ -1608,7 +1599,7 @@ export default function Product() {
                         </div>
                         <div className="align__center gap-2 mt-3">
                             <div className="px-2 pt-2 bg-[#C3E6F170] rounded-md w-1/2 h-32">
-                                <h4 className="text-sm text-center w-full flex flex-col items-center justify-center">
+                                <h4 className="sm:text-sm text-xs text-center w-full flex flex-col items-center justify-center">
                                     <span className="flex items-center gap-x-1 whitespace-nowrap">
                                         {isArabic ? ' أو قسمها إلى' : 'Or divide it into'}
                                         <span className="font-bold">4</span>
@@ -1657,7 +1648,7 @@ export default function Product() {
                                 </div>
                             </div>
                             <div className="px-2 pt-2 bg-[#C3E6F170] rounded-md w-1/2 h-32 relative">
-                                <h4 className="text-sm font-medium text-center w-full flex flex-col items-center justify-center">
+                                <h4 className="sm:text-sm text-xs font-medium text-center w-full flex flex-col items-center justify-center">
                                     <span className="text-[#B15533] font-bold flex items-center gap-x-1">
                                         {extraData?.flash && productDataClassic?.data?.sale_price ?
                                             extraData?.flash?.discount_type === 2 ?
@@ -1677,6 +1668,9 @@ export default function Product() {
                                     </span>
                                     <span className="text-[#5D686F] font-bold">{isArabic ? '36 شهر' : '36 months'}{' '}</span>
                                 </h4>
+                                <div>
+                                    
+                                </div>
                                 <Link prefetch={false} scroll={false} href={`${origin}/${lang}/installment-service-methods`} aria-label="baseeta" className="flex justify-center mt-6">
                                     <Image
                                         src="/images/pro_baseeta.webp"
@@ -1685,7 +1679,7 @@ export default function Product() {
                                         height={55}
                                         width={85}
                                         loading='lazy'
-                                        className='w-[40px] h-[30px] absolute bottom-4'
+                                        className='w-[40px] h-[30px]'
                                     />
                                 </Link>
                             </div>
