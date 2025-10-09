@@ -4,6 +4,7 @@ import React, { useState } from 'react'
 import dynamic from 'next/dynamic'
 import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/react';
 import { useApp } from "@/app/_ctx/AppContext";
+import ArrowLeftIcon from '../components/Icons/ArrowLeftIcon';
 
 const MobileHeader = dynamic(() => import('../components/MobileHeader'), { ssr: true })
 
@@ -35,7 +36,7 @@ export default function TermsandConditions() {
                                     <div>
                                         <DisclosureButton className="flex w-full justify-between rounded-md text-left text-sm font-medium focus-visible:outline-none bg-[#EEF8FC] p-2 md:p-3 mb-3 text-[#004B7A] ltr:text-left rtl:text-right">
                                             {lang === 'ar' ? "شروط و أحكام العروض الحالية" : "Terms and conditions for current offers"}
-                                            <svg height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg" id="fi_10486749" className={`transform ${open ? '-rotate-180' : ''} fill-[#004B7A] transition duration-150 ease-in-out`}><path clipRule="evenodd" d="m2.58579 7.58579c.78104-.78105 2.04738-.78105 2.82842 0l6.58579 6.58581 6.5858-6.58581c.781-.78105 2.0474-.78105 2.8284 0 .7811.78104.7811 2.04738 0 2.82841l-8 8c-.781.7811-2.0474.7811-2.8284 0l-8.00001-8c-.78105-.78103-.78105-2.04737 0-2.82841z" fillRule="evenodd"></path></svg>
+                                             <ArrowLeftIcon size={24} color="#004B7A" className={`shrink-0 ${open ? 'rotate-90' : '-rotate-90'}`} />
                                         </DisclosureButton>
                                         <DisclosurePanel className="text-xs mb-3">
 
@@ -113,7 +114,7 @@ export default function TermsandConditions() {
                                     <div>
                                         <DisclosureButton className="flex w-full justify-between rounded-md text-left text-sm font-medium focus-visible:outline-none bg-[#EEF8FC] p-2 md:p-3 mb-3 text-[#004B7A] ltr:text-left rtl:text-right">
                                             {lang === 'ar' ? "شروط الاستخدام" : "TERMS of use"}
-                                            <svg height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg" id="fi_10486749" className={`transform ${open ? '-rotate-180' : ''} fill-[#004B7A] transition duration-150 ease-in-out`}><path clipRule="evenodd" d="m2.58579 7.58579c.78104-.78105 2.04738-.78105 2.82842 0l6.58579 6.58581 6.5858-6.58581c.781-.78105 2.0474-.78105 2.8284 0 .7811.78104.7811 2.04738 0 2.82841l-8 8c-.781.7811-2.0474.7811-2.8284 0l-8.00001-8c-.78105-.78103-.78105-2.04737 0-2.82841z" fillRule="evenodd"></path></svg>
+                                             <ArrowLeftIcon size={24} color="#004B7A" className={`shrink-0 ${open ? 'rotate-90' : '-rotate-90'}`} />
                                         </DisclosureButton>
                                         <DisclosurePanel className="text-xs mb-3">
                                             <p className="mb-2.5">{lang === 'ar' ? 'تحميل التطبيق' : 'Download the application'}</p>
@@ -147,7 +148,7 @@ export default function TermsandConditions() {
                                     <div>
                                         <DisclosureButton className="flex w-full justify-between rounded-md text-left text-sm font-medium focus-visible:outline-none bg-[#EEF8FC] p-2 md:p-3 mb-3 text-[#004B7A] ltr:text-left rtl:text-right">
                                             {lang === 'ar' ? "الحماية الأمنية للموقع الإلكتروني" : "Website security"}
-                                            <svg height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg" id="fi_10486749" className={`transform ${open ? '-rotate-180' : ''} fill-[#004B7A] transition duration-150 ease-in-out`}><path clipRule="evenodd" d="m2.58579 7.58579c.78104-.78105 2.04738-.78105 2.82842 0l6.58579 6.58581 6.5858-6.58581c.781-.78105 2.0474-.78105 2.8284 0 .7811.78104.7811 2.04738 0 2.82841l-8 8c-.781.7811-2.0474.7811-2.8284 0l-8.00001-8c-.78105-.78103-.78105-2.04737 0-2.82841z" fillRule="evenodd"></path></svg>
+                                             <ArrowLeftIcon size={24} color="#004B7A" className={`shrink-0 ${open ? 'rotate-90' : '-rotate-90'}`} />
                                         </DisclosureButton>
                                         <DisclosurePanel className="text-xs mb-3">
                                             <p className="mb-2.5">{lang === 'ar' ?
@@ -187,7 +188,7 @@ export default function TermsandConditions() {
                                     <div>
                                         <DisclosureButton className="flex w-full justify-between rounded-md text-left text-sm font-medium focus-visible:outline-none bg-[#EEF8FC] p-2 md:p-3 mb-3 text-[#004B7A] ltr:text-left rtl:text-right">
                                             {lang === 'ar' ? "سياسة الخصوصية" : "Privacy Policy"}
-                                            <svg height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg" id="fi_10486749" className={`transform ${open ? '-rotate-180' : ''} fill-[#004B7A] transition duration-150 ease-in-out`}><path clipRule="evenodd" d="m2.58579 7.58579c.78104-.78105 2.04738-.78105 2.82842 0l6.58579 6.58581 6.5858-6.58581c.781-.78105 2.0474-.78105 2.8284 0 .7811.78104.7811 2.04738 0 2.82841l-8 8c-.781.7811-2.0474.7811-2.8284 0l-8.00001-8c-.78105-.78103-.78105-2.04737 0-2.82841z" fillRule="evenodd"></path></svg>
+                                             <ArrowLeftIcon size={24} color="#004B7A" className={`shrink-0 ${open ? 'rotate-90' : '-rotate-90'}`} />
                                         </DisclosureButton>
                                         <DisclosurePanel className="text-xs mb-3">
                                             <p className="mb-2.5">{lang === 'ar' ?
@@ -211,7 +212,7 @@ export default function TermsandConditions() {
                                     <div>
                                         <DisclosureButton className="flex w-full justify-between rounded-md text-left text-sm font-medium focus-visible:outline-none bg-[#EEF8FC] p-2 md:p-3 mb-3 text-[#004B7A] ltr:text-left rtl:text-right">
                                             {lang === 'ar' ? "التسجيل – حسابي" : "Registration - your account"}
-                                            <svg height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg" id="fi_10486749" className={`transform ${open ? '-rotate-180' : ''} fill-[#004B7A] transition duration-150 ease-in-out`}><path clipRule="evenodd" d="m2.58579 7.58579c.78104-.78105 2.04738-.78105 2.82842 0l6.58579 6.58581 6.5858-6.58581c.781-.78105 2.0474-.78105 2.8284 0 .7811.78104.7811 2.04738 0 2.82841l-8 8c-.781.7811-2.0474.7811-2.8284 0l-8.00001-8c-.78105-.78103-.78105-2.04737 0-2.82841z" fillRule="evenodd"></path></svg>
+                                             <ArrowLeftIcon size={24} color="#004B7A" className={`shrink-0 ${open ? 'rotate-90' : '-rotate-90'}`} />
                                         </DisclosureButton>
                                         <DisclosurePanel className="text-xs mb-3">
                                             <p className="mb-2.5">{lang === 'ar' ?
@@ -235,7 +236,7 @@ export default function TermsandConditions() {
                                     <div>
                                         <DisclosureButton className="flex w-full justify-between rounded-md text-left text-sm font-medium focus-visible:outline-none bg-[#EEF8FC] p-2 md:p-3 mb-3 text-[#004B7A] ltr:text-left rtl:text-right">
                                             {lang === 'ar' ? "مراجعات المنتجات و البائعين" : "Product & Seller Reviews"}
-                                            <svg height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg" id="fi_10486749" className={`transform ${open ? '-rotate-180' : ''} fill-[#004B7A] transition duration-150 ease-in-out`}><path clipRule="evenodd" d="m2.58579 7.58579c.78104-.78105 2.04738-.78105 2.82842 0l6.58579 6.58581 6.5858-6.58581c.781-.78105 2.0474-.78105 2.8284 0 .7811.78104.7811 2.04738 0 2.82841l-8 8c-.781.7811-2.0474.7811-2.8284 0l-8.00001-8c-.78105-.78103-.78105-2.04737 0-2.82841z" fillRule="evenodd"></path></svg>
+                                             <ArrowLeftIcon size={24} color="#004B7A" className={`shrink-0 ${open ? 'rotate-90' : '-rotate-90'}`} />
                                         </DisclosureButton>
                                         <DisclosurePanel className="text-xs mb-3">
                                             <p className="mb-2.5">{lang === 'ar' ? "يلتزم العملاء الذين يكملون مراجعات المنتج و/ أو البائعين بتزويد tamkeenstores.com.sa بالملكية الكاملة والترخيص لإعادة إنتاج مراجعاتهم في أي مواد تسويقية ونشرها على الموقع الإلكتروني وفي المواد التسويقية دون الحاجة إلي موافقة إضافية من العملاء استنادًا إلى تقديم المراجعة." : "Customers who complete product and/or seller reviews are obligated to provide tamkeenstores.com.sa with full ownership and licence to reproduce their reviews in any marketing materials and publish them on the website and in marketing materials without the need for additional consent from customers based on submitting the review."}</p>
@@ -248,7 +249,7 @@ export default function TermsandConditions() {
                                     <div>
                                         <DisclosureButton className="flex w-full justify-between rounded-md text-left text-sm font-medium focus-visible:outline-none bg-[#EEF8FC] p-2 md:p-3 mb-3 text-[#004B7A] ltr:text-left rtl:text-right">
                                             {lang === 'ar' ? "عربة التسوق الخاصة بك" : "Your shopping cart"}
-                                            <svg height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg" id="fi_10486749" className={`transform ${open ? '-rotate-180' : ''} fill-[#004B7A] transition duration-150 ease-in-out`}><path clipRule="evenodd" d="m2.58579 7.58579c.78104-.78105 2.04738-.78105 2.82842 0l6.58579 6.58581 6.5858-6.58581c.781-.78105 2.0474-.78105 2.8284 0 .7811.78104.7811 2.04738 0 2.82841l-8 8c-.781.7811-2.0474.7811-2.8284 0l-8.00001-8c-.78105-.78103-.78105-2.04737 0-2.82841z" fillRule="evenodd"></path></svg>
+                                             <ArrowLeftIcon size={24} color="#004B7A" className={`shrink-0 ${open ? 'rotate-90' : '-rotate-90'}`} />
                                         </DisclosureButton>
                                         <DisclosurePanel className="text-xs mb-3">
                                             <p className="mb-2.5">{lang === 'ar' ?
@@ -268,7 +269,7 @@ export default function TermsandConditions() {
                                     <div>
                                         <DisclosureButton className="flex w-full justify-between rounded-md text-left text-sm font-medium focus-visible:outline-none bg-[#EEF8FC] p-2 md:p-3 mb-3 text-[#004B7A] ltr:text-left rtl:text-right">
                                             {lang === 'ar' ? "معلومات المنتجات والمخزون والتسعير" : "Product information, stock, and pricing"}
-                                            <svg height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg" id="fi_10486749" className={`transform ${open ? '-rotate-180' : ''} fill-[#004B7A] transition duration-150 ease-in-out`}><path clipRule="evenodd" d="m2.58579 7.58579c.78104-.78105 2.04738-.78105 2.82842 0l6.58579 6.58581 6.5858-6.58581c.781-.78105 2.0474-.78105 2.8284 0 .7811.78104.7811 2.04738 0 2.82841l-8 8c-.781.7811-2.0474.7811-2.8284 0l-8.00001-8c-.78105-.78103-.78105-2.04737 0-2.82841z" fillRule="evenodd"></path></svg>
+                                             <ArrowLeftIcon size={24} color="#004B7A" className={`shrink-0 ${open ? 'rotate-90' : '-rotate-90'}`} />
                                         </DisclosureButton>
                                         <DisclosurePanel className="text-xs mb-3">
                                             <p className="mb-2.5">{lang === 'ar' ?
@@ -300,7 +301,7 @@ export default function TermsandConditions() {
                                     <div>
                                         <DisclosureButton className="flex w-full justify-between rounded-md text-left text-sm font-medium focus-visible:outline-none bg-[#EEF8FC] p-2 md:p-3 mb-3 text-[#004B7A] ltr:text-left rtl:text-right">
                                             {lang === 'ar' ? "سياسة التوصيل والتسليم" : "Delivery terms and conditions"}
-                                            <svg height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg" id="fi_10486749" className={`transform ${open ? '-rotate-180' : ''} fill-[#004B7A] transition duration-150 ease-in-out`}><path clipRule="evenodd" d="m2.58579 7.58579c.78104-.78105 2.04738-.78105 2.82842 0l6.58579 6.58581 6.5858-6.58581c.781-.78105 2.0474-.78105 2.8284 0 .7811.78104.7811 2.04738 0 2.82841l-8 8c-.781.7811-2.0474.7811-2.8284 0l-8.00001-8c-.78105-.78103-.78105-2.04737 0-2.82841z" fillRule="evenodd"></path></svg>
+                                             <ArrowLeftIcon size={24} color="#004B7A" className={`shrink-0 ${open ? 'rotate-90' : '-rotate-90'}`} />
                                         </DisclosureButton>
                                         <DisclosurePanel className="text-xs mb-3">
                                             <p className="mb-2.5">{lang === 'ar' ?
@@ -340,7 +341,7 @@ export default function TermsandConditions() {
                                     <div>
                                         <DisclosureButton className="flex w-full justify-between rounded-md text-left text-sm font-medium focus-visible:outline-none bg-[#EEF8FC] p-2 md:p-3 mb-3 text-[#004B7A] ltr:text-left rtl:text-right">
                                             {lang === 'ar' ? "شروط وأحكام التوصيل السريع" : "Terms and conditions of express delivery"}
-                                            <svg height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg" id="fi_10486749" className={`transform ${open ? '-rotate-180' : ''} fill-[#004B7A] transition duration-150 ease-in-out`}><path clipRule="evenodd" d="m2.58579 7.58579c.78104-.78105 2.04738-.78105 2.82842 0l6.58579 6.58581 6.5858-6.58581c.781-.78105 2.0474-.78105 2.8284 0 .7811.78104.7811 2.04738 0 2.82841l-8 8c-.781.7811-2.0474.7811-2.8284 0l-8.00001-8c-.78105-.78103-.78105-2.04737 0-2.82841z" fillRule="evenodd"></path></svg>
+                                             <ArrowLeftIcon size={24} color="#004B7A" className={`shrink-0 ${open ? 'rotate-90' : '-rotate-90'}`} />
                                         </DisclosureButton>
                                         <DisclosurePanel className="text-xs mb-3">
                                             <p className="mb-2.5">{lang === 'ar' ?
@@ -360,7 +361,7 @@ export default function TermsandConditions() {
                                     <div>
                                         <DisclosureButton className="flex w-full justify-between rounded-md text-left text-sm font-medium focus-visible:outline-none bg-[#EEF8FC] p-2 md:p-3 mb-3 text-[#004B7A] ltr:text-left rtl:text-right">
                                             {lang === 'ar' ? "المدفوعات" : "Payments"}
-                                            <svg height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg" id="fi_10486749" className={`transform ${open ? '-rotate-180' : ''} fill-[#004B7A] transition duration-150 ease-in-out`}><path clipRule="evenodd" d="m2.58579 7.58579c.78104-.78105 2.04738-.78105 2.82842 0l6.58579 6.58581 6.5858-6.58581c.781-.78105 2.0474-.78105 2.8284 0 .7811.78104.7811 2.04738 0 2.82841l-8 8c-.781.7811-2.0474.7811-2.8284 0l-8.00001-8c-.78105-.78103-.78105-2.04737 0-2.82841z" fillRule="evenodd"></path></svg>
+                                             <ArrowLeftIcon size={24} color="#004B7A" className={`shrink-0 ${open ? 'rotate-90' : '-rotate-90'}`} />
                                         </DisclosureButton>
                                         <DisclosurePanel className="text-xs mb-3">
                                             <p className="mb-2.5">{lang === 'ar' ?
@@ -408,7 +409,7 @@ export default function TermsandConditions() {
                                     <div>
                                         <DisclosureButton className="flex w-full justify-between rounded-md text-left text-sm font-medium focus-visible:outline-none bg-[#EEF8FC] p-2 md:p-3 mb-3 text-[#004B7A] ltr:text-left rtl:text-right">
                                             {lang === 'ar' ? "الدفع عن طريق بسيطه من تسهيل" : " Payment via Baseeta"}
-                                            <svg height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg" id="fi_10486749" className={`transform ${open ? '-rotate-180' : ''} fill-[#004B7A] transition duration-150 ease-in-out`}><path clipRule="evenodd" d="m2.58579 7.58579c.78104-.78105 2.04738-.78105 2.82842 0l6.58579 6.58581 6.5858-6.58581c.781-.78105 2.0474-.78105 2.8284 0 .7811.78104.7811 2.04738 0 2.82841l-8 8c-.781.7811-2.0474.7811-2.8284 0l-8.00001-8c-.78105-.78103-.78105-2.04737 0-2.82841z" fillRule="evenodd"></path></svg>
+                                             <ArrowLeftIcon size={24} color="#004B7A" className={`shrink-0 ${open ? 'rotate-90' : '-rotate-90'}`} />
                                         </DisclosureButton>
                                         <DisclosurePanel className="text-xs mb-3">
                                             <p className="mb-2.5">{lang === 'ar' ?
@@ -464,7 +465,7 @@ export default function TermsandConditions() {
                                     <div>
                                         <DisclosureButton className="flex w-full justify-between rounded-md text-left text-sm font-medium focus-visible:outline-none bg-[#EEF8FC] p-2 md:p-3 mb-3 text-[#004B7A] ltr:text-left rtl:text-right">
                                             {lang === 'ar' ? "أقساط بطاقة الائتمان" : " Credit card installments"}
-                                            <svg height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg" id="fi_10486749" className={`transform ${open ? '-rotate-180' : ''} fill-[#004B7A] transition duration-150 ease-in-out`}><path clipRule="evenodd" d="m2.58579 7.58579c.78104-.78105 2.04738-.78105 2.82842 0l6.58579 6.58581 6.5858-6.58581c.781-.78105 2.0474-.78105 2.8284 0 .7811.78104.7811 2.04738 0 2.82841l-8 8c-.781.7811-2.0474.7811-2.8284 0l-8.00001-8c-.78105-.78103-.78105-2.04737 0-2.82841z" fillRule="evenodd"></path></svg>
+                                             <ArrowLeftIcon size={24} color="#004B7A" className={`shrink-0 ${open ? 'rotate-90' : '-rotate-90'}`} />
                                         </DisclosureButton>
                                         <DisclosurePanel className="text-xs mb-3">
                                             <p className="mb-2.5">{lang === 'ar' ?
@@ -510,7 +511,7 @@ export default function TermsandConditions() {
                                     <div>
                                         <DisclosureButton className="flex w-full justify-between rounded-md text-left text-sm font-medium focus-visible:outline-none bg-[#EEF8FC] p-2 md:p-3 mb-3 text-[#004B7A] ltr:text-left rtl:text-right">
                                             {lang === 'ar' ? "بطاقات الهدايا الترويجية بين الشركات ومن الشركة إلي المستهلك" : "Promotional & B2B gift cards"}
-                                            <svg height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg" id="fi_10486749" className={`transform ${open ? '-rotate-180' : ''} fill-[#004B7A] transition duration-150 ease-in-out`}><path clipRule="evenodd" d="m2.58579 7.58579c.78104-.78105 2.04738-.78105 2.82842 0l6.58579 6.58581 6.5858-6.58581c.781-.78105 2.0474-.78105 2.8284 0 .7811.78104.7811 2.04738 0 2.82841l-8 8c-.781.7811-2.0474.7811-2.8284 0l-8.00001-8c-.78105-.78103-.78105-2.04737 0-2.82841z" fillRule="evenodd"></path></svg>
+                                             <ArrowLeftIcon size={24} color="#004B7A" className={`shrink-0 ${open ? 'rotate-90' : '-rotate-90'}`} />
                                         </DisclosureButton>
                                         <DisclosurePanel className="text-xs mb-3">
                                             <p className="mb-2.5">{lang === 'ar' ? "هذه ليست بطاقة ائتمان." : "This is not a credit card."}</p>
@@ -527,7 +528,7 @@ export default function TermsandConditions() {
                                     <div>
                                         <DisclosureButton className="flex w-full justify-between rounded-md text-left text-sm font-medium focus-visible:outline-none bg-[#EEF8FC] p-2 md:p-3 mb-3 text-[#004B7A] ltr:text-left rtl:text-right">
                                             {lang === 'ar' ? "إلغاء الطلب" : "Order Cancellation"}
-                                            <svg height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg" id="fi_10486749" className={`transform ${open ? '-rotate-180' : ''} fill-[#004B7A] transition duration-150 ease-in-out`}><path clipRule="evenodd" d="m2.58579 7.58579c.78104-.78105 2.04738-.78105 2.82842 0l6.58579 6.58581 6.5858-6.58581c.781-.78105 2.0474-.78105 2.8284 0 .7811.78104.7811 2.04738 0 2.82841l-8 8c-.781.7811-2.0474.7811-2.8284 0l-8.00001-8c-.78105-.78103-.78105-2.04737 0-2.82841z" fillRule="evenodd"></path></svg>
+                                             <ArrowLeftIcon size={24} color="#004B7A" className={`shrink-0 ${open ? 'rotate-90' : '-rotate-90'}`} />
                                         </DisclosureButton>
                                         <DisclosurePanel className="text-xs mb-3">
                                             <p className="mb-2.5">{lang === 'ar' ? "الإلغاء من قبل متجر تمكين : يحتفظ تمكين بالحق في إلغاء الطلب لأي من الأسباب التالية" : "Cancellation by Tamkeen store: Tamkeen reserves the right to cancel the order for any of the following reasons:"}</p>
@@ -547,7 +548,7 @@ export default function TermsandConditions() {
                                     <div>
                                         <DisclosureButton className="flex w-full justify-between rounded-md text-left text-sm font-medium focus-visible:outline-none bg-[#EEF8FC] p-2 md:p-3 mb-3 text-[#004B7A] ltr:text-left rtl:text-right">
                                             {lang === 'ar' ? "الإسترجاع / التبديل / استرداد الأموال" : "Return / Exchange / Refund"}
-                                            <svg height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg" id="fi_10486749" className={`transform ${open ? '-rotate-180' : ''} fill-[#004B7A] transition duration-150 ease-in-out`}><path clipRule="evenodd" d="m2.58579 7.58579c.78104-.78105 2.04738-.78105 2.82842 0l6.58579 6.58581 6.5858-6.58581c.781-.78105 2.0474-.78105 2.8284 0 .7811.78104.7811 2.04738 0 2.82841l-8 8c-.781.7811-2.0474.7811-2.8284 0l-8.00001-8c-.78105-.78103-.78105-2.04737 0-2.82841z" fillRule="evenodd"></path></svg>
+                                             <ArrowLeftIcon size={24} color="#004B7A" className={`shrink-0 ${open ? 'rotate-90' : '-rotate-90'}`} />
                                         </DisclosureButton>
                                         <DisclosurePanel className="text-xs mb-3">
                                             <p className="mb-2.5">{lang === 'ar' ? "في حال لم تكن راضيًا عن منتجك (منتجاتك) أو وجود عيب بالمنتج (المنتجات)، يمكنك طلب “التفويض المسبق لإرجاع المواد” لإعادة المنتج (المنتجات) الى تمكين في غضون (7) أيام من تاريخ استلام طلبك." : "In the event that you are not satisfied with your product(s) or there is a defect in the product(s), you can request a “Return Materials Authorization” to return the product(s) to Tamkeen within (7) days.From the date of receipt of your application."}</p>
@@ -566,7 +567,7 @@ export default function TermsandConditions() {
                                     <div>
                                         <DisclosureButton className="flex w-full justify-between rounded-md text-left text-sm font-medium focus-visible:outline-none bg-[#EEF8FC] p-2 md:p-3 mb-3 text-[#004B7A] ltr:text-left rtl:text-right">
                                             {lang === 'ar' ? "استرداد السداد" : "Payment Return"}
-                                            <svg height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg" id="fi_10486749" className={`transform ${open ? '-rotate-180' : ''} fill-[#004B7A] transition duration-150 ease-in-out`}><path clipRule="evenodd" d="m2.58579 7.58579c.78104-.78105 2.04738-.78105 2.82842 0l6.58579 6.58581 6.5858-6.58581c.781-.78105 2.0474-.78105 2.8284 0 .7811.78104.7811 2.04738 0 2.82841l-8 8c-.781.7811-2.0474.7811-2.8284 0l-8.00001-8c-.78105-.78103-.78105-2.04737 0-2.82841z" fillRule="evenodd"></path></svg>
+                                             <ArrowLeftIcon size={24} color="#004B7A" className={`shrink-0 ${open ? 'rotate-90' : '-rotate-90'}`} />
                                         </DisclosureButton>
                                         <DisclosurePanel className="text-xs mb-3">
                                             <p className="mb-2.5">{lang === 'ar' ? "وفقًا لشروط التحويلات المصرفية الداخلية لمؤسسة النقد العربي السعودي (معاملات الاسترداد)، يجب مطابقة معلومات العميل الخاصة بالمستفيد مع معلومات الحساب المصرفي للعميل (الاسم الكامل، الهوية أو معرف الإقامة واسم البنك ورقم حساب البنك – رقم الحساب المصرفي- الأيبان)، وذلك لتجنب أي تأخير أو رفض قد يتم الإبلاغ عنه من قبل البنك الذي نريد تحويل المبلغ المسترد إليه (الوجهة)، حيث في حالة عدم تطابق معلومات العميل مع معلومات الحساب المصرفي للمستفيد، سيقع تأخير أو قد تتطلب إعادة معالجتها مرة أخرى بعد تقديم البيانات الصحيحة وفقاً للأحكام القانونية في المملكة العربية السعودية." : "According to the terms of internal bank transfers of the Saudi Arabian Monetary Agency (refund transactions), the beneficiary’s customer information must be matched with the customer’s bank account information (full name, ID or residence ID, bank name, bank account number - bank account number - IBAN), in order to avoid any delays. Or a refusal may be reported by the bank to which we want to transfer the refund (destination). In the event that the customer’s information does not match the beneficiary’s bank account information, a delay will occur or it may require reprocessing again after providing the correct data in accordance with the legal provisions in the Kingdom. Saudi Arab."}</p>
@@ -579,7 +580,7 @@ export default function TermsandConditions() {
                                     <div>
                                         <DisclosureButton className="flex w-full justify-between rounded-md text-left text-sm font-medium focus-visible:outline-none bg-[#EEF8FC] p-2 md:p-3 mb-3 text-[#004B7A] ltr:text-left rtl:text-right">
                                             {lang === 'ar' ? "الضمان / الصيانة والإصلاح" : "Warranty / Maintenance and Repair"}
-                                            <svg height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg" id="fi_10486749" className={`transform ${open ? '-rotate-180' : ''} fill-[#004B7A] transition duration-150 ease-in-out`}><path clipRule="evenodd" d="m2.58579 7.58579c.78104-.78105 2.04738-.78105 2.82842 0l6.58579 6.58581 6.5858-6.58581c.781-.78105 2.0474-.78105 2.8284 0 .7811.78104.7811 2.04738 0 2.82841l-8 8c-.781.7811-2.0474.7811-2.8284 0l-8.00001-8c-.78105-.78103-.78105-2.04737 0-2.82841z" fillRule="evenodd"></path></svg>
+                                             <ArrowLeftIcon size={24} color="#004B7A" className={`shrink-0 ${open ? 'rotate-90' : '-rotate-90'}`} />
                                         </DisclosureButton>
                                         <DisclosurePanel className="text-xs mb-3">
                                             <p className="mb-2.5">{lang === 'ar' ? "المنتجات التي تباع من قبلنا مشمولة بضمان لمدة (عامين) من الشركة المصنعة. يسري ضمان الشركة المصنعة الأقل من تاريخ الشراء. تتوفر خدمات الضمان الموسعة تمكين (التي تسمى أيضًا عقد خدمات القوة على مدار ٢٤/٧ ( للعديد من فئات المنتجات التي نبيعها." : "Products sold by us are covered by a (two-year) manufacturer's warranty. The manufacturer's warranty is valid from the date of purchase. Tamkeen Extended Warranty Services (also called 24/7 Power Contract) are available for many of the product categories we sell."}</p>
@@ -596,7 +597,7 @@ export default function TermsandConditions() {
                                     <div>
                                         <DisclosureButton className="flex w-full justify-between rounded-md text-left text-sm font-medium focus-visible:outline-none bg-[#EEF8FC] p-2 md:p-3 mb-3 text-[#004B7A] ltr:text-left rtl:text-right">
                                             {lang === 'ar' ? "خدمات الضمان عن طريق الخطأ" : "Accidently warranty services"}
-                                            <svg height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg" id="fi_10486749" className={`transform ${open ? '-rotate-180' : ''} fill-[#004B7A] transition duration-150 ease-in-out`}><path clipRule="evenodd" d="m2.58579 7.58579c.78104-.78105 2.04738-.78105 2.82842 0l6.58579 6.58581 6.5858-6.58581c.781-.78105 2.0474-.78105 2.8284 0 .7811.78104.7811 2.04738 0 2.82841l-8 8c-.781.7811-2.0474.7811-2.8284 0l-8.00001-8c-.78105-.78103-.78105-2.04737 0-2.82841z" fillRule="evenodd"></path></svg>
+                                             <ArrowLeftIcon size={24} color="#004B7A" className={`shrink-0 ${open ? 'rotate-90' : '-rotate-90'}`} />
                                         </DisclosureButton>
                                         <DisclosurePanel className="text-xs mb-3">
                                             <p className="mb-2.5">{lang === 'ar' ? "تستبعد الحالات التالية من نطاق عقد خدمة الحماية من الأضرار العرضية:" : "The following cases are excluded from the scope of the accidental damage protection service contract: Repair or replacement of devices performed outside of enable."}</p>
@@ -623,7 +624,7 @@ export default function TermsandConditions() {
                                     <div>
                                         <DisclosureButton className="flex w-full justify-between rounded-md text-left text-sm font-medium focus-visible:outline-none bg-[#EEF8FC] p-2 md:p-3 mb-3 text-[#004B7A] ltr:text-left rtl:text-right">
                                             {lang === 'ar' ? "صفقات اليوم/ عروض عطلة نهاية الأسبوع واليوم الخاص" : "Deals of the day, special day and weekend offer"}
-                                            <svg height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg" id="fi_10486749" className={`transform ${open ? '-rotate-180' : ''} fill-[#004B7A] transition duration-150 ease-in-out`}><path clipRule="evenodd" d="m2.58579 7.58579c.78104-.78105 2.04738-.78105 2.82842 0l6.58579 6.58581 6.5858-6.58581c.781-.78105 2.0474-.78105 2.8284 0 .7811.78104.7811 2.04738 0 2.82841l-8 8c-.781.7811-2.0474.7811-2.8284 0l-8.00001-8c-.78105-.78103-.78105-2.04737 0-2.82841z" fillRule="evenodd"></path></svg>
+                                             <ArrowLeftIcon size={24} color="#004B7A" className={`shrink-0 ${open ? 'rotate-90' : '-rotate-90'}`} />
                                         </DisclosureButton>
                                         <DisclosurePanel className="text-xs mb-3">
                                             <p className="mb-2.5">{lang === 'ar' ? "تتوفر صفقات اليوم عروض عطلة نهاية الأسبوع حتى آخر المخزون." : "Today's deals and weekend deals are available while stocks last."}</p>
@@ -641,7 +642,7 @@ export default function TermsandConditions() {
                                     <div>
                                         <DisclosureButton className="flex w-full justify-between rounded-md text-left text-sm font-medium focus-visible:outline-none bg-[#EEF8FC] p-2 md:p-3 mb-3 text-[#004B7A] ltr:text-left rtl:text-right">
                                             {lang === 'ar' ? " الطلبات المسبقة" : "Product reservation policy"}
-                                            <svg height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg" id="fi_10486749" className={`transform ${open ? '-rotate-180' : ''} fill-[#004B7A] transition duration-150 ease-in-out`}><path clipRule="evenodd" d="m2.58579 7.58579c.78104-.78105 2.04738-.78105 2.82842 0l6.58579 6.58581 6.5858-6.58581c.781-.78105 2.0474-.78105 2.8284 0 .7811.78104.7811 2.04738 0 2.82841l-8 8c-.781.7811-2.0474.7811-2.8284 0l-8.00001-8c-.78105-.78103-.78105-2.04737 0-2.82841z" fillRule="evenodd"></path></svg>
+                                             <ArrowLeftIcon size={24} color="#004B7A" className={`shrink-0 ${open ? 'rotate-90' : '-rotate-90'}`} />
                                         </DisclosureButton>
                                         <DisclosurePanel className="text-xs mb-3">
                                             <p className="mb-2.5">{lang === 'ar' ? "تكون الطلبات المسبقة مضمونة من حيث أوامر العملاء، بمجرد تأكيد الدفع،يضمن تمكين جهاز الطلب المسبق الخاص بك أو البند ولكن تستند أوقات التسليم إلى أوقات العميل ولا يمكن ضمانها." : "Pre-orders are guaranteed on customer orders, once payment is confirmed, your pre-order device or item is guaranteed to be enabled but delivery times are based on customer times and cannot be guaranteed."}</p>
@@ -658,7 +659,7 @@ export default function TermsandConditions() {
                                     <div>
                                         <DisclosureButton className="flex w-full justify-between rounded-md text-left text-sm font-medium focus-visible:outline-none bg-[#EEF8FC] p-2 md:p-3 mb-3 text-[#004B7A] ltr:text-left rtl:text-right">
                                             {lang === 'ar' ? " سياسة حجز المنتج" : "Product reservation policy Pre-Order"}
-                                            <svg height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg" id="fi_10486749" className={`transform ${open ? '-rotate-180' : ''} fill-[#004B7A] transition duration-150 ease-in-out`}><path clipRule="evenodd" d="m2.58579 7.58579c.78104-.78105 2.04738-.78105 2.82842 0l6.58579 6.58581 6.5858-6.58581c.781-.78105 2.0474-.78105 2.8284 0 .7811.78104.7811 2.04738 0 2.82841l-8 8c-.781.7811-2.0474.7811-2.8284 0l-8.00001-8c-.78105-.78103-.78105-2.04737 0-2.82841z" fillRule="evenodd"></path></svg>
+                                             <ArrowLeftIcon size={24} color="#004B7A" className={`shrink-0 ${open ? 'rotate-90' : '-rotate-90'}`} />
                                         </DisclosureButton>
                                         <DisclosurePanel className="text-xs mb-3">
                                             <p className="mb-2.5">{lang === 'ar' ? "في حالة عدم استلام الصنف المباع في غضون 30 يومًا كحد أقصى من تاريخ الفاتورة ، لن يكون tamkeenstores.com.sa مسئولاً عن الاحتفاظ بالصنف في مستودعاتها وسيكون ملزماً ، للأسف ، بإلغاء الفاتورة. يحق للعميل استرداد كامل المبلغ فقط وفقاً لسياسة الاسترداد العادية." : "In the event that the sold item is not received within a maximum of 30 days from the date of the invoice, tamkeenstores.com.sa will not be responsible for keeping the item in its warehouses and will, unfortunately, be obligated to cancel the invoice. The customer is entitled to a full refund only in accordance with the standard refund policy."}</p>
@@ -671,7 +672,7 @@ export default function TermsandConditions() {
                                     <div>
                                         <DisclosureButton className="flex w-full justify-between rounded-md text-left text-sm font-medium focus-visible:outline-none bg-[#EEF8FC] p-2 md:p-3 mb-3 text-[#004B7A] ltr:text-left rtl:text-right">
                                             {lang === 'ar' ? "تركيب مكيفات الهواء" : "Air conditioner installation"}
-                                            <svg height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg" id="fi_10486749" className={`transform ${open ? '-rotate-180' : ''} fill-[#004B7A] transition duration-150 ease-in-out`}><path clipRule="evenodd" d="m2.58579 7.58579c.78104-.78105 2.04738-.78105 2.82842 0l6.58579 6.58581 6.5858-6.58581c.781-.78105 2.0474-.78105 2.8284 0 .7811.78104.7811 2.04738 0 2.82841l-8 8c-.781.7811-2.0474.7811-2.8284 0l-8.00001-8c-.78105-.78103-.78105-2.04737 0-2.82841z" fillRule="evenodd"></path></svg>
+                                             <ArrowLeftIcon size={24} color="#004B7A" className={`shrink-0 ${open ? 'rotate-90' : '-rotate-90'}`} />
                                         </DisclosureButton>
                                         <DisclosurePanel className="text-xs mb-3">
                                             <p className="mb-2.5">{lang === 'ar' ? "*إذا طلب العميل تمديدًا للأمتار: الزيادة لعشرة أمتار للعداد 18 ألف، و15 متر للعداد 24 ألف، قد تؤدي إلى ضعف نظام التبريد." : "*If the customer requests an extension of the meters: an increase of ten meters for the 18K meter, and 15 meters for the 24K meter, may lead to a weakening of the cooling system."}</p>
@@ -710,7 +711,7 @@ export default function TermsandConditions() {
                                     <div>
                                         <DisclosureButton className="flex w-full justify-between rounded-md text-left text-sm font-medium focus-visible:outline-none bg-[#EEF8FC] p-2 md:p-3 mb-3 text-[#004B7A] ltr:text-left rtl:text-right">
                                             {lang === 'ar' ? "الإتصالات الإلكترونية" : "Electronic communication"}
-                                            <svg height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg" id="fi_10486749" className={`transform ${open ? '-rotate-180' : ''} fill-[#004B7A] transition duration-150 ease-in-out`}><path clipRule="evenodd" d="m2.58579 7.58579c.78104-.78105 2.04738-.78105 2.82842 0l6.58579 6.58581 6.5858-6.58581c.781-.78105 2.0474-.78105 2.8284 0 .7811.78104.7811 2.04738 0 2.82841l-8 8c-.781.7811-2.0474.7811-2.8284 0l-8.00001-8c-.78105-.78103-.78105-2.04737 0-2.82841z" fillRule="evenodd"></path></svg>
+                                             <ArrowLeftIcon size={24} color="#004B7A" className={`shrink-0 ${open ? 'rotate-90' : '-rotate-90'}`} />
                                         </DisclosureButton>
                                         <DisclosurePanel className="text-xs mb-3">
                                             <p className="mb-2.5">{lang === 'ar' ? "إنك توافق على أننا يجوز لنا التواصل معك عن طريق البريد الإلكتروني أو عن طريق نشر إشعارات على الموقع. إنك توافق على أن جميع الاتفاقيات والإشعارات والافصاحات وغيرها من الاتصالات التي نقدمها لك إلكترونيًا تفي بأي شرط قانوني بأن تكون هذه الاتصالات مكتوبة. يتطلب تمكين موافقتك أثناء عملية التسجيل أن ترسل إليك رسائل بريد إلكتروني ترويجية لإعلامك بأي تغييرات أو ميزات أو أنشطة ترويجية جديدة تضاف إلى الموقع. إذا قررت في أي وقت أنك لا ترغب في تلقي رسائل البريد الإلكتروني الترويجية، يمكنك إلغاء الاشتراك في تلقي مثل هذه الرسائل الترويجية عبر النقر على الرابط الموجود أسفل أي بريد إلكتروني ترويجي." : "You agree that we may communicate with you by email or by posting notices on the Site. You agree that all agreements, notices, disclosures and other communications that we provide to you electronically satisfy any legal requirement that such communications be in writing. Enabling your consent during the registration process requires that we send you promotional emails to notify you of any new changes, features or promotional activities added to the Site. If you decide at any time that you do not wish to receive promotional emails, you may opt out of receiving such promotional emails by clicking on the link at the bottom of any promotional email."}</p>
@@ -723,7 +724,7 @@ export default function TermsandConditions() {
                                     <div>
                                         <DisclosureButton className="flex w-full justify-between rounded-md text-left text-sm font-medium focus-visible:outline-none bg-[#EEF8FC] p-2 md:p-3 mb-3 text-[#004B7A] ltr:text-left rtl:text-right">
                                             {lang === 'ar' ? "القواعد الأساسية للنشر على الموقع" : "Basic rules for publishing on the site"}
-                                            <svg height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg" id="fi_10486749" className={`transform ${open ? '-rotate-180' : ''} fill-[#004B7A] transition duration-150 ease-in-out`}><path clipRule="evenodd" d="m2.58579 7.58579c.78104-.78105 2.04738-.78105 2.82842 0l6.58579 6.58581 6.5858-6.58581c.781-.78105 2.0474-.78105 2.8284 0 .7811.78104.7811 2.04738 0 2.82841l-8 8c-.781.7811-2.0474.7811-2.8284 0l-8.00001-8c-.78105-.78103-.78105-2.04737 0-2.82841z" fillRule="evenodd"></path></svg>
+                                             <ArrowLeftIcon size={24} color="#004B7A" className={`shrink-0 ${open ? 'rotate-90' : '-rotate-90'}`} />
                                         </DisclosureButton>
                                         <DisclosurePanel className="text-xs mb-3">
                                             <p className="mb-2.5">{lang === 'ar' ? "تجنب النشر في فئات أو مناطق غير مخصصة لذلك على الموقع." : "Avoid posting in categories or areas on the site that are not designated for this."}</p>
@@ -739,7 +740,7 @@ export default function TermsandConditions() {
                                     <div>
                                         <DisclosureButton className="flex w-full justify-between rounded-md text-left text-sm font-medium focus-visible:outline-none bg-[#EEF8FC] p-2 md:p-3 mb-3 text-[#004B7A] ltr:text-left rtl:text-right">
                                             {lang === 'ar' ? "المحتوى والتعليقات" : "Content and comments"}
-                                            <svg height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg" id="fi_10486749" className={`transform ${open ? '-rotate-180' : ''} fill-[#004B7A] transition duration-150 ease-in-out`}><path clipRule="evenodd" d="m2.58579 7.58579c.78104-.78105 2.04738-.78105 2.82842 0l6.58579 6.58581 6.5858-6.58581c.781-.78105 2.0474-.78105 2.8284 0 .7811.78104.7811 2.04738 0 2.82841l-8 8c-.781.7811-2.0474.7811-2.8284 0l-8.00001-8c-.78105-.78103-.78105-2.04737 0-2.82841z" fillRule="evenodd"></path></svg>
+                                             <ArrowLeftIcon size={24} color="#004B7A" className={`shrink-0 ${open ? 'rotate-90' : '-rotate-90'}`} />
                                         </DisclosureButton>
                                         <DisclosurePanel className="text-xs mb-3">
                                             <p className="mb-2.5">{lang === 'ar' ? "يمنع نشر التعليقات أو الأسئلة أو الإجابات التي تعد غير واقعية أو تحمل طابعًا تمييزيًا أو تحقيريًا." : "It is prohibited to post comments, questions or answers that are unrealistic or have a discriminatory or derogatory nature."}</p>
@@ -769,7 +770,7 @@ export default function TermsandConditions() {
                                     <div>
                                         <DisclosureButton className="flex w-full justify-between rounded-md text-left text-sm font-medium focus-visible:outline-none bg-[#EEF8FC] p-2 md:p-3 mb-3 text-[#004B7A] ltr:text-left rtl:text-right">
                                             {lang === 'ar' ? "سياسة الشكاوي" : "Complaints policy"}
-                                            <svg height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg" id="fi_10486749" className={`transform ${open ? '-rotate-180' : ''} fill-[#004B7A] transition duration-150 ease-in-out`}><path clipRule="evenodd" d="m2.58579 7.58579c.78104-.78105 2.04738-.78105 2.82842 0l6.58579 6.58581 6.5858-6.58581c.781-.78105 2.0474-.78105 2.8284 0 .7811.78104.7811 2.04738 0 2.82841l-8 8c-.781.7811-2.0474.7811-2.8284 0l-8.00001-8c-.78105-.78103-.78105-2.04737 0-2.82841z" fillRule="evenodd"></path></svg>
+                                             <ArrowLeftIcon size={24} color="#004B7A" className={`shrink-0 ${open ? 'rotate-90' : '-rotate-90'}`} />
                                         </DisclosureButton>
                                         <DisclosurePanel className="text-xs mb-3">
                                             <p className="mb-2.5">{lang === 'ar' ? "يمكنك تقديم شكوى عند التأخر عن موعد التوصيل المنصوص عليه في الطلب أو خدمة التوصيل المنزلي، أو عدم استكمال خدمة الصيانة التي قمت بطلبها في المواعيد المتفق عليها حسب الشروط والأحكام المعلنة مسبقاً، أو الخطأ في المنتج المطلوب أو مواصفاته المعلنة على الموقع الإلكتروني، وذلك عن طريق التواصل مع مركز خدمة العملاء عبر الرقم الموحد 8002444464 الأوقات التالية (طوال أيام الأسبوع من الساعة 9 صباحاً وحتى 5 مساءً ماعدا الجمعة)  عند تسجيل الشكوى، ستستلم رسالة نصية مباشرةً تحتوي على الرقم المرجعي للشكوى يمكنك متابعة حالة الشكوى باستخدام هذا الرقم مع موظفي مركز الاتصال وخدمة العملاء" : "You can file a complaint when you are late for the delivery time stipulated in the order or the home delivery service, or if you do not complete the maintenance service that you requested on the agreed upon dates according to the previously announced terms and conditions, or there is an error in the requested product or its specifications announced on the website, for How to contact the customer service center via the unified number 8002444464 at the following times (all days of the week from 9 am to 5 pm except Friday) When registering a complaint, you will receive a direct text message containing the complaint reference number. You can follow up on the status of the complaint using this number with the call center and customer service employees."}</p>
