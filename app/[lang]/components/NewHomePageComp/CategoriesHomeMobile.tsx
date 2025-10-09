@@ -39,6 +39,24 @@ export default function CategoriesHomeMobile(props: any) {
                     direction="horizontal"
                     slidesPerView={5}  // 2 slides per row
                     spaceBetween={8}  // Space between slides
+                    breakpoints={{
+                        320: {
+                        slidesPerView: 4,
+                        spaceBetween: 8,
+                        grid: {
+                            rows: 2,
+                            fill: "row",
+                        },
+                        },
+                        420: {
+                        slidesPerView: 5,
+                        spaceBetween: 8,
+                        grid: {
+                            rows: 2,
+                            fill: "row",
+                        },
+                        },
+                    }}
                     scrollbar={{
                         draggable: false,
                         hide: false, // Show scrollbar
