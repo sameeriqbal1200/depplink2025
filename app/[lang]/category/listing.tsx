@@ -898,7 +898,7 @@ export default function SubCategoryNew({
                     )}
                   </>
                 ) : (
-                  <h1 className="col-span-3 text-center text-[#5D686F] font-bold">
+                  <h1 className="col-span-3 text-center text-[#5D686F] font-bold py-10">
                     {lang === "ar"
                       ? "لم يتم العثور على منتجات"
                       : "No Product Found"}
@@ -941,7 +941,7 @@ export default function SubCategoryNew({
                     )}
                   </>
                 ) : (
-                  <h1 className="col-span-3 text-center text-[#5D686F] font-bold">
+                  <h1 className="col-span-3 text-center text-[#5D686F] font-bold py-10">
                     {lang === "ar"
                       ? "لم يتم العثور على منتجات"
                       : "No Product Found"}
