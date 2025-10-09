@@ -5,6 +5,7 @@ import dynamic from 'next/dynamic';
 import { useApp } from "@/app/_ctx/AppContext";
 import { useSlot } from '@/app/_ctx/ClientDataRegistry';
 import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/react'
+import ArrowLeftIcon from '../components/Icons/ArrowLeftIcon';
 
 const MobileHeader = dynamic(() => import('../components/MobileHeader'), { ssr: true })
 
@@ -23,7 +24,8 @@ export default function Faqs() {
                                 <>
                                     <DisclosureButton className="flex w-full justify-between rounded-md ltr:text-left rtl:text-right text-sm font-medium focus-visible:outline-none bg-[#EEF8FC] p-2 md:p-3 mb-3 text-[#004B7A]">
                                         {lang === "ar" ? "كيفية التسوق والطلب لدى تمكين" : "How do I place an order on Tamkeen?"}
-                                        <svg height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg" id="fi_10486749" className={`transform ${open ? '-rotate-180' : ''} fill-[#004B7A] transition duration-150 ease-in-out`}><path clipRule="evenodd" d="m2.58579 7.58579c.78104-.78105 2.04738-.78105 2.82842 0l6.58579 6.58581 6.5858-6.58581c.781-.78105 2.0474-.78105 2.8284 0 .7811.78104.7811 2.04738 0 2.82841l-8 8c-.781.7811-2.0474.7811-2.8284 0l-8.00001-8c-.78105-.78103-.78105-2.04737 0-2.82841z" fillRule="evenodd"></path></svg>
+
+                                        <ArrowLeftIcon size={24} color="#004B7A" className={`shrink-0 ${open ? 'rotate-90' : '-rotate-90'}`} />
                                     </DisclosureButton>
                                     <DisclosurePanel className="text-xs mb-3">
                                         <ul className="ltr:ml-5 rtl:mr-5">
@@ -50,7 +52,7 @@ export default function Faqs() {
                                         {lang === "ar"
                                             ? "كيفية الغاء الطلب ؟"
                                             : "How to Cancel the Order?"}
-                                        <svg height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg" id="fi_10486749" className={`transform ${open ? '-rotate-180' : ''} fill-[#004B7A] transition duration-150 ease-in-out`}><path clipRule="evenodd" d="m2.58579 7.58579c.78104-.78105 2.04738-.78105 2.82842 0l6.58579 6.58581 6.5858-6.58581c.781-.78105 2.0474-.78105 2.8284 0 .7811.78104.7811 2.04738 0 2.82841l-8 8c-.781.7811-2.0474.7811-2.8284 0l-8.00001-8c-.78105-.78103-.78105-2.04737 0-2.82841z" fillRule="evenodd"></path></svg>
+                                        <ArrowLeftIcon size={24} color="#004B7A" className={`shrink-0 ${open ? 'rotate-90' : '-rotate-90'}`} />
                                     </DisclosureButton>
                                     <DisclosurePanel className="text-xs mb-3">
                                         <ul className="ltr:ml-5 rtl:mr-5">
@@ -75,7 +77,7 @@ export default function Faqs() {
                                         {lang === "ar"
                                             ? "كيفية تتبع الطلب ؟"
                                             : "How do I track Orders?"}
-                                        <svg height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg" id="fi_10486749" className={`transform ${open ? '-rotate-180' : ''} fill-[#004B7A] transition duration-150 ease-in-out`}><path clipRule="evenodd" d="m2.58579 7.58579c.78104-.78105 2.04738-.78105 2.82842 0l6.58579 6.58581 6.5858-6.58581c.781-.78105 2.0474-.78105 2.8284 0 .7811.78104.7811 2.04738 0 2.82841l-8 8c-.781.7811-2.0474.7811-2.8284 0l-8.00001-8c-.78105-.78103-.78105-2.04737 0-2.82841z" fillRule="evenodd"></path></svg>
+                                        <ArrowLeftIcon size={24} color="#004B7A" className={`shrink-0 ${open ? 'rotate-90' : '-rotate-90'}`} />
                                     </DisclosureButton>
                                     <DisclosurePanel className="text-xs mb-3">
                                         <ul className="ltr:ml-5 rtl:mr-5">
@@ -98,7 +100,7 @@ export default function Faqs() {
                                         {lang === "ar"
                                             ? "رسوم الشحن والتوصيل ؟"
                                             : "Shipping & Delivery charges?"}
-                                        <svg height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg" id="fi_10486749" className={`transform ${open ? '-rotate-180' : ''} fill-[#004B7A] transition duration-150 ease-in-out`}><path clipRule="evenodd" d="m2.58579 7.58579c.78104-.78105 2.04738-.78105 2.82842 0l6.58579 6.58581 6.5858-6.58581c.781-.78105 2.0474-.78105 2.8284 0 .7811.78104.7811 2.04738 0 2.82841l-8 8c-.781.7811-2.0474.7811-2.8284 0l-8.00001-8c-.78105-.78103-.78105-2.04737 0-2.82841z" fillRule="evenodd"></path></svg>
+                                        <ArrowLeftIcon size={24} color="#004B7A" className={`shrink-0 ${open ? 'rotate-90' : '-rotate-90'}`} />
                                     </DisclosureButton>
                                     <DisclosurePanel className="text-xs mb-3">
                                         <span>
@@ -118,7 +120,7 @@ export default function Faqs() {
                                         {lang === "ar"
                                             ? "ماهي طرق الدفع المتاحة ؟"
                                             : "What are the payment methods available?"}
-                                        <svg height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg" id="fi_10486749" className={`transform ${open ? '-rotate-180' : ''} fill-[#004B7A] transition duration-150 ease-in-out`}><path clipRule="evenodd" d="m2.58579 7.58579c.78104-.78105 2.04738-.78105 2.82842 0l6.58579 6.58581 6.5858-6.58581c.781-.78105 2.0474-.78105 2.8284 0 .7811.78104.7811 2.04738 0 2.82841l-8 8c-.781.7811-2.0474.7811-2.8284 0l-8.00001-8c-.78105-.78103-.78105-2.04737 0-2.82841z" fillRule="evenodd"></path></svg>
+                                        <ArrowLeftIcon size={24} color="#004B7A" className={`shrink-0 ${open ? 'rotate-90' : '-rotate-90'}`} />
                                     </DisclosureButton>
                                     <DisclosurePanel className="text-xs mb-3">
                                         <span>
@@ -138,7 +140,7 @@ export default function Faqs() {
                                         {lang === "ar"
                                             ? "هل الشراء عبر الإنترنت آمن في تمكين؟"
                                             : "Is buying online safe at Tamkeen?"}
-                                        <svg height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg" id="fi_10486749" className={`transform ${open ? '-rotate-180' : ''} fill-[#004B7A] transition duration-150 ease-in-out`}><path clipRule="evenodd" d="m2.58579 7.58579c.78104-.78105 2.04738-.78105 2.82842 0l6.58579 6.58581 6.5858-6.58581c.781-.78105 2.0474-.78105 2.8284 0 .7811.78104.7811 2.04738 0 2.82841l-8 8c-.781.7811-2.0474.7811-2.8284 0l-8.00001-8c-.78105-.78103-.78105-2.04737 0-2.82841z" fillRule="evenodd"></path></svg>
+                                        <ArrowLeftIcon size={24} color="#004B7A" className={`shrink-0 ${open ? 'rotate-90' : '-rotate-90'}`} />
                                     </DisclosureButton>
                                     <DisclosurePanel className="text-xs mb-3">
                                         <span>
@@ -158,7 +160,7 @@ export default function Faqs() {
                                         {lang === "ar"
                                             ? "هل التسجيل وفتح حساب  في موقع  تمكين مجاني ؟"
                                             : "Is it free to register for a Tamkeen account?"}
-                                        <svg height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg" id="fi_10486749" className={`transform ${open ? '-rotate-180' : ''} fill-[#004B7A] transition duration-150 ease-in-out`}><path clipRule="evenodd" d="m2.58579 7.58579c.78104-.78105 2.04738-.78105 2.82842 0l6.58579 6.58581 6.5858-6.58581c.781-.78105 2.0474-.78105 2.8284 0 .7811.78104.7811 2.04738 0 2.82841l-8 8c-.781.7811-2.0474.7811-2.8284 0l-8.00001-8c-.78105-.78103-.78105-2.04737 0-2.82841z" fillRule="evenodd"></path></svg>
+                                        <ArrowLeftIcon size={24} color="#004B7A" className={`shrink-0 ${open ? 'rotate-90' : '-rotate-90'}`} />
                                     </DisclosureButton>
                                     <DisclosurePanel className="text-xs mb-3">
                                         <ul className="ltr:ml-5 rtl:mr-5">
@@ -183,7 +185,7 @@ export default function Faqs() {
                                         {lang === "ar"
                                             ? "?في حال فقدان كلمة المرور"
                                             : "What if I forgot my Password?"}
-                                        <svg height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg" id="fi_10486749" className={`transform ${open ? '-rotate-180' : ''} fill-[#004B7A] transition duration-150 ease-in-out`}><path clipRule="evenodd" d="m2.58579 7.58579c.78104-.78105 2.04738-.78105 2.82842 0l6.58579 6.58581 6.5858-6.58581c.781-.78105 2.0474-.78105 2.8284 0 .7811.78104.7811 2.04738 0 2.82841l-8 8c-.781.7811-2.0474.7811-2.8284 0l-8.00001-8c-.78105-.78103-.78105-2.04737 0-2.82841z" fillRule="evenodd"></path></svg>
+                                        <ArrowLeftIcon size={24} color="#004B7A" className={`shrink-0 ${open ? 'rotate-90' : '-rotate-90'}`} />
                                     </DisclosureButton>
                                     <DisclosurePanel className="text-xs mb-3">
                                         <ul className="ltr:ml-5 rtl:mr-5">
@@ -208,7 +210,7 @@ export default function Faqs() {
                                         {lang === "ar"
                                             ? "هل يمكن لشخص غيري استخدام حساب تمكين الخاص بي؟"
                                             : "Can someone other than me use my Tamkeen account?"}
-                                        <svg height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg" id="fi_10486749" className={`transform ${open ? '-rotate-180' : ''} fill-[#004B7A] transition duration-150 ease-in-out`}><path clipRule="evenodd" d="m2.58579 7.58579c.78104-.78105 2.04738-.78105 2.82842 0l6.58579 6.58581 6.5858-6.58581c.781-.78105 2.0474-.78105 2.8284 0 .7811.78104.7811 2.04738 0 2.82841l-8 8c-.781.7811-2.0474.7811-2.8284 0l-8.00001-8c-.78105-.78103-.78105-2.04737 0-2.82841z" fillRule="evenodd"></path></svg>
+                                        <ArrowLeftIcon size={24} color="#004B7A" className={`shrink-0 ${open ? 'rotate-90' : '-rotate-90'}`} />
                                     </DisclosureButton>
                                     <DisclosurePanel className="text-xs mb-3">
                                         <span>
@@ -228,7 +230,7 @@ export default function Faqs() {
                                         {lang === "ar"
                                             ? "كيف يمكنني إزالة (حذف) حسابي من تمكين؟"
                                             : "How can I get my name removed(deleted) from the Tamkeen?"}
-                                        <svg height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg" id="fi_10486749" className={`transform ${open ? '-rotate-180' : ''} fill-[#004B7A] transition duration-150 ease-in-out`}><path clipRule="evenodd" d="m2.58579 7.58579c.78104-.78105 2.04738-.78105 2.82842 0l6.58579 6.58581 6.5858-6.58581c.781-.78105 2.0474-.78105 2.8284 0 .7811.78104.7811 2.04738 0 2.82841l-8 8c-.781.7811-2.0474.7811-2.8284 0l-8.00001-8c-.78105-.78103-.78105-2.04737 0-2.82841z" fillRule="evenodd"></path></svg>
+                                        <ArrowLeftIcon size={24} color="#004B7A" className={`shrink-0 ${open ? 'rotate-90' : '-rotate-90'}`} />
                                     </DisclosureButton>
                                     <DisclosurePanel className="text-xs mb-3">
                                         <ul className="ltr:ml-5 rtl:mr-5">
@@ -249,7 +251,7 @@ export default function Faqs() {
                                         {lang === "ar"
                                             ? "هل يمكنني الذهاب إلى الفرع  وشراء المنتج هناك بنفسي؟"
                                             : "Can I go to your showroom and buy the item there myself?"}
-                                        <svg height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg" id="fi_10486749" className={`transform ${open ? '-rotate-180' : ''} fill-[#004B7A] transition duration-150 ease-in-out`}><path clipRule="evenodd" d="m2.58579 7.58579c.78104-.78105 2.04738-.78105 2.82842 0l6.58579 6.58581 6.5858-6.58581c.781-.78105 2.0474-.78105 2.8284 0 .7811.78104.7811 2.04738 0 2.82841l-8 8c-.781.7811-2.0474.7811-2.8284 0l-8.00001-8c-.78105-.78103-.78105-2.04737 0-2.82841z" fillRule="evenodd"></path></svg>
+                                        <ArrowLeftIcon size={24} color="#004B7A" className={`shrink-0 ${open ? 'rotate-90' : '-rotate-90'}`} />
                                     </DisclosureButton>
                                     <DisclosurePanel className="text-xs mb-3">
                                         <ul className="ltr:ml-5 rtl:mr-5">
@@ -269,7 +271,7 @@ export default function Faqs() {
                                         {lang === "ar"
                                             ? "هل يمكن الشراء من الموقع الالكتروني ثم الاستلام من الفرع ؟"
                                             : "Can I buy online and pickup from the showroom?"}
-                                        <svg height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg" id="fi_10486749" className={`transform ${open ? '-rotate-180' : ''} fill-[#004B7A] transition duration-150 ease-in-out`}><path clipRule="evenodd" d="m2.58579 7.58579c.78104-.78105 2.04738-.78105 2.82842 0l6.58579 6.58581 6.5858-6.58581c.781-.78105 2.0474-.78105 2.8284 0 .7811.78104.7811 2.04738 0 2.82841l-8 8c-.781.7811-2.0474.7811-2.8284 0l-8.00001-8c-.78105-.78103-.78105-2.04737 0-2.82841z" fillRule="evenodd"></path></svg>
+                                        <ArrowLeftIcon size={24} color="#004B7A" className={`shrink-0 ${open ? 'rotate-90' : '-rotate-90'}`} />
                                     </DisclosureButton>
                                     <DisclosurePanel className="text-xs mb-3">
                                         <ul className="ltr:ml-5 rtl:mr-5">
@@ -290,7 +292,7 @@ export default function Faqs() {
                                         {lang === "ar"
                                             ? "ما هي طرق الدفع التي يمكنني استخدامها ؟"
                                             : "What payment methods can I use to pay for my order?"}
-                                        <svg height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg" id="fi_10486749" className={`transform ${open ? '-rotate-180' : ''} fill-[#004B7A] transition duration-150 ease-in-out`}><path clipRule="evenodd" d="m2.58579 7.58579c.78104-.78105 2.04738-.78105 2.82842 0l6.58579 6.58581 6.5858-6.58581c.781-.78105 2.0474-.78105 2.8284 0 .7811.78104.7811 2.04738 0 2.82841l-8 8c-.781.7811-2.0474.7811-2.8284 0l-8.00001-8c-.78105-.78103-.78105-2.04737 0-2.82841z" fillRule="evenodd"></path></svg>
+                                        <ArrowLeftIcon size={24} color="#004B7A" className={`shrink-0 ${open ? 'rotate-90' : '-rotate-90'}`} />
                                     </DisclosureButton>
                                     <DisclosurePanel className="text-xs mb-3">
                                         <ul className="ltr:ml-5 rtl:mr-5">
@@ -313,7 +315,7 @@ export default function Faqs() {
                                         {lang === "ar"
                                             ? "ماهي رسوم  خدمة التوصيل الخاصة بي؟"
                                             : "How much do I need to pay for my delivery service?"}
-                                        <svg height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg" id="fi_10486749" className={`transform ${open ? '-rotate-180' : ''} fill-[#004B7A] transition duration-150 ease-in-out`}><path clipRule="evenodd" d="m2.58579 7.58579c.78104-.78105 2.04738-.78105 2.82842 0l6.58579 6.58581 6.5858-6.58581c.781-.78105 2.0474-.78105 2.8284 0 .7811.78104.7811 2.04738 0 2.82841l-8 8c-.781.7811-2.0474.7811-2.8284 0l-8.00001-8c-.78105-.78103-.78105-2.04737 0-2.82841z" fillRule="evenodd"></path></svg>
+                                        <ArrowLeftIcon size={24} color="#004B7A" className={`shrink-0 ${open ? 'rotate-90' : '-rotate-90'}`} />
                                     </DisclosureButton>
                                     <DisclosurePanel className="text-xs mb-3">
                                         <ul className="ltr:ml-5 rtl:mr-5">
@@ -334,7 +336,7 @@ export default function Faqs() {
                                         {lang === "ar"
                                             ? "ماهي المناطق المغطاة بها خدمة التوصيل ؟"
                                             : "What are the areas or locations covered for delivery?"}
-                                        <svg height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg" id="fi_10486749" className={`transform ${open ? '-rotate-180' : ''} fill-[#004B7A] transition duration-150 ease-in-out`}><path clipRule="evenodd" d="m2.58579 7.58579c.78104-.78105 2.04738-.78105 2.82842 0l6.58579 6.58581 6.5858-6.58581c.781-.78105 2.0474-.78105 2.8284 0 .7811.78104.7811 2.04738 0 2.82841l-8 8c-.781.7811-2.0474.7811-2.8284 0l-8.00001-8c-.78105-.78103-.78105-2.04737 0-2.82841z" fillRule="evenodd"></path></svg>
+                                        <ArrowLeftIcon size={24} color="#004B7A" className={`shrink-0 ${open ? 'rotate-90' : '-rotate-90'}`} />
                                     </DisclosureButton>
                                     <DisclosurePanel className="text-xs mb-3">
                                         <span>
@@ -354,7 +356,7 @@ export default function Faqs() {
                                         {lang === "ar"
                                             ? "ماهي رسوم خدمة التركيب ؟"
                                             : "How much do I need to pay for my installation service?"}
-                                        <svg height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg" id="fi_10486749" className={`transform ${open ? '-rotate-180' : ''} fill-[#004B7A] transition duration-150 ease-in-out`}><path clipRule="evenodd" d="m2.58579 7.58579c.78104-.78105 2.04738-.78105 2.82842 0l6.58579 6.58581 6.5858-6.58581c.781-.78105 2.0474-.78105 2.8284 0 .7811.78104.7811 2.04738 0 2.82841l-8 8c-.781.7811-2.0474.7811-2.8284 0l-8.00001-8c-.78105-.78103-.78105-2.04737 0-2.82841z" fillRule="evenodd"></path></svg>
+                                        <ArrowLeftIcon size={24} color="#004B7A" className={`shrink-0 ${open ? 'rotate-90' : '-rotate-90'}`} />
                                     </DisclosureButton>
                                     <DisclosurePanel className="text-xs mb-3">
                                         <ul>
@@ -377,7 +379,7 @@ export default function Faqs() {
                                         {lang === "ar"
                                             ? "كيف يمكنني إرجاع أو استبدال المنتج بعد الشراء ؟"
                                             : "How can I return or exchange items I bought from Tamkeen?"}
-                                        <svg height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg" id="fi_10486749" className={`transform ${open ? '-rotate-180' : ''} fill-[#004B7A] transition duration-150 ease-in-out`}><path clipRule="evenodd" d="m2.58579 7.58579c.78104-.78105 2.04738-.78105 2.82842 0l6.58579 6.58581 6.5858-6.58581c.781-.78105 2.0474-.78105 2.8284 0 .7811.78104.7811 2.04738 0 2.82841l-8 8c-.781.7811-2.0474.7811-2.8284 0l-8.00001-8c-.78105-.78103-.78105-2.04737 0-2.82841z" fillRule="evenodd"></path></svg>
+                                        <ArrowLeftIcon size={24} color="#004B7A" className={`shrink-0 ${open ? 'rotate-90' : '-rotate-90'}`} />
                                     </DisclosureButton>
                                     <DisclosurePanel className="text-xs mb-3">
                                         <ul className="ltr:ml-5 rtl:mr-5">
@@ -402,7 +404,7 @@ export default function Faqs() {
                                         {lang === "ar"
                                             ? "الاوراق والخطوات الازمة  للدفع بواسطة Tamara & Tabby؟"
                                             : "What’s required for me to pay with Tamara & Tabby?"}
-                                        <svg height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg" id="fi_10486749" className={`transform ${open ? '-rotate-180' : ''} fill-[#004B7A] transition duration-150 ease-in-out`}><path clipRule="evenodd" d="m2.58579 7.58579c.78104-.78105 2.04738-.78105 2.82842 0l6.58579 6.58581 6.5858-6.58581c.781-.78105 2.0474-.78105 2.8284 0 .7811.78104.7811 2.04738 0 2.82841l-8 8c-.781.7811-2.0474.7811-2.8284 0l-8.00001-8c-.78105-.78103-.78105-2.04737 0-2.82841z" fillRule="evenodd"></path></svg>
+                                        <ArrowLeftIcon size={24} color="#004B7A" className={`shrink-0 ${open ? 'rotate-90' : '-rotate-90'}`} />
                                     </DisclosureButton>
                                     <DisclosurePanel className="text-xs mb-3">
                                         <ul className="ltr:ml-5 rtl:mr-5">
@@ -425,7 +427,7 @@ export default function Faqs() {
                                         {lang === "ar"
                                             ? "الشحن المجاني من تمكين ؟"
                                             : "About free shipping from Tamkeen?"}
-                                        <svg height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg" id="fi_10486749" className={`transform ${open ? '-rotate-180' : ''} fill-[#004B7A] transition duration-150 ease-in-out`}><path clipRule="evenodd" d="m2.58579 7.58579c.78104-.78105 2.04738-.78105 2.82842 0l6.58579 6.58581 6.5858-6.58581c.781-.78105 2.0474-.78105 2.8284 0 .7811.78104.7811 2.04738 0 2.82841l-8 8c-.781.7811-2.0474.7811-2.8284 0l-8.00001-8c-.78105-.78103-.78105-2.04737 0-2.82841z" fillRule="evenodd"></path></svg>
+                                        <ArrowLeftIcon size={24} color="#004B7A" className={`shrink-0 ${open ? 'rotate-90' : '-rotate-90'}`} />
                                     </DisclosureButton>
                                     <DisclosurePanel className="text-xs mb-3">
                                         <ul className="ltr:ml-5 rtl:mr-5">
@@ -448,7 +450,7 @@ export default function Faqs() {
                                         {lang === "ar"
                                             ? "هل خدمة الدفع عند الاستلام متاحة ؟"
                                             : "Is Cash on Delivery available?"}
-                                        <svg height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg" id="fi_10486749" className={`transform ${open ? '-rotate-180' : ''} fill-[#004B7A] transition duration-150 ease-in-out`}><path clipRule="evenodd" d="m2.58579 7.58579c.78104-.78105 2.04738-.78105 2.82842 0l6.58579 6.58581 6.5858-6.58581c.781-.78105 2.0474-.78105 2.8284 0 .7811.78104.7811 2.04738 0 2.82841l-8 8c-.781.7811-2.0474.7811-2.8284 0l-8.00001-8c-.78105-.78103-.78105-2.04737 0-2.82841z" fillRule="evenodd"></path></svg>
+                                        <ArrowLeftIcon size={24} color="#004B7A" className={`shrink-0 ${open ? 'rotate-90' : '-rotate-90'}`} />
                                     </DisclosureButton>
                                     <DisclosurePanel className="text-xs mb-3">
                                         <ul className="ltr:ml-5 rtl:mr-5">
@@ -469,7 +471,7 @@ export default function Faqs() {
                                         {lang === "ar"
                                             ? "هل تفاصيل الدفع والبطاقة الخاصة بي آمنة؟"
                                             : "Are my payment and card details safe?"}
-                                        <svg height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg" id="fi_10486749" className={`transform ${open ? '-rotate-180' : ''} fill-[#004B7A] transition duration-150 ease-in-out`}><path clipRule="evenodd" d="m2.58579 7.58579c.78104-.78105 2.04738-.78105 2.82842 0l6.58579 6.58581 6.5858-6.58581c.781-.78105 2.0474-.78105 2.8284 0 .7811.78104.7811 2.04738 0 2.82841l-8 8c-.781.7811-2.0474.7811-2.8284 0l-8.00001-8c-.78105-.78103-.78105-2.04737 0-2.82841z" fillRule="evenodd"></path></svg>
+                                        <ArrowLeftIcon size={24} color="#004B7A" className={`shrink-0 ${open ? 'rotate-90' : '-rotate-90'}`} />
                                     </DisclosureButton>
                                     <DisclosurePanel className="text-xs mb-3">
                                         <ul className="ltr:ml-5 rtl:mr-5">
@@ -492,7 +494,7 @@ export default function Faqs() {
                                         {lang === "ar"
                                             ? "كيف يمكنني التقدم بطلب لاسترداد المبلغ المالي ؟"
                                             : "How do I apply for a refund?"}
-                                        <svg height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg" id="fi_10486749" className={`transform ${open ? '-rotate-180' : ''} fill-[#004B7A] transition duration-150 ease-in-out`}><path clipRule="evenodd" d="m2.58579 7.58579c.78104-.78105 2.04738-.78105 2.82842 0l6.58579 6.58581 6.5858-6.58581c.781-.78105 2.0474-.78105 2.8284 0 .7811.78104.7811 2.04738 0 2.82841l-8 8c-.781.7811-2.0474.7811-2.8284 0l-8.00001-8c-.78105-.78103-.78105-2.04737 0-2.82841z" fillRule="evenodd"></path></svg>
+                                        <ArrowLeftIcon size={24} color="#004B7A" className={`shrink-0 ${open ? 'rotate-90' : '-rotate-90'}`} />
                                     </DisclosureButton>
                                     <DisclosurePanel className="text-xs mb-3">
                                         <ul className="ltr:ml-5 rtl:mr-5">
