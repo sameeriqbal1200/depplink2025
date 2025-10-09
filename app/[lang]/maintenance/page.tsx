@@ -142,7 +142,7 @@ export default function Maintenance() {
 
                 <div className="text-sm font-medium flex items-center gap-x-3 mb-10 md:mb-0">
                     <button
-                        className="focus-visible:outline-none bg-[#219EBC] text-white border-[#219EBC] border py-3 px-9 rounded-md max-md:w-1/2"
+                        className="focus-visible:outline-none bg-[#219EBC] text-white border-[#219EBC] border py-2.5 px-6 rounded-md max-md:w-1/2"
                         type="button" aria-label={lang == 'ar' ? 'فتح تذكرة' : 'Open Ticket'}
                         onClick={() => {
                             checkUser()
@@ -150,7 +150,7 @@ export default function Maintenance() {
                     >
                         {lang == 'ar' ? 'فتح تذكرة' : 'Open Ticket'}
                     </button>
-                    <button className="focus-visible:outline-none border-[#219EBC] border text-[#219EBC] py-3 px-8 rounded-md hover:bg-[#219EBC] hover:text-white max-md:w-1/2" type="button" aria-label={lang == 'ar' ? 'تواصل معنا' : 'Contact with Us'}
+                    <button className="focus-visible:outline-none border-[#219EBC] border text-[#219EBC] py-2.5 px-5 rounded-md hover:bg-[#219EBC] hover:text-white max-md:w-1/2" type="button" aria-label={lang == 'ar' ? 'تواصل معنا' : 'Contact with Us'}
                         onClick={() => {
                             router.push(`${origin}/${lang}/contact-us`)
                         }}
