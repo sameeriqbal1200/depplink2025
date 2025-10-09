@@ -275,7 +275,7 @@ export default function ProductLoopFilterComponent({
 
         {/* Filter and Brand Buttons */}
         <div className="flex items-start justify-between py-3">
-          <div className="tamkeenSales_btns flex items-center justify-start gap-x-6 gap-y-4 w-full mb-4 flex-wrap">
+          <div className="tamkeenSales_btns flex items-center justify-start gap-x-4 md:gap-x-6 gap-y-4 w-full mb-4 flex-wrap">
             {/* Tag Filters */}
             {filters.filter(isTagInProducts).map((filter, index) => (
               <div
@@ -285,7 +285,7 @@ export default function ProductLoopFilterComponent({
               >
                 <button
                   onClick={() => toggleDropdown(`filter-${filter.id}`)}
-                  className="bestProButton w-fit whitespace-nowrap px-4 py-2 text-primary fill-primary border-gray hover:text-white hover:fill-white hover:bg-primary flex items-center justify-between gap-3 lg:gap-5 !transition-none"
+                  className="bestProButton w-fit whitespace-nowrap px-3 md:px-4 py-2 text-primary fill-primary border-gray hover:text-white hover:fill-white hover:bg-primary flex items-center justify-between gap-1 md:gap-3 lg:gap-5 !transition-none"
                 >
                   <span>{isArabic ? filter.name_arabic : filter.name}</span>
                   <svg
@@ -352,8 +352,8 @@ export default function ProductLoopFilterComponent({
                     </ul>
                   </div>
                 )}
-                {index < filters.filter(isTagInProducts).length - 1 && (
-                  <span className={`${isArabic ? 'left-[-12px]' : 'right-[-12px]'} absolute top-1/2 transform -translate-y-1/2 w-px h-[60%] bg-gray opacity-30`}></span>
+                {index < filters.filter(isTagInProducts).length && (
+                  <span className={`${isArabic ? 'left-[-8px] md:left-[-12px]' : 'right-[-8px] md:right-[-12px]'} absolute top-1/2 transform -translate-y-1/2 w-px h-[60%] bg-gray opacity-30`}></span>
                 )}
               </div>
             ))}
@@ -366,7 +366,7 @@ export default function ProductLoopFilterComponent({
               >
                 <button
                   onClick={() => toggleDropdown("brand")}
-                  className="bestProButton w-fit whitespace-nowrap px-4 py-2 text-primary fill-primary border-gray hover:text-white hover:fill-white hover:bg-primary flex items-center justify-between gap-3 lg:gap-5 !transition-none"
+                  className="bestProButton w-fit whitespace-nowrap px-3 md:px-4 py-2 text-primary fill-primary border-gray hover:text-white hover:fill-white hover:bg-primary flex items-center justify-between gap-1 md:gap-3 lg:gap-5 !transition-none"
                 >
                   <span>{isArabic ? "العلامة التجارية" : "Brand"}</span>
                   <svg
@@ -430,10 +430,10 @@ export default function ProductLoopFilterComponent({
               </div>
             )}
           </div>
-          <div className="w-20">
+          <div>
             {(selectedBrands.length > 0 || Object.values(selectedFiltersByGroup).some(arr => arr.length > 0)) && (
               <button
-                className="clear_all text-xs text-[#e10808] font-semibold"
+                className="clear_all text-xs text-[#e10808] font-semibold w-14"
                 onClick={() => clearAllFilters()}
               >
                 {clearText}
