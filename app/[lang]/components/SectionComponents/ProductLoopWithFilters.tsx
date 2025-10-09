@@ -18,6 +18,7 @@ import "swiper/css/pagination";
 import "../NewHomePageComp/scrollBar.css";
 import { getCookie } from "cookies-next";
 import { getProductExtraData } from "@/lib/components/component.client";
+import ArrowLeftIcon from "../Icons/ArrowLeftIcon";
 
 const ProductComponent = dynamic(
   () => import("../NewHomePageComp/product_component_updated"),
@@ -288,7 +289,7 @@ export default function ProductLoopFilterComponent({
                   className="bestProButton w-fit whitespace-nowrap px-3 md:px-4 py-2 text-primary fill-primary border-gray hover:text-white hover:fill-white hover:bg-primary flex items-center justify-between gap-1 md:gap-3 lg:gap-5 !transition-none"
                 >
                   <span>{isArabic ? filter.name_arabic : filter.name}</span>
-                  <svg
+                  {/* <svg
                     height="12"
                     viewBox="0 0 24 24"
                     width="12"
@@ -302,7 +303,10 @@ export default function ProductLoopFilterComponent({
                       fillRule="evenodd"
                       d="m2.58579 7.58579c.78104-.78105 2.04738-.78105 2.82842 0l6.58579 6.58581 6.5858-6.58581c.781-.78105 2.0474-.78105 2.8284 0 .7811.78104.7811 2.04738 0 2.82841l-8 8c-.781.7811-2.0474.7811-2.8284 0l-8.00001-8c-.78105-.78103-.78105-2.04737 0-2.82841z"
                     />
-                  </svg>
+                  </svg> */}
+                  <ArrowLeftIcon size={18} color="#004B7A" className={`fill-current ${
+                    dropdowns[`filter-${filter.id}`] ? "rotate-90" : "-rotate-90"
+                  }`} />
                 </button>
                 {dropdowns[`filter-${filter.id}`] && (
                   <div className={`absolute top-full left-0 z-30 w-max bg-white rounded-xl shadow-md p-4 ${getValidChildTags(filter).length > 4 ? 'h-40' : 'h-auto'} xl:min-w-32 min-w-20 overflow-y-auto custom_scrollbarStyle mt-2`}>
@@ -369,21 +373,9 @@ export default function ProductLoopFilterComponent({
                   className="bestProButton w-fit whitespace-nowrap px-3 md:px-4 py-2 text-primary fill-primary border-gray hover:text-white hover:fill-white hover:bg-primary flex items-center justify-between gap-1 md:gap-3 lg:gap-5 !transition-none"
                 >
                   <span>{isArabic ? "العلامة التجارية" : "Brand"}</span>
-                  <svg
-                    height="12"
-                    viewBox="0 0 24 24"
-                    width="12"
-                    xmlns="http://www.w3.org/2000/svg"
-                    className={`fill-current ${
-                      dropdowns["brand"] ? "rotate-180" : "rotate-0"
-                    }`}
-                  >
-                    <path
-                      clipRule="evenodd"
-                      fillRule="evenodd"
-                      d="m2.58579 7.58579c.78104-.78105 2.04738-.78105 2.82842 0l6.58579 6.58581 6.5858-6.58581c.781-.78105 2.0474-.78105 2.8284 0 .7811.78104.7811 2.04738 0 2.82841l-8 8c-.781.7811-2.0474.7811-2.8284 0l-8.00001-8c-.78105-.78103-.78105-2.04737 0-2.82841z"
-                    />
-                  </svg>
+                  <ArrowLeftIcon size={18} color="#004B7A" className={`fill-current ${
+                    dropdowns["brand"] ? "rotate-90" : "-rotate-90"
+                  }`} />
                 </button>
                 {dropdowns["brand"] && (
                   <div className={`absolute top-full left-0 z-30 w-max bg-white rounded-xl shadow-md p-4 ${brands.length > 4 ? 'h-40' : 'h-auto'} xl:min-w-32 min-w-20 overflow-y-auto custom_scrollbarStyle mt-2`}>
