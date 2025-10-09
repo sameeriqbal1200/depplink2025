@@ -99,7 +99,7 @@ export default function Wishlist() {
                 pullingContent={<PullIndicator state="pulling" lang={uiLang} />}
                 className="min-h-screen"
             > */}
-      <div className="container md:py-4 py-16">
+      <div className="container md:py-4 py-20">
         {loading ? (
           // simple skeleton loader
           <div className="my-6 grid grid-cols-1 gap-3">
