@@ -102,7 +102,7 @@ export default function Faqs() {
                                             : "Shipping & Delivery charges?"}
                                         <ArrowLeftIcon size={24} color="#004B7A" className={`shrink-0 ${open ? 'rotate-90' : '-rotate-90'}`} />
                                     </DisclosureButton>
-                                    <DisclosurePanel className="text-xs mb-3">
+                                    <DisclosurePanel className="text-xs mb-3 px-2 md:px-3">
                                         <span>
                                             {lang === "ar"
                                                 ? "لكل طلب رسوم توصيل مختلفة  بناءً على الموقع ، عند تقديم الطلب ، ستظهر رسوم الشحن / التسليم على صفحة عربة التسوق قبل اتمام عملية الشراء "
@@ -122,7 +122,7 @@ export default function Faqs() {
                                             : "What are the payment methods available?"}
                                         <ArrowLeftIcon size={24} color="#004B7A" className={`shrink-0 ${open ? 'rotate-90' : '-rotate-90'}`} />
                                     </DisclosureButton>
-                                    <DisclosurePanel className="text-xs mb-3">
+                                    <DisclosurePanel className="text-xs mb-3 px-2 md:px-3">
                                         <span>
                                             {lang === "ar"
                                                 ? "نحن نوفر خدمة الدفع عبر  مدى باي ، بطاقة الائتمان / بطاقة الخصم (فيزا وماستر كارد) ، آبل باي ، تسهيل ، كذلك تابي ، وتمارا (0٪ تقسيط)"
@@ -142,7 +142,7 @@ export default function Faqs() {
                                             : "Is buying online safe at Tamkeen?"}
                                         <ArrowLeftIcon size={24} color="#004B7A" className={`shrink-0 ${open ? 'rotate-90' : '-rotate-90'}`} />
                                     </DisclosureButton>
-                                    <DisclosurePanel className="text-xs mb-3">
+                                    <DisclosurePanel className="text-xs mb-3 px-2 md:px-3">
                                         <span>
                                             {lang === "ar"
                                                 ? "نعم  ، تسوق آمن 100٪ في متاجر تمكين. نحن نستخدم أفضل التقنيات في موقع الويب ، وأفضل أدوات الأمان التي ستحمي معلوماتك الخاصة القيمة من الاحتيال عبر الإنترنت والبرامج الضارة ، وما إلى ذلك. نحن لا نخزن تفاصيل الدفع الخاصة بك أو نحفظها. نقوم بتخزين البيانات الشخصية فقط لشحن البضائع ولأغراض الترويج"
@@ -212,7 +212,7 @@ export default function Faqs() {
                                             : "Can someone other than me use my Tamkeen account?"}
                                         <ArrowLeftIcon size={24} color="#004B7A" className={`shrink-0 ${open ? 'rotate-90' : '-rotate-90'}`} />
                                     </DisclosureButton>
-                                    <DisclosurePanel className="text-xs mb-3">
+                                    <DisclosurePanel className="text-xs mb-3 px-2 md:px-3">
                                         <span>
                                             {lang === "ar"
                                                 ? "نعم ، يمكن لشخص آخر استخدام حسابك إذا منحته الصلاحية لاستخدامه ، دون موافقتك ، لا يمكن لأي شخص استخدام حسابك. إذا كنت تمنح صلاحية استخدام حسابك ، فستكون مسؤولاً (ملاحظة: نقترح عدم إعطاء تفاصيل تسجيل الدخول الخاصة بك إلى شخص آخر)"
@@ -338,7 +338,7 @@ export default function Faqs() {
                                             : "What are the areas or locations covered for delivery?"}
                                         <ArrowLeftIcon size={24} color="#004B7A" className={`shrink-0 ${open ? 'rotate-90' : '-rotate-90'}`} />
                                     </DisclosureButton>
-                                    <DisclosurePanel className="text-xs mb-3">
+                                    <DisclosurePanel className="text-xs mb-3 px-2 md:px-3">
                                         <span>
                                             {lang === "ar"
                                                 ? "نحن نغطي جميع أنحاء المملكة العربية السعودية ، ونقوم بالشحن إلى جميع المواقع (المناطق والمدن) في المملكة العربية السعودية. بالنسبة لخدمة الدفع عند الاستلام متاحة داخل مدينة جدة فقط (COD)."
@@ -359,7 +359,7 @@ export default function Faqs() {
                                         <ArrowLeftIcon size={24} color="#004B7A" className={`shrink-0 ${open ? 'rotate-90' : '-rotate-90'}`} />
                                     </DisclosureButton>
                                     <DisclosurePanel className="text-xs mb-3">
-                                        <ul>
+                                        <ul className="ltr:ml-5 rtl:mr-5">
                                             <li className="my-1">-{' '}{lang === "ar" ? "تكلفة خدمة تركيب مكيف الهواء الاسبليت 200 ريال (بالإضافة إلى ذلك يتم احتساب سعر الأنبوب لكل متر)" : "Spilt Air Condition Installation service cost of 200 SR (additionally Pipe will charge per meter)"}
                                             </li>
                                             <li className="my-1">-{' '}{lang === "ar" ? "تكلفة خدمة تركيب مكيف الشباك 50 ريال (بالإضافة إلى ذلك يتم احتساب سعر الأنبوب لكل متر)" : "Window Air Conditioner Installation 50 SR (additionally Pipe will charge per meter)"}
