@@ -14,8 +14,13 @@ interface Brand {
   id: number;
   name_arabic: string;
   slug: string;
-  brand_image_media: number;
-  brand_media_image: {
+  brand_image_media?: number;
+  brand_app_image_media?: number;
+  brand_media_image?: {
+    id: number;
+    image: string;
+  };
+  brand_media_app_image?: {
     id: number;
     image: string;
   };
@@ -42,9 +47,8 @@ export default function BrandCategories({
   const router = useRouter();
   const prevRef = useRef<HTMLButtonElement | null>(null);
   const nextRef = useRef<HTMLButtonElement | null>(null);
-
   // Fallback image for brands
-  const defaultBrandImage = "/images/categoryNew/brand-1.png";
+  const defaultBrandImage = "/images/placeholder.webp";
 
   // Construct image URL
   const getImageSrc = (image?: string) => {
@@ -127,14 +131,17 @@ export default function BrandCategories({
         dir={isArabic ? "rtl" : "ltr"}
       >
         {brands.length > 0 ? (
-          brands.map((brand) => (
+          brands.map((brand) => {
+            const brandImage = isMobileOrTablet ? brand.brand_media_app_image?.image : brand.brand_media_image?.image;
+          return (
+            <>
             <SwiperSlide key={brand.slug || brand.id}>
               <button
                 className="focus-visible:outline-none  py-3 w-full h-full md:py-4 max-w-xs overflow-hidden rounded-lg shadow-md transition-shadow duration-300 ease-in-out text-primary border hover:border-[#004B7A] hover:text-[#004B7A] hover:bg-[#004B7A05] border-white bg-white mb-1"
                 onClick={() => router.push(`${origin}/${lang}/brand/${brand.slug}`)}
               >
                 <Image
-                  src={getImageSrc(brand.brand_media_image?.image)}
+                  src={getImageSrc(brandImage)}
                   alt={isArabic ? brand.name_arabic : brand.name || brand.name_arabic}
                   title={isArabic ? brand.name_arabic : brand.name || brand.name_arabic}
                   width={134}
@@ -149,7 +156,8 @@ export default function BrandCategories({
                 </p> */}
               </button>
             </SwiperSlide>
-          ))
+            </>
+          )})
         ) : (
           <SwiperSlide>
             <div className="flex flex-col items-center w-full">

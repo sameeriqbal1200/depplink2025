@@ -2448,7 +2448,7 @@ export default function Checkout() {
                                                 <h6 className="text-[#1C262D] capitalize">{lang === 'ar' ? s.title_arabic : s.title}</h6>
                                                 <span className="text-[#004B7A] flex gap-1 items-center">{s?.price?.toLocaleString('EN-US')}{currencySymbol}</span>
                                             </div>
-                                            <span className='text-base font-bold animationImp text-orangePrice'>{lang === 'ar' ? 'جميع أسعار المنتجات شاملة الضريبة المضافة' : 'All product prices included with VAT'}</span>
+                                            <span className='text-sm md:text-base font-bold animationImp text-orangePrice'>{lang === 'ar' ? 'جميع أسعار المنتجات شاملة الضريبة المضافة' : 'All product prices included with VAT'}</span>
                                         </React.Fragment>
                                     )
                                 }

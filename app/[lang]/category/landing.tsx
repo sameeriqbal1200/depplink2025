@@ -161,7 +161,7 @@ export default function NewCategory({ data, slug, lang, deviceType, origin, sear
 
           case "oneimage":
             return (
-              <section className="relative mb-8" key={index}>
+              <section className="relative mb-4 md:mb-8" key={index}>
                 <div className={containerClass}>
                   <GridImagesOne
                     isMobileOrTablet={isMobileOrTablet}
