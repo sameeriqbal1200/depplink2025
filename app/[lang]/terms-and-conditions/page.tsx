@@ -38,9 +38,9 @@ export default function TermsandConditions() {
                                             {lang === 'ar' ? "شروط و أحكام العروض الحالية" : "Terms and conditions for current offers"}
                                              <ArrowLeftIcon size={24} color="#004B7A" className={`shrink-0 ${open ? 'rotate-90' : '-rotate-90'}`} />
                                         </DisclosureButton>
-                                        <DisclosurePanel className="text-xs mb-3">
+                                        <DisclosurePanel className="text-xs mb-3 ">
 
-                                            <div className='mb-2.5'>
+                                            <div className='mb-2.5 px-2 md:px-3'>
                                                 <p className="mb-2.5">{lang === 'ar' ? `يسري هذا العرض من تاريخ 10 فبراير – الى تاريخ 04 مارس.` : 'This offer is valid from February 10 till March 04.'}</p>
                                                 <p className="mb-2.5">{lang === 'ar' ? 'عرض الضريبة علينا على منتجات جنرال سوبريم و كريازي و جولد تك.' : 'VAT On Us Promotion on General Supreme, Kiriazi, Gold Tech Products.'}</p>
                                                 <p className="mb-2.5">{lang === 'ar' ? 'خصم اضافي 5% و 10% على أكثر من 470 صنف من منتجات أخرى.' : 'Additional discounts of 05% and 10% on more than 470 products.'}</p>
@@ -116,7 +116,7 @@ export default function TermsandConditions() {
                                             {lang === 'ar' ? "شروط الاستخدام" : "TERMS of use"}
                                              <ArrowLeftIcon size={24} color="#004B7A" className={`shrink-0 ${open ? 'rotate-90' : '-rotate-90'}`} />
                                         </DisclosureButton>
-                                        <DisclosurePanel className="text-xs mb-3">
+                                        <DisclosurePanel className="text-xs mb-3 px-2 md:px-3">
                                             <p className="mb-2.5">{lang === 'ar' ? 'تحميل التطبيق' : 'Download the application'}</p>
                                             <p className="mb-2.5">
                                                 {lang === 'ar' ?
@@ -150,7 +150,7 @@ export default function TermsandConditions() {
                                             {lang === 'ar' ? "الحماية الأمنية للموقع الإلكتروني" : "Website security"}
                                              <ArrowLeftIcon size={24} color="#004B7A" className={`shrink-0 ${open ? 'rotate-90' : '-rotate-90'}`} />
                                         </DisclosureButton>
-                                        <DisclosurePanel className="text-xs mb-3">
+                                        <DisclosurePanel className="text-xs mb-3 px-2 md:px-3">
                                             <p className="mb-2.5">{lang === 'ar' ?
                                                 "يحظر عليك انتهاك أو محاولة انتهاك أمن الموقع، بما في ذلك على سبيل المثال لا الحصر:"
                                                 :
@@ -190,7 +190,7 @@ export default function TermsandConditions() {
                                             {lang === 'ar' ? "سياسة الخصوصية" : "Privacy Policy"}
                                              <ArrowLeftIcon size={24} color="#004B7A" className={`shrink-0 ${open ? 'rotate-90' : '-rotate-90'}`} />
                                         </DisclosureButton>
-                                        <DisclosurePanel className="text-xs mb-3">
+                                        <DisclosurePanel className="text-xs mb-3 px-2 md:px-3">
                                             <p className="mb-2.5">{lang === 'ar' ?
                                                 "نعتبر حماية خصوصيتك مبدأ مجتمعي مهم للغاية. نتفهم بوضوح أنك ومعلوماتك تشكلان واحدة من أهم أصولنا. نقوم بتخزين ومعالجة معلوماتك على خوادمنا الموجودة في المملكة العربية السعودية والمحمية بواسطة أجهزة الأمن المادية والتكنولوجية. ونستخدم أطرافًا ثالثة للتحقق من مبادئ الخصوصية الخاصة بنا والتصديق عليها. في حالة اعتراضك على نقل معلوماتك أو استخدامها بأي شكل من الأشكال، يرجى إرسال طلبك contact@tamkeenstores.com.sa أو عدم استخدام الموقع."
                                                 :
@@ -214,7 +214,7 @@ export default function TermsandConditions() {
                                             {lang === 'ar' ? "التسجيل – حسابي" : "Registration - your account"}
                                              <ArrowLeftIcon size={24} color="#004B7A" className={`shrink-0 ${open ? 'rotate-90' : '-rotate-90'}`} />
                                         </DisclosureButton>
-                                        <DisclosurePanel className="text-xs mb-3">
+                                        <DisclosurePanel className="text-xs mb-3 px-2 md:px-3">
                                             <p className="mb-2.5">{lang === 'ar' ?
                                                 "يشمل التسجيل المعلومات (معلوماتك) التي تحتاج إلى تزويدنا بها للتعامل معنا وكذلك للاتصال بك. إنك توافق على أنه يجوز لنا استخدام (وتحديث) معلوماتك لإدارة تسجيلك والتحكم في هويتك أثناء عملية الدفع عبر الإنترنت."
                                                 :
@@ -238,7 +238,7 @@ export default function TermsandConditions() {
                                             {lang === 'ar' ? "مراجعات المنتجات و البائعين" : "Product & Seller Reviews"}
                                              <ArrowLeftIcon size={24} color="#004B7A" className={`shrink-0 ${open ? 'rotate-90' : '-rotate-90'}`} />
                                         </DisclosureButton>
-                                        <DisclosurePanel className="text-xs mb-3">
+                                        <DisclosurePanel className="text-xs mb-3 px-2 md:px-3">
                                             <p className="mb-2.5">{lang === 'ar' ? "يلتزم العملاء الذين يكملون مراجعات المنتج و/ أو البائعين بتزويد tamkeenstores.com.sa بالملكية الكاملة والترخيص لإعادة إنتاج مراجعاتهم في أي مواد تسويقية ونشرها على الموقع الإلكتروني وفي المواد التسويقية دون الحاجة إلي موافقة إضافية من العملاء استنادًا إلى تقديم المراجعة." : "Customers who complete product and/or seller reviews are obligated to provide tamkeenstores.com.sa with full ownership and licence to reproduce their reviews in any marketing materials and publish them on the website and in marketing materials without the need for additional consent from customers based on submitting the review."}</p>
                                         </DisclosurePanel>
                                     </div>
@@ -251,7 +251,7 @@ export default function TermsandConditions() {
                                             {lang === 'ar' ? "عربة التسوق الخاصة بك" : "Your shopping cart"}
                                              <ArrowLeftIcon size={24} color="#004B7A" className={`shrink-0 ${open ? 'rotate-90' : '-rotate-90'}`} />
                                         </DisclosureButton>
-                                        <DisclosurePanel className="text-xs mb-3">
+                                        <DisclosurePanel className="text-xs mb-3 px-2 md:px-3">
                                             <p className="mb-2.5">{lang === 'ar' ?
                                                 "نحتفظ بالحق، وفقًا تقديرنا الخاص، في الحد من كمية العناصر المختارة لكل شخص"
                                                 :
@@ -271,7 +271,7 @@ export default function TermsandConditions() {
                                             {lang === 'ar' ? "معلومات المنتجات والمخزون والتسعير" : "Product information, stock, and pricing"}
                                              <ArrowLeftIcon size={24} color="#004B7A" className={`shrink-0 ${open ? 'rotate-90' : '-rotate-90'}`} />
                                         </DisclosureButton>
-                                        <DisclosurePanel className="text-xs mb-3">
+                                        <DisclosurePanel className="text-xs mb-3 px-2 md:px-3">
                                             <p className="mb-2.5">{lang === 'ar' ?
                                                 "في حين يسعى الموقع جاهدا لتوفير معلومات دقيقة عن المنتجات (مثل توافر المخزون والتسعير وميزات المنتجات والصور والمواصفات) ومعلومات الخدمات ، قد تحدث أخطاء مطبعية."
                                                 :
@@ -303,7 +303,7 @@ export default function TermsandConditions() {
                                             {lang === 'ar' ? "سياسة التوصيل والتسليم" : "Delivery terms and conditions"}
                                              <ArrowLeftIcon size={24} color="#004B7A" className={`shrink-0 ${open ? 'rotate-90' : '-rotate-90'}`} />
                                         </DisclosureButton>
-                                        <DisclosurePanel className="text-xs mb-3">
+                                        <DisclosurePanel className="text-xs mb-3 px-2 md:px-3">
                                             <p className="mb-2.5">{lang === 'ar' ?
                                                 "تعتمد تواريخ معالجة الشحن على طلبك والموقع وطريقة الدفع. يرجى ملاحظة أن الطلبات المسبقة غير مشمولة في الجدول الزمني القياسي للشحن أدناه."
                                                 :
@@ -343,7 +343,7 @@ export default function TermsandConditions() {
                                             {lang === 'ar' ? "شروط وأحكام التوصيل السريع" : "Terms and conditions of express delivery"}
                                              <ArrowLeftIcon size={24} color="#004B7A" className={`shrink-0 ${open ? 'rotate-90' : '-rotate-90'}`} />
                                         </DisclosureButton>
-                                        <DisclosurePanel className="text-xs mb-3">
+                                        <DisclosurePanel className="text-xs mb-3 px-2 md:px-3">
                                             <p className="mb-2.5">{lang === 'ar' ?
                                                 "يتوفر خيار التوصيل السريع للمنتجات المختارة التي تم شراؤها في المدن المختارة مع الأخذ في الاعتبار شروط وأحكام تغطية التوصيل المنزلي."
                                                 :
@@ -363,7 +363,7 @@ export default function TermsandConditions() {
                                             {lang === 'ar' ? "المدفوعات" : "Payments"}
                                              <ArrowLeftIcon size={24} color="#004B7A" className={`shrink-0 ${open ? 'rotate-90' : '-rotate-90'}`} />
                                         </DisclosureButton>
-                                        <DisclosurePanel className="text-xs mb-3">
+                                        <DisclosurePanel className="text-xs mb-3 px-2 md:px-3">
                                             <p className="mb-2.5">{lang === 'ar' ?
                                                 "يوفر الموقع إمكانية شراء المنتج (المنتجات) و / أو الخدمة (الخدمات) عبر الإنترنت وتسوية الدفع عبر الإنترنت أو في المتجر على أساس طريقة الشحن ، والتسليم المتاحة في المملكة العربية السعودية. ستكون معاملات الدفع بما في ذلك التوكيلات والتسويات بالريال السعودي."
                                                 :
@@ -411,7 +411,7 @@ export default function TermsandConditions() {
                                             {lang === 'ar' ? "الدفع عن طريق بسيطه من تسهيل" : " Payment via Baseeta"}
                                              <ArrowLeftIcon size={24} color="#004B7A" className={`shrink-0 ${open ? 'rotate-90' : '-rotate-90'}`} />
                                         </DisclosureButton>
-                                        <DisclosurePanel className="text-xs mb-3">
+                                        <DisclosurePanel className="text-xs mb-3 px-2 md:px-3">
                                             <p className="mb-2.5">{lang === 'ar' ?
                                                 "يكون استخدام البطاقة من قبل صاحبها مقدم الطلب، ولا ينبغي استخدامها من قبل أي شخص آخر."
                                                 :
@@ -467,7 +467,7 @@ export default function TermsandConditions() {
                                             {lang === 'ar' ? "أقساط بطاقة الائتمان" : " Credit card installments"}
                                              <ArrowLeftIcon size={24} color="#004B7A" className={`shrink-0 ${open ? 'rotate-90' : '-rotate-90'}`} />
                                         </DisclosureButton>
-                                        <DisclosurePanel className="text-xs mb-3">
+                                        <DisclosurePanel className="text-xs mb-3 px-2 md:px-3">
                                             <p className="mb-2.5">{lang === 'ar' ?
                                                 "يتميز متجر تمكين بوجود مختلف خطط خيارات تقسيط بطاقة الائتمان، حيث تتغير الخطط بانتظام وتستند إلى تمكين والعروض الترويجية"
                                                 :
@@ -513,7 +513,7 @@ export default function TermsandConditions() {
                                             {lang === 'ar' ? "بطاقات الهدايا الترويجية بين الشركات ومن الشركة إلي المستهلك" : "Promotional & B2B gift cards"}
                                              <ArrowLeftIcon size={24} color="#004B7A" className={`shrink-0 ${open ? 'rotate-90' : '-rotate-90'}`} />
                                         </DisclosureButton>
-                                        <DisclosurePanel className="text-xs mb-3">
+                                        <DisclosurePanel className="text-xs mb-3 px-2 md:px-3">
                                             <p className="mb-2.5">{lang === 'ar' ? "هذه ليست بطاقة ائتمان." : "This is not a credit card."}</p>
                                             <p className="mb-2.5">{lang === 'ar' ? "هذه البطاقة قابلة لإعادة الشحن." : "This card is reloadable."}</p>
                                             <p className="mb-2.5">{lang === 'ar' ? "بدون استرداد نقدي مقابل بطاقة الهدايا." : "No cash back for the gift card."}</p>
@@ -530,7 +530,7 @@ export default function TermsandConditions() {
                                             {lang === 'ar' ? "إلغاء الطلب" : "Order Cancellation"}
                                              <ArrowLeftIcon size={24} color="#004B7A" className={`shrink-0 ${open ? 'rotate-90' : '-rotate-90'}`} />
                                         </DisclosureButton>
-                                        <DisclosurePanel className="text-xs mb-3">
+                                        <DisclosurePanel className="text-xs mb-3 px-2 md:px-3">
                                             <p className="mb-2.5">{lang === 'ar' ? "الإلغاء من قبل متجر تمكين : يحتفظ تمكين بالحق في إلغاء الطلب لأي من الأسباب التالية" : "Cancellation by Tamkeen store: Tamkeen reserves the right to cancel the order for any of the following reasons:"}</p>
                                             <p className="mb-2.5">{lang === 'ar' ? "رفض الدفع." : "Payment refused."}</p>
                                             <p className="mb-2.5">{lang === 'ar' ? "تأخر العميل لأكثر من 48 ساعة لتسوية الدفع لرقم الفواتير المرجعية من قبل سداد." : "The customer is late for more than 48 hours to settle the payment for the invoice number referenced by SADAD."}</p>
@@ -550,7 +550,7 @@ export default function TermsandConditions() {
                                             {lang === 'ar' ? "الإسترجاع / التبديل / استرداد الأموال" : "Return / Exchange / Refund"}
                                              <ArrowLeftIcon size={24} color="#004B7A" className={`shrink-0 ${open ? 'rotate-90' : '-rotate-90'}`} />
                                         </DisclosureButton>
-                                        <DisclosurePanel className="text-xs mb-3">
+                                        <DisclosurePanel className="text-xs mb-3 px-2 md:px-3">
                                             <p className="mb-2.5">{lang === 'ar' ? "في حال لم تكن راضيًا عن منتجك (منتجاتك) أو وجود عيب بالمنتج (المنتجات)، يمكنك طلب “التفويض المسبق لإرجاع المواد” لإعادة المنتج (المنتجات) الى تمكين في غضون (7) أيام من تاريخ استلام طلبك." : "In the event that you are not satisfied with your product(s) or there is a defect in the product(s), you can request a “Return Materials Authorization” to return the product(s) to Tamkeen within (7) days.From the date of receipt of your application."}</p>
                                             <p className="mb-2.5">{lang === 'ar' ? "على العميل الحفاظ على غلاف المنتج والكرتون و الاغراض الاخرى و عدم تلفها وإلا سوف يتم خصم 40% من قيمة المنتج في حال استرجاع المنتج او الاستبدال." : "The customer must preserve the product packaging, carton, and other items and not damage them, otherwise 40% of the product value will be deducted in the event of a product return or exchange."}</p>
                                             <p className="mb-2.5">{lang === 'ar' ? "يرجى الاتصال بنا للحصول على التفويض المسبق لإرجاع المواد قبل معالجة الإعادة. يسري التفويض المسبق لإرجاع المواد لمدة (٧) أيام من تاريخ الإصدار." : "Please contact us to pre-authorize returns before processing your return. The pre-authorization for returns is valid for (7) days from the date of issue."}</p>
@@ -569,7 +569,7 @@ export default function TermsandConditions() {
                                             {lang === 'ar' ? "استرداد السداد" : "Payment Return"}
                                              <ArrowLeftIcon size={24} color="#004B7A" className={`shrink-0 ${open ? 'rotate-90' : '-rotate-90'}`} />
                                         </DisclosureButton>
-                                        <DisclosurePanel className="text-xs mb-3">
+                                        <DisclosurePanel className="text-xs mb-3 px-2 md:px-3">
                                             <p className="mb-2.5">{lang === 'ar' ? "وفقًا لشروط التحويلات المصرفية الداخلية لمؤسسة النقد العربي السعودي (معاملات الاسترداد)، يجب مطابقة معلومات العميل الخاصة بالمستفيد مع معلومات الحساب المصرفي للعميل (الاسم الكامل، الهوية أو معرف الإقامة واسم البنك ورقم حساب البنك – رقم الحساب المصرفي- الأيبان)، وذلك لتجنب أي تأخير أو رفض قد يتم الإبلاغ عنه من قبل البنك الذي نريد تحويل المبلغ المسترد إليه (الوجهة)، حيث في حالة عدم تطابق معلومات العميل مع معلومات الحساب المصرفي للمستفيد، سيقع تأخير أو قد تتطلب إعادة معالجتها مرة أخرى بعد تقديم البيانات الصحيحة وفقاً للأحكام القانونية في المملكة العربية السعودية." : "According to the terms of internal bank transfers of the Saudi Arabian Monetary Agency (refund transactions), the beneficiary’s customer information must be matched with the customer’s bank account information (full name, ID or residence ID, bank name, bank account number - bank account number - IBAN), in order to avoid any delays. Or a refusal may be reported by the bank to which we want to transfer the refund (destination). In the event that the customer’s information does not match the beneficiary’s bank account information, a delay will occur or it may require reprocessing again after providing the correct data in accordance with the legal provisions in the Kingdom. Saudi Arab."}</p>
                                         </DisclosurePanel>
                                     </div>
@@ -582,7 +582,7 @@ export default function TermsandConditions() {
                                             {lang === 'ar' ? "الضمان / الصيانة والإصلاح" : "Warranty / Maintenance and Repair"}
                                              <ArrowLeftIcon size={24} color="#004B7A" className={`shrink-0 ${open ? 'rotate-90' : '-rotate-90'}`} />
                                         </DisclosureButton>
-                                        <DisclosurePanel className="text-xs mb-3">
+                                        <DisclosurePanel className="text-xs mb-3 px-2 md:px-3">
                                             <p className="mb-2.5">{lang === 'ar' ? "المنتجات التي تباع من قبلنا مشمولة بضمان لمدة (عامين) من الشركة المصنعة. يسري ضمان الشركة المصنعة الأقل من تاريخ الشراء. تتوفر خدمات الضمان الموسعة تمكين (التي تسمى أيضًا عقد خدمات القوة على مدار ٢٤/٧ ( للعديد من فئات المنتجات التي نبيعها." : "Products sold by us are covered by a (two-year) manufacturer's warranty. The manufacturer's warranty is valid from the date of purchase. Tamkeen Extended Warranty Services (also called 24/7 Power Contract) are available for many of the product categories we sell."}</p>
                                             <p className="mb-2.5">{lang === 'ar' ? "يجب عليك التحقق والاطلاع على دليل المالك قبل استخدام المنتج للتأكد من أنه يلبي جميع متطلبات السلامة والأمن والمتطلبات المحلية الكهربائية." : "You should check and review the owner's manual before using the product to ensure that it meets all safety, security, and local electrical requirements."}</p>
                                             <p className="mb-2.5">{lang === 'ar' ? "ما لم يتم تحديدها ، تم تصميم المنتجات الكهربائية للعمل على جهد ٢٤٠-٢٢٠ فولت. إذا لم يكن لديك التركيبات المناسبة للعمل بهذا الجهد الكهربائي، فإننا لا ننصح باستخدام المنتج. لن يتم قبول المنتجات التالفة بسبب استخدامها مع مصادر كهربائية و / أو امدادات خاطئة بموجب شروط وأحكام ضمان الشركة المصنعة." : "Unless specified, electrical products are designed to operate on 220-240V. If you do not have the proper fixtures to work at this voltage, we do not recommend using the product. Products damaged due to use with faulty electrical sources and/or supplies will not be accepted under the terms and conditions of the manufacturer's warranty."}</p>
@@ -599,7 +599,7 @@ export default function TermsandConditions() {
                                             {lang === 'ar' ? "خدمات الضمان عن طريق الخطأ" : "Accidently warranty services"}
                                              <ArrowLeftIcon size={24} color="#004B7A" className={`shrink-0 ${open ? 'rotate-90' : '-rotate-90'}`} />
                                         </DisclosureButton>
-                                        <DisclosurePanel className="text-xs mb-3">
+                                        <DisclosurePanel className="text-xs mb-3 px-2 md:px-3">
                                             <p className="mb-2.5">{lang === 'ar' ? "تستبعد الحالات التالية من نطاق عقد خدمة الحماية من الأضرار العرضية:" : "The following cases are excluded from the scope of the accidental damage protection service contract: Repair or replacement of devices performed outside of enable."}</p>
                                             <p className="mb-2.5">{lang === 'ar' ? "إصلاح أو استبدال الجهاز الذي يتم إجراؤه خارج تمكين." : "Any force majeure events."}</p>
                                             <p className="mb-2.5">{lang === 'ar' ? "أي أحداث قوة قاهرة." : "Incidental damages or losses occurring outside the Kingdom of Saudi Arabia."}</p>
@@ -626,7 +626,7 @@ export default function TermsandConditions() {
                                             {lang === 'ar' ? "صفقات اليوم/ عروض عطلة نهاية الأسبوع واليوم الخاص" : "Deals of the day, special day and weekend offer"}
                                              <ArrowLeftIcon size={24} color="#004B7A" className={`shrink-0 ${open ? 'rotate-90' : '-rotate-90'}`} />
                                         </DisclosureButton>
-                                        <DisclosurePanel className="text-xs mb-3">
+                                        <DisclosurePanel className="text-xs mb-3 px-2 md:px-3">
                                             <p className="mb-2.5">{lang === 'ar' ? "تتوفر صفقات اليوم عروض عطلة نهاية الأسبوع حتى آخر المخزون." : "Today's deals and weekend deals are available while stocks last."}</p>
                                             <p className="mb-2.5">{lang === 'ar' ? "تتاح عبر الإنترنت للتسليم المنزلي وغير متوفرة في المتجر أو الاستلام في المتجر." : "Available online for home delivery and not available in store or in-store pickup."}</p>
                                             <p className="mb-2.5">{lang === 'ar' ? "تقتصر على وحدات معينة للعميل طوال مدة صفقة اليوم وعرض عطلة نهاية الأسبوع، إذا تبين أن العميل طلب أكثر من الوحدات المسموح بها من عنصر العرض، سيتم إلغاء الطلبات اللاحقة." : "Limited to a customer's specific units for the duration of the Deal of the Day and Weekend Offer, if the customer is found to have ordered more than the allowed units of the offer item, subsequent orders will be cancelled."}</p>
@@ -644,7 +644,7 @@ export default function TermsandConditions() {
                                             {lang === 'ar' ? " الطلبات المسبقة" : "Product reservation policy"}
                                              <ArrowLeftIcon size={24} color="#004B7A" className={`shrink-0 ${open ? 'rotate-90' : '-rotate-90'}`} />
                                         </DisclosureButton>
-                                        <DisclosurePanel className="text-xs mb-3">
+                                        <DisclosurePanel className="text-xs mb-3 px-2 md:px-3">
                                             <p className="mb-2.5">{lang === 'ar' ? "تكون الطلبات المسبقة مضمونة من حيث أوامر العملاء، بمجرد تأكيد الدفع،يضمن تمكين جهاز الطلب المسبق الخاص بك أو البند ولكن تستند أوقات التسليم إلى أوقات العميل ولا يمكن ضمانها." : "Pre-orders are guaranteed on customer orders, once payment is confirmed, your pre-order device or item is guaranteed to be enabled but delivery times are based on customer times and cannot be guaranteed."}</p>
                                             <p className="mb-2.5">{lang === 'ar' ? "قد تختلف تواريخ تسليم الطلب المسبق والتحصيل من تواريخ المتجر بناءً على تسليم المورد ومدينة تسليم أو تحصيل العميل. سيتم إرسال التواريخ والوقت النهائي إلى العميل بمجرد وصول مخزون المورد عن طريق الرسائل القصيرة أو البريد الإلكتروني أو الهاتف للعميل. تعتبر التواريخ المقدرة تقديرات تستند إلى تسليم الموردين بالمملكة العربية السعودية وليس تواريخ تسليم العملاء على مستوى البلاد." : "Pre-order delivery and collection dates may vary from store dates based on supplier delivery and customer delivery or collection city. The final dates and time will be communicated to the customer once the supplier's stock arrives via SMS, email or phone to the customer. Estimated dates are estimates based on supplier delivery in Saudi Arabia and not customer delivery dates nationwide."}</p>
                                             <p className="mb-2.5">{lang === 'ar' ? "نحتفظ بالحق، لإلغاء أي طلب مسبق بسبب عدم التسليم من موردينا. سيبذل تمكين دائماً قصارى جهده للوفاء بجميع الطلبات المسبقة والتسليم في غضون وقت التسليم المقدر، ولكن يستند الوقت المقدر للتسليم على المهلة الزمنية من المورد وليس تاريخ التسليم المؤكد." : "We reserve the right, to cancel any pre-order due to non-delivery from our suppliers. Tamkeen will always make every effort to fulfill all pre-orders and deliver within the estimated delivery time, but the estimated delivery time is based on the lead time from the supplier and not the confirmed delivery date."}</p>
@@ -661,7 +661,7 @@ export default function TermsandConditions() {
                                             {lang === 'ar' ? " سياسة حجز المنتج" : "Product reservation policy Pre-Order"}
                                              <ArrowLeftIcon size={24} color="#004B7A" className={`shrink-0 ${open ? 'rotate-90' : '-rotate-90'}`} />
                                         </DisclosureButton>
-                                        <DisclosurePanel className="text-xs mb-3">
+                                        <DisclosurePanel className="text-xs mb-3 px-2 md:px-3">
                                             <p className="mb-2.5">{lang === 'ar' ? "في حالة عدم استلام الصنف المباع في غضون 30 يومًا كحد أقصى من تاريخ الفاتورة ، لن يكون tamkeenstores.com.sa مسئولاً عن الاحتفاظ بالصنف في مستودعاتها وسيكون ملزماً ، للأسف ، بإلغاء الفاتورة. يحق للعميل استرداد كامل المبلغ فقط وفقاً لسياسة الاسترداد العادية." : "In the event that the sold item is not received within a maximum of 30 days from the date of the invoice, tamkeenstores.com.sa will not be responsible for keeping the item in its warehouses and will, unfortunately, be obligated to cancel the invoice. The customer is entitled to a full refund only in accordance with the standard refund policy."}</p>
                                         </DisclosurePanel>
                                     </div>
@@ -674,7 +674,7 @@ export default function TermsandConditions() {
                                             {lang === 'ar' ? "تركيب مكيفات الهواء" : "Air conditioner installation"}
                                              <ArrowLeftIcon size={24} color="#004B7A" className={`shrink-0 ${open ? 'rotate-90' : '-rotate-90'}`} />
                                         </DisclosureButton>
-                                        <DisclosurePanel className="text-xs mb-3">
+                                        <DisclosurePanel className="text-xs mb-3 px-2 md:px-3">
                                             <p className="mb-2.5">{lang === 'ar' ? "*إذا طلب العميل تمديدًا للأمتار: الزيادة لعشرة أمتار للعداد 18 ألف، و15 متر للعداد 24 ألف، قد تؤدي إلى ضعف نظام التبريد." : "*If the customer requests an extension of the meters: an increase of ten meters for the 18K meter, and 15 meters for the 24K meter, may lead to a weakening of the cooling system."}</p>
                                             <p className="mb-2.5">{lang === 'ar' ? "*يجب موافقة العميل على هذه الزيادة مقابل رسوم لا تقل عن 50 ريال سعودي." : "*The customer must agree to this increase for a fee of no less than 50 Saudi riyals."}</p>
                                             <p className="mb-2.5">{lang === 'ar' ? "*إذا احتاج العميل سقالة أو سلمًا يزيد عن 2.50 متر، يجب دفع مبلغ لا يقل عن 100 ريال سعودي لكل طابق." : "*If the customer requires scaffolding or a ladder exceeding 2.50 metres, an amount of no less than 100 Saudi riyals must be paid per floor."}</p>
@@ -713,7 +713,7 @@ export default function TermsandConditions() {
                                             {lang === 'ar' ? "الإتصالات الإلكترونية" : "Electronic communication"}
                                              <ArrowLeftIcon size={24} color="#004B7A" className={`shrink-0 ${open ? 'rotate-90' : '-rotate-90'}`} />
                                         </DisclosureButton>
-                                        <DisclosurePanel className="text-xs mb-3">
+                                        <DisclosurePanel className="text-xs mb-3 px-2 md:px-3">
                                             <p className="mb-2.5">{lang === 'ar' ? "إنك توافق على أننا يجوز لنا التواصل معك عن طريق البريد الإلكتروني أو عن طريق نشر إشعارات على الموقع. إنك توافق على أن جميع الاتفاقيات والإشعارات والافصاحات وغيرها من الاتصالات التي نقدمها لك إلكترونيًا تفي بأي شرط قانوني بأن تكون هذه الاتصالات مكتوبة. يتطلب تمكين موافقتك أثناء عملية التسجيل أن ترسل إليك رسائل بريد إلكتروني ترويجية لإعلامك بأي تغييرات أو ميزات أو أنشطة ترويجية جديدة تضاف إلى الموقع. إذا قررت في أي وقت أنك لا ترغب في تلقي رسائل البريد الإلكتروني الترويجية، يمكنك إلغاء الاشتراك في تلقي مثل هذه الرسائل الترويجية عبر النقر على الرابط الموجود أسفل أي بريد إلكتروني ترويجي." : "You agree that we may communicate with you by email or by posting notices on the Site. You agree that all agreements, notices, disclosures and other communications that we provide to you electronically satisfy any legal requirement that such communications be in writing. Enabling your consent during the registration process requires that we send you promotional emails to notify you of any new changes, features or promotional activities added to the Site. If you decide at any time that you do not wish to receive promotional emails, you may opt out of receiving such promotional emails by clicking on the link at the bottom of any promotional email."}</p>
                                         </DisclosurePanel>
                                     </div>
@@ -726,7 +726,7 @@ export default function TermsandConditions() {
                                             {lang === 'ar' ? "القواعد الأساسية للنشر على الموقع" : "Basic rules for publishing on the site"}
                                              <ArrowLeftIcon size={24} color="#004B7A" className={`shrink-0 ${open ? 'rotate-90' : '-rotate-90'}`} />
                                         </DisclosureButton>
-                                        <DisclosurePanel className="text-xs mb-3">
+                                        <DisclosurePanel className="text-xs mb-3 px-2 md:px-3">
                                             <p className="mb-2.5">{lang === 'ar' ? "تجنب النشر في فئات أو مناطق غير مخصصة لذلك على الموقع." : "Avoid posting in categories or areas on the site that are not designated for this."}</p>
                                             <p className="mb-2.5">{lang === 'ar' ? "يمنع نشر أي عناصر ليست لديك الحقوق القانونية لربطها أو تضمينها." : "Do not post any items that you do not have the legal rights to link or embed."}</p>
                                             <p className="mb-2.5">{lang === 'ar' ? "يحظر نشر عناصر معروضة للبيع في ذات الوقت على مواقع أخرى." : "Posting items for sale at the same time on other sites is prohibited."}</p>
@@ -742,7 +742,7 @@ export default function TermsandConditions() {
                                             {lang === 'ar' ? "المحتوى والتعليقات" : "Content and comments"}
                                              <ArrowLeftIcon size={24} color="#004B7A" className={`shrink-0 ${open ? 'rotate-90' : '-rotate-90'}`} />
                                         </DisclosureButton>
-                                        <DisclosurePanel className="text-xs mb-3">
+                                        <DisclosurePanel className="text-xs mb-3 px-2 md:px-3">
                                             <p className="mb-2.5">{lang === 'ar' ? "يمنع نشر التعليقات أو الأسئلة أو الإجابات التي تعد غير واقعية أو تحمل طابعًا تمييزيًا أو تحقيريًا." : "It is prohibited to post comments, questions or answers that are unrealistic or have a discriminatory or derogatory nature."}</p>
                                             <p className="mb-2.5">{lang === 'ar' ? "الابتعاد عن نشر محتوى يخل بالآداب العامة أو يعتبر فاحشًا." : "Avoid posting content that violates public morals or is considered obscene."}</p>
                                             <p className="mb-2.5">{lang === 'ar' ? "تجنب نشر أي معلومات قد تعتبر مسيئة سياسيًا أو ثقافيًا أو دينيًا." : "Avoid publishing any information that may be considered politically, culturally or religiously offensive."}</p>
@@ -772,7 +772,7 @@ export default function TermsandConditions() {
                                             {lang === 'ar' ? "سياسة الشكاوي" : "Complaints policy"}
                                              <ArrowLeftIcon size={24} color="#004B7A" className={`shrink-0 ${open ? 'rotate-90' : '-rotate-90'}`} />
                                         </DisclosureButton>
-                                        <DisclosurePanel className="text-xs mb-3">
+                                        <DisclosurePanel className="text-xs mb-3 px-2 md:px-3">
                                             <p className="mb-2.5">{lang === 'ar' ? "يمكنك تقديم شكوى عند التأخر عن موعد التوصيل المنصوص عليه في الطلب أو خدمة التوصيل المنزلي، أو عدم استكمال خدمة الصيانة التي قمت بطلبها في المواعيد المتفق عليها حسب الشروط والأحكام المعلنة مسبقاً، أو الخطأ في المنتج المطلوب أو مواصفاته المعلنة على الموقع الإلكتروني، وذلك عن طريق التواصل مع مركز خدمة العملاء عبر الرقم الموحد 8002444464 الأوقات التالية (طوال أيام الأسبوع من الساعة 9 صباحاً وحتى 5 مساءً ماعدا الجمعة)  عند تسجيل الشكوى، ستستلم رسالة نصية مباشرةً تحتوي على الرقم المرجعي للشكوى يمكنك متابعة حالة الشكوى باستخدام هذا الرقم مع موظفي مركز الاتصال وخدمة العملاء" : "You can file a complaint when you are late for the delivery time stipulated in the order or the home delivery service, or if you do not complete the maintenance service that you requested on the agreed upon dates according to the previously announced terms and conditions, or there is an error in the requested product or its specifications announced on the website, for How to contact the customer service center via the unified number 8002444464 at the following times (all days of the week from 9 am to 5 pm except Friday) When registering a complaint, you will receive a direct text message containing the complaint reference number. You can follow up on the status of the complaint using this number with the call center and customer service employees."}</p>
                                         </DisclosurePanel>
                                     </div>
