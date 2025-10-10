@@ -38,11 +38,12 @@ export default function SliderWithCategories({
   const nextRef = useRef<HTMLButtonElement | null>(null);
 
   // Fallback banner image
-  const defaultBannerImage = "/images/categoryNew/categoryBanner.png";
-
+  const defaultBannerImage = "/images/placeholder.webp";
   // Validate and construct image URL
   const getImageSrc = (image?: string, isCategoryImage: boolean = false) => {
-    if (!image) return defaultBannerImage;
+    if (!image || image.trim() === "" || image === "null" || image === "undefined") {
+      return defaultBannerImage;
+    }
     // Use image directly if it's a valid URL (starts with http:// or https://)
     if (/^https?:\/\//.test(image)) return image;
     // For category images, prepend NewMedia if it's a relative path
