@@ -864,7 +864,7 @@ export default function NewCart() {
                                                         <label className="text-dark">{itemTitletext} <small className="nc__278mainInnerSmall">({includingVatText})</small></label>
                                                         <p className={`text-[#004B7A] flex items-center gap-0.5`}><span className="font-bold">{s?.price?.toLocaleString('EN-US')}</span>{' '}{currencySymbol}</p>
                                                     </div>
-                                                    <span className='text-base font-bold animationImp text-orangePrice'>{lang === 'ar' ? 'جميع أسعار المنتجات شاملة الضريبة المضافة' : 'All product prices included with VAT'}</span>
+                                                    <span className='text-sm md:text-base font-bold animationImp text-orangePrice'>{lang === 'ar' ? 'جميع أسعار المنتجات شاملة الضريبة المضافة' : 'All product prices included with VAT'}</span>
                                                 </React.Fragment>
                                             )
                                         }
