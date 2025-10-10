@@ -273,7 +273,7 @@ export default function AccountListing() {
           ) : null}
           <Link
             href={`${origin}/${lang}/projectsales`}
-            className="border-b border-[#9CA4AB50] pl-3 pr-4 py-3 flex items-center justify-between text-[#004B7A] fill-[#004B7A]"
+            className="border-b border-[#9CA4AB50] pl-4 pr-[0.625rem] py-3 flex items-center justify-between text-[#004B7A] fill-[#004B7A]"
           >
             <div className="flex items-center gap-1">
               <BookmarkIcon size={33} color="#004B7A" />
@@ -391,7 +391,7 @@ export default function AccountListing() {
           </Link>
           <Link
             href={`${origin}/${lang}/setting`}
-            className="border-b border-[#9CA4AB50] pl-3 pr-4 py-3 flex items-center justify-between text-[#004B7A] fill-[#004B7A]"
+            className="border-b border-[#9CA4AB50] pl-4 pr-[0.625rem] py-3 flex items-center justify-between text-[#004B7A] fill-[#004B7A]"
           >
             <div className="flex items-center gap-1">
               <SettingsIcon size={33} color="#004B7A" />
