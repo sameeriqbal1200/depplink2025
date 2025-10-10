@@ -382,7 +382,7 @@ export default function Checkout() {
         }
     }
     useEffect(() => {
-        if(loyaltyData?.t_loyaltypoints >= 1) {
+        if(loyaltyData?.total_amount >= 1) {
             setupLoyalty(true)
             // setpaymentMethod('loyalty')
         }
@@ -2058,7 +2058,7 @@ export default function Checkout() {
                                     : "Choose your payment method"}
                                 </div>
                                 <div className="mt-4">
-                                    {loyaltyData && loyaltyData?.t_loyaltypoints >= 1 && loyaltyData?.total_amount >= 1 ?
+                                    {loyaltyData && loyaltyData?.total_amount >= 1 && loyaltyData?.total_amount >= 1 ?
                                         <>
                                         {/* loyalty work */}
                                         <button 

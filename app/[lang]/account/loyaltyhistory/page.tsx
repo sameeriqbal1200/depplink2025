@@ -45,7 +45,7 @@ export default function UserLoyaltyHistory() {
         return acc + (parseInt(item?.loyalty_points) || 0); 
       }, 0); 
 
-      const lastLoyaltyData = userLoyaltyData?.userLoyaltyData?.data?.slice(-1)[0];
+      const lastLoyaltyData = userLoyaltyData?.userLoyaltyData?.mainLoyalty;
       const totalPoints = lastLoyaltyData?.t_loyaltypoints ?? 0;
       setTotalAvailablePoint(totalPoints);
       setTotalRedeemPoint(redeemPointSum);
