@@ -47,7 +47,6 @@ export default function BrandCategories({
   const router = useRouter();
   const prevRef = useRef<HTMLButtonElement | null>(null);
   const nextRef = useRef<HTMLButtonElement | null>(null);
-  console.log('brands', brands)
   // Fallback image for brands
   const defaultBrandImage = "/images/placeholder.webp";
 
