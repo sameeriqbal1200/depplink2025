@@ -20,7 +20,7 @@ export default async function CategoryNew({
   }
 
   // ✅ fetch API data server-side
-  const categoryData = await getCategoryData(slugStr, lang, query);
+  const categoryData = await getCategoryData(slugStr, lang, query, deviceType);
 
   const type = categoryData?.type ?? 1;
   if (type === 0) {

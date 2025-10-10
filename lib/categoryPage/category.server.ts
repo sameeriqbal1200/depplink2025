@@ -6,14 +6,14 @@ import { Api } from "@/lib/api/apiLinks";
 import { cacheKey } from "@/app/GlobalVar";
 
 export const getCategoryData = cache(
-    async (slugStr: string, lang: string, queryParams?: Record<string, any>) => {
+    async (slugStr: string, lang: string, queryParams?: Record<string, any>, deviceType?: string) => {
         // const cookieStore = await cookies();
         const city = 'Jeddah';
         const query =
             queryParams && Object.keys(queryParams).length > 0
                 ? "&" + new URLSearchParams(queryParams).toString()
                 : "";
-        const categoryData = await fetch(`${Api}category-page-data-new/${slugStr}/${city}?v=${cacheKey}&lang=${lang}&${query}`, { next: { revalidate: 3600 } });
+        const categoryData = await fetch(`${Api}category-page-data-new/${slugStr}/${city}?v=${cacheKey}&lang=${lang}&${query}&device_type=${deviceType}`, { next: { revalidate: 3600 } });
         if (!categoryData.ok) {
             throw new Error("Failed to load product data");
         }
