@@ -133,11 +133,11 @@ export default function Maintenance() {
                     <h1 className="font-semibold text-lg 2xl:text-xl md:block hidden">{lang == 'ar' ? 'صيانة تمكين' : 'Tamkeen Maintenance'}</h1>
                     <div className="text-sm text-[#5D686F] md:mt-3" dangerouslySetInnerHTML={{ __html: lang == 'ar' ? footer?.data?.page_content_ar : footer?.data?.page_content_en }}></div>
 
-                    <div className="my-6 text-[#515567] font-normal text-xs">
+                    {/* <div className="my-6 text-[#515567] font-normal text-xs">
                         <h2 className="font-bold text-sm md:text-xl text-[#004B7A]">Maintenance and After-sales</h2>
                         <p className="mt-2">The company has expanded specialized centers to provide services, both stand-alone and mobility to meet the needs of customers after sales. Our coverage areas reach from the North to South, East to West.</p>
                         <p className="mt-2">Tamkeen Stores proudly provides maintenance after-sales service for all types of global brands. All of the warranty services and repairs provided by Tamkeen Stores are under authorization from the manufacturer. All your devices will be handled by professional and certified technicians and repaired using genuine spare parts and components. Moreover, the Product Warranty covers spare parts and labor costs during the warranty period. Below is a list of Maintenance centers across the kingdom. Maximum repair time of up to 15 days from the maintenance request date.</p>
-                    </div>
+                    </div> */}
                 </div>
 
                 <div className="text-sm font-medium flex items-center gap-x-3 mb-10 md:mb-0">
