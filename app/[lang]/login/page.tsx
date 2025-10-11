@@ -163,6 +163,13 @@ export default function Login(searchParams: any) {
             if (!recaptchaValue) {
                 setLoginBtnLoading(false)
                 setcaptchaErrorStatus(true)
+                ErrorTracker.trackCustomError(
+                    'Recaptcha validation failed',
+                    'frontend',
+                    400,
+                    deviceType,
+                    'Login Page'
+                );
                 return false
             }
             const token = recaptchaValue;
