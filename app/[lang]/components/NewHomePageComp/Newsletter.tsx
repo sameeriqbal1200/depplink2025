@@ -5,10 +5,12 @@ import Image from "next/image";
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import { postSubmitNewsLetter } from "@/lib/components/component.client";
+import { ErrorTracker } from "../../utils/errorTracker";
 
 
 export default function NewsLetter(props: any) {
     const lang = props?.lang;
+    const deviceType = props?.deviceType;
     const isArabic = props?.isArabic;
     const [newslatter, setnewslatter] = useState(true);
     const [loader, setLoader] = useState(false);
@@ -64,14 +66,30 @@ export default function NewsLetter(props: any) {
         }
 
         if (!email) {
+            const errorTxt = "Error! Please add email to subscribe !";
             setErrorMsg('Error! Please add email to subscribe !')
             topMessageAlartDanger(errorMsg)
+            ErrorTracker.trackCustomError(
+                errorTxt,
+                'frontend',
+                400,
+                deviceType,
+                'Newsletter Component'
+            );
             setLoader(false)
             return false;
         }
         else if (!email.match(validRegex)) {
+            const errText = 'Error! Please add correct email to subscribe !';
             setErrorMsg('Error! Please add correct email to subscribe !')
             topMessageAlartDanger(errorMsg)
+            ErrorTracker.trackCustomError(
+                errText,
+                'frontend',
+                400,
+                deviceType,
+                'Newsletter Component'
+            );
             setLoader(false)
             return false;
         }
@@ -87,6 +105,13 @@ export default function NewsLetter(props: any) {
             setLoader(false)
             if (dataUpd?.newsLetterData?.message != '') {
                 topMessageAlartDanger(dataUpd?.newsLetterData?.message)
+                ErrorTracker.trackCustomError(
+                    dataUpd?.newsLetterData?.message,
+                    'frontend',
+                    400,
+                    deviceType,
+                    'Newsletter Component'
+                );
             }
             else {
                 topMessageAlartDanger('Something Went Wrong. Please try again later')
