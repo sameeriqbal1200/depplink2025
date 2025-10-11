@@ -289,7 +289,7 @@ export default function ProductLoopFilterComponent({
               >
                 <button
                   onClick={() => toggleDropdown(`filter-${filter.id}`)}
-                  className="bestProButton w-fit whitespace-nowrap px-3 md:px-4 py-2 text-primary fill-primary border-gray hover:text-white hover:fill-white hover:bg-primary flex items-center justify-between gap-1 md:gap-3 lg:gap-5 !transition-none"
+                  className="bestProButton w-fit whitespace-nowrap !px-3 md:px-4 !py-2 text-primary fill-primary border-gray hover:text-white hover:fill-white hover:bg-primary flex items-center justify-between gap-1 md:gap-3 lg:gap-5 !transition-none"
                 >
                   <span>{isArabic ? filter.name_arabic : filter.name}</span>
                   {/* <svg
@@ -307,12 +307,12 @@ export default function ProductLoopFilterComponent({
                       d="m2.58579 7.58579c.78104-.78105 2.04738-.78105 2.82842 0l6.58579 6.58581 6.5858-6.58581c.781-.78105 2.0474-.78105 2.8284 0 .7811.78104.7811 2.04738 0 2.82841l-8 8c-.781.7811-2.0474.7811-2.8284 0l-8.00001-8c-.78105-.78103-.78105-2.04737 0-2.82841z"
                     />
                   </svg> */}
-                  <ArrowLeftIcon size={18} color="#004B7A" className={`fill-current ${
+                  <ArrowLeftIcon size={16} color="#004B7A" className={`fill-current ${
                     dropdowns[`filter-${filter.id}`] ? "rotate-90" : "-rotate-90"
                   }`} />
                 </button>
                 {dropdowns[`filter-${filter.id}`] && (
-                  <div className={`absolute top-full left-0 z-30 w-max bg-white rounded-xl shadow-md p-4 ${getValidChildTags(filter).length > 4 ? 'h-40' : 'h-auto'} xl:min-w-32 min-w-20 overflow-y-auto custom_scrollbarStyle mt-2`}>
+                  <div className={`absolute top-full left-0 z-30 w-max bg-white rounded-xl shadow-md py-4 px-2 ${getValidChildTags(filter).length > 4 ? 'h-40' : 'h-auto'}  max-w-28 overflow-y-auto custom_scrollbarStyle mt-2`}>
                     <ul className="space-y-3">
                       {getValidChildTags(filter).map((child) => {
                         const childName = isArabic ? child.name_arabic : child.name;
@@ -323,9 +323,9 @@ export default function ProductLoopFilterComponent({
                           <li key={child.id}>
                             <label
                               htmlFor={`filter-${child.id}`}
-                              className="flex items-center gap-3 cursor-pointer"
+                              className="flex items-center gap-2 cursor-pointer"
                             >
-                              <span className="inline-flex justify-center items-center w-5 h-5 rounded border border-gray-300 peer-checked:border-primary transition-all duration-200">
+                              <span className="inline-flex justify-center items-center w-4 h-4 rounded border border-gray-300 peer-checked:border-primary transition-all duration-200 shrink-0">
                                 <input
                                   type="checkbox"
                                   id={`filter-${child.id}`}
@@ -333,7 +333,7 @@ export default function ProductLoopFilterComponent({
                                   checked={isChecked}
                                   onChange={() => handleFilterChange(child.name, child.name_arabic, child.tag_id)}
                                 />
-                                <CheckIcon size={14} color="#004B7A" className="hidden peer-checked:block" />
+                                <CheckIcon size={12} color="#004B7A" className="hidden peer-checked:block" />
                               </span>
                               <span className="sm:text-sm text-xs text-primary">
                                 {childName}
@@ -359,23 +359,23 @@ export default function ProductLoopFilterComponent({
               >
                 <button
                   onClick={() => toggleDropdown("brand")}
-                  className="bestProButton w-fit whitespace-nowrap px-3 md:px-4 py-2 text-primary fill-primary border-gray hover:text-white hover:fill-white hover:bg-primary flex items-center justify-between gap-1 md:gap-3 lg:gap-5 !transition-none"
+                  className="bestProButton w-fit whitespace-nowrap !px-3 md:px-4 !py-2 text-primary fill-primary border-gray hover:text-white hover:fill-white hover:bg-primary flex items-center justify-between gap-1 md:gap-3 lg:gap-5 !transition-none"
                 >
                   <span>{isArabic ? "العلامة التجارية" : "Brand"}</span>
-                  <ArrowLeftIcon size={18} color="#004B7A" className={`fill-current ${
+                  <ArrowLeftIcon size={16} color="#004B7A" className={`fill-current ${
                     dropdowns["brand"] ? "rotate-90" : "-rotate-90"
                   }`} />
                 </button>
                 {dropdowns["brand"] && (
-                  <div className={`absolute top-full left-0 z-30 w-max bg-white rounded-xl shadow-md p-4 ${brands.length > 4 ? 'h-40' : 'h-auto'} xl:min-w-32 min-w-20 overflow-y-auto custom_scrollbarStyle mt-2`}>
+                  <div className={`absolute top-full left-0 z-30 w-max bg-white rounded-xl shadow-md p-4 ${brands.length > 4 ? 'h-40' : 'h-auto'} max-w-28 overflow-y-auto custom_scrollbarStyle mt-2`}>
                     <ul className="space-y-3">
                       {brands.map((brand: Brand) => (
                         <li key={brand.id}>
                           <label
                             htmlFor={`brand-${brand.id}`}
-                            className="flex items-center gap-3 cursor-pointer"
+                            className="flex items-center gap-2 cursor-pointer"
                           >
-                            <span className="inline-flex justify-center items-center w-5 h-5 rounded border border-gray-300 peer-checked:border-primary transition-all duration-200">
+                            <span className="inline-flex justify-center items-center w-4 h-4 rounded border border-gray-300 peer-checked:border-primary transition-all duration-200 shrink-0">
                             <input
                               type="checkbox"
                               id={`brand-${brand.id}`}
@@ -383,7 +383,7 @@ export default function ProductLoopFilterComponent({
                               checked={selectedBrands.includes(isArabic ? brand.name_arabic : brand.name)}
                               onChange={() => handleBrandChange(isArabic ? brand.name_arabic : brand.name)}
                             />
-                            <CheckIcon size={14} color="#004B7A" className="hidden peer-checked:block" />
+                            <CheckIcon size={12} color="#004B7A" className="hidden peer-checked:block" />
                             </span>
                           <span className="sm:text-sm text-xs text-primary">
                             {isArabic ? brand.name_arabic : brand.name}
