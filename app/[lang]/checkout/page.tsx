@@ -2142,7 +2142,7 @@ export default function Checkout() {
                                                                 {({ active, checked }) => (
                                                                     <>
                                                                         <div className="flex-1 items-center justify-center">
-                                                                            <div className='absolute top-3 z-10'>
+                                                                            <div className='absolute top-3 z-5'>
                                                                                 {checked ?
                                                                                     <>
                                                                                         {checked && (
@@ -2688,7 +2688,7 @@ export default function Checkout() {
                 </div>
             </div>
             {addressData?.length ?
-                <div className="fixed bottom-0 w-full p-3 bg-white shadow-md border-t border-[#5D686F26]">
+                <div className="fixed bottom-0 w-full p-3 bg-white shadow-md border-t border-[#5D686F26] z-10">
                     {activeTab3 == 3 ?
                         <>
                             {/* <div className="text-xs pt-1 flex items-center">
