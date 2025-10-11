@@ -12,12 +12,13 @@ import { getCitiesList, getUserAddress, getUserEditAddress, postAddAddress, post
 import LocationAddressIcon from '../../components/Icons/LocationAdressIcon';
 import EditIcon from '../../components/Icons/EditIcon';
 import TrashIcon from '../../components/Icons/TrashIcon';
+import { ErrorTracker } from '../../utils/errorTracker';
 
 const MobileHeader = dynamic(() => import('../../components/MobileHeader'), { ssr: true })
 const Select = dynamic(() => import('react-select'), { ssr: false })
 
 export default function AddressBook() {
-    const { t, lang } = useApp();
+    const { t, lang, deviceType } = useApp();
     const searchParams = useSearchParams()
     const AddressShippingId = searchParams.get('AddressShippingId')
     const addAddressCheckout = searchParams.get('addAddressCheckout')
@@ -126,6 +127,11 @@ export default function AddressBook() {
       address_label: typeHouse == "Home" ? 0 : 1,
     };
     if (!address || !city || !shippinginstructions) {
+        const errorText = 'Error! Please fill ' 
+            + (!address ? 'Address, ' : '') 
+            + (!city ? 'City, ' : '') 
+            + (!shippinginstructions ? 'Shipping Instructions' : '') 
+            + '!';
       const missingFields =
         (!address ? (lang === "ar" ? "العنوان، " : "Address, ") : "") +
         (!city ? (lang === "ar" ? "المدينة، " : "City, ") : "") +
@@ -142,6 +148,13 @@ export default function AddressBook() {
       );
 
       topMessageAlartDanger(errormsg);
+      ErrorTracker.trackCustomError(
+        errorText,
+        'frontend',
+        400,
+        deviceType,
+        'Addressbook Page'
+    );
       setLoader(false);
       return false;
     }
@@ -179,6 +192,11 @@ export default function AddressBook() {
             address_label: typeHouse == 'Home' ? 0 : 1,
         }
         if (!address || !selectedCity || !shippinginstructions) {
+            const errorText = 'Error! Please fill ' 
+                + (!address ? 'Address, ' : '') 
+                + (!city ? 'City, ' : '') 
+                + (!shippinginstructions ? 'Shipping Instructions' : '') 
+                + '!';
             const missingFields =
                 (!address ? (lang === "ar" ? "العنوان، " : "Address, ") : "") +
                 (!selectedCity ? (lang === "ar" ? "المدينة، " : "City, ") : "") +
@@ -193,6 +211,13 @@ export default function AddressBook() {
                 : `Error! Please fill ${missingFields}!`
             );
             topMessageAlartDanger(errormsg);
+            ErrorTracker.trackCustomError(
+                errorText,
+                'frontend',
+                400,
+                deviceType,
+                'Addressbook Page'
+            );
             setLoader(false);
             return false;
         }

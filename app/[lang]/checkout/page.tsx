@@ -28,6 +28,7 @@ import { useApp } from '@/app/_ctx/AppContext';
 import { addAddressData, getcityData, getUserAddressData, getwarehouseData, updateAddressData } from '@/lib/checkout/checkout.client';
 import { getDiscountTypeCart } from '@/lib/cartPage/cart.client';
 import SARIcon from '../components/Icons/SARIcon';
+import { ErrorTracker } from '../utils/errorTracker';
 
 const MobileHeader = dynamic(() => import('../components/MobileHeader'), { ssr: true })
 const FullPageLoader = dynamic(() => import('../components/FullPageLoader'), { ssr: false })
@@ -741,6 +742,13 @@ export default function Checkout() {
             var response = await setCoupon(city, couponcode)
             if (!response && couponcode) {
                 topMessageAlartDangerNew(t('invalidcoupon'))
+                ErrorTracker.trackCustomError(
+                    t('invalidcoupon'),
+                    'frontend',
+                    400,
+                    deviceType,
+                    'Checkout Page'
+                );
             } else if (response) {
                 await setDiscountRule(city);
                 await setDiscountRuleBogo(city);
@@ -916,6 +924,13 @@ export default function Checkout() {
         }
       setErrorMsg(errorMsgvar);
       topMessageAlartDangerNew(errorMsgvar);
+      ErrorTracker.trackCustomError(
+            errorMsgvar,
+            'frontend',
+            400,
+            deviceType,
+            'Checkout Page'
+        );
       setLoader(false);
       return false;
     }
@@ -965,6 +980,13 @@ export default function Checkout() {
         }
         setErrorMsg(errorMsgvar);
         topMessageAlartDangerNew(errorMsgvar);
+        ErrorTracker.trackCustomError(
+            errorMsgvar,
+            'frontend',
+            400,
+            deviceType,
+            'Checkout Page'
+        );
         setLoader(false);
         return false;
         }
@@ -2714,6 +2736,13 @@ export default function Checkout() {
                         onClick={() => {
                             if (activeTab3 == 1 && !addressid) {
                                 topMessageAlartDangerNew(lang === "ar" ? "يرجى اختيار العنوان" : "please select address")
+                                ErrorTracker.trackCustomError(
+                                    lang === "ar" ? "يرجى اختيار العنوان" : "please select address",
+                                    'frontend',
+                                    400,
+                                    deviceType,
+                                    'Checkout Page'
+                                );
                                 return false
                             }
                             if (activeTab3 === 3) {
@@ -2728,6 +2757,13 @@ export default function Checkout() {
                             if (activeTab3 == 3) {
                                 if (addressid === false) {
                                     topMessageAlartDangerNew(lang === "ar" ? "يرجى اختيار العنوان" : "please select address")
+                                    ErrorTracker.trackCustomError(
+                                        lang === "ar" ? "يرجى اختيار العنوان" : "please select address",
+                                        'frontend',
+                                        400,
+                                        deviceType,
+                                        'Checkout Page'
+                                    );
                                     setaddressid(false)
                                     setActiveTab3(1)
                                     setProceesBtn(false)
@@ -2735,6 +2771,13 @@ export default function Checkout() {
                                 }
                                 if (!checkTermCondition) {
                                     setProceesBtn(false)
+                                    ErrorTracker.trackCustomError(
+                                        lang === 'ar' ? "يرجى قبول الشروط والأحكام" : "Please accept the terms & conditions",
+                                        'frontend',
+                                        400,
+                                        deviceType,
+                                        'Checkout Page'
+                                    );
                                     return topMessageAlartDangerNew(lang === 'ar' ? "يرجى قبول الشروط والأحكام" : "Please accept the terms & conditions")
                                 }
                                 submitOrder()

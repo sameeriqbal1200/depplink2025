@@ -13,6 +13,7 @@ import { useApp } from '@/app/_ctx/AppContext';
 import withReactContent from 'sweetalert2-react-content'
 import { Dialog, DialogPanel, Transition, TransitionChild } from '@headlessui/react'
 import { getUserProfileData, postUserProfileUpdate, uploadImage } from '@/lib/accounts/profile.client';
+import { ErrorTracker } from '../../utils/errorTracker';
 
 const MobileHeader = dynamic(() => import('../../components/MobileHeader'), { ssr: true })
 
@@ -145,6 +146,13 @@ export default function Profile() {
             if (msg) {
                 setErrorMsg(msg);
                 topMessageAlartDanger(msg);
+                ErrorTracker.trackCustomError(
+                    msg,
+                    'frontend',
+                    400,
+                    deviceType,
+                    'Profile Page'
+                );
                 return;
             }
 
