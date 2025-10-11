@@ -15,8 +15,12 @@ import { postRegOtp } from '@/lib/components/component.client'
 import { postRegCheckPhone } from '@/lib/components/component.client'
 import { postUserRegister } from '@/lib/components/component.client'
 import { postResendOtp } from '@/lib/components/component.client'
+import { ErrorTracker } from '../utils/errorTracker'
+import { useApp } from '@/app/_ctx/AppContext';
+
 
 export default function LoginSingup(props: any) {
+    const { deviceType } = useApp();
     const NewMedia = props?.NewMedia;
     const router = useRouter()
     const path = usePathname()
@@ -229,6 +233,13 @@ export default function LoginSingup(props: any) {
         else {
             setLoginBtnLoading(false)
             topMessageAlartDanger(props?.dict?.login?.WrongOtp)
+            ErrorTracker.trackCustomError(
+                props?.dict?.login?.WrongOtp,
+                'frontend',
+                400,
+                deviceType,
+                'Login Signup Page'
+            );
         }
     }
 
@@ -246,6 +257,13 @@ export default function LoginSingup(props: any) {
         else {
             setLoginBtnLoading(false)
             topMessageAlartDanger(props?.dict?.login?.WrongOtp)
+            ErrorTracker.trackCustomError(
+                props?.dict?.login?.WrongOtp,
+                'frontend',
+                400,
+                deviceType,
+                'Login Signup Page'
+            );
         }
     }
 
@@ -286,6 +304,13 @@ export default function LoginSingup(props: any) {
         else {
             setLoginBtnLoading(false)
             topMessageAlartDanger(props?.dict?.login?.UserExists)
+            ErrorTracker.trackCustomError(
+                props?.dict?.login?.UserExists,
+                'frontend',
+                400,
+                deviceType,
+                'Login Signup Page'
+            );
         }
     }
 
@@ -302,6 +327,13 @@ export default function LoginSingup(props: any) {
         }
         else {
             topMessageAlartDanger(props?.dict?.login?.ResendOtpfailed)
+            ErrorTracker.trackCustomError(
+                props?.dict?.login?.ResendOtpfailed,
+                'frontend',
+                400,
+                deviceType,
+                'Login Signup Page'
+            );
         }
     }
 

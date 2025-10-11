@@ -17,6 +17,7 @@ import 'swiper/css/pagination';
 import dynamic from 'next/dynamic'
 import GlobalContext from '../../GlobalContext';
 import { getProductExtraData, removeProductWishlistData } from '@/lib/components/component.client'
+import { ErrorTracker } from '../utils/errorTracker'
 const RatingComponent = dynamic(() => import('./ProductComponents/Rating'), { ssr: false })
 
 export default function ProductSlider(props: any) {
@@ -1148,6 +1149,13 @@ export default function ProductSlider(props: any) {
                                                         addToCart(cartid, cartkey)
                                                     } else {
                                                         topMessageAlartDanger(props.lang === 'ar' ? 'الرجاء اختيار منتجات الهدايا' : 'please select gift products')
+                                                        ErrorTracker.trackCustomError(
+                                                            props.lang === 'ar' ? 'الرجاء اختيار منتجات الهدايا' : 'please select gift products',
+                                                            'frontend',
+                                                            400,
+                                                            props?.devicetype,
+                                                            'Product Slider Component'
+                                                        );
                                                     }
                                                 }}
                                             >

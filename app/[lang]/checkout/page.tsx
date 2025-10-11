@@ -2113,7 +2113,7 @@ export default function Checkout() {
                                                     </label>
                                                 </div>
                                                 {loyaltyAmount < summary?.filter((item: any) => item?.key == 'total')[0]?.price?.toLocaleString("EN-US") ?
-                                                    <p className="text-sm text-gray-500 mt-2">
+                                                    <p className="text-sm text-gray-500 mt-2 rtl:text-right ltr:text-left">
                                                     {lang == 'ar' ? 'رصيد متجرك لا يكفي للطلب، يرجى اختيار طريقة دفع إضافية لتغطية الرصيد المتبقي' : 'Your store credit balance is not sufficent for the oreder, please select an additional payment method to cover the balance of'}{' '}<span className="inline-flex items-center gap-1 text-[#1c262d]"> <svg className="riyal-svg shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1124.14 1256.39" width="13" height="13"><path fill="currentColor" d="M699.62,1113.02h0c-20.06,44.48-33.32,92.75-38.4,143.37l424.51-90.24c20.06-44.47,33.31-92.75,38.4-143.37l-424.51,90.24Z"></path><path fill="currentColor" d="M1085.73,895.8c20.06-44.47,33.32-92.75,38.4-143.37l-330.68,70.33v-135.2l292.27-62.11c20.06-44.47,33.32-92.75,38.4-143.37l-330.68,70.27V66.13c-50.67,28.45-95.67,66.32-132.25,110.99v403.35l-132.25,28.11V0c-50.67,28.44-95.67,66.32-132.25,110.99v525.69l-295.91,62.88c-20.06,44.47-33.33,92.75-38.42,143.37l334.33-71.05v170.26l-358.3,76.14c-20.06,44.47-33.32,92.75-38.4,143.37l375.04-79.7c30.53-6.35,56.77-24.4,73.83-49.24l68.78-101.97v-.02c7.14-10.55,11.3-23.27,11.3-36.97v-149.98l132.25-28.11v270.4l424.53-90.28Z"></path></svg>
                                                         {summary?.filter((item: any) => item?.key == 'total')[0]?.price?.toLocaleString("EN-US")}
                                                     </span>
@@ -2124,12 +2124,12 @@ export default function Checkout() {
                                                 <p className="text-sm text-gray-800 font-bold">{lang == 'ar' ? 'نقاط تمكين' : 'Tamkeen Points'}</p>
                                                 <p className={`text-xs text-[#007714]`}>
                                                     {lang === 'ar' ? (
-                                                    <div className='space-x-2'>
+                                                    <span className='space-x-2'>
                                                         التحويل إلى رصيد تمكين باستخدام حسابك المرتبط
                                                         &nbsp;<strong className="font-bold" dir="ltr">
                                                         {` +966 ${phoneNumber?.replace(/(\d{2})(\d{3})(\d{4})/, "$1-$2-$3")} `}
                                                         </strong>
-                                                    </div>
+                                                    </span>
                                                     ) : (
                                                     <>
                                                         Convert to tamkeen credits using your&nbsp;
@@ -2164,7 +2164,7 @@ export default function Checkout() {
                                                                 {({ active, checked }) => (
                                                                     <>
                                                                         <div className="flex-1 items-center justify-center">
-                                                                            <div className='absolute top-3 z-10'>
+                                                                            <div className='absolute top-3 z-5'>
                                                                                 {checked ?
                                                                                     <>
                                                                                         {checked && (
@@ -2710,7 +2710,7 @@ export default function Checkout() {
                 </div>
             </div>
             {addressData?.length ?
-                <div className="fixed bottom-0 w-full p-3 bg-white shadow-md border-t border-[#5D686F26]">
+                <div className="fixed bottom-0 w-full p-3 bg-white shadow-md border-t border-[#5D686F26] z-10">
                     {activeTab3 == 3 ?
                         <>
                             {/* <div className="text-xs pt-1 flex items-center">

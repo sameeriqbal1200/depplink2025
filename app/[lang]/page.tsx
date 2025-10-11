@@ -1599,7 +1599,7 @@ export default function Homepage() {
           />
         </div>
       </section>
-      <Newsletter isMobileOrTablet={true} isArabic={isArabic} lang={lang} />
+      <Newsletter isMobileOrTablet={true} isArabic={isArabic} lang={lang} deviceType={deviceType} />
       {/* <Popup isMobileOrTablet={isMobileOrTablet} lang={isArabic} /> */}
       {/* <div className="pb-20 md:pb-0"></div> */}
     </>
