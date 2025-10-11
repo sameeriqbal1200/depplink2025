@@ -469,7 +469,7 @@ export default function NewCart() {
             <FullPageLoader loader={loaderStatus} />
             <MobileHeader type="Third" lang={lang} pageTitle={pageTitle} />
             {cartData?.products?.length < 1 ?
-                <div className="nc__278mainDiv container">
+                <div className="nc__278mainDiv container h-screen !mt-0">
                     <div className='text-center'>
                         {/* <Lottie
                             animationData={shoppingCart}
