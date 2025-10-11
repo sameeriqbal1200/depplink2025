@@ -34,6 +34,7 @@ import LogoIcon from "./Icons/LogoIcon";
 import SearchIcon from "./Icons/SearchIcon";
 import MenuIcon from "./Icons/MenuIcon";
 import CheckboxIcon from "./Icons/CheckboxIcon";
+import { ErrorTracker } from "../utils/errorTracker";
 const ProductLoop = dynamic(() => import("./NewHomePageComp/ProductLoop"), {
   ssr: false,
 });
@@ -255,6 +256,13 @@ export default function MobileHeaderNew(props: any) {
           ? "خطأ! الرجاء اختيار المدينة"
           : "Error! Please select city"
       );
+      ErrorTracker.trackCustomError(
+        lang == "ar" ? "خطأ! الرجاء اختيار المدينة" : "Error! Please select city",
+        'frontend',
+        400,
+        deviceType,
+        'Mobile Header New Page'
+      );
       return false;
     }
     setCityData(selectedCityData);

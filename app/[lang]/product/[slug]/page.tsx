@@ -22,6 +22,7 @@ import { useApp } from '@/app/_ctx/AppContext';
 import { useSlot } from '@/app/_ctx/ClientDataRegistry';
 import { getPickupFromStoreProduct, getProductExtraDataRegional } from '@/lib/productpages/product.client';
 import SARIcon from '../../components/Icons/SARIcon';
+import { ErrorTracker } from '../../utils/errorTracker';
 
 
 // const LoginSingup = dynamic(() => import('../../components/LoginSignup'), { ssr: false })
@@ -2401,6 +2402,13 @@ export default function Product() {
                                                                 // addToCart()
                                                             } else {
                                                                 topMessageAlartDanger(lang ? 'الرجاء اختيار منتجات الهدايا' : 'please select gift products')
+                                                                ErrorTracker.trackCustomError(
+                                                                    lang ? 'الرجاء اختيار منتجات الهدايا' : 'please select gift products',
+                                                                    'frontend',
+                                                                    400,
+                                                                    deviceType,
+                                                                    'Product Page'
+                                                                );
                                                             }
                                                         }}
                                                     >

@@ -7,8 +7,11 @@ import { usePathname } from "next/navigation"
 import withReactContent from 'sweetalert2-react-content';
 import Swal from 'sweetalert2';
 import { postSubmitNewsLetter } from '@/lib/components/component.client';
+import { ErrorTracker } from '../utils/errorTracker';
+import { useApp } from '@/app/_ctx/AppContext';
 
 export default function Footer(props: any) {
+    const { deviceType } = useApp();
     const path = usePathname();
     const lang = props?.lang;
     const origin = props?.origin;
@@ -66,14 +69,30 @@ export default function Footer(props: any) {
         }
 
         if (!email) {
+            const errorTxt = "Error! Please add email to subscribe !"
             setErrorMsg('Error! Please add email to subscribe !')
             topMessageAlartDanger(errorMsg)
+            ErrorTracker.trackCustomError(
+                errorTxt,
+                'frontend',
+                400,
+                deviceType,
+                'Footer Page'
+            );
             setLoader(false)
             return false;
         }
         else if (!email.match(validRegex)) {
+            const errText = "Error! Please add correct email to subscribe !"
             setErrorMsg('Error! Please add correct email to subscribe !')
             topMessageAlartDanger(errorMsg)
+            ErrorTracker.trackCustomError(
+                errText,
+                'frontend',
+                400,
+                deviceType,
+                'Footer Page'
+            );
             setLoader(false)
             return false;
         }
@@ -89,6 +108,13 @@ export default function Footer(props: any) {
             setLoader(false)
             if (dataUpd?.newsLetterData?.message != '') {
                 topMessageAlartDanger(dataUpd?.newsLetterData?.message)
+                ErrorTracker.trackCustomError(
+                    dataUpd?.newsLetterData?.message,
+                    'frontend',
+                    400,
+                    deviceType,
+                    'Footer Page'
+                );
             }
             else {
                 topMessageAlartDanger('Something Went Wrong. Please try again later')

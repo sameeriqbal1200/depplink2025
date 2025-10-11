@@ -57,8 +57,8 @@ export default async function RootLayout({
   return (
     <html lang={lang} dir={lang === "ar" ? "rtl" : "ltr"}>
       <head>
-        {/* <GTM />
-                <Script src="/WebEngagge.js" strategy="afterInteractive" /> */}
+        <GTM />
+                {/* <Script src="/WebEngagge.js" strategy="afterInteractive" /> */}
       </head>
       <body
         className={lang === "ar" ? cairo.className : notoSans.className}
