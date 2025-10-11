@@ -10,6 +10,7 @@ import MaskedInput from 'react-text-mask'
 import dynamic from 'next/dynamic';
 import { useApp } from '@/app/_ctx/AppContext';
 import { getUserProfile } from '@/lib/giftcards/giftcards.client';
+import { ErrorTracker } from '../utils/errorTracker';
 
 const MobileHeader = dynamic(() => import('../components/MobileHeader'), { ssr: true })
 
@@ -105,10 +106,24 @@ export default function GiftCards(
     const proceedToBut = () => {
         if (mySelf) {
             if (userName == '' || userEmail == '' || userPhoneNumber == '') {
+                ErrorTracker.trackCustomError(
+                    lang === 'ar' ? "الرجاء إضافة بيانات الحقول!" : "please add fields data!",
+                    'frontend',
+                    400,
+                    deviceType,
+                    'Gift Card Page'
+                );
                 return topMessageAlartDanger(lang === 'ar' ? "الرجاء إضافة بيانات الحقول!" : "please add fields data!")
             }
         } else {
             if (receiverName == '' || receiverEmail == '' || receiverPhoneNumber == '') {
+                ErrorTracker.trackCustomError(
+                    lang === 'ar' ? "الرجاء إضافة بيانات الحقول!" : "please add fields data!",
+                    'frontend',
+                    400,
+                    deviceType,
+                    'Gift Card Page'
+                );
                 return topMessageAlartDanger(lang === 'ar' ? "الرجاء إضافة بيانات الحقول!" : "please add fields data!")
             }
         }

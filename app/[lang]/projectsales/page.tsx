@@ -7,6 +7,7 @@ import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 import { useApp } from "@/app/_ctx/AppContext";
 import { getCitiesData, postProjectSalesData } from '@/lib/footerpages/project-sales.server';
+import { ErrorTracker } from '../utils/errorTracker';
 
 const MobileHeader = dynamic(() => import('../components/MobileHeader'), { ssr: true })
 const Select = dynamic(() => import('react-select'), { ssr: false })
@@ -70,6 +71,13 @@ export default function ProjectSales() {
     const SubmitData = async () => {
         try {
             if (firstName == '' || lastName == '' || email == '' || phoneNumber == '' || compnanyName == '' || comments == '' || city == '') {
+                ErrorTracker.trackCustomError(
+                    lang === 'ar' ? "الرجاء إضافة بيانات الحقول!" : "please add fields data!",
+                    'frontend',
+                    400,
+                    deviceType,
+                    'Project Sale Page'
+                );
                 return topMessageAlartDanger(lang === 'ar' ? "الرجاء إضافة بيانات الحقول!" : "please add fields data!")
             }
             var data = {

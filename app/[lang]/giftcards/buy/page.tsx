@@ -9,6 +9,7 @@ import withReactContent from 'sweetalert2-react-content'
 import MaskedInput from 'react-text-mask'
 import { useApp } from '@/app/_ctx/AppContext';
 import { postGiftCardStore } from '@/lib/giftcards/giftcards.client';
+import { ErrorTracker } from '../../utils/errorTracker';
 
 const Api = process.env.NEXT_PUBLIC_API
 
@@ -78,6 +79,13 @@ export default function Buy() {
 
     const proceedToBuy = async () => {
         if (paymentMethod == "") {
+            ErrorTracker.trackCustomError(
+                lang === 'ar' ? "الرجاء تحديد طريقة الدفع!" : "please select payment method!",
+                'frontend',
+                400,
+                deviceType,
+                'Buy Page'
+            );
             return topMessageAlartDanger(lang === 'ar' ? "الرجاء تحديد طريقة الدفع!" : "please select payment method!")
         }
 
