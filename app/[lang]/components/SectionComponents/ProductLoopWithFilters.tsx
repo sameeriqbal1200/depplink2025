@@ -456,11 +456,11 @@ export default function ProductLoopFilterComponent({
           spaceBetween={14}
           slidesPerView={4}
           breakpoints={{
-            320: { slidesPerView: 1.2, spaceBetween: 10 },
-            640: { slidesPerView: 1.5, spaceBetween: 10 },
-            768: { slidesPerView: 2.2, spaceBetween: 12 },
-            1024: { slidesPerView: 4, spaceBetween: 14 },
-            1280: { slidesPerView: 5, spaceBetween: 14 },
+            320: { slidesPerView: 1.2, spaceBetween: 6 },
+            640: { slidesPerView: 1.5, spaceBetween: 6 },
+            768: { slidesPerView: 2.2, spaceBetween: 6 },
+            1024: { slidesPerView: 4, spaceBetween: 6 },
+            1280: { slidesPerView: 5, spaceBetween: 6 },
           }}
           autoHeight
           centeredSlides={false}

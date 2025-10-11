@@ -16,9 +16,10 @@ import ChatIcon from '../../components/Icons/ChatIcon';
 import NetworkIcon from '../../components/Icons/NetworkIcon';
 import { postShipmentLocation } from '@/lib/shipmentTracking/shipmentTracking.page';
 import { useRouter } from "next/navigation";
+import { ErrorTracker } from '../../utils/errorTracker';
 
 export default function ShipmentTracking() {
-    const { lang, origin } = useApp();
+    const { lang, origin, deviceType } = useApp();
     const router = useRouter();
     const shipmentTracking = useSlot<any>("shipmentTracking");
     const [dict, setDict] = useState<any>([]);
@@ -168,6 +169,13 @@ export default function ShipmentTracking() {
             } catch (err) {
                 console.error('Error saving location:', err);
                 topMessageAlartDanger(lang === 'ar' ? 'خطأ في حفظ الموقع' : 'Error Saving Location!');
+                ErrorTracker.trackCustomError(
+                    lang === 'ar' ? 'خطأ في حفظ الموقع' : 'Error Saving Location!',
+                    'frontend',
+                    400,
+                    deviceType,
+                    'Shipment Tracking Page'
+                );
             } finally {
                 setLoadingSave(false);
             }
@@ -189,6 +197,13 @@ export default function ShipmentTracking() {
                         console.error('Error saving location:', err);
                         topMessageAlartDanger(lang === 'ar' ? 'خطأ في حفظ الموقع' : 'Error Saving Location!');
                         setError('Error saving location');
+                        ErrorTracker.trackCustomError(
+                            lang === 'ar' ? 'خطأ في حفظ الموقع' : 'Error Saving Location!',
+                            'frontend',
+                            400,
+                            deviceType,
+                            'Shipment Tracking Page'
+                        );
                     }
                 },
                 (error) => {

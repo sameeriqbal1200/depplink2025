@@ -10,6 +10,7 @@ import dynamic from 'next/dynamic';
 import { useApp } from '@/app/_ctx/AppContext';
 import { getContactUserProfileData, postContactUsData } from '@/lib/footerpages/contact-us.client';
 import { useRouter } from 'next-nprogress-bar';
+import { ErrorTracker } from '../utils/errorTracker';
 
 const MobileHeader = dynamic(() => import('../components/MobileHeader'), { ssr: true })
 
@@ -109,6 +110,13 @@ export default function ContactUs() {
             if (!fullName || !email || !phoneNumber || !notes) {
                 const regEx: any = /[a-zA-Z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,8}(.[a-z{2,8}])?/g;
                 topMessageAlartDanger(t('contactUsDataRequired'))
+                ErrorTracker.trackCustomError(
+                    t('contactUsDataRequired'),
+                    'frontend',
+                    400,
+                    deviceType,
+                    'Contact-us Page'
+                );
                 if (!fullName) {
                     setfullNameError(true)
                     setTimeout(function () {
@@ -118,6 +126,13 @@ export default function ContactUs() {
 
                 if (!regEx.test(email) && email !== "") {
                     setMessage("Please enter valid email");
+                    ErrorTracker.trackCustomError(
+                        "Please enter valid email",
+                        'frontend',
+                        400,
+                        deviceType,
+                        'Contact-us Page'
+                    );
                     setTimeout(function () {
                         setMessage('')
                     }, 3000)

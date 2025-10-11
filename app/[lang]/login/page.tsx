@@ -15,6 +15,7 @@ import { useApp } from "@/app/_ctx/AppContext";
 import { getSignUpData } from '@/lib/footerpages/signup.client';
 import { postCheckResendOtpData, postCheckUserOtpData, postUserLoginData } from '@/lib/login/login.client';
 import { getContactUserProfileData } from '@/lib/footerpages/contact-us.client';
+import { ErrorTracker } from '../utils/errorTracker';
 
 const NewMedia = process.env.NEXT_PUBLIC_NEW_MEDIA
 const MobileHeader = dynamic(() => import('../components/MobileHeader'), { ssr: true })
@@ -169,6 +170,13 @@ export default function Login(searchParams: any) {
             phone = phone.replace(/[^0-9\.]+/g, '')
             if (phone == '' || phone.length < 9) {
                 setLoginBtnLoading(false)
+                ErrorTracker.trackCustomError(
+                    lang === 'ar' ? "الرجاء إضافة بيانات الحقول!" : "please add fields data!",
+                    'frontend',
+                    400,
+                    deviceType,
+                    'Login Page'
+                );
                 return topMessageAlartDanger(lang === 'ar' ? "الرجاء إضافة بيانات الحقول!" : "please add fields data!")
             }
             var data = {
@@ -308,6 +316,13 @@ export default function Login(searchParams: any) {
             else {
                 setLoginBtnLoading(false)
                 topMessageAlartDanger(t('login.WrongOtp'))
+                ErrorTracker.trackCustomError(
+                    t('login.WrongOtp'),
+                    'frontend',
+                    400,
+                    deviceType,
+                    'Login Page'
+                );
             }
         } catch (e) {
             console.error("login failed:", e);
@@ -331,6 +346,13 @@ export default function Login(searchParams: any) {
             }
             else {
                 topMessageAlartDanger(t('login?.ResendOtpfailed'))
+                ErrorTracker.trackCustomError(
+                    t('login?.ResendOtpfailed'),
+                    'frontend',
+                    400,
+                    deviceType,
+                    'Login Page'
+                );
             }
         } catch (e) {
             console.error("login failed:", e);

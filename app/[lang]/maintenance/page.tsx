@@ -12,12 +12,13 @@ import { useApp } from "@/app/_ctx/AppContext";
 import { useSlot } from '@/app/_ctx/ClientDataRegistry';
 import { getUserData, getUserOrderDetails, getMaintainanceProductDetails } from '@/lib/footerpages/maintainance.client';
 import { postMaintenanceData } from '@/lib/footerpages/maintenance.client';
+import { ErrorTracker } from '../utils/errorTracker';
 
 const MobileHeader = dynamic(() => import('../components/MobileHeader'), { ssr: true })
 
 export default function Maintenance() {
     const NewMedia = process.env.NEXT_PUBLIC_NEW_MEDIA;
-    const { t, lang, origin } = useApp();
+    const { t, lang, origin, deviceType } = useApp();
     const footer = useSlot<any>("footer");
     const router = useRouter()
     const [activeTab1, setActiveTab1] = useState<boolean>(true);
@@ -519,12 +520,26 @@ export default function Maintenance() {
                                                 onClick={() => {
                                                     if (activeTab2 === true) {
                                                         if (subjectData == '' || commentData == '') {
+                                                            ErrorTracker.trackCustomError(
+                                                                lang === 'ar' ? "الرجاء إضافة بيانات الحقول!" : "please add fields data!",
+                                                                'frontend',
+                                                                400,
+                                                                deviceType,
+                                                                'Maintenance Page'
+                                                            );
                                                             return topMessageAlartDanger(lang === 'ar' ? "الرجاء إضافة بيانات الحقول!" : "please add fields data!")
                                                         }
                                                         setActiveTab3(true)
                                                         setActiveTab2(false)
                                                     } if (activeTab3 === true) {
                                                         if (selectedTime === false) {
+                                                            ErrorTracker.trackCustomError(
+                                                                lang === 'ar' ? "يرجى تحديد الوقت!" : "please select time!",
+                                                                'frontend',
+                                                                400,
+                                                                deviceType,
+                                                                'Maintenance Page'
+                                                            );
                                                             return topMessageAlartDanger(lang === 'ar' ? "يرجى تحديد الوقت!" : "please select time!")
                                                         }
                                                         SubmitData()

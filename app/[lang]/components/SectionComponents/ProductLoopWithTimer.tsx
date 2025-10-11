@@ -165,11 +165,11 @@ export default function ProductLoopTimerComponent({
               <h2 className="headingHomeMain !text-base !text-dark">{day || (isArabic ? "اليوم" : "Today")}</h2>
             </div>
 
-            <div className="flex items-center gap-12 lg:gap-20 mb-5">
+            <div className="flex items-center justify-between gap-4 lg:gap-20 mb-5">
               <h2 className="headingHomeMain !text-dark lg:!text-xl">
                 {timerHeading || (isArabic ? "صفقات سريعة" : "Quick Deals")}
               </h2>
-              <div className="flex items-center gap-5">
+              <div className="flex items-center gap-3">
                 {["Days", "Hours", "Minutes", "Seconds"].map((label, idx) => (
                   <div key={label} className="flex flex-col items-start gap-1">
                     <span className="text-xs font-bold">{isArabic ? ["أيام", "ساعات", "دقائق", "ثواني"][idx] : label}</span>
@@ -231,13 +231,13 @@ export default function ProductLoopTimerComponent({
           spaceBetween={14}
           slidesPerView={4}
           breakpoints={{
-            320: { slidesPerView: 1.2, spaceBetween: 10 },
-            640: { slidesPerView: 1.5, spaceBetween: 10 },
-            768: { slidesPerView: 2.2, spaceBetween: 12 },
-            1024: { slidesPerView: 4, spaceBetween: 14 },
-            1280: { slidesPerView: 4, spaceBetween: 14 },
-            1650: { slidesPerView: 4, spaceBetween: 14 },
-            1920: { slidesPerView: 5, spaceBetween: 14 },
+            320: { slidesPerView: 1.2, spaceBetween: 6 },
+            640: { slidesPerView: 1.5, spaceBetween: 6 },
+            768: { slidesPerView: 2.2, spaceBetween: 6 },
+            1024: { slidesPerView: 4, spaceBetween: 6 },
+            1280: { slidesPerView: 4, spaceBetween: 6 },
+            1650: { slidesPerView: 4, spaceBetween: 6 },
+            1920: { slidesPerView: 5, spaceBetween: 6 },
           }}
           autoHeight
           centeredSlides={false}
