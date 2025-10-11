@@ -95,7 +95,6 @@ export default function OrderDetails() {
                 getOrderDetails(slugStr),
                 getCheckOutOrderReview(slugStr),
             ]);
-
             setOrderDetails(orderSlugData?.orderSlugData ?? null);
             setProductReviewData(checkOrderReview?.checkOrderReview?.data ?? []);
         } catch (err) {
@@ -313,7 +312,6 @@ export default function OrderDetails() {
     };
 
     const logo = method ? paymentLogos[method] : null;
-    if (!logo) return null;
 
     const statusMap: Record<
         number,
@@ -497,17 +495,19 @@ export default function OrderDetails() {
                                                 <label>{text ? text : "---"}</label>
                                             </div>
                                         </div>
-                                        <Image
-                                            src={lang === "ar" ? logo.ar : logo.en}
-                                            alt={method}
-                                            title={method}
-                                            width={0}
-                                            height={0}
-                                            style={{ width: "60px", height: "auto" }}
-                                            loading="lazy"
-                                            sizes="100vw"
-                                            className="rounded-md"
-                                        />
+                                        {logo != null ? 
+                                            <Image
+                                                src={lang === "ar" ? logo?.ar : logo?.en}
+                                                alt={method}
+                                                title={method}
+                                                width={0}
+                                                height={0}
+                                                style={{ width: "60px", height: "auto" }}
+                                                loading="lazy"
+                                                sizes="100vw"
+                                                className="rounded-md"
+                                            />
+                                        :null}
                                     </div>
                                 </div>
                             </div>
