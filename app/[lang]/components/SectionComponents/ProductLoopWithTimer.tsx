@@ -165,11 +165,11 @@ export default function ProductLoopTimerComponent({
               <h2 className="headingHomeMain !text-base !text-dark">{day || (isArabic ? "اليوم" : "Today")}</h2>
             </div>
 
-            <div className="flex items-center gap-12 lg:gap-20 mb-5">
+            <div className="flex items-center justify-between gap-4 lg:gap-20 mb-5">
               <h2 className="headingHomeMain !text-dark lg:!text-xl">
                 {timerHeading || (isArabic ? "صفقات سريعة" : "Quick Deals")}
               </h2>
-              <div className="flex items-center gap-5">
+              <div className="flex items-center gap-3">
                 {["Days", "Hours", "Minutes", "Seconds"].map((label, idx) => (
                   <div key={label} className="flex flex-col items-start gap-1">
                     <span className="text-xs font-bold">{isArabic ? ["أيام", "ساعات", "دقائق", "ثواني"][idx] : label}</span>
