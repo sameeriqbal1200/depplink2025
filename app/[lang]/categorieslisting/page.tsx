@@ -51,7 +51,7 @@ export default function CategoriesListing() {
                         onChange={(e) => {
                             filterCategory(e.target.value)
                             if (e.target.value == '') {
-                                setCategoryFilteredSearch(null)
+                                setCategoryFilteredSearch('')
                                 return false;
                             }
                         }}
