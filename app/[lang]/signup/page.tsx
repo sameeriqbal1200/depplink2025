@@ -14,6 +14,7 @@ import GlobalContext from '../../GlobalContext';
 import { getSignUpData, postCheckRegisterCheckData, postCheckRegisterOtpData, postSignupUser } from '@/lib/footerpages/signup.client';
 import { useApp } from '@/app/_ctx/AppContext';
 import { postCheckResendOtpData } from '@/lib/login/login.client';
+import { ErrorTracker } from '../utils/errorTracker';
 
 const MobileHeader = dynamic(() => import('../components/MobileHeader'), { ssr: true })
 const Select = dynamic(() => import('react-select'), { ssr: false })
@@ -166,6 +167,13 @@ export default function Register(
             else {
                 setLoginBtnLoading(false)
                 topMessageAlartDanger(t('login.WrongOtp'))
+                ErrorTracker.trackCustomError(
+                    t('login.WrongOtp'),
+                    'frontend',
+                    400,
+                    deviceType,
+                    'Signup Page'
+                );
             }
         } catch (e) {
             console.error("signup failed:", e);
@@ -176,6 +184,13 @@ export default function Register(
         try {
             if (firstName == '' || lastName == '' || email == '' || dateOfBirth == '' || (phoneNumWithoutDash == '' || phoneNumWithoutDash.length < 9)) {
                 setLoginBtnLoading(false)
+                ErrorTracker.trackCustomError(
+                    lang === 'ar' ? "الرجاء إضافة بيانات الحقول!" : "please add fields data!",
+                    'frontend',
+                    400,
+                    deviceType,
+                    'Signup Page'
+                );
                 return topMessageAlartDanger(lang === 'ar' ? "الرجاء إضافة بيانات الحقول!" : "please add fields data!")
             }
             var data = {
@@ -199,6 +214,13 @@ export default function Register(
         try {
             if (firstName == '' || lastName == '' || email == '' || dateOfBirth == '' || (phoneNumWithoutDash == '' || phoneNumWithoutDash.length < 9)) {
                 setLoginBtnLoading(false)
+                ErrorTracker.trackCustomError(
+                    lang === 'ar' ? "الرجاء إضافة بيانات الحقول!" : "please add fields data!",
+                    'frontend',
+                    400,
+                    deviceType,
+                    'Signup Page'
+                );
                 return topMessageAlartDanger(lang === 'ar' ? "الرجاء إضافة بيانات الحقول!" : "please add fields data!")
             }
             var data = {
@@ -270,6 +292,13 @@ export default function Register(
             else {
                 setLoginBtnLoading(false)
                 topMessageAlartDanger(t('login.UserExists'))
+                ErrorTracker.trackCustomError(
+                    t('login.UserExists'),
+                    'frontend',
+                    400,
+                    deviceType,
+                    'Signup Page'
+                );
                 router.push(`${origin}/${lang}/login`)
             }
         } catch (e) {
@@ -294,6 +323,13 @@ export default function Register(
             }
             else {
                 topMessageAlartDanger(t('login?.ResendOtpfailed'))
+                ErrorTracker.trackCustomError(
+                    t('login?.ResendOtpfailed'),
+                    'frontend',
+                    400,
+                    deviceType,
+                    'Signup Page'
+                );
             }
         } catch (e) {
             console.error("Signup failed:", e);
@@ -493,6 +529,13 @@ export default function Register(
                                 onClick={
                                     () => {
                                         if (!checkTermCondition) {
+                                            ErrorTracker.trackCustomError(
+                                                lang === 'ar' ? "يرجى قبول الشروط والأحكام" : "Please accept the terms & conditions",
+                                                'frontend',
+                                                400,
+                                                deviceType,
+                                                'Signup Page'
+                                            );
                                             return topMessageAlartDanger(lang === 'ar' ? "يرجى قبول الشروط والأحكام" : "Please accept the terms & conditions")
                                         }
                                         setLoginBtnLoading(true)

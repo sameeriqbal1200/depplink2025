@@ -17,11 +17,12 @@ import CloseIcon from '@/app/[lang]/components/Icons/CloseIcon';
 import CheckboxIcon from '@/app/[lang]/components/Icons/CheckboxIcon';
 import SARIcon from '@/app/[lang]/components/Icons/SARIcon';
 import LocationAddressIcon from '@/app/[lang]/components/Icons/LocationAdressIcon';
+import { ErrorTracker } from '@/app/[lang]/utils/errorTracker';
 
 const MobileHeader = dynamic(() => import('../../../components/MobileHeader'), { ssr: true })
 
 export default function OrderDetails() {
-    const { t, lang, slugStr, origin } = useApp();
+    const { t, lang, slugStr, origin, deviceType } = useApp();
     const isArabic = lang === 'ar'
     const router = useRouter();
     const [selected, setSelected] = useState('0')
@@ -117,10 +118,24 @@ export default function OrderDetails() {
                 topMessageAlartSuccess(t('products.addreview'));
             } else {
                 topMessageAlartDanger(t('products.errorreview'));
+                ErrorTracker.trackCustomError(
+                    t('products.errorreview'),
+                    'frontend',
+                    400,
+                    deviceType,
+                    'Order detail Page'
+                );
             }
         } catch (e) {
             console.error("submitReview failed:", e);
             topMessageAlartDanger(t('products.errorreview'));
+            ErrorTracker.trackCustomError(
+                t('products.errorreview'),
+                'frontend',
+                400,
+                deviceType,
+                'Order detail Page'
+            );
         }
     };
 
@@ -181,6 +196,13 @@ export default function OrderDetails() {
             const hasAny = !!facebookLink || !!tiktokLink || !!instagramLink || !!twitterLink || !!youtubeLink || !!ugcVideo;
             if (!hasAny) { 
                 topMessageAlartDanger("Please add data."); 
+                ErrorTracker.trackCustomError(
+                    'Please add data.',
+                    'frontend',
+                    400,
+                    deviceType,
+                    'Order detail Page'
+                );
                 return false; 
             }
             
@@ -263,7 +285,15 @@ export default function OrderDetails() {
                 console.log("Error Found");
             }
         } catch (error: any) {
-            topMessageAlartDanger((isArabic ? 'خطأ: ' : 'Error: ') + error?.message);
+            const catchErr = (isArabic ? 'خطأ: ' : 'Error: ') + error?.message
+            topMessageAlartDanger(catchErr);
+            ErrorTracker.trackCustomError(
+                catchErr,
+                'frontend',
+                400,
+                deviceType,
+                'Order detail Page'
+            );
         } finally {
             setVideoIsLoading(false);
         }
