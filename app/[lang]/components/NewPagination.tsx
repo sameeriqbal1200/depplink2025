@@ -115,7 +115,7 @@ const Pagination: React.FC<PaginationProps> = ({
         {/* Previous Button */}
         <button
           onClick={() => currentPage > 1 && setCurrentPage(currentPage - 1)}
-          className={`px-2 py-1 rounded-full bg-white hover:bg-primary text-[#004B7A] hover:text-white group ${
+          className={`px-1 py-1 rounded-full bg-white hover:bg-primary text-[#004B7A] hover:text-white group ${
             currentPage === 1 ? "opacity-50 cursor-not-allowed" : ""
           }`}
           disabled={currentPage === 1}
