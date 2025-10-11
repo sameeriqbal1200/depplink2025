@@ -26,11 +26,6 @@ export class ErrorTracker {
       screenName: this.getScreenName(),
       screenUrl: window.location.href,
       stack: error.stack,
-      additionalData: {
-        error_type: error.name,
-        line_number: this.extractLineNumber(error),
-        column_number: this.extractColumnNumber(error)
-      }
     };
     
     this.pushErrorToDataLayer(errorData);
@@ -54,13 +49,13 @@ export class ErrorTracker {
     this.pushErrorToDataLayer(errorData);
   }
 
-  static trackCustomError(message: any, category = 'frontend', code = 400, deviceType = 'desktop', screenType = '/') {
+  static trackCustomError(message: any, category = 'frontend', code = 400, deviceType = 'desktop', screenName = '/') {
     const errorData = {
       category,
       message,
       code,
       screenType: deviceType,
-      screenName: screenType,
+      screenName: screenName,
       screenUrl: window.location.href,
     };
     
