@@ -91,33 +91,33 @@ export default function MobileHeader(props: any) {
 
     useEffect(() => {
         getUserData();
-      }, [updateWishlist]);
+    }, [updateWishlist]);
 
     const getUserData = async () => {
         await new Promise(resolve => setTimeout(resolve, 100));
-        
+
         const userId = localStorage.getItem("userid");
-    
+
         if (!localStorage.getItem("userCompare")) {
-        const getData = await getUserCompareData(userId);
-        if (getData?.userCompareData) {
-            localStorage.setItem(
-            "userCompare",
-            JSON.stringify(getData.userCompareData.comparedata)
-            );
-            window.dispatchEvent(new Event("storage"));
+            const getData = await getUserCompareData(userId);
+            if (getData?.userCompareData) {
+                localStorage.setItem(
+                    "userCompare",
+                    JSON.stringify(getData.userCompareData.comparedata)
+                );
+                window.dispatchEvent(new Event("storage"));
+            }
         }
-        }
-    
+
         if (!localStorage.getItem("userWishlist")) {
-        const getDatapd = await getUserWishlistData(userId);
-        if (getDatapd?.userWishlistData) {
-            localStorage.setItem(
-            "userWishlist",
-            JSON.stringify(getDatapd.userWishlistData.wishlistdata)
-            );
-            window.dispatchEvent(new Event("storage"));
-        }
+            const getDatapd = await getUserWishlistData(userId);
+            if (getDatapd?.userWishlistData) {
+                localStorage.setItem(
+                    "userWishlist",
+                    JSON.stringify(getDatapd.userWishlistData.wishlistdata)
+                );
+                window.dispatchEvent(new Event("storage"));
+            }
         }
     };
 
