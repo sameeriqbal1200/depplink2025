@@ -5,7 +5,7 @@ const next = require("next");
 
 const dev = process.env.NODE_ENV !== "production";
 // Use environment variable with proper fallback
-const PORT = parseInt(process.env.PORT || "3001", 10);
+const PORT = parseInt(process.env.PORT || "3002", 10);
 const HOST = process.env.HOST || "0.0.0.0";
 
 const app = next({ 
