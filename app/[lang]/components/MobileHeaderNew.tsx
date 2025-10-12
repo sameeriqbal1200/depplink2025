@@ -323,14 +323,6 @@ export default function MobileHeaderNew(props: any) {
   return (
     <>
       <header className="py-3 bg-white shadow-lg w-full overflow-hidden">
-        <button
-          onClick={() => setWhatsappBtn(true)}
-          className={`WhatsappBeforeHover ${whatsappBtn ? "!hidden" : "!flex"} ${
-            isArabic ? "right-0  rounded-tl-2xl rounded-bl-2xl" : "left-0 rounded-tr-2xl rounded-br-2xl"
-          }`}
-        >
-          <ArrowLeftIcon size={16} color="#54AB60" className={`${isArabic ? '' : 'rotate-180'}`} />
-        </button>
         <Link
           href="https://wa.me/9668002444464"
           aria-label=""
