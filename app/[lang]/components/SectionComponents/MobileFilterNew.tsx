@@ -83,6 +83,17 @@ export default function MobileFilterNew(props: FilterProps) {
     });
   };
 
+  // Stop event propagation for filter item clicks
+  const handleBrandClick = (e: React.MouseEvent, brandId: string, brandName: string) => {
+    e.stopPropagation();
+    props.setBrandData(brandId, brandName);
+  };
+
+  const handleTagClick = (e: React.MouseEvent, tagchild: any) => {
+    e.stopPropagation();
+    props.onChangetags(tagchild);
+  };
+
   return (
     <div
       className={`filter_wrapper bg-white md:py-[1.75rem] md:px-[1.125rem] p-2 pt-8 shrink-0 overflow-hidden relative`}
@@ -170,13 +181,13 @@ export default function MobileFilterNew(props: FilterProps) {
             </button>
           </div>
           {openFilter["FilterByBrand"] && (
-            <div className="flex items-center flex-wrap gap-1">
+            <div className="flex items-center flex-wrap gap-1" onClick={(e) => e.stopPropagation()}>
               {props.brands.map((brand) => {
                 const isSelected = props.selectedbrands[brand.name] === true;
                 return (
                   <button
                     key={brand.id}
-                    onClick={() => props.setBrandData(brand.id, brand.name)}
+                    onClick={(e) => handleBrandClick(e, brand.id, brand.name)}
                     className={`relative px-3 py-2 rounded-full cursor-pointer outline-none ${
                       isSelected
                         ? "border-primary border-2 bg-white"
@@ -242,13 +253,13 @@ export default function MobileFilterNew(props: FilterProps) {
             </button>
           </div>
           {openFilter[`FilterBy${tagdata.name}`] && (
-            <div className="flex items-center flex-wrap gap-1">
+            <div className="flex items-center flex-wrap gap-1" onClick={(e) => e.stopPropagation()}>
               {tagdata.childs.map((tagchild) => {
                 const isSelected = props.selectedtags[tagchild.name] === true;
                 return (
                   <button
                     key={tagchild.name}
-                    onClick={() => props.onChangetags(tagchild)}
+                    onClick={(e) => handleTagClick(e, tagchild)}
                     className={`relative px-3 py-2 rounded-full cursor-pointer outline-none border flex items-center justify-center  ${
                       isSelected
                         ? "border-primary border-2 text-primary bg-white"
