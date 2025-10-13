@@ -976,20 +976,22 @@ export default function product_component_updated(props: any) {
           <div className={`p-1 rounded-md relative h-[46px] ${salePormotionText ? "" : "flex items-center justify-center"}`}
             style={{ backgroundColor: productBadgeBackgroundColor }}>
             <div className="align__center w-full">
-              <div className="flex items-center gap-1">
-                {/* Final Price */}
-                <h3 className="flex items-center gap-1 !text-sm font-bold text-orangePrice">
-                  {(productSalePrice > 0 ? productSalePrice : productRegularPrice).toLocaleString("en-US")}
-                  <SARIcon size={8} color="#F0660C" />
-                </h3>
-
-                {/* Regular Price (only if on sale) */}
-                {productSalePrice > 0 && (
-                  <h3 className="flex items-center gap-0.5 mt-0.5 text-xxs text-gray-500 line-through decoration-double decoration-red leading-3">
-                    {productRegularPrice.toLocaleString("en-US")}
-                    <SARIcon size={7} color="#6B7280" />
+              <div className={`flex ${salePormotionText ? 'flex-row items-center gap-1' : 'flex-col'}`}>
+                <div className="flex items-center gap-1">
+                  {/* Final Price */}
+                  <h3 className="flex items-center gap-1 !text-sm font-bold text-orangePrice">
+                    {(productSalePrice > 0 ? productSalePrice : productRegularPrice).toLocaleString("en-US")}
+                    <SARIcon size={8} color="#F0660C" />
                   </h3>
-                )}
+
+                  {/* Regular Price (only if on sale) */}
+                  {productSalePrice > 0 && (
+                    <h3 className="flex items-center gap-0.5 mt-0.5 text-xxs text-gray-500 line-through decoration-double decoration-red leading-3">
+                      {productRegularPrice.toLocaleString("en-US")}
+                      <SARIcon size={7} color="#6B7280" />
+                    </h3>
+                  )}
+                </div>
                 <span className='md:!text-xs !text-[0.625rem] text-gray-500'>{isArabic ? 'شامل الضريبة' : 'Included VAT'}</span>
               </div>
 
