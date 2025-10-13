@@ -31,7 +31,7 @@ export default function GlobalError({
             'Error Boundary Page',
         );
         const PreRoute = sessionStorage.getItem('preLoginRoute');
-        const fullUrl = `${origin}${PreRoute}`
+        const fullUrl = `${origin}${PreRoute}&page_name=error-page&originUrl=${origin}`
         const res = await getPushMessageData(fullUrl)
     }
 

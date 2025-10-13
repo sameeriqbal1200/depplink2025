@@ -22,7 +22,7 @@ export default function NotFound() {
             "Not Found Page"
         );
         const PreRoute = sessionStorage.getItem('preLoginRoute');
-        const fullUrl = `${origin}${PreRoute}`
+        const fullUrl = `${origin}${PreRoute}&page_name=not-found&originUrl=${origin}`
         const res = await getPushMessageData(fullUrl)
     }
     return (
