@@ -41,7 +41,7 @@ export default function CategoriesHomeMobile(props: any) {
                     spaceBetween={8}  // Space between slides
                     breakpoints={{
                         320: {
-                        slidesPerView: 4,
+                        slidesPerView: 5,
                         spaceBetween: 8,
                         grid: {
                             rows: 2,
