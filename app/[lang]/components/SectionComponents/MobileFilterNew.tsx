@@ -170,14 +170,14 @@ export default function MobileFilterNew(props: FilterProps) {
             </button>
           </div>
           {openFilter["FilterByBrand"] && (
-            <div className="flex items-center flex-wrap gap-2">
+            <div className="flex items-center flex-wrap gap-1">
               {props.brands.map((brand) => {
                 const isSelected = props.selectedbrands[brand.name] === true;
                 return (
                   <button
                     key={brand.id}
                     onClick={() => props.setBrandData(brand.id, brand.name)}
-                    className={`relative px-4 py-2 rounded-full cursor-pointer outline-none ${
+                    className={`relative px-3 py-2 rounded-full cursor-pointer outline-none ${
                       isSelected
                         ? "border-primary border-2 bg-white"
                         : "bg-[var(--color-lightGray)] border-white"
@@ -199,7 +199,7 @@ export default function MobileFilterNew(props: FilterProps) {
                       sizes="(max-width: 640px) 100vw, (max-width: 768px) 100vw, (max-width: 1024px) 100vw, 100vw"
                       quality={100}
                       loading="lazy"
-                      className="w-full h-3 object-cover rounded-[1rem]"
+                      className="w-full h-4 object-cover rounded-[1rem]"
                     />
                     {isSelected && checkIcon}
                   </button>
@@ -242,14 +242,14 @@ export default function MobileFilterNew(props: FilterProps) {
             </button>
           </div>
           {openFilter[`FilterBy${tagdata.name}`] && (
-            <div className="flex items-center flex-wrap gap-2">
+            <div className="flex items-center flex-wrap gap-1">
               {tagdata.childs.map((tagchild) => {
                 const isSelected = props.selectedtags[tagchild.name] === true;
                 return (
                   <button
                     key={tagchild.name}
                     onClick={() => props.onChangetags(tagchild)}
-                    className={`relative px-2 py-2 rounded-full cursor-pointer outline-none border flex items-center justify-center  ${
+                    className={`relative px-3 py-2 rounded-full cursor-pointer outline-none border flex items-center justify-center  ${
                       isSelected
                         ? "border-primary border-2 text-primary bg-white"
                         : "bg-[var(--color-lightGray)] border-white text-[var(--color-darkText)]"
@@ -259,13 +259,13 @@ export default function MobileFilterNew(props: FilterProps) {
                     {tagchild.icon ? (
                       // <div dangerouslySetInnerHTML={{ __html: tagchild.icon }} />
                       <div className="font-bold tracking-[0.00544rem]">
-                        <p className="text-[.5rem] leading-2.5">
+                        <p className="text-10 leading-3">
                           {isArabic ? tagchild.name_arabic : tagchild.name}
                         </p>
                       </div>
                     ) : (
                       <div className="text-[var(--color-darkText)] font-bold tracking-[0.00544rem]">
-                        <p className="text-[.5rem] leading-2.5">
+                        <p className="text-10 leading-3">
                           {isArabic ? tagchild.name_arabic : tagchild.name}
                         </p>
                       </div>
