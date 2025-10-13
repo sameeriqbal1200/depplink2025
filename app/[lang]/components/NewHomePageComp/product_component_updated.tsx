@@ -771,6 +771,31 @@ export default function product_component_updated(props: any) {
   const handleGTMAddToCart = () => {
     pushGTMEvent("add_to_cart");
   };
+  const handleCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(productData?.sku);
+    } catch (err) {
+      console.error("Failed to copy text: ", err);
+    }
+  };
+  // Copy Text Popup
+  const handleCopyPopup = async (type: any) => {
+    if (type === productData?.sku) {
+      const toast = Swal.mixin({
+        toast: true,
+        position: isArabic ? "top-start" : "top-end",
+        showConfirmButton: false,
+        timer: 3000,
+      });
+      toast.fire({
+        icon: "success",
+        title: isArabic ? 'تم النسخ إلى الحافظة!' : 'Copied to clipboard!',
+        padding: "10px 20px",
+        background: "#20831E",
+        color: "#FFFFFF",
+      });
+    }
+  };
   const productBrandImage: any = productData?.brand?.brand_media_image?.image
     ? `${NewMedia}${productData?.brand?.brand_media_image?.image}`
     : null;
@@ -944,7 +969,9 @@ export default function product_component_updated(props: any) {
             {productTitle}
           </h2>
           <div className="flex items-center justify-between gap-2 my-2">
-            <button className="font-semibold text-start text-xs line-clamp-1">
+            <button className="font-semibold text-start text-xs line-clamp-1" onClick={(e: any) => {
+                 e.preventDefault(), e.stopPropagation(), handleCopy(), handleCopyPopup(productData?.sku);
+              }}>
               <span className='font-bold after:content-["•"]'>{codeText} </span>{" "}
               <span className="inline-flex items-center gap-1">
                 {productData?.sku} <CopyIcon size={12} className="rotate-90" color="#000000" />
