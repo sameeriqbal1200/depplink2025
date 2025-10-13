@@ -83,20 +83,31 @@ export default function MobileFilterNew(props: FilterProps) {
     });
   };
 
-  useEffect(() => {
-  if (props.filterModal) {
-    // Disable background scroll
-    document.body.style.overflow = "hidden";
-  } else {
-    // Re-enable scroll when modal closes
-    document.body.style.overflow = "";
-  }
-
-  // Cleanup just in case component unmounts
-  return () => {
-    document.body.style.overflow = "";
+  // Stop event propagation for filter item clicks
+  const handleBrandClick = (e: React.MouseEvent, brandId: string, brandName: string) => {
+    e.stopPropagation();
+    props.setBrandData(brandId, brandName);
   };
-}, [props.filterModal]);
+
+  const handleTagClick = (e: React.MouseEvent, tagchild: any) => {
+    e.stopPropagation();
+    props.onChangetags(tagchild);
+  };
+
+  useEffect(() => {
+    if (props.filterModal) {
+      // Disable background scroll
+      document.body.style.overflow = "hidden";
+    } else {
+      // Re-enable scroll when modal closes
+      document.body.style.overflow = "";
+    }
+
+    // Cleanup just in case component unmounts
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [props.filterModal]);
 
   return (
     <div
@@ -185,13 +196,13 @@ export default function MobileFilterNew(props: FilterProps) {
             </button>
           </div>
           {openFilter["FilterByBrand"] && (
-            <div className="flex items-center flex-wrap gap-1">
+            <div className="flex items-center flex-wrap gap-1" onClick={(e) => e.stopPropagation()}>
               {props.brands.map((brand) => {
                 const isSelected = props.selectedbrands[brand.name] === true;
                 return (
                   <button
                     key={brand.id}
-                    onClick={() => props.setBrandData(brand.id, brand.name)}
+                    onClick={(e) => handleBrandClick(e, brand.id, brand.name)}
                     className={`relative px-3 py-2 rounded-full cursor-pointer outline-none ${
                       isSelected
                         ? "border-primary border-2 bg-white"
@@ -257,13 +268,13 @@ export default function MobileFilterNew(props: FilterProps) {
             </button>
           </div>
           {openFilter[`FilterBy${tagdata.name}`] && (
-            <div className="flex items-center flex-wrap gap-1">
+            <div className="flex items-center flex-wrap gap-1" onClick={(e) => e.stopPropagation()}>
               {tagdata.childs.map((tagchild) => {
                 const isSelected = props.selectedtags[tagchild.name] === true;
                 return (
                   <button
                     key={tagchild.name}
-                    onClick={() => props.onChangetags(tagchild)}
+                    onClick={(e) => handleTagClick(e, tagchild)}
                     className={`relative px-3 py-2 rounded-full cursor-pointer outline-none border flex items-center justify-center  ${
                       isSelected
                         ? "border-primary border-2 text-primary bg-white"
