@@ -57,7 +57,14 @@ export default function OrderListing() {
     };
 
     const fmt = (n: number) => Intl.NumberFormat("en-US").format(n);
-    const canTrack = (d: any) => !!d?.shipment_order && [0, 1, 2, 3, 4].includes(Number(d?.status));
+    const canTrack = (d: any) => {
+        return (
+            d?.shipment_order &&
+            Object.keys(d?.shipment_order).length > 0 &&
+            [0, 1, 2, 3].includes(Number(d?.status))
+        );
+    };
+
     const getTotal = (d: any) =>
         d?.ordersummary?.find((x: any) => x?.name === "total")?.price ?? d?.ordersummary?.[0]?.price ?? 0;
 
