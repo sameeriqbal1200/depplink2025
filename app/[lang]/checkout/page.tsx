@@ -1420,11 +1420,14 @@ export default function Checkout() {
                                                 </RadioGroup>
                                                 <button
                                                 onClick={() => {
-                                                    // getRegions(),
-                                                    seteditdata(false),
+                                                   if(addressData && addressData?.length == 5){
+                                                        topMessageAlartDangerNew(t('address.limitReached'))
+                                                   } else {
+                                                        seteditdata(false),
                                                         getCitiesData(lang),
                                                         DataGo(),
-                                                        setAddAddress(true)
+                                                        setAddAddress(true);
+                                                    }
                                                 }}
                                                 // onClick={() => 
                                                 //     // setAddAddress(!addAddress)

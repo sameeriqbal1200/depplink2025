@@ -54,7 +54,8 @@
     "address": {
         "AddAddress": "Address Added Successfully!",
         "UpdateAddress": "Address Updated Successfully!",
-        "DeleteAddress": "Address Deleted Successfully!"
+        "DeleteAddress": "Address Deleted Successfully!",
+        "limitReached": "You can add a maximum of 5 addresses only"
     },
     "login": {
         "support": "Support",

@@ -536,7 +536,13 @@ export default function AddressBook() {
             <div className="fixed bottom-0 w-full p-3 bg-white shadow-md border-t border-[#5D686F26]">
                 <button
                     type="button"
-                    onClick={() => { seteditdata(false), getCities(lang), setAddAddress(true) }}
+                    onClick={() => {
+                        if(addressData?.addresses && addressData?.addresses?.length == 5){
+                            topMessageAlartDanger(t("address.limitReached"))
+                        } else {
+                            seteditdata(false), getCities(lang), setAddAddress(true) 
+                        }
+                    }}
                     className={`focus-visible:outline-none bg-[#004B7A] border border-[#004B7A] hover:bg-[#00446f] hover:border-[#00446f] text-white w-full rounded-md p-2.5 text-sm font-medium flex items-center justify-center ${addAddress == true ? 'hidden' : ''}`}>
                     {lang === 'ar' ? 'اضـافـة عنوان جديد' : 'Add New Address'}
                 </button>
