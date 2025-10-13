@@ -1552,7 +1552,7 @@ export default function Product() {
                             {eligiblePickup && (globalStore?.name_arabic || globalStore?.name) ?
                                 <button onClick={() => { setIsOpenModal(true) }} className='bg-primary text-white rounded-md p-2 text-sm w-full ltr:text-left rtl:text-right'>
                                     <div className='flex gap-2 md:gap-3 md:justify-between item-start md:items-center'>
-                                        <Image src={iconPickupMan} alt="ExpressIcon" title="Express Icon" width="65" height="0" className='inline-block h-auto rounded-md' />
+                                        <Image src={iconPickupMan} alt="ExpressIcon" title="Express Icon" width="65" height="0" sizes="100vw" className='inline-block h-auto rounded-md object-fill' />
                                         <div className='flex flex-col justify-center items-start gap-2'>
                                             <div className='flex gap-4 items-center'>
                                                 <div className='flex gap-2 items-center'>
@@ -1560,7 +1560,7 @@ export default function Product() {
                                                     <span className='text-xs md:text-sm font-bold'>{pickupStoreContent}: <span className='text-[#fde18d]'>{showroomName}</span></span>
                                                 </div>
                                             </div>
-                                            <div className='lex gap-2 items-center md:-mt-1 md:mb-0'>
+                                            <div className='flex gap-2 items-center md:-mt-1 md:mb-0'>
                                                 <Image src={iconPickupTime} alt="ExpressIcon" title="Express Icon" width="18" height="18" className='inline-block h-auto' />
                                                 <span className='text-[0.65rem] md:text-xs'>{pickupStoreTimeText}</span>
                                             </div>
