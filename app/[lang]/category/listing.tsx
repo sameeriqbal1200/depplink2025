@@ -486,7 +486,7 @@ export default function SubCategoryNew({
                       className="bestProButton shadow-md !text-sm flex gap-2 items-center w-fit whitespace-nowrap selected lg:!py-2.5 !py-1 !px-4 !bg-white !text-primary !border-0 hover:!text-white hover:!bg-primary !transition-none"
                     >
                       {subHeadingFiveText}
-                      <SortIcon size={14} color="#004B7A" />
+                      <SortIcon size={14} />
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         width="10"
@@ -562,7 +562,7 @@ export default function SubCategoryNew({
                     className="bestProButton bg-white shadow-md !text-sm !rounded-[.625rem] !font-semibold flex gap-2 items-center !w-fit whitespace-nowrap selected !py-1 !px-4 !text-[000] !border-0 hover:text-white hover:fill-white hover:bg-primary !transition-none"
                   >
                     {applyFiltersText}
-                   <FilterIconTwo size={15} color="#004B7A" />
+                   <FilterIconTwo size={15} />
                   </button>
                 </div>
                 <div className="flex items-center justify-between gap-4">
