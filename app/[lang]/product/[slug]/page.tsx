@@ -1470,7 +1470,8 @@ export default function Product() {
                     <div className="w-full mt-3 md:mt-0">
                         <div className="align__center">
                             {/* This is for mobile prices */}
-                            <h2 className="text-3xl  font-semibold text-[#DC4E4E] flex items-baseline gap-x-1">
+                            <h2 className="text-3xl  font-semibold text-[#DC4E4E] flex flex-col  gap-y-1">
+                                <div className="flex items-baseline gap-x-1"> 
                                 <div className='flex items-baseline gap-x-1'>
                                     {/* {data?.promotional_price > 0 ?
                                         <>{getFormattedPrice(Math.round(getDiscountedPrice() - data?.promotional_price)).toLocaleString()}{'  '}{currencySymbol}</>
@@ -1484,6 +1485,7 @@ export default function Product() {
                                         {getFormattedPrice(getOriginalPrice())}
                                     </span>
                                 )}
+                                </div>
                                 <span className='text-sm text-[#5D686F] font-medium'>{isArabic ? 'شامل الضريبة' : 'Included VAT'}</span>
                             </h2>
                             {productDataClassic?.data?.quantity == 0 || productDataClassic?.data?.quantity == null ?

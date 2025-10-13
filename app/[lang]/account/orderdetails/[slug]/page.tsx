@@ -25,7 +25,7 @@ export default function OrderDetails() {
     const { t, lang, slugStr, origin, deviceType } = useApp();
     const isArabic = lang === 'ar'
     const router = useRouter();
-    const [selected, setSelected] = useState('0')
+    const [selected, setSelected] = useState(null)
     const [orderDetails, setOrderDetails] = useState<any>([])
     const [addReviewsPop, setAddReviewsPop] = useState<boolean>(false)
     const [productReviewData, setProductReviewData] = useState<any>([])
@@ -521,7 +521,9 @@ export default function OrderDetails() {
                                 </button>
                             </div>
                             <div className="mt-1 max-md:pb-32">
-                                <RadioGroup value={selected} onChange={setSelected}>
+                                <RadioGroup value={selected} onChange={
+                                    (val: any) => setSelected(prev => prev === val ? null : val)
+                                }>
                                     <RadioGroupLabel className="sr-only">{lang == 'ar' ? 'منتجات' : 'Server size'}</RadioGroupLabel>
                                     <div className="space-y-2">
                                         {orderDetails?.orderdata?.details?.map((data: any, i: React.Key | null | undefined) => {
@@ -657,7 +659,7 @@ export default function OrderDetails() {
                                         </div>
                                     </Dialog.Title>
                                     <div className="mt-2 container">
-                                        {orderDetails?.orderdata?.details?.map((data: any, i: any, adb: any) => {
+                                        {orderDetails?.orderdata?.details?.filter((_: any, i: number) => selected == null || i == selected)?.map((data: any, i: any, adb: any) => {
                                             return (
                                                 <div className="bg-white" key={i}>
                                                     <div className="flex items-center mb-2 gap-2">

@@ -471,7 +471,7 @@ export default function SubCategoryNew({
       <section
         className={`relative mt-16 ${isMobileOrTablet ? "mb-24" : "mb-8"}`}
       >
-        <div className="xl:px-20 lg:px-10 px-4 flex md:flex-row flex-col items-start gap-4">
+        <div className="xl:px-20 lg:px-10 px-4 flex md:flex-row flex-col items-start gap-4 pt-4">
           <div
             className={`${
               !isMobileOrTablet ? "w-[76%]" : "w-full"
@@ -983,7 +983,7 @@ export default function SubCategoryNew({
       {/* Mobile Filter Modal */}
       <section
         className={`fixed inset-0 bg-white z-50 p-4 overflow-hidden transform transition-transform duration-300 ease-in-out
-    ${filterModal ? "translate-x-0" : "-translate-x-full"}`}
+    ${filterModal ? "translate-x-0" : "-translate-x-full"} h-[100vh]`}
       >
         <MobileFilterNew
           NewMedia={NewMedia}

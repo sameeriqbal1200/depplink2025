@@ -885,7 +885,7 @@ export default function product_component_updated(props: any) {
           />
         </div>
         {absoluteTexts.length > 0 ? (
-          <div className="flex items-center justify-center mx-8 overflow-hidden whitespace-nowrap">
+          <div className="flex items-center overflow-hidden whitespace-nowrap">
             {absoluteTexts.map((text, i) => (
               <div key={`${text}-${i}`} className="flex items-center">
                 {i > 0 && <div className="mx-1 h-3 w-px bg-gray-400 opacity-20" />}
