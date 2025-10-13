@@ -313,7 +313,7 @@ let imgAbsoluteTextFour = "";
       });
       toast.fire({
         icon: "success",
-        title: "Copied to clipboard!",
+        title: isArabic ? 'تم النسخ إلى الحافظة!' : 'Copied to clipboard!',
         padding: "10px 20px",
         background: "#20831E",
         color: "#FFFFFF",

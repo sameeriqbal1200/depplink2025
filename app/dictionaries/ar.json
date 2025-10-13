@@ -54,7 +54,8 @@
     "address": {
         "AddAddress": "تمت إضافة العنوان بنجاح!",
         "UpdateAddress": "تم تحديث العنوان بنجاح!",
-        "DeleteAddress": "تم حذف العنوان بنجاح!"
+        "DeleteAddress": "تم حذف العنوان بنجاح!",
+        "limitReached": "لا يمكنك إضافة أكثر من 5 عناوين" 
     },
     "login": {
         "support": "الدعم الفني",
