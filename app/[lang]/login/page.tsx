@@ -406,7 +406,7 @@ export default function Login(searchParams: any) {
                                                 {lang === 'ar' ? 'تسجيل الدخول' : 'Re-Send Validation Code'}
                                             </button>
                                             :
-                                            <p className="text-xs font-normal text-center text-[#5D686F]">{lang === 'ar' ? 'The code is valid for ' + minutes + ': ' + seconds + ' Mins' : 'The code is valid for ' + minutes + ':' + seconds + ' Mins'}</p>
+                                            <p className="text-xs font-normal text-center text-[#5D686F]">{lang === 'ar' ? 'الكود صالح لـ ' + minutes + ': ' + seconds + ' دقائق' : 'The code is valid for ' + minutes + ':' + seconds + ' Mins'}</p>
                                         }
                                         <button className={`${loginBtnStatus === true ? 'opacity-30' : "opacity-100"} focus-visible:outline-none btn border border-[#004B7A] bg-[#004B7A] p-3.5 rounded-md w-full text-center text-white fill-white font-bold text-base mt-4`}
                                             disabled={loginBtnStatus}
