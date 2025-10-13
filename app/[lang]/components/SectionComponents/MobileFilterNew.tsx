@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import Image from "next/image";
 import CloseIcon from "../Icons/CloseIcon";
 import ArrowLeftIcon from "../Icons/ArrowLeftIcon";
@@ -83,9 +83,24 @@ export default function MobileFilterNew(props: FilterProps) {
     });
   };
 
+  useEffect(() => {
+  if (props.filterModal) {
+    // Disable background scroll
+    document.body.style.overflow = "hidden";
+  } else {
+    // Re-enable scroll when modal closes
+    document.body.style.overflow = "";
+  }
+
+  // Cleanup just in case component unmounts
+  return () => {
+    document.body.style.overflow = "";
+  };
+}, [props.filterModal]);
+
   return (
     <div
-      className={`filter_wrapper bg-white md:py-[1.75rem] md:px-[1.125rem] p-2 pt-8 shrink-0 overflow-hidden relative`}
+      className={`filter_wrapper bg-white md:py-[1.75rem] md:px-[1.125rem] p-2 pt-8 shrink-0 overflow-hidden relative flex flex-col h-full`}
     >
       {/* Cancel Button */}
       <button
@@ -97,7 +112,7 @@ export default function MobileFilterNew(props: FilterProps) {
       </button>
 
       {/* Filter Header */}
-      <div className="mb-4">
+      <div className="mb-4 flex-shrink-0">
         <div className="flex items-center justify-between mb-2.5">
           <h2 className="headingHomeMain !text-base !text-dark">
             {filterText}
@@ -114,7 +129,7 @@ export default function MobileFilterNew(props: FilterProps) {
           )}
         </div>
 
-        <div className="flex items-center flex-wrap gap-2 max-h-[10vh] overflow-y-auto ltr:pr-1 rtl:pl-1">
+        <div className="flex items-center flex-wrap gap-2 max-h-[12vh] overflow-y-auto ltr:pr-1 rtl:pl-1">
           {Object.keys(props.selectedbrands).map((brandName) => {
             const brand = props.brands.find((b) => b.name === brandName);
             return (
@@ -144,7 +159,7 @@ export default function MobileFilterNew(props: FilterProps) {
         </div>
       </div>
 
-      <div className="max-h-[70vh] overflow-y-auto ltr:pr-1 rtl:pl-1">
+      <div className="flex-1 overflow-y-auto pb-10 ltr:pr-1 rtl:pl-1">
       {/* Brand Section */}
       {props.brands?.length > 0 && (
         <div
@@ -281,7 +296,7 @@ export default function MobileFilterNew(props: FilterProps) {
       </div>
 
       {/* Apply Button */}
-      <div className="flex justify-center mt-5 p-4 fixed bottom-4 left-1/2 -translate-x-1/2 w-full">
+      <div className="flex justify-center mt-5 p-4 fixed bottom-0 left-1/2 -translate-x-1/2 w-full bg-white">
         <button
           className="bestProButton w-fit whitespace-nowrap !px-6 !py-2.5 bg-primary !text-white border-primary hover:!text-primary hover:bg-white !rounded-md"
           aria-label={isArabic ? "تطبيق" : "Apply"}
