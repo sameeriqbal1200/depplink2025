@@ -493,6 +493,7 @@ export default function SubCategoryNew({
                         height="5"
                         viewBox="0 0 10 5"
                         fill="none"
+                        className={`${sortPopup ? "" : "rotate-180"}`}
                       >
                         <path
                           d="M0 5L5 0L10 5H0Z"
