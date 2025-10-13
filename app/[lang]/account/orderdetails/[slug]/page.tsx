@@ -598,6 +598,7 @@ export default function OrderDetails() {
                 </div>
             </div>
             <div className="fixed bottom-0 w-full p-3 bg-white shadow-md border-t border-[#5D686F26]">
+                {status == 4 && (
                 <div className="flex flex-col mb-2 gap-2">
                     <button
                         type="button"
@@ -613,6 +614,7 @@ export default function OrderDetails() {
                         {lang == 'ar' ? 'إنشاء طلب صيانة' : "Create Maintainance Request"}
                     </button>
                 </div>
+                )}
                 <button
                     type="button"
                     className="w-full focus-visible:outline-none border border-[#DC4E4E] bg-[#DC4E4E] text-white text-xs font-semibold px-3.5 py-3 rounded-md shadow-md hover:shadow-none"
