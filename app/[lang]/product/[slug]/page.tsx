@@ -1849,11 +1849,11 @@ export default function Product() {
                             <div className={`text-xs font-semibold ltr:ml-3 rtl:mr-3 mt-4`}>
                                 {keyFeature === true ?
                                     <button className="underline focus-visible:outline-none" onClick={() => setKeyFeature(false)}>
-                                        {lang ? '- أقل' : '- Less More'}
+                                        {lang === "ar" ? '- أقل' : '- Less More'}
                                     </button>
                                     :
                                     <button className="underline focus-visible:outline-none" onClick={() => setKeyFeature(true)}>
-                                        {lang ? '+ أظهر المزيد' : '+ Show More'}
+                                        {lang ==="ar" ? '+ أظهر المزيد' : '+ Show More'}
                                     </button>
                                 }
                             </div>
@@ -1881,7 +1881,7 @@ export default function Product() {
             {
                 descriptionStatus ?
                     <div className="container mb-6">
-                        <h3 className='text-base font-semibold mb-1'>{lang ? 'معلومات إضافية' : 'More Details'}</h3>
+                        <h3 className='text-base font-semibold mb-1'>{lang ==="ar" ? 'معلومات إضافية' : 'More Details'}</h3>
                         <div className={`relative bg-white max-h-full`}>
                             <div className={`text-sm text-[#5D686F]`} dangerouslySetInnerHTML={{ __html: isArabic ? productDataClassic?.data?.description_arabic : productDataClassic?.data?.description }}></div>
                         </div>
@@ -1893,7 +1893,7 @@ export default function Product() {
             {productDataClassic?.data?.specs?.length >= 2 ?
                 <>
                     <div className="container">
-                        <h3 className='text-base  font-semibold'>{isArabic ? 'تفاصيل المنتج الحالي' : 'Specifications'}</h3>
+                        <h3 className='text-base  font-semibold'>{isArabic ? 'تفاصيل المنتج الحالي' : 'Current product details'}</h3>
                         {/* <Link prefetch={false} scroll={false} href="#" className='text-[#219EBC] hover:underline'>المواصفات</Link> */}
                     </div>
 
@@ -1934,7 +1934,7 @@ export default function Product() {
                         <hr className="w-full my-3 opacity-10" />
                         <div className="md:flex items-start gap-x-5 md:divide-x divide-[#e8e8e8] max-md:divide-y">
                             <div className="w-full md:w-1/4 pb-4 md:pb-0">
-                                <h4 className="text-sm font-semibold">{lang ? 'التقييم العام' : 'Overall Rating'}</h4>
+                                <h4 className="text-sm font-semibold">{lang === "ar" ? 'التقييم العام' : 'Overall Rating'}</h4>
                                 <p className="text-3xl font-bold mt-5">{productDataClassic?.data?.rating}</p>
                                 {productDataClassic?.data?.totalrating <= 0 ?
                                     null
@@ -1998,7 +1998,7 @@ export default function Product() {
                                 </div>
                             </div>
                             <div className="w-full md:ltr:pl-5 md:rtl:pr-5 max-md:pt-4 md:mt-0">
-                                <h4 className="text-sm font-semibold">{productDataClassic?.data?.reviews?.length}{' '}{lang ? 'التعليقات' : 'Reviews'}</h4>
+                                <h4 className="text-sm font-semibold">{productDataClassic?.data?.reviews?.length}{' '}{lang ==="ar" ? 'التعليقات' : 'Reviews'}</h4>
                                 <hr className="w-full my-3 opacity-10" />
                                 {/* <label className="text-xs text-[#5D686F]">{lang ? `Based on ${1,531} ratings` : `Based on ${1,531} ratings`}</label> */}
                                 <div className="mt-4">
@@ -2013,7 +2013,7 @@ export default function Product() {
                                                 <div className="h-12 border-r opacity-10 md:block hidden"></div>
                                                 <div className="text-[#3866DF] fill-[#3866DF] font-semibold text-xs md:flex items-center gap-1.5 hidden">
                                                     <svg width="14" height="14" viewBox="0 0 13 13" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" clipRule="evenodd" d="M5.07262 9.64218L2.67767 7.24723L3.52189 6.403L5.07262 7.94775L9.0183 4.00206L9.86252 4.85227L5.07262 9.64218ZM6.2701 0.661133C2.96506 0.661133 0.282715 3.34348 0.282715 6.64851C0.282715 9.95355 2.96506 12.6359 6.2701 12.6359C9.57513 12.6359 12.2575 9.95355 12.2575 6.64851C12.2575 3.34348 9.57513 0.661133 6.2701 0.661133Z"></path></svg>
-                                                    {lang ? 'التحقق من الشراء' : 'Verified Purchase'}
+                                                    {lang ==="ar" ? 'التحقق من الشراء' : 'Verified Purchase'}
                                                 </div>
                                             </div>
                                             <div className="flex items-center gap-1 mt-2">
