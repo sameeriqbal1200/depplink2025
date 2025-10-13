@@ -78,10 +78,19 @@ export default function Profile() {
             setProfileData(core);
             setimgUpload(true);
 
-            const fi = (u.first_name ?? "").trim().charAt(0);
-            const li = (u.last_name ?? "").trim().charAt(0);
-            if (fi) setFirstWord(fi);
-            if (li) setSecondWord(li);
+            var firstlNameWord = u?.full_name?.split(' ');
+            if (firstlNameWord[0]) {
+                if (firstlNameWord[0]) {
+                    setFirstWord(firstlNameWord[0].charAt(0))
+                }
+            }
+
+            var secondNameWord = u?.full_name?.split(' ');
+            if (secondNameWord[1]) {
+                if (secondNameWord[1]) {
+                    setSecondWord(secondNameWord[1].charAt(0))
+                }
+            }
             setDataLayerProfilData();
         } catch (err) {
             console.error("getUserProfile failed:", err);
