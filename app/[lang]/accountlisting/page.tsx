@@ -69,27 +69,20 @@ export default function AccountListing() {
 
       const res: any = await getUserProfileData();
       const u = res?.profileDataCore?.userdata ?? {};
+      setfullName(u?.full_name);
 
-      const fullName = (
-        u.full_name ?? `${u.first_name ?? ""} ${u.last_name ?? ""}`
-      )
-        .trim()
-        .replace(/\s+/g, " ");
-
-      setfullName(fullName);
-
-      const parts = fullName.split(" ").filter(Boolean);
-      const firstInitial = parts[0]?.charAt(0) ?? "";
-      const secondInitial =
-        (parts.length > 1 ? parts[parts.length - 1] : parts[0])?.charAt(0) ??
-        "";
-
-      if (firstInitial) setFirstWord(firstInitial);
-      if (secondInitial) setSecondWord(secondInitial);
+      var fullNameWord = u?.full_name?.split(' ');
+      if (fullNameWord) {
+          if (fullNameWord[0]) {
+              setFirstWord(fullNameWord[0].charAt(0))
+          }
+          if (fullNameWord[1]) {
+              setSecondWord(fullNameWord[1].charAt(0))
+          }
+      }
 
       // Optional cache
       localStorage.setItem("fullName", fullName);
-      localStorage.setItem("initials", `${firstInitial}${secondInitial}`);
     } catch (e) {
       console.error("userDataLocalStorage failed:", e);
     }
