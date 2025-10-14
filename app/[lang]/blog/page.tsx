@@ -86,7 +86,7 @@ export default function Blogs() {
                     <div className="grid grid-cols-2 gap-3 pb-40">
                         {blogsData?.data?.map((data: any, i: React.Key | null | undefined) => {
                             return (
-                                <Link href={`${origin}/${lang}/blog/${data?.slug}`} className="bg-white rounded-md shadow-md" key={i}>
+                                <Link href={`${origin}/${lang}/blog/${data?.slug}`} className="bg-white rounded-2xl shadow-md overflow-hidden" key={i}>
                                     <Image
                                         src={data?.blog_media_image ? NewMedia + data?.blog_media_image?.image : 'https://partners.tamkeenstores.com.sa/public/assets/new-media/3f4a05b645bdf91af2a0d9598e9526181714129744.png'}
                                         alt={(data?.blog_media_image?.alt_arabic && blogsData?.lang == 'ar') ? data?.blog_media_image?.alt_arabic : (data?.blog_media_image?.alt && blogsData?.lang == 'en') ? data?.blog_media_image?.alt : ''}

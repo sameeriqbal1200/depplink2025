@@ -43,6 +43,7 @@ export default function Login(searchParams: any) {
     const { updateOrder, setUpdateOrder } = useContext(GlobalContext);
     const { updateWishlist, setUpdateWishlist } = useContext(GlobalContext);
     const { updateCompare, setUpdateCompare } = useContext(GlobalContext);
+    const [expanded, setExpanded] = useState(false);
     const recaptchaRef = useRef<any>(null);
 
     useEffect(() => {
@@ -505,8 +506,31 @@ export default function Login(searchParams: any) {
                                         }
                                         <div className="px-5 pt-3">
                                             <h6 className="font-bold text-sm text-[#004B7A] mb-3">{lang === 'ar' ? notificationsListing?.title_arabic : notificationsListing?.title}</h6>
-                                            <small className="font-medium text-[#000000] mb-1">{lang === 'ar' ? notificationsListing?.message_arabic : notificationsListing?.message}</small>
-                                            <small className="font-medium text-[#5D686F] text-xs">{dayjs(notificationsListing?.created_at?.split('T')[0]).format('MMMM Do, YYYY | h:mm A')}</small>
+                                            <small className="font-medium text-[#000000] mb-1">
+                                                {expanded ?
+                                                    (lang === 'ar' ? notificationsListing?.message_arabic : notificationsListing?.message)
+                                                    :
+                                                    lang === 'ar'
+                                                        ? String(notificationsListing?.message_arabic || '').slice(0, 120)+'...'
+                                                        : String(notificationsListing?.message || '').slice(0, 120)+'...'
+                                                }
+                                            </small>
+                                            {notificationsListing?.message_arabic?.length >= 120 && (
+                                                <div
+                                                    onClick={(e) => e.stopPropagation()}
+                                                >
+                                                    <button
+                                                        onClick={(e:any) => {setExpanded(!expanded); e.preventDefault(); e.stopPropagation()}}
+                                                        className="text-[#004B7A] font-semibold text-xs hover:underline"
+                                                    >
+                                                        {expanded ? "Read less" : "Read more"}
+                                                    </button>
+                                                </div>
+                                            )}
+                                            {notificationsListing?.message_arabic?.length >= 120 && !expanded ?
+                                                '' : 
+                                                <small className="font-medium text-[#5D686F] text-xs">{dayjs(notificationsListing?.created_at?.split('T')[0]).format('MMMM Do, YYYY | h:mm A')}</small>
+                                            }
                                         </div>
                                     </Link>
                                 </div>

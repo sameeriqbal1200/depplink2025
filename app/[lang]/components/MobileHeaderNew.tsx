@@ -266,6 +266,11 @@ export default function MobileHeaderNew(props: any) {
       return false;
     }
     setCityData(selectedCityData);
+    topMessageAlartSuccess(
+      props?.lang === "ar"
+        ? "تم تحديث مدينتك بنجاح!"
+        : "Your city has been updated successfully!"
+    )
     localStorage.setItem("globalcity", selectedCityData);
     setglobalCity(selectedCityData);
     localStorage.setItem("live_location", "false");
@@ -302,6 +307,27 @@ export default function MobileHeaderNew(props: any) {
     }
   }, [lang]);
   const MySwal = withReactContent(Swal);
+  const topMessageAlartSuccess = (title: any) => {
+    MySwal.fire({
+        icon: "success",
+        title:
+            <div className="text-xs">
+                <div className="uppercase">{title}</div>
+            </div>
+        ,
+        toast: true,
+        position: props.lang == 'ar' ? 'top-start' : 'top-end',
+        showConfirmButton: false,
+        timer: 15000,
+        showCloseButton: false,
+        background: '#20831E',
+        color: '#FFFFFF',
+        timerProgressBar: true,
+        customClass: {
+            popup: `bg-success`,
+        },
+    });
+   };
   const topMessageAlartDanger = (title: any) => {
     MySwal.fire({
       icon: "error",
