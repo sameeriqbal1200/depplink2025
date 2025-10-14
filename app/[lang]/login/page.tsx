@@ -523,7 +523,7 @@ export default function Login(searchParams: any) {
                                                         onClick={(e:any) => {setExpanded(!expanded); e.preventDefault(); e.stopPropagation()}}
                                                         className="text-[#004B7A] font-semibold text-xs hover:underline"
                                                     >
-                                                        {expanded ? "Read less" : "Read more"}
+                                                        {expanded ? (lang === 'ar' ? "اقرأ أقل" : "Read Less") : (lang === 'ar' ? "اقرأ المزيد" : "Read More") }
                                                     </button>
                                                 </div>
                                             )}
