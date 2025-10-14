@@ -209,7 +209,7 @@ export default function AccountListing() {
             </Link>
           )}
         </div>
-        <div className="mt-2 bg-white pb-32">
+        <div className="mt-2 bg-white pb-24">
           <Link
             prefetch={false}
             scroll={false}
@@ -445,16 +445,17 @@ export default function AccountListing() {
                 style={{ width: "auto", height: "auto" }}
               />
             </Link>
-            {/*<Link href="https://images.tamkeenstores.com.sa/assets/pdf/Online_COC-23Nov.pdf" target='_blank' aria-label="">
-                            <Image
-                                src="https://images.tamkeenstores.com.sa/assets/new-media/12e57a08dbe89d8b6397ea6ad66488f21718877392.svg"
-                                alt=''
-                                title=''
-                                height={80}
-                                width={80}
-                                loading='lazy'
-                            />
-                        </Link>*/}
+            <Link href="https://images.tamkeenstores.com.sa/assets/pdf/Online_COC-23Nov.pdf" target='_blank' aria-label="">
+                <Image
+                    src="https://images.tamkeenstores.com.sa/assets/new-media/12e57a08dbe89d8b6397ea6ad66488f21718877392.svg"
+                    alt=''
+                    title=''
+                    height={80}
+                    width={80}
+                    priority
+                    style={{ width: "auto", height: "auto" }}
+                />
+            </Link>
           </div>
         </div>
         <div className="fixed bottom-[77px] w-full p-3 bg-white shadow-md border-t border-[#5D686F26]">
