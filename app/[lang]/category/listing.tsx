@@ -487,7 +487,7 @@ export default function SubCategoryNew({
                     >
                       {subHeadingFiveText}
                       <SortIcon size={14} />
-                      <svg
+                      {/* <svg
                         xmlns="http://www.w3.org/2000/svg"
                         width="10"
                         height="5"
@@ -500,7 +500,7 @@ export default function SubCategoryNew({
                           fill="currentColor"
                           fillOpacity="0.7"
                         />
-                      </svg>
+                      </svg> */}
                     </button>
 
                     {sortPopup && (
