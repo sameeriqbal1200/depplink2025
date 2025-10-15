@@ -59,7 +59,7 @@ export default function Wishlist() {
 
       const userId = localStorage.getItem("userid");
       if (!userId) {
-        router.push(`$(origin)${lang}/login`);
+        router.push(`${origin}${lang}/login`);
         return;
       }
       const city = localStorage.getItem("globalcity") || "Jeddah";
