@@ -565,7 +565,7 @@ export default function NewCart() {
                                 var checkExp = expressData[pro?.id]
                                 return (
                                     <div className="bg-white pb-3 rounded-md" key={i + 1}>
-                                        <div className="nc__278mainInnerSixthDiv">
+                                        <div className="nc__278mainInnerSixthDiv px-[1rem]">
                                             <Image src={pro?.image}
                                                 alt={proImgAlt}
                                                 title={proImgAlt} height={100} width={100} style={{width: "100px", height: "100px"}} />
