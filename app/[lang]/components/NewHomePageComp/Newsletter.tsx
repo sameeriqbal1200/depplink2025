@@ -60,44 +60,14 @@ export default function NewsLetter(props: any) {
         });
     };
     const submitNewslatter = async () => {
-        var validRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
         var data = {
             email: email
-        }
-
-        if (!email) {
-            const errorTxt = "Error! Please add email to subscribe !";
-            setErrorMsg('Error! Please add email to subscribe !')
-            topMessageAlartDanger(errorMsg)
-            ErrorTracker.trackCustomError(
-                errorTxt,
-                'frontend',
-                400,
-                deviceType,
-                'Newsletter Component'
-            );
-            setLoader(false)
-            return false;
-        }
-        else if (!email.match(validRegex)) {
-            const errText = 'Error! Please add correct email to subscribe !';
-            setErrorMsg('Error! Please add correct email to subscribe !')
-            topMessageAlartDanger(errorMsg)
-            ErrorTracker.trackCustomError(
-                errText,
-                'frontend',
-                400,
-                deviceType,
-                'Newsletter Component'
-            );
-            setLoader(false)
-            return false;
         }
         setLoader(true)
         const dataUpd = await postSubmitNewsLetter(data);
         if (dataUpd?.newsLetterData?.success) {
             setemail('')
-            topMessageAlartSuccess('Success! You have subscribed our newslatter successfully !')
+            topMessageAlartSuccess(dataUpd?.newsLetterData?.message)
             setnewslatter(true)
             setLoader(false)
         }
@@ -152,7 +122,7 @@ export default function NewsLetter(props: any) {
                                     value={email}
                                 />
                                 <button
-                                    className={`focus-visible:outline-none w-full btn btn-primary hover:text-white hover:bg-[#004B7A] border-[#004B7A] border text-primary py-2 rounded-md px-8 font-semibold text-sm`}
+                                    className={`focus-visible:outline-none w-full btn btn-primary hover:text-white hover:bg-[#004B7A] border-[#004B7A] border text-primary py-2 rounded-md px-8 font-semibold text-sm flex items-center justify-center`}
                                     disabled={newslatter}
                                     onClick={submitNewslatter}
                                 >
