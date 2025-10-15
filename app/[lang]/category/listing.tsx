@@ -572,7 +572,7 @@ export default function SubCategoryNew({
                   </h2>
                   {/* Pagination Section */}
                   {data?.productData?.products && (
-                    <>
+                    <div className="flex w-full overflow-x-auto">
                       {data?.productData?.products?.last_page > 1 && (
                         <Pagination
                           setCurrentPage={(newpage) => {
@@ -588,7 +588,7 @@ export default function SubCategoryNew({
                           lastPage={data?.productData?.products?.last_page}
                         />
                       )}
-                    </>
+                    </div>
                   )}
                 </div>
                 <hr className="w-full h-px my-2.5 opacity-10"></hr>

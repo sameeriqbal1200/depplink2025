@@ -84,7 +84,7 @@ const Pagination: React.FC<PaginationProps> = ({
     return (
       <div
         dir={dir}
-        className="flex items-center justify-center space-x-2"
+        className="flex items-center justify-center space-x-2 ml-auto"
       >
         {/* Page Label */}
         <span className={`${textClass} md:text-sm text-xs text-primary`}>

@@ -128,12 +128,12 @@ export default function BlogClientPage({
         <div className="py-6">
         {loaderStatus ? (
             <div
-                className={`animate-pulse tamkeenSales_cardss grid grid-cols-2 xl:gap-x-3 gap-3 items-start justify-center`}
+                className={`animate-pulse tamkeenSales_cardss grid grid-cols-2 md:grid-cols-3 md:gap-4 gap-3 items-start justify-center`}
             >
                 {[...Array(isMobileOrTablet ? 10 : 12)].map(
                 (_, i) => (
                     <div
-                    className="h-[28rem] bg-white rounded-2xl shadow-md"
+                    className="h-[18rem] md:h-[28rem] bg-white rounded-2xl shadow-md"
                     key={i + 200}
                     ></div>
                 )
@@ -141,7 +141,7 @@ export default function BlogClientPage({
             </div>
         ) : (
         <>
-          <div className="grid grid-cols-2 gap-3 pb-40">
+          <div className="grid grid-cols-2 md:grid-cols-3 md:gap-4 gap-3 pb-6">
             {blogsData?.data?.data?.map((data: any, i: React.Key | null | undefined) => {
               return (
                 <Link href={`${origin}/${lang}/blog/${data?.slug}`} className="bg-white rounded-2xl shadow-md overflow-hidden" key={i}>
@@ -180,7 +180,7 @@ export default function BlogClientPage({
             })}
           </div>
         </> )}
-          <div className='flex w-full justify-center mb-50'>
+          <div className='flex w-fit mx-auto justify-center mb-14'>
             {blogsData?.data?.data && blogsData?.data?.last_page > 1 && (
               <Pagination
                 setCurrentPage={(newpage: number) => {
