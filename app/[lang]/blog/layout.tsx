@@ -7,9 +7,7 @@ export default async function BlogsLayout({ children }: { children: React.ReactN
     const { slugStr } = await getRequestContext();
     if (!slugStr) return null;
 
-    const blogsData = await getBlogCached();
-    const value = blogsData ? JSON.parse(JSON.stringify(blogsData)) : null;
-    return <BridgeSlot slot="blogs" value={value}>{children}</BridgeSlot>;
+    return <>{children}</>;
 }
 
 // ---- SEO metadata ----

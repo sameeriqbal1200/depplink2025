@@ -324,7 +324,7 @@ export default function MobileHeaderNew(props: any) {
         color: '#FFFFFF',
         timerProgressBar: true,
         customClass: {
-            popup: `bg-success`,
+            popup: `bg-success !w-fit`,
         },
     });
    };

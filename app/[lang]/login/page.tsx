@@ -515,24 +515,20 @@ export default function Login(searchParams: any) {
                                                         : String(notificationsListing?.message || '').slice(0, 120)+'...'
                                                 }
                                             </small>
-                                            {notificationsListing?.message_arabic?.length >= 120 && (
-                                                <div
-                                                    onClick={(e) => e.stopPropagation()}
-                                                >
-                                                    <button
-                                                        onClick={(e:any) => {setExpanded(!expanded); e.preventDefault(); e.stopPropagation()}}
-                                                        className="text-[#004B7A] font-semibold text-xs hover:underline"
-                                                    >
-                                                        {expanded ? (lang === 'ar' ? "اقرأ أقل" : "Read Less") : (lang === 'ar' ? "اقرأ المزيد" : "Read More") }
-                                                    </button>
-                                                </div>
-                                            )}
                                             {notificationsListing?.message_arabic?.length >= 120 && !expanded ?
                                                 '' : 
                                                 <small className="font-medium text-[#5D686F] text-xs">{dayjs(notificationsListing?.created_at?.split('T')[0]).format('MMMM Do, YYYY | h:mm A')}</small>
                                             }
                                         </div>
                                     </Link>
+                                    {notificationsListing?.message_arabic?.length >= 120 && (
+                                        <button
+                                            onClick={(e:any) => {setExpanded(!expanded);}}
+                                            className="text-[#004B7A] font-semibold text-xs hover:underline mx-5"
+                                        >
+                                            {expanded ? (lang === 'ar' ? "اقرأ أقل" : "Read Less") : (lang === 'ar' ? "اقرأ المزيد" : "Read More") }
+                                        </button>
+                                    )}
                                 </div>
                                 <div className="px-5 pb-5">
                                     <hr className="my-4 opacity-10" />
