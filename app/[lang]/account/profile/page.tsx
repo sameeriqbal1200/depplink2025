@@ -412,7 +412,7 @@ export default function Profile() {
                                         </p>
                                     </div>
 
-                                    <div className="flex items-center justify-center underline text-[#B15533]">
+                                    <div className="flex items-center md:justify-center underline text-[#B15533]">
                                         <Link href={`${origin}/${lang}/account/orderdetails/${d?.id}`} prefetch replace={false}>
                                             {lang === "ar" ? "إظهار التفاصيل" : "View Details"}
                                         </Link>
@@ -488,8 +488,8 @@ export default function Profile() {
                                                 {/* <svg id="fi_5319951" height="34" viewBox="0 0 20 20" width="34" xmlns="http://www.w3.org/2000/svg" data-name="Layer 2"><circle cx="10" cy="5" r="4"></circle><path d="m10 11a7.008 7.008 0 0 0 -7 7 1 1 0 0 0 1 1h12a1 1 0 0 0 1-1 7.008 7.008 0 0 0 -7-7z"></path></svg> */}
                                             </div>
                                         </button>
-                                        <h3 className="text-xl mt-1 font-bold">{lang == 'ar' ? 'قم بإنشاء حساب الأن' : 'Edit Profile'}</h3>
-                                        <p className="text-xs font-regular mt-1.5">{lang == 'ar' ? 'برجاء ادخال بياناتك بالحقول التالية' : 'You can add or update data in your profile'}</p>
+                                        <h3 className="text-xl mt-1 md:mt-4 lg:mt-8 font-bold">{lang == 'ar' ? 'قم بإنشاء حساب الأن' : 'Edit Profile'}</h3>
+                                        <p className="text-xs font-regular mt-0 sm:mt-1.5">{lang == 'ar' ? 'برجاء ادخال بياناتك بالحقول التالية' : 'You can add or update data in your profile'}</p>
                                     </div>
                                     <div className="bg-white p-3 w-full flex items-center justify-center">
                                         <div className="w-full">
@@ -574,7 +574,7 @@ export default function Profile() {
                                                         updateProfileData()
                                                     }
                                                 }
-                                                className={`${loginBtnStatus === true ? 'focus-visible:outline-none opacity-30' : "opacity-100"} bg-[#004B7A] border border-[#004B7A] hover:bg-[#00446f] hover:border-[#00446f] text-white w-80 rounded-md p-2.5 text-sm mt-14 font-medium flex items-center justify-center m-auto`}>
+                                                className={`${loginBtnStatus === true ? 'focus-visible:outline-none opacity-30' : "opacity-100"} bg-[#004B7A] border border-[#004B7A] hover:bg-[#00446f] hover:border-[#00446f] text-white w-full rounded-md p-2.5 text-sm mt-14 font-medium flex items-center justify-center m-auto`}>
                                                 {loginBtnLoading ? <svg height="24" viewBox="0 0 24 24" className="animate-spin h-6 w-6 mr-3 fill-white" width="24" xmlns="http://www.w3.org/2000/svg" id="fi_7235860"><path d="m12 22c5.421 0 10-4.579 10-10h-2c0 4.337-3.663 8-8 8s-8-3.663-8-8c0-4.336 3.663-8 8-8v-2c-5.421 0-10 4.58-10 10 0 5.421 4.579 10 10 10z"></path></svg> : null}
                                                 {loginBtnLoading == false ? lang == 'ar' ? 'استمرار' : 'Update' : null}
                                             </button>

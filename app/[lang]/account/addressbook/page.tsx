@@ -490,7 +490,7 @@ export default function AddressBook() {
                                     <div className="flex w-full items-center justify-between">
                                         <div className={`flex items-center gap-x-3 ${data?.make_default == 1 ? 'fill-[#FFFFFF]' : 'fill-[#004B7A]'}`}>
                                             <LocationAddressIcon size={28} color={`${data?.make_default == 1 ? '#FFFFFF' : '#004B7A'}`} />
-                                            <div className="w-64 md:w-full">
+                                            <div className="w-full">
 
                                                 <div className="flex items-center justify-between w-full mb-3">
                                                     <p className={`text-[#004B7A] flex items-center gap-x-2 text-sm font-bold ${data?.make_default == 1 ? 'text-white' : ''}`}>

@@ -120,7 +120,7 @@ export default function OrderListing() {
                                             </p>
                                         </div>
 
-                                        <div className="flex items-center justify-center underline text-[#B15533]">
+                                        <div className="flex items-center md:justify-center underline text-[#B15533]">
                                             <Link href={`${origin}/${lang}/account/orderdetails/${d?.id}`} prefetch replace={false}>
                                                 {lang === "ar" ? "إظهار التفاصيل" : "View Details"}
                                             </Link>
