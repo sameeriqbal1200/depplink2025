@@ -261,7 +261,7 @@ export default function SubCategoryNew({
 
   useEffect(() => {
     (async () => {
-      if (searchParams?.brand && applyFilter) {
+      if (searchParams?.brand) {
         setBrandfilterHide(true);
         var br = searchParams?.brand.split(",");
         var brandnames: any = {};
@@ -278,7 +278,7 @@ export default function SubCategoryNew({
         }
       }
 
-      if (searchParams?.cats && applyFilter) {
+      if (searchParams?.cats) {
         setFilterHide(true);
         var cats = searchParams?.cats.split(",");
         var scats: any = {};
@@ -311,7 +311,7 @@ export default function SubCategoryNew({
         setsort(searchParams?.sort);
       }
 
-      if (searchParams?.tags && applyFilter) {
+      if (searchParams?.tags) {
         var tagdata = searchParams?.tags.split(",");
         var shitems: any = {};
         //var maintag = itemsToShowTag
@@ -329,10 +329,12 @@ export default function SubCategoryNew({
           }
         }
         setselectedtags({ ...shitems });
-        if (deviceType == "mobile") {
-          window.scrollTo(0, 250);
-        } else {
-          window.scrollTo(0, 350);
+        if (applyFilter && (searchParams?.brand || searchParams?.cats || searchParams?.tags)) {
+          if (deviceType == "mobile") {
+            window.scrollTo(0, 250);
+          } else {
+            window.scrollTo(0, 350);
+          }
         }
       }
     })();
@@ -360,7 +362,7 @@ export default function SubCategoryNew({
     // if (searchnotifications?.length) {
     //   notificationCount();
     // }
-  }, [data]);
+  }, [data, searchParams]);
   // const notificationCount = () => {
   //   if (searchnotifications?.length) {
   //     var data = {
