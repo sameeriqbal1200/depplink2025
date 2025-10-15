@@ -514,7 +514,7 @@ export default function AddressBook() {
                                         </div>
                                         <div className="flex items-center gap-x-3">
                                             {data?.make_default == 1 ?
-                                                <button className={`focus-visible:outline-none btn ${data?.make_default == 1 ? 'fill-white' : 'fill-[#004B7A]'}`} onClick={() => { setAddAddress(true), EditAddress(data?.id), seteditdata(true) }}>
+                                                <button className={`focus-visible:outline-none btn ${data?.make_default == 1 ? 'fill-white' : 'fill-[#004B7A]'}`} onClick={() => { setAddAddress(true), EditAddress(data?.id), seteditdata(true), getCities(lang) }}>
                                                     <EditIcon size={22} color={`${data?.make_default == 1 ? '#fff' : '#004B7A'}`} className="" />
                                                 </button>
                                                 :
