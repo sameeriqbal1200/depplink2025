@@ -165,7 +165,7 @@ export default function AccountListing() {
       <MobileHeader
         type="Third"
         lang={lang}
-        pageTitle={lang === "ar" ? "حساب تعريفي" : "Profile"}
+        pageTitle={lang === 'ar' ? 'حسابي' : 'Account'}
       />
       <div className="py-16 md:py-4">
         <div className="container">
@@ -176,7 +176,7 @@ export default function AccountListing() {
             >
               <div className="w-14 h-14 rounded-full border-2 border-[#219EBC] flex justify-center items-center bg-[#219EBC]">
                 <p className="text-white font-bold">
-                  {firstWord} {secondWord}
+                  {firstWord}{secondWord}
                 </p>
               </div>
 
