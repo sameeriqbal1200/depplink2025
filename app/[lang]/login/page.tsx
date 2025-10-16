@@ -160,20 +160,20 @@ export default function Login(searchParams: any) {
 
     const CheckPhoneNumber = async () => {
         try {
-            const recaptchaValue = recaptchaRef.current.getValue();
-            if (!recaptchaValue) {
-                setLoginBtnLoading(false)
-                setcaptchaErrorStatus(true)
-                ErrorTracker.trackCustomError(
-                    'Recaptcha validation failed',
-                    'frontend',
-                    400,
-                    deviceType,
-                    'Login Page'
-                );
-                return false
-            }
-            const token = recaptchaValue;
+            // const recaptchaValue = recaptchaRef.current.getValue();
+            // if (!recaptchaValue) {
+            //     setLoginBtnLoading(false)
+            //     setcaptchaErrorStatus(true)
+            //     ErrorTracker.trackCustomError(
+            //         'Recaptcha validation failed',
+            //         'frontend',
+            //         400,
+            //         deviceType,
+            //         'Login Page'
+            //     );
+            //     return false
+            // }
+            // const token = recaptchaValue;
             let phone = phoneNumber.replace('(966)-', '');
             phone = phone.replace(/[^0-9\.]+/g, '')
             if (phone == '' || phone.length < 9) {
@@ -190,7 +190,8 @@ export default function Login(searchParams: any) {
             var data = {
                 phone_number: phoneNumber,
                 lang: lang,
-                token: token
+                login: true,
+                devicetype: deviceType
             }
 
             const res = await postUserLoginData(data);
@@ -453,18 +454,18 @@ export default function Login(searchParams: any) {
                                         // reCaptchaKey={'6LcJPEoqAAAAACYmbfaa2BxNXFSWAxMr0RG0aIlJ'}
                                         // refreshReCaptcha={refreshReCaptcha}
                                     /> */}
-                                    <div className='mt-4'>
+                                    {/* <div className='mt-4'>
                                         <ReCAPTCHA
                                             ref={recaptchaRef}
                                             hl={lang}
                                             sitekey="6Ld5cE0qAAAAAKPmWqf1qAYpffArghXy1xOdQ4XL" // Replace with your site key
                                         />
-                                    </div>
-                                    {captchaErrorStatus ?
+                                    </div> */}
+                                    {/* {captchaErrorStatus ?
                                         <p className='font-semibold text-sm'>
                                             {lang === 'ar' ? 'يرجى تحديد المربع للتحقق من أنك إنسان.' : 'Please check the box to verify that you are human.'}
                                         </p>
-                                        : null}
+                                        : null} */}
                                     {loginErrorStatus ?
                                         <p>
                                             {lang === 'ar' ? 'لم يتم العثور على هذا الحساب' : 'This account has not found!'}
