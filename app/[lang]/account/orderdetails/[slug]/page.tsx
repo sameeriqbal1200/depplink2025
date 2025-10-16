@@ -523,15 +523,17 @@ export default function OrderDetails() {
                             <div className="mt-1 max-md:pb-32">
                                 <RadioGroup value={selected} onChange={
                                     (val: any) => setSelected(prev => prev === val ? null : val)
-                                }>
+                                } disabled={orderDetails?.orderdata?.status == 5}>
                                     <RadioGroupLabel className="sr-only">{lang == 'ar' ? 'منتجات' : 'Server size'}</RadioGroupLabel>
                                     <div className="space-y-2">
                                         {orderDetails?.orderdata?.details?.map((data: any, i: React.Key | null | undefined) => {
+                                            const isDisabled = orderDetails?.orderdata?.status == 5;
                                             return (
                                                 <RadioGroup.Option
                                                     key={i}
                                                     value={i}
                                                     className={({ active, checked }) => ` ${checked ? '' : ''} relative focus:outline-none`}
+                                                    disabled={isDisabled}
                                                 >
                                                     {({ active, checked }) => (
                                                         <div className={`bg-white rounded-md shadow-md flex items-center gap-x-4 mb-4 p-2 max-md:relative border ${checked ? 'border-[#219EBC]' : 'border-transparent'}`} key={i}>
@@ -621,7 +623,7 @@ export default function OrderDetails() {
                     type="button"
                     className="w-full focus-visible:outline-none border border-[#DC4E4E] bg-[#DC4E4E] text-white text-xs font-semibold px-3.5 py-3 rounded-md shadow-md hover:shadow-none"
                 >
-                    {lang == 'ar' ? 'إلغاء طلب' : 'Cancel Order'}
+                    {lang == 'ar' ? 'الطلب الملغي' : 'Cancelled Order'}
                 </button>
             </div>
             {/* Order Rating */}
