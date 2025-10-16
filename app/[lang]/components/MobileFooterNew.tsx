@@ -254,7 +254,7 @@ export default function MobileFooterNew(props: any) {
       path.indexOf("product") === -1 &&
       path.indexOf("setting") === -1 &&
       path.indexOf("account/addressbook") === -1 &&
-      path.indexOf("account/loyaltyusagehistory") === -1 &&
+      path.indexOf("account/loyaltyhistory") === -1 &&
       path.indexOf("account/orderlisting") === -1 &&
       path.indexOf("account/profile") === -1 &&
       path.indexOf("account/orderdetails") === -1 &&

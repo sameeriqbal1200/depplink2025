@@ -2089,7 +2089,7 @@ export default function Checkout() {
                                     : "Choose your payment method"}
                                 </div>
                                 <div className="mt-4">
-                                    {loyaltyData && loyaltyData?.total_amount >= 1 && loyaltyData?.total_amount >= 1 ?
+                                    {loyaltyData && loyaltyData?.total_amount >= 1 ?
                                         <>
                                         {/* loyalty work */}
                                         <button 
