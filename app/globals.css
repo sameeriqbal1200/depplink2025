@@ -132,3 +132,35 @@
   width: 100%;
   height: 100%;
 }
+
+.loyaltyHistory_header_two {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden; /* ensure background stays within container */
+}
+
+.loyaltyHistory_header_two::before {
+  content: "";
+  position: absolute;
+  top: 0px;
+  
+  bottom: -18%;
+  background-image: url("/svg/coin-gold.svg");
+  background-repeat: no-repeat;
+  background-size: 30%;
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+html[dir='ltr'] .loyaltyHistory_header_two::before {
+  	background-position: right bottom;
+	left: 0;
+  	right: -1%;
+}
+
+html[dir='rtl'] .loyaltyHistory_header_two::before {
+	background-position: left bottom;
+	right: 0;
+  	left: -1%;
+}
