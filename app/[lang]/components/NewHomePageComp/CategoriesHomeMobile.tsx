@@ -90,7 +90,7 @@ export default function CategoriesHomeMobile(props: any) {
                                         priority={true}
                                         className="mx-auto h-auto bg-white w-full border rounded-xl shadow-sm border-[#ff7b345e]"
                                     />
-                                    <h2 className="font-bold mt-2 text-[0.65rem] xl:text-xs line-clamp-1 md:line-clamp-2 leading-4 text-xs text-center">
+                                    <h2 className="font-bold mt-2 text-[0.625rem] xl:text-xs line-clamp-1 md:line-clamp-2 leading-4 text-center">
                                         {renderCategoryName(category)}
                                     </h2>
                                 </Link>
