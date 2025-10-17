@@ -545,7 +545,7 @@ export default function Profile() {
                                                 />
                                             </div>
                                             <div className="flex items-center justify-between gap-x-3 mt-3">
-                                                <h6 className="text-sm font-bold">Please select the gender:</h6>
+                                                <h6 className="text-sm font-bold">{lang == 'ar' ? 'يرجى تحديد الجنس:' : 'Please select the gender:'}</h6>
                                                 <div className="flex items-center gap-x-3 text-sm">
                                                     <label className="inline-flex items-center gap-x-2 cursor-pointer">
                                                         <input type="radio" name="default_text_color" className="form-radio peer"
