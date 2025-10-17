@@ -448,7 +448,7 @@ export default function Profile() {
                                 leaveFrom="opacity-100 scale-100"
                                 leaveTo="opacity-0 scale-95"
                             >
-                                <DialogPanel as="div" className="panel border-0 rounded-lg overflow-hidden max-w-lg p-0 relative">
+                                <DialogPanel as="div" className="panel border-0 rounded-lg overflow-hidden w-full max-w-lg p-0 relative">
                                     <Image
                                         src="/images/loginPattren.webp"
                                         alt='popup_pattren'
