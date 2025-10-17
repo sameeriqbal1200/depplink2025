@@ -302,7 +302,7 @@ export default function Profile() {
                         <div className="bg-white rounded-md shadow-md md:flex items-center mb-4 p-5">
                             <div className="text-center md:w-60">
                                 <div className="w-16 h-16 rounded-full m-auto border-2 border-[#219EBC] flex justify-center items-center bg-[#219EBC]">
-                                    <p className='text-white font-bold'>{firstWord}{' '}{secondWord}</p>
+                                    <p className='text-white font-bold'>{firstWord}{secondWord}</p>
                                 </div>
                                 <button onClick={() => { setupdateProfile(true) }} className='focus-visible:outline-none text-[#1C262D] text-xs underline'>{lang == 'ar' ? 'تغـيــير الصـورة' : 'Edit'}</button>
                             </div>
