@@ -628,10 +628,10 @@ export default function OrderDetails() {
             </div>
             {/* Order Rating */}
             <Transition appear show={addReviewsPop} as={Fragment}>
-                <Dialog as="div" className="relative z-20" onClose={() => setAddReviewsPop(false)}>
+                <Dialog as="div" className="relative z-50" onClose={() => setAddReviewsPop(false)}>
                     <div className="fixed inset-0 bg-dark/40" aria-hidden="true" />
-                    <div className="fixed inset-0 overflow-y-auto">
-                        <div className="flex md:min-h-full h-full items-center justify-center pmd:-4 text-center">
+                    <div className="fixed inset-0 overflow-y-auto h-[90vh]">
+                        <div className="flex md:min-h-full h-full items-center justify-center md:p-4 text-center">
                             <TransitionChild
                                 as={Fragment}
                                 enter="ease-out duration-300"
@@ -641,7 +641,7 @@ export default function OrderDetails() {
                                 leaveFrom="opacity-100 scale-100"
                                 leaveTo="opacity-0 scale-95"
                             >
-                                <DialogPanel className="w-full max-w-md max-md:h-screen transform overflow-hidden rounded-md bg-white text-left align-middle shadow-xl transition-all">
+                                <DialogPanel className="w-full !h-[90vh] overflow-y-auto max-w-md max-md:h-screen transform overflow-hidden rounded-md bg-white text-left align-middle shadow-xl transition-all">
                                     <Dialog.Title
                                         as="h3"
                                         className="text-lg font-medium leading-6 text-gray-900 container"
@@ -806,7 +806,7 @@ export default function OrderDetails() {
                                         }
                                     </div>
                                     <div className="py-4 text-right">
-                                        <div className="fixed bottom-0 w-full px-4 py-3 bg-white shadow-md border-t border-[#5D686F26]">
+                                        <div className="fixed bottom-0 w-full max-w-md px-4 py-3 bg-white shadow-md border-t border-[#5D686F26]">
                                             <button onClick={() => SubmitReview()}
                                                 className="focus-visible:outline-none btn border border-[#004B7A] bg-[#004B7A] p-2.5 rounded-md w-full text-white fill-white font-medium">
                                                 {lang == 'ar' ? 'الغاء الطلب' : "Add Review's"}
