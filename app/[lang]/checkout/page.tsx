@@ -754,6 +754,12 @@ export default function Checkout() {
                 await setDiscountRuleBogo(city);
                 topMessageAlartSuccess(t('setcoupon'))
             }
+            removeLoyalty()
+            var points = getLoyalty()
+            var loyaltydata = await getLoyaltyData()
+            setloyaltyPoints(points)
+            setloyaltyData(loyaltydata)
+
             resetCheckout()
         }
     }
@@ -770,6 +776,13 @@ export default function Checkout() {
             city = selectedaddres[0].state_data?.name
         await setDiscountRule(city);
         await setDiscountRuleBogo(city);
+
+        removeLoyalty()
+        var points = getLoyalty()
+        var loyaltydata = await getLoyaltyData()
+        setloyaltyPoints(points)
+        setloyaltyData(loyaltydata)
+
         resetCheckout()
     }
 
@@ -1126,9 +1139,9 @@ export default function Checkout() {
         },
     ];
 
-    const loyaltyAmount = loyaltyData?.total_amount || 0;
-    const currentLoyaltyamount = getLoyalty()?.amount || 0;
-    const totalPrice = summary?.filter((item: any) => item?.key == 'total')[0]?.price || 0;
+    var loyaltyAmount = loyaltyData?.total_amount || 0;
+    var currentLoyaltyamount = getLoyalty()?.amount || 0;
+    var totalPrice = summary?.filter((item: any) => item?.key == 'total')[0]?.price || 0;
 
     // Calculate usable loyalty amount
     let usableloyaltyAmount = 0;
@@ -1139,30 +1152,42 @@ export default function Checkout() {
         usableloyaltyAmount = Math.min(loyaltyAmount, totalPrice);
     }
 
-    const usableLoyaltyPoints = (usableloyaltyAmount * 100).toLocaleString('en-US');
+    var usableLoyaltyPoints = (usableloyaltyAmount * 100).toLocaleString('en-US');
+    
+    
+
+
+    var totalWithLoyalty = (totalPrice + usableloyaltyAmount);
+    var displayText = false
+    if(useLoyalty && totalWithLoyalty > loyaltyAmount) {
+        displayText = true
+    }
+    else if(!useLoyalty && totalPrice > loyaltyAmount) {
+        displayText = true
+    }
+
     // loyalty work
     const setupLoyalty = ((e: any) => {
         setuseLoyalty(e)
         if (e) {
-        const totalPrice = summary?.filter((item: any) => item?.key == 'total')[0]?.price || 0;
-        const maxUsable = Math.min(loyaltyAmount, totalPrice);
-        
-        var data: any = {
+          var totalPrice = summary?.filter((item: any) => item?.key == 'total')[0]?.price || 0;
+          var maxUsable = Math.min(loyaltyAmount, totalPrice);
+
+          var data: any = {
             id: 0,
             title: 'Tamkeen Points',
             title_arabic: 'نقاط تمكين',
             amount: usableloyaltyAmount, // Use the calculated maximum
-        }
-        setLoyalty(data)
-        if (loyaltyAmount >= totalPrice) {
+          }
+          setLoyalty(data)
+          if (loyaltyAmount >= totalPrice) {
             setpaymentMethod('loyalty');
-        }
-        }
-        else {
-        removeLoyalty()
-        if (paymentMethod == 'loyalty') {
+          }
+        } else {
+          removeLoyalty()
+          if (paymentMethod == 'loyalty') {
             setpaymentMethod(false);
-        }
+          }
         }
         resetCheckout()
     })
@@ -2094,8 +2119,8 @@ export default function Checkout() {
                                         {/* loyalty work */}
                                         <button 
                                             onClick={() => setupLoyalty(!useLoyalty)}
-                                            type="button" className="border bg-white border-[#219EBC80] rounded-md flex flex-col items-center mb-5 text-sm w-full text-left">
-                                            <div className="w-full bg-primary p-3 rounded-t-md text-white">
+                                            type="button" className="border-2 border-primary bg-primary rounded-md flex flex-col items-center mb-5 text-sm w-full text-left overflow-hidden">
+                                            <div className="w-full p-3 rounded-b-md bg-white">
                                                 <div className="flex items-center gap-2">
                                                 <div
                                                     className="focus-visible:outline-none bg-primary border-0 bg-transparent"
@@ -2111,34 +2136,35 @@ export default function Checkout() {
                                                         </div>
                                                         </div>
                                                         :
-                                                        <div className="border-[#219EBC] text-white bg-white h-5 w-5 rounded-full"></div>
+                                                        <div className="border-primary text-white bg-primary h-5 w-5 rounded-full opacity-10"></div>
                                                     }
                                                     </div>
 
                                                     <label className="flex items-center gap-1 font-bold">
-                                                    <span className="flex items-center gap-1 peer-checked:text-[#1c262d]">
-                                                        {lang === "ar" ? "إجمالي النقاط" : "Total Points"}: {usableLoyaltyPoints}
+                                                    <span className="flex items-center gap-1 text-primary peer-checked:text-[#1c262d]">
+                                                        {lang === "ar" ? "استخدم رصيدي" : "Use My"}{' '}{usableloyaltyAmount}{''}<svg className="riyal-svg shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1124.14 1256.39" width="13" height="13"><path fill="currentColor" d="M699.62,1113.02h0c-20.06,44.48-33.32,92.75-38.4,143.37l424.51-90.24c20.06-44.47,33.31-92.75,38.4-143.37l-424.51,90.24Z"></path><path fill="currentColor" d="M1085.73,895.8c20.06-44.47,33.32-92.75,38.4-143.37l-330.68,70.33v-135.2l292.27-62.11c20.06-44.47,33.32-92.75,38.4-143.37l-330.68,70.27V66.13c-50.67,28.45-95.67,66.32-132.25,110.99v403.35l-132.25,28.11V0c-50.67,28.44-95.67,66.32-132.25,110.99v525.69l-295.91,62.88c-20.06,44.47-33.33,92.75-38.42,143.37l334.33-71.05v170.26l-358.3,76.14c-20.06,44.47-33.32,92.75-38.4,143.37l375.04-79.7c30.53-6.35,56.77-24.4,73.83-49.24l68.78-101.97v-.02c7.14-10.55,11.3-23.27,11.3-36.97v-149.98l132.25-28.11v270.4l424.53-90.28Z"></path></svg> {lang === "ar" ? 'من تمكين بقيمة' : 'Tamkeen Credits'}
                                                     </span>
                                                     </label>
                                                 </div>
-                                                {loyaltyAmount < summary?.filter((item: any) => item?.key == 'total')[0]?.price?.toLocaleString("EN-US") ?
-                                                    <p className="text-sm text-white mt-2 rtl:text-right ltr:text-left">
-                                                    {lang == 'ar' ? 'رصيد متجرك لا يكفي للطلب، يرجى اختيار طريقة دفع إضافية لتغطية الرصيد المتبقي' : 'Your store credit balance is not sufficent for the oreder, please select an additional payment method to cover the balance of'}{' '}<span className="inline-flex items-center gap-1 text-white font-bold"> <svg className="riyal-svg shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1124.14 1256.39" width="13" height="13"><path fill="currentColor" d="M699.62,1113.02h0c-20.06,44.48-33.32,92.75-38.4,143.37l424.51-90.24c20.06-44.47,33.31-92.75,38.4-143.37l-424.51,90.24Z"></path><path fill="currentColor" d="M1085.73,895.8c20.06-44.47,33.32-92.75,38.4-143.37l-330.68,70.33v-135.2l292.27-62.11c20.06-44.47,33.32-92.75,38.4-143.37l-330.68,70.27V66.13c-50.67,28.45-95.67,66.32-132.25,110.99v403.35l-132.25,28.11V0c-50.67,28.44-95.67,66.32-132.25,110.99v525.69l-295.91,62.88c-20.06,44.47-33.33,92.75-38.42,143.37l334.33-71.05v170.26l-358.3,76.14c-20.06,44.47-33.32,92.75-38.4,143.37l375.04-79.7c30.53-6.35,56.77-24.4,73.83-49.24l68.78-101.97v-.02c7.14-10.55,11.3-23.27,11.3-36.97v-149.98l132.25-28.11v270.4l424.53-90.28Z"></path></svg>
-                                                        {summary?.filter((item: any) => item?.key == 'total')[0]?.price?.toLocaleString("EN-US")}
-                                                    </span>
+                                                {displayText ?
+                                                    <p className="text-xs text-[#5D686F] mt-2 rtl:text-right ltr:text-left">
+                                                    {lang == 'ar' ? 'رصيد متجرك لا يكفي للطلب، يرجى اختيار طريقة دفع إضافية لتغطية الرصيد المتبقي' : 'Your store credit balance is not sufficent for the order, please select an additional payment method to cover the balance of'}{' '}<span className="inline-flex items-center gap-1 text-primary font-bold"> {totalPrice?.toLocaleString("EN-US")} {currencySymbol}</span>
                                                     </p>
                                                     : null}
-                                                </div>
-                                                <div className={`p-3 w-full ${lang === 'ar' ? 'text-right' : ''}`}>
-                                                <p className="text-sm text-gray-800 font-bold">{lang == 'ar' ? 'نقاط تمكين' : 'Tamkeen Points'}</p>
+                                            </div>
+                                            <div className="w-full px-3 py-2 text-white">
+                                                <p className="text-xs font-medium flex items-center gap-1"> {lang === 'ar' ? 'الرصيد المتبقي' : 'Available Balance'}:<span className="text-[#feee00de] inline-flex items-center gap-0.5">{useLoyalty ? ((loyaltyAmount - usableloyaltyAmount)?.toFixed(2)) : (loyaltyAmount?.toFixed(2))} <svg className="riyal-svg shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1124.14 1256.39" width="13" height="13"><path fill="currentColor" d="M699.62,1113.02h0c-20.06,44.48-33.32,92.75-38.4,143.37l424.51-90.24c20.06-44.47,33.31-92.75,38.4-143.37l-424.51,90.24Z"></path><path fill="currentColor" d="M1085.73,895.8c20.06-44.47,33.32-92.75,38.4-143.37l-330.68,70.33v-135.2l292.27-62.11c20.06-44.47,33.32-92.75,38.4-143.37l-330.68,70.27V66.13c-50.67,28.45-95.67,66.32-132.25,110.99v403.35l-132.25,28.11V0c-50.67,28.44-95.67,66.32-132.25,110.99v525.69l-295.91,62.88c-20.06,44.47-33.33,92.75-38.42,143.37l334.33-71.05v170.26l-358.3,76.14c-20.06,44.47-33.32,92.75-38.4,143.37l375.04-79.7c30.53-6.35,56.77-24.4,73.83-49.24l68.78-101.97v-.02c7.14-10.55,11.3-23.27,11.3-36.97v-149.98l132.25-28.11v270.4l424.53-90.28Z"></path></svg></span></p>
+                                            </div>
+                                                {/* <div className={`p-3 w-full ${params?.lang === 'ar' ? 'text-right' : ''}`}>
+                                                <p className="text-sm text-gray-800 font-bold">{params?.lang == 'ar' ? 'نقاط تمكين' : 'Tamkeen Points'}</p>
                                                 <p className={`text-xs text-[#007714]`}>
-                                                    {lang === 'ar' ? (
-                                                    <span className='space-x-2'>
+                                                    {params?.lang === 'ar' ? (
+                                                    <div className='space-x-2'>
                                                         التحويل إلى رصيد تمكين باستخدام حسابك المرتبط
                                                         &nbsp;<strong className="font-bold" dir="ltr">
                                                         {` +966 ${phoneNumber?.replace(/(\d{2})(\d{3})(\d{4})/, "$1-$2-$3")} `}
                                                         </strong>
-                                                    </span>
+                                                    </div>
                                                     ) : (
                                                     <>
                                                         Convert to tamkeen credits using your&nbsp;
@@ -2149,7 +2175,7 @@ export default function Checkout() {
                                                     </>
                                                     )}
                                                 </p>
-                                                </div>
+                                                </div> */}
                                         {/* loyalty work */}
                                         </button>
                                         </>
