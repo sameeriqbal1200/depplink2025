@@ -376,7 +376,7 @@ export default function Maintenance() {
                                                                     </label>
                                                                 </div>
                                                             </div>
-                                                            <div className="text-xs text-[#004B7A] font-medium text-center">
+                                                            <div className="text-xs text-[#004B7A] font-medium text-center  h-full flex items-center justify-center">
                                                                 <p className="p-4">{lang === 'ar' ? 'الاحد' : 'Sunday'}</p>
                                                             </div>
                                                             <div className="col-span-4 text-xs text-[#5D686F] font-medium">
@@ -422,7 +422,7 @@ export default function Maintenance() {
                                                                     </label>
                                                                 </div>
                                                             </div>
-                                                            <div className="text-xs text-[#004B7A] font-medium text-center">
+                                                            <div className="text-xs text-[#004B7A] font-medium text-center  h-full flex items-center justify-center">
                                                                 <p className="p-4">{lang === 'ar' ? 'الثلاثاء' : 'Tuesday'}</p>
                                                             </div>
                                                             <div className="col-span-4 text-xs text-[#5D686F] font-medium">
@@ -468,7 +468,7 @@ export default function Maintenance() {
                                                                     </label>
                                                                 </div>
                                                             </div>
-                                                            <div className="text-xs text-[#004B7A] font-medium text-center">
+                                                            <div className="text-xs text-[#004B7A] font-medium text-center  h-full flex items-center justify-center">
                                                                 <p className="p-4">{lang === 'ar' ? 'الخميس' : 'Thursday'}</p>
                                                             </div>
                                                             <div className="col-span-4 text-xs text-[#5D686F] font-medium">
