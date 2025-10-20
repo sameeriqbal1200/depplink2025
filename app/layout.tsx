@@ -2,7 +2,6 @@
 import "./globals.css";
 import "./customGlobal.css";
 import React from "react";
-import dynamic from "next/dynamic";
 import { Cairo, Noto_Sans } from "next/font/google";
 import Providers from "./providers";
 import LayoutWrapper from "./LayoutWrapper";
