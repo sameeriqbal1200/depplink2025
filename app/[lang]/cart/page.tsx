@@ -57,12 +57,7 @@ export default function NewCart() {
     const [loaderStatus, setLoaderStatus] = useState<any>(true)
 
     // Fgift 
-    const [isOpen, setIsOpen] = useState(false)
     const isArabic = lang === "ar" ? true : false;
-    const [extraData, setExtraData] = useState<any>([]);
-    const [selectedGifts, setselectedGifts] = useState<any>({})
-    const [allowed_gifts, setallowed_gifts] = useState(0)
-    const [gift_product_id, setgift_product_id] = useState(false)
 
     // Pickup From Store
     const { globalStore, setglobalStore } = useContext<any>(GlobalContext);

@@ -1,7 +1,6 @@
 "use client"; // This is a client component 👈🏽
 
 import React from 'react'
-import Link from 'next/link'
 import Image from 'next/image'
 import dayjs from 'dayjs'
 import 'dayjs/locale/ar'

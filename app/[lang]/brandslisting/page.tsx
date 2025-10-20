@@ -13,7 +13,7 @@ const MobileHeader = dynamic(() => import("../components/MobileHeader"), {
 
 export default function BrandListing() {
   const NewMedia = process.env.NEXT_PUBLIC_NEW_MEDIA;
-  const { lang, deviceType, origin } = useApp();
+  const { lang, origin } = useApp();
   const [ariaLabel, setAriaLabel] = useState("/ar");
   const isArabic = lang === "ar" ? true : false;
 

@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { getRequestContext } from "@/lib/request-context";
-import { BridgeSlot } from "@/app/_ctx/ClientDataRegistry";
 import { getBlogCached } from "@/lib/blogs/blog.cached";
 
 export default async function BlogsLayout({ children }: { children: React.ReactNode }) {
