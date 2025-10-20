@@ -6,23 +6,11 @@ import Image from "next/image";
 import "swiper/css";
 import "swiper/css/navigation";
 import { useRouter } from "next-nprogress-bar";
-import ArrowLeftIcon from "../components/Icons/ArrowLeftIcon";
 import Link from "next/link";
-import LogoIcon from "../components/Icons/LogoIcon";
-import SearchIcon from "../components/Icons/SearchIcon";
-import LocationIcon from "../components/Icons/LocationIcon";
 import SortIcon from "../components/Icons/SortIcon";
-import FilterIcon from "../components/Icons/FilterIcon";
 import FilterIconTwo from "../components/Icons/FilterIcon2";
 import Pagination from "../components/NewPagination";
-import CheckIcon from "../components/Icons/CheckIcon";
-import {
-  Dialog,
-  Transition,
-  RadioGroup,
-  Tab,
-  Disclosure,
-} from "@headlessui/react";
+import { Dialog, Transition} from "@headlessui/react";
 import CloseIcon from "../components/Icons/CloseIcon";
 import { getSearchData } from "@/lib/components/component.client";
 
@@ -489,20 +477,6 @@ export default function SubCategoryNew({
                     >
                       {subHeadingFiveText}
                       <SortIcon size={14} />
-                      {/* <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="10"
-                        height="5"
-                        viewBox="0 0 10 5"
-                        fill="none"
-                        className={`${sortPopup ? "" : "rotate-180"}`}
-                      >
-                        <path
-                          d="M0 5L5 0L10 5H0Z"
-                          fill="currentColor"
-                          fillOpacity="0.7"
-                        />
-                      </svg> */}
                     </button>
 
                     {sortPopup && (

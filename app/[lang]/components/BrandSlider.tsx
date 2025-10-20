@@ -22,13 +22,13 @@ export default function BrandSlider(props: any) {
                                 <div className='bg-white h-auto relative p-2 rounded-lg shadow-md mb-1.5 text-sm w-32 md:w-44' key={i}>
                                     <Link
                                         href={`${origin}/${props?.lang}/brand/${data?.slug}`}
-                                        aria-label={props.lang == 'ar' ? data?.name_arabic : data?.name}
+                                        aria-label={props?.lang == 'ar' ? data?.name_arabic : data?.name}
                                         className="h-[68px] relative"
                                     >
                                         <Image
                                             src={data?.brand_media_image ? `${NewMedia}${data?.brand_media_image?.image}` : ''}
-                                            alt={props.lang === 'ar' ? data?.name_arabic : data?.name}
-                                            title={props.lang === 'ar' ? data?.name_arabic : data?.name}
+                                            alt={props?.lang === 'ar' ? data?.name_arabic : data?.name}
+                                            title={props?.lang === 'ar' ? data?.name_arabic : data?.name}
                                             height={0}
                                             width={0}
                                             loading='lazy'
@@ -42,14 +42,14 @@ export default function BrandSlider(props: any) {
                                                     <Link
                                                         key={k}
                                                         href={`${origin}/${props?.lang}/category/${categoryData?.slug}?page=1&brand=${data?.name.split(' ').join('+')}`}
-                                                        aria-label={props.lang == 'ar' ? categoryData?.name_arabic : categoryData?.name}
+                                                        aria-label={props?.lang == 'ar' ? categoryData?.name_arabic : categoryData?.name}
                                                         className='text-center p-1 md:p-2 bg-white hover:bg-[#219EBC40] hover:fill-primary rounded-md opacity-50 hover:opacity-100 mx-auto w-full'
                                                     >
                                                         <div className="flex justify-center w-full">
                                                             {/* <div className="h-6 w-6" dangerouslySetInnerHTML={{ __html: categoryData?.icon }}></div> */}
-                                                            <Image src={categoryData?.image_link_app ? categoryData?.image_link_app : "https://images.tamkeenstores.com.sa/assets/new-media/3f4a05b645bdf91af2a0d9598e9526181714129744.png"} height={26} width={26} alt={props.lang == 'ar' ? categoryData?.name_arabic : categoryData?.name} />
+                                                            <Image src={categoryData?.image_link_app ? categoryData?.image_link_app : "https://images.tamkeenstores.com.sa/assets/new-media/3f4a05b645bdf91af2a0d9598e9526181714129744.png"} height={26} width={26} alt={props?.lang == 'ar' ? categoryData?.name_arabic : categoryData?.name} />
                                                         </div>
-                                                        <p className='mt-3 text-xs font-semibold text-primary line-clamp-1 max-md:text-[0.65rem]'>{props.lang == 'ar' ? categoryData?.name_arabic : categoryData?.name}</p>
+                                                        <p className='mt-3 text-xs font-semibold text-primary line-clamp-1 max-md:text-[0.65rem]'>{props?.lang == 'ar' ? categoryData?.name_arabic : categoryData?.name}</p>
                                                     </Link>
                                                 )
                                             })

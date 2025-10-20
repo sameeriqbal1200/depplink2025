@@ -35,15 +35,13 @@ const FullPageLoader = dynamic(() => import('../components/FullPageLoader'), { s
 const Select = dynamic(() => import('react-select'), { ssr: false });
 
 export default function Checkout() {
-    const { t, lang, origin, deviceType, deviceDetail, os } = useApp();
+    const { t, lang, origin, deviceType } = useApp();
     const router = useRouter();
     const path = usePathname();
-    const [selected, setSelected] = useState([])
     const [summary, setSummary] = useState<any>([])
     const [checkoutData, setCheckoutData] = useState<any>({})
     const [deliOrder, setDeliOrder] = useState(true)
     const [pickOrder, setPickOrder] = useState(false)
-    const [activeTab4, setActiveTab4] = useState<any>(1);
     const [activeTab3, setActiveTab3] = useState<any>(1);
     const [isactive, setActive] = useState(false)
     const [addAddress, setAddAddress] = useState(false)

@@ -9,7 +9,7 @@ import { useApp } from '@/app/_ctx/AppContext';
 const MobileHeader = dynamic(() => import('../components/MobileHeader'), { ssr: true })
 
 export default function CategoriesListing() {
-    const { lang, deviceType, origin } = useApp();
+    const { lang, origin } = useApp();
     const NewMedia = process.env.NEXT_PUBLIC_NEW_MEDIA;
     const categoryData = useSlot<any>("categoryListingPage");
     const [categoryListingData, setCategoryListingData] = useState<any>([]);
