@@ -52,7 +52,7 @@ export default function Footer(props: any) {
                 </div>
             ,
             toast: true,
-            position: props.lang == 'ar' ? 'top-start' : 'top-end',
+            position: props?.lang == 'ar' ? 'top-start' : 'top-end',
             showConfirmButton: false,
             timer: 15000,
             showCloseButton: true,

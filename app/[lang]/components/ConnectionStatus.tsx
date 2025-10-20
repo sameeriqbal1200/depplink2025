@@ -131,20 +131,6 @@ const ConnectionStatus = () => {
             <div className="flex items-start gap-3">
               <div className="flex-shrink-0">
                 <div className="w-10 h-10 flex items-center justify-center rounded-full bg-gradient-to-br from-green-100 to-teal-100 shadow-md">
-                  {/* <svg
-                    className="w-6 h-6"
-                    fill="none"
-                    stroke="white"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M5 13l4 4L19 7"
-                    />
-                  </svg> */}
                   <CheckIcon color="20831E" className="w-6 h-6" />
                 </div>
               </div>

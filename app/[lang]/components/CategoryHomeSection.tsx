@@ -56,7 +56,6 @@ const CategoriesSlider: React.FC<CategoriesSliderProps> = ({ params, userAgent, 
                         768: { slidesPerView: 7.2, spaceBetween: 4 },
                         1280: { slidesPerView: 12, spaceBetween: 4 },
                         1440: { slidesPerView: 14, spaceBetween: 4 },
-                        // 1920: { slidesPerView: 12, spaceBetween: 2 },
                     }}
                     spaceBetween={2}
                     pagination={{ clickable: true }}

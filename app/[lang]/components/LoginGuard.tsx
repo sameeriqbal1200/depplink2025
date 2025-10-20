@@ -5,7 +5,6 @@ import { useEffect } from 'react'
 
 export default function LoginGuard() {
   const pathname = usePathname()
-  const router = useRouter()
 
   useEffect(() => {
     if (pathname !== '/login' && pathname !== '/en/login' && pathname !== '/ar/login') {
