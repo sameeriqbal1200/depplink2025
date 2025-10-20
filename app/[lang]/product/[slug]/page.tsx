@@ -6,7 +6,6 @@ import Link from 'next/link'
 import Image from 'next/image'
 import dynamic from 'next/dynamic'
 import { NewMedia } from "@/lib/api/apiLinks"
-// import { RWebShare } from "react-web-share"
 import { get, post } from "@/lib/api/apiCalls"
 import { setCartItems } from '../../cartstorage/cart'
 import { usePathname } from "next/navigation"

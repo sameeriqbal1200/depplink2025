@@ -38,14 +38,11 @@ export default function Register(
     const [loginBtnStatus, setLoginBtnStatus] = useState<boolean>(false)
     const [loginBtnLoading, setLoginBtnLoading] = useState<boolean>(false)
     const [checkTermCondition, setCheckTermCondition] = useState<boolean>(false)
-    const [loginErrorStatus, setLoginErrorStatus] = useState<boolean>(false)
     const [checkBoxTerms, setCheckBoxTerms] = useState<boolean>(true)
     const [seconds, setSeconds] = useState<number>(59);
     const [minutes, setMinutes] = useState<number>(1);
     const [resendotpmessage, setResendOtpMsssage] = useState(true)
     const [otpError, setOtpError] = useState<any>(null);
-    const otpBoxReference = useRef<any>([]);
-    const correctOTP = "392939" // validate from your server
     const [register, setRegister] = useState(false)
     const [otpbox, setOtpBox] = useState(false)
     const [registerotpbox, setRegisterOtpBox] = useState(false)
