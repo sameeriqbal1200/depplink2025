@@ -29,7 +29,6 @@ import CloseIcon from "./Icons/CloseIcon";
 import SmallArrowIcon from "./Icons/SmallArrowIcon";
 import LocationIcon from "./Icons/LocationIcon";
 import BellBadgeIcon from "./Icons/BellBadgeIcon";
-import CartIcon from "./Icons/CartIcon";
 import LogoIcon from "./Icons/LogoIcon";
 import SearchIcon from "./Icons/SearchIcon";
 import MenuIcon from "./Icons/MenuIcon";

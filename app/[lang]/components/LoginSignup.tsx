@@ -36,7 +36,6 @@ export default function LoginSingup(props: any) {
     const [lastName, setLastName] = useState<string>('')
     const [email, setEmail] = useState<string>('')
     const [dateOfBirth, setDateOfBirth] = useState<string>('')
-    const [genderStatus, setGenderStatus] = useState<number>(0)
     const [otp, setOtp] = useState(new Array(6).fill(""));
     const [otpError, setOtpError] = useState<any>(null);
     const otpBoxReference = useRef<any>([]);

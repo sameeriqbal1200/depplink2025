@@ -14,7 +14,6 @@ export default function NewsLetter(props: any) {
     const isArabic = props?.isArabic;
     const [newslatter, setnewslatter] = useState(true);
     const [loader, setLoader] = useState(false);
-    const [errorMsg, setErrorMsg] = useState('');
     const [email, setemail] = useState('');
     const MySwal = withReactContent(Swal);
 

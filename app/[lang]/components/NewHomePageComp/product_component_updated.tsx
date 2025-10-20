@@ -236,7 +236,6 @@ export default function product_component_updated(props: any) {
   const [ProExtraData, setProExtraData] = useState<any>([]);
   const [ProWishlistData, setProWishlistData] = useState<any>([]);
   const [ProComparetData, setProComparetData] = useState<any>([]);
-  const { updateCompare, setUpdateCompare } = useContext(GlobalContext);
   const { updateWishlist, setUpdateWishlist } = useContext(GlobalContext);
   const [buyNowLoading, setBuyNowLoading] = useState<number>(0);
   const [extraData, setExtraData] = useState<any>([]);

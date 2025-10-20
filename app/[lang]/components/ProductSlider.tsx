@@ -28,7 +28,6 @@ export default function ProductSlider(props: any) {
     const router = useRouter()  
     const path = usePathname()
     const [isOpen, setIsOpen] = useState(false)
-    const [loginPopup, setLoginPopup] = useState<any>(false)
     const [ProExtraData, setProExtraData] = useState<any>([])
     const [buyNowLoading, setBuyNowLoading] = useState<number>(0)
     const [ProWishlistData, setProWishlistData] = useState<any>([])
@@ -42,7 +41,6 @@ export default function ProductSlider(props: any) {
     const [selectedProductKey, setSelectedProductKey] = useState<any>(false)
     const [fbtProCheck, setfbtProCheck] = useState<any>({})
     const isArabic = lang === 'ar';
-    const { updateCompare, setUpdateCompare } = useContext(GlobalContext);
     const { updateWishlist, setUpdateWishlist } = useContext(GlobalContext);
 
     // CURRENCY SYMBOL //

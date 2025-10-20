@@ -8,7 +8,6 @@ import Image from 'next/image';
 import 'swiper/css/pagination';
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Scrollbar, Mousewheel, Grid, FreeMode } from "swiper/modules";
-// import './styles.css';
 
 export default function CategoriesHomeMobile(props: any) {
     const categories = props?.params?.sec_three_categories || [];
