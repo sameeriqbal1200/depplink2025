@@ -84,7 +84,7 @@ export default function MobileHeader(props: any) {
         }
     };
     const BackIcon = () => (
-        <button className="w-16" onClick={goBack}>
+        <button className="w-8" onClick={goBack}>
             <ArrowLeftIcon size={30} color='#000000' className={props.lang === 'ar' ? 'rotate-180' : ''} />
         </button>
     );
@@ -141,7 +141,7 @@ export default function MobileHeader(props: any) {
             {props.type === "Third" && (
                 <div className="bg-white shadow-md py-3.5 fixed top-0 z-40 w-full px-2 flex items-center">
                     <BackIcon />
-                    <h1 className="text-lg font-bold text-center w-64 line-clamp-1">{pageTitle}</h1>
+                    <h1 className="text-lg font-bold text-center w-full line-clamp-1 ltr:mr-8 rtl:ml-8">{pageTitle}</h1>
                 </div>
             )}
 
