@@ -2,6 +2,7 @@
 
 import dayjs from "dayjs";
 import "dayjs/locale/ar";
+import "dayjs/locale/en";
 import React from "react";
 import SARIcon from "./Icons/SARIcon";
 
