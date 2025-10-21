@@ -516,9 +516,9 @@ export default function OrderDetails() {
                         <div className='my-4'>
                             <div className="flex items-center justify-between">
                                 <h2 className="font-bold text-base">{lang == 'ar' ? 'محتوي الطلب' : 'Products'}</h2>
-                                <button className="text-sm font-semibold underline text-[#004B7A]">
+                                {/* <button className="text-sm font-semibold underline text-[#004B7A]">
                                     {lang === 'ar' ? 'اختر الكل' : 'Select All'}
-                                </button>
+                                </button> */}
                             </div>
                             <div className="mt-1 max-md:pb-32">
                                 <RadioGroup value={selected} onChange={
