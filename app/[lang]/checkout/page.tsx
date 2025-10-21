@@ -2197,7 +2197,7 @@ export default function Checkout() {
                                                                 {({ active, checked }) => (
                                                                     <>
                                                                         <div className="flex-1 items-center justify-center">
-                                                                            <div className='absolute top-3 z-5'>
+                                                                            <div className="absolute md:top-1/2 top-3 left-1/2 md:-translate-y-1/2 -translate-y-0 md:-translate-x-0 -translate-x-1/2 z-10 md:ltr:left-2 md:rtl:right-2">
                                                                                 {checked ?
                                                                                     <>
                                                                                         {checked && (
@@ -2217,7 +2217,7 @@ export default function Checkout() {
                                                                                 height={60}
                                                                                 width={60}
                                                                                 loading='lazy'
-                                                                                className="rounded-md mx-auto max-md:mt-10"
+                                                                                className="rounded-md md:mx-0 mx-auto lg:ltr:ml-10 lg:rtl:mr-10  md:ltr:ml-8 md:rtl:mr-8 md:mt-0 mt-10"
                                                                             />
                                                                         </div>
                                                                     </>
