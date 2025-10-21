@@ -2353,7 +2353,7 @@ export default function Checkout() {
                                                     </label>
                                                     {currencySymbol}
                                                 </div>
-                                                <span className='text-xs !text-primary'>{lang === 'ar' ? 'جميع أسعار المنتجات شاملة الضريبة المضافة' : 'All product prices included with VAT'}</span>
+                                                <span className='text-xs !text-orangePrice'>{lang === 'ar' ? 'جميع أسعار المنتجات شاملة الضريبة المضافة' : 'All product prices included with VAT'}</span>
                                             </div>
                                             {paymentMethod == 'hyperpay' ?
                                                 <Image
