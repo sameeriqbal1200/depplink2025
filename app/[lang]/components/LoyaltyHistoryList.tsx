@@ -1,7 +1,6 @@
 "use client";
 
 import dayjs from "dayjs";
-import "dayjs/locale/ar";
 import "dayjs/locale/en";
 import React from "react";
 import SARIcon from "./Icons/SARIcon";
@@ -15,7 +14,7 @@ export default function LoyaltyHistoryList(props: any) {
       <div>
         <p className="text-sm font-semibold text-dark -mb-2">{loyalData?.earning_against}</p>
         <span className="text-[0.65rem] font-medium text-dark/60">
-          {dayjs(loyalData?.date).locale(isArabic ? "ar" : "en").format("MMM DD, YYYY")} at {dayjs(loyalData?.date).locale(isArabic ? "ar" : "en").format("hh:mm A")}
+          {dayjs(loyalData?.date).locale("en").format("MMM DD, YYYY")} at {dayjs(loyalData?.date).locale("en").format("hh:mm A")}
         </span>
       </div>
       <span className={`text-sm leading-3.5 flex text-right ${!isDeducted ? "text-greenDark" : "text-[#e8000b]"} font-semibold mb-1`}>
