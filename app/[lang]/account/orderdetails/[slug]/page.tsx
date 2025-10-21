@@ -461,25 +461,31 @@ export default function OrderDetails() {
                                     <hr className="opacity-10 my-3" />
                                 </div>
                                 <div className="text-sm font-medium">
-                                    <label className="font-regular text-[#5D686F]">{lang == 'ar' ? 'السعر الجزئي' : 'Sub Total'}</label>
-                                    <div className="gap-x-2 mt-1 rtl:mt-2 text-[#004B7A]">
-                                        <label className="flex gap-x-1 items-center">{Intl.NumberFormat('en-US').format(orderDetails?.orderdata?.ordersummary?.filter((e: any) => e.name == 'subtotal')[0]?.price)}{' '}<SARIcon size={11} color="#004B7A" /></label>
+                                    <div className='flex justify-between items-center'>
+                                        <label className="font-regular text-[#5D686F]">{lang == 'ar' ? 'السعر الجزئي' : 'Sub Total'}</label>
+                                        <div className="gap-x-2 mt-1 rtl:mt-2 text-[#004B7A]">
+                                            <label className="flex gap-x-1 items-center">{Intl.NumberFormat('en-US').format(orderDetails?.orderdata?.ordersummary?.filter((e: any) => e.name == 'subtotal')[0]?.price)}{' '}<SARIcon size={11} color="#004B7A" /></label>
+                                        </div>
                                     </div>
                                     <hr className="opacity-10 my-3" />
                                 </div>
                                 {orderDetails?.orderdata?.ordersummary?.filter((e: any) => e.name == 'shipping').length ?
                                     <div className="text-sm font-medium">
-                                        <label className="font-regular text-[#5D686F]">{lang == 'ar' ? 'سعر التوصيل' : 'Shipping Charges'}</label>
-                                        <div className="gap-x-2 mt-1 rtl:mt-2 text-[#004B7A]">
-                                            <label className="flex gap-x-1 items-center">{orderDetails?.orderdata?.ordersummary?.filter((e: any) => e.name == 'shipping')[0]?.price == 0 ? lang == 'ar' ? 'مـجـاني' : `Free` : `${Intl.NumberFormat('en-US').format(orderDetails?.orderdata?.ordersummary?.filter((e: any) => e.name == 'shipping')[0]?.price)} `}<SARIcon size={11} color="#004B7A" /></label>
+                                        <div className='flex justify-between items-center'>
+                                            <label className="font-regular text-[#5D686F]">{lang == 'ar' ? 'سعر التوصيل' : 'Shipping Charges'}</label>
+                                            <div className="gap-x-2 mt-1 rtl:mt-2 text-[#004B7A]">
+                                                <label className="flex gap-x-1 items-center">{orderDetails?.orderdata?.ordersummary?.filter((e: any) => e.name == 'shipping')[0]?.price == 0 ? lang == 'ar' ? 'مـجـاني' : `Free` : `${Intl.NumberFormat('en-US').format(orderDetails?.orderdata?.ordersummary?.filter((e: any) => e.name == 'shipping')[0]?.price)} `}<SARIcon size={11} color="#004B7A" /></label>
+                                            </div>
                                         </div>
                                         <hr className="opacity-10 my-3" />
                                     </div>
                                     : null}
                                 <div className="text-sm font-medium">
-                                    <label className="font-regular text-[#5D686F]">{lang == 'ar' ? 'إجمالي القيمة' : 'Total Value'}</label>
-                                    <div className="gap-x-2 mt-1 rtl:mt-2 text-[#004B7A]">
-                                        <label className="flex gap-x-1 items-center">{Intl.NumberFormat('en-US').format(orderDetails?.orderdata?.ordersummary?.filter((e: any) => e.name == 'total')[0]?.price)}{' '}<SARIcon size={11} color="#004B7A" /></label>
+                                    <div className='flex justify-between items-center'>
+                                        <label className="font-regular text-[#5D686F]">{lang == 'ar' ? 'إجمالي القيمة' : 'Total Value'}</label>
+                                        <div className="gap-x-2 mt-1 rtl:mt-2 text-[#004B7A]">
+                                            <label className="flex gap-x-1 items-center">{Intl.NumberFormat('en-US').format(orderDetails?.orderdata?.ordersummary?.filter((e: any) => e.name == 'total')[0]?.price)}{' '}<SARIcon size={11} color="#004B7A" /></label>
+                                        </div>
                                     </div>
                                     <hr className="opacity-10 my-3" />
                                 </div>
@@ -523,7 +529,7 @@ export default function OrderDetails() {
                             <div className="mt-1 max-md:pb-32">
                                 <RadioGroup value={selected} onChange={
                                     (val: any) => setSelected(prev => prev === val ? null : val)
-                                } disabled={orderDetails?.orderdata?.status == 5}>
+                                } disabled={orderDetails?.orderdata?.status == 5 || orderDetails?.orderdata?.status == 8}>
                                     <RadioGroupLabel className="sr-only">{lang == 'ar' ? 'منتجات' : 'Server size'}</RadioGroupLabel>
                                     <div className="space-y-2">
                                         {orderDetails?.orderdata?.details?.map((data: any, i: React.Key | null | undefined) => {
@@ -557,7 +563,14 @@ export default function OrderDetails() {
                                                                         {Intl.NumberFormat('en-US').format(data?.product_data?.sale_price)}{'  '}
                                                                         <SARIcon size={11} color="#000000" />
                                                                     </div>
-                                                                    <span className="text-xs md:text-sm text-[#DC4E4E] line-through decoration-[#DC4E4E] decoration-2 font-medium">{Intl.NumberFormat('en-US').format(data?.product_data?.price)}</span></h2>
+                                                                    <span className="text-xs md:text-sm text-[#DC4E4E] line-through decoration-[#DC4E4E] decoration-2 font-medium">{Intl.NumberFormat('en-US').format(data?.product_data?.price)}</span>
+                                                                </h2>
+                                                                {data?.expressproduct == 1 ?
+                                                                    <Image
+                                                                        src={lang === 'ar' ? "/icons/express_logo/express_logo_ar.png" : "/icons/express_logo/express_logo_en.png"}
+                                                                        width="55" height="0" alt="express_delivery" title='Express Delivery' className='-mb-4'
+                                                                    />
+                                                                : null}
                                                                 <div className="text-[#5D686F] text-sm flex items-center gap-x-2 mt-4 justify-between">
                                                                     <div className="flex items-center gap-x-2">
                                                                         <p>{lang == 'ar' ? 'العلامة' : 'Brand'}:</p>
@@ -578,12 +591,7 @@ export default function OrderDetails() {
                                                                         }
                                                                     </div>
                                                                     <div>
-                                                                        {data?.expressproduct == 1 ?
-                                                                            <Image
-                                                                                src={lang === 'ar' ? "/icons/express_logo/express_logo_ar.png" : "/icons/express_logo/express_logo_en.png"}
-                                                                                width="55" height="0" alt="express_delivery" title='Express Delivery'
-                                                                            />
-                                                                            : null}
+                                                                        
                                                                         <p className="font-bold">{lang == 'ar' ? 'عدد' : 'Qty'} {data?.quantity}</p>
                                                                     </div>
                                                                 </div>
@@ -614,12 +622,14 @@ export default function OrderDetails() {
                     <Link className="focus-visible:outline-none border border-[#004B7A] bg-[#004B7A] text-white text-xs font-semibold px-5 py-3 rounded-md shadow-md hover:shadow-none w-full text-center" prefetch={false} scroll={false} href={'/' + lang + '/maintenance-request'}>{lang == 'ar' ? 'إنشاء طلب صيانة' : "Create Maintainance Request"}</Link>
                 </div>
                 )}
+                {(orderDetails?.orderdata?.status != 4 && orderDetails?.orderdata?.status != 5) ? (
                 <button
                     type="button"
                     className="w-full focus-visible:outline-none border border-[#DC4E4E] bg-[#DC4E4E] text-white text-xs font-semibold px-3.5 py-3 rounded-md shadow-md hover:shadow-none"
                 >
                     {lang == 'ar' ? 'الطلب الملغي' : 'Cancelled Order'}
                 </button>
+                ) : null}
             </div>
             {/* Order Rating */}
             <Transition appear show={addReviewsPop} as={Fragment}>
