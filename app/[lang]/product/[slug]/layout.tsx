@@ -2,12 +2,39 @@ import type { Metadata } from "next";
 import { BridgeSlot } from "@/app/_ctx/ClientDataRegistry";
 import { getRequestContext } from "@/lib/request-context";
 import { getProductCached } from "@/lib/productpages/product.cached";
+import { redirect } from 'next/navigation';
 
 export default async function ProductLayout({ children }: { children: React.ReactNode }) {
     const { slugStr, city, lang } = await getRequestContext();
     if (!slugStr) return null;
 
     const productData = await getProductCached(city, slugStr, lang);
+
+    const origin =
+    typeof window !== 'undefined' && window.location.origin
+      ? window.location.origin
+      : '';
+
+    if (productData?.status === 0 || !productData?.data) {
+        let categorySlug = '';
+        
+        // Handle different breadcrumb formats
+        if (productData.breadcrumbs) {
+            if (Array.isArray(productData.breadcrumbs)) {
+                if (productData.breadcrumbs.length > 0 && productData.breadcrumbs[0].slug) {
+                    categorySlug = productData.breadcrumbs[0].slug;
+                }
+            } else if (typeof productData.breadcrumbs === 'object' && productData.breadcrumbs.slug) {
+                categorySlug = productData.breadcrumbs.slug;
+            }
+        }
+        if (categorySlug) {
+            redirect(`${origin}/${lang}/category/${categorySlug}`);
+        } else {
+            redirect(`${origin}/${lang}`);
+        }
+    }
+
     const value = productData ? JSON.parse(JSON.stringify(productData)) : null;
 
     return <BridgeSlot slot="product" value={value}>{children}</BridgeSlot>;
