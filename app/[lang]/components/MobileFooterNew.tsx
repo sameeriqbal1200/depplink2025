@@ -261,6 +261,7 @@ export default function MobileFooterNew(props: any) {
       path.indexOf("brandslisting") === -1 &&
       path.indexOf("contact-us") === -1 &&
       path.indexOf("projectsales") === -1 &&
+      path.indexOf("maintenance-request") === -1 &&
       path.indexOf("giftcards") === -1 &&
       path.indexOf("giftcards/buy") === -1 ? (
         <footer className="bg-white fixed bottom-0 w-full px-3 z-30 left-0 right-0 shadow-[0_-4px_8px_rgba(0,0,0,0.05)]">
