@@ -500,6 +500,7 @@ export default function OrderDetails() {
                                             <div className="gap-x-2 mt-1 rtl:mt-2 text-[#004B7A]">
                                                 <label>{text ? text : "---"}</label>
                                             </div>
+                                            <p className='text-sm !text-orangePrice mt-1 rtl:mt-2'>{lang === 'ar' ? 'جميع أسعار المنتجات شاملة الضريبة المضافة' : 'All product prices included with VAT'}</p>
                                         </div>
                                         {logo != null ? 
                                             <Image
