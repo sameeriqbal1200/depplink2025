@@ -8,6 +8,7 @@ import relativeTime from "dayjs/plugin/relativeTime";
 import dynamic from 'next/dynamic';
 import { useApp } from '@/app/_ctx/AppContext';
 import { useSlot } from '@/app/_ctx/ClientDataRegistry';
+import Link from 'next/link';
 
 const MobileHeader = dynamic(() => import('@/components/MobileHeader'), { ssr: true })
 
@@ -48,15 +49,15 @@ export default function BlogDetails() {
                     </div>
                 </div>
 
-                {/* <div className='my-10 container'>
+                <div className='my-10'>
                     <div className='flex items-center justify-between font-bold'>
                         <h5 className='text-xl'>{lang === 'ar' ? 'أحدث منشورات' : 'Recently Added'}</h5>
                         <Link href={`${origin}/${lang}/blog`} className='text-[#219EBC] hover:underline'>{lang === 'ar' ? 'عـرض الكــل' : 'Show All'}</Link>
                     </div>
-                    <div className='mt-4 pb-2 grid grid-cols-5 gap-x-3'>
-                        {blogsData?.data?.latestblogs?.map((data: any, i: React.Key | null | undefined) => {
+                    <div className='mt-4 pb-2 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3'>
+                        {blogsData?.latestblogs?.map((data: any, i: React.Key | null | undefined) => {
                             return (
-                                <Link href={`${origin}/${lang}/blog/${data?.slug}`} className="bg-white rounded-md shadow-md" key={i}>
+                                <Link href={`${origin}/${lang}/blog/${data?.slug}`} className="bg-white rounded-2xl shadow-md overflow-hidden" key={i}>
                                     <Image
                                         src={data?.blog_media_image ? NewMedia + data?.blog_media_image?.image : 'https://partners.tamkeenstores.com.sa/public/assets/new-media/3f4a05b645bdf91af2a0d9598e9526181714129744.png'}
                                         alt={(data?.blog_media_image?.alt_arabic && blogsData?.lang === 'ar') ? data?.blog_media_image?.alt_arabic : (data?.blog_media_image?.alt && blogsData?.lang == 'en') ? data?.blog_media_image?.alt : ''}
@@ -67,15 +68,10 @@ export default function BlogDetails() {
                                         loading='lazy'
                                         className="rounded-tl-md rounded-tr-md min-w-full"
                                     />
-                                    <div className='mt-10 pb-5 px-3'>
-                                        <ul className="text-xs flex items-center gap-x-3 font-medium">
-                                            <li>{dayjs(data?.created_at).locale(lang === 'ar' ? 'ar' : 'en').format("MMM  DD")}</li>
-                                            <li>|</li>
-                                            <li>{dayjs(data?.created_at).locale(lang === 'ar' ? 'ar' : 'en').endOf('day').fromNow()}</li>
-                                        </ul>
-                                        <h2 className="mt-4 font-bold text-xs text-[#004B7A] line-clamp-1">{lang === 'ar' ? data?.name_arabic : data?.name}</h2>
-                                        <div className="text-xs mt-1.5 line-clamp-3 leading-5" dangerouslySetInnerHTML={{ __html: lang === 'ar' ? data?.description_arabic : data?.description }} />
-                                        <div className="flex items-center justify-between mt-8 text-sm font-bold">
+                                    <div className='mt-5 pb-5 px-3'>
+                                        <h2 className="mt-4 font-bold text-xs text-[#004B7A] line-clamp-2">{lang === 'ar' ? data?.name_arabic : data?.name}</h2>
+                                        <div className="text-[0.60rem] mt-1.5 line-clamp-3 leading-4" dangerouslySetInnerHTML={{ __html: lang === 'ar' ? data?.description_arabic : data?.description }} />
+                                        <div className="flex items-center justify-between mt-4 text-[0.60rem] font-bold">
                                             <span className="">{data?.views}{' '}{lang === 'ar' ? 'المشاهدات' : 'Views'}</span>
                                             <button className="focus-visible:outline-none btn fill-[#004B7A] text-[#004B7A] font-bold flex items-center gap-x-2">
                                                 <span>8</span>
@@ -88,7 +84,7 @@ export default function BlogDetails() {
                         })
                         }
                     </div>
-                </div> */}
+                </div>
             </div>
         </div>
     )
