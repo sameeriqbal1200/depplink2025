@@ -340,7 +340,7 @@ export default function Profile() {
                                             </p>
                                         </div>
                                         <div className="flex items-center gap-x-2 md:block md:mt-6 mt-3">
-                                            <h4 className="font-medium text-xs md:mb-1">{lang == 'ar' ? 'رقم الهاتف' : 'Date of Birth'}:</h4>
+                                            <h4 className="font-medium text-xs md:mb-1">{lang == 'ar' ? 'تاريخ الميلاد' : 'Date of Birth'}:</h4>
                                             <p dir='ltr' className="rtl:text-right">{profileData?.userdata?.date_of_birth ? dayjs(profileData?.userdata?.date_of_birth).locale(lang == 'ar' ? 'ar' : 'en').format("YYYY, MMM  DD") : <button className="text-[#219EBC] hover:underline text-sm" onClick={() => { setupdateProfile(true) }}>{lang === 'ar' ? 'يحرر' : 'Edit'}</button>}</p>
                                         </div>
                                     </div>
