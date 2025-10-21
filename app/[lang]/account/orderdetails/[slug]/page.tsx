@@ -611,12 +611,7 @@ export default function OrderDetails() {
                     >
                         {lang == 'ar' ? 'إضافة التقييم على المنتج' : "Add Product Review's"}
                     </button>
-                    <button
-                        type="button"
-                        className="focus-visible:outline-none border border-[#004B7A] bg-[#004B7A] text-white text-xs font-semibold px-5 py-3 rounded-md shadow-md hover:shadow-none"
-                    >
-                        {lang == 'ar' ? 'إنشاء طلب صيانة' : "Create Maintainance Request"}
-                    </button>
+                    <Link className="focus-visible:outline-none border border-[#004B7A] bg-[#004B7A] text-white text-xs font-semibold px-5 py-3 rounded-md shadow-md hover:shadow-none w-full text-center" prefetch={false} scroll={false} href={'/' + lang + '/maintenance-request'}>{lang == 'ar' ? 'إنشاء طلب صيانة' : "Create Maintainance Request"}</Link>
                 </div>
                 )}
                 <button
