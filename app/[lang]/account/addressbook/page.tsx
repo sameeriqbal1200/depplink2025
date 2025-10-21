@@ -537,7 +537,7 @@ export default function AddressBook() {
                 <button
                     type="button"
                     onClick={() => {
-                        if(addressData?.addresses && addressData?.addresses?.length == 5){
+                        if(addressData?.addresses && addressData?.addresses?.length >= 5){
                             topMessageAlartDanger(t("address.limitReached"))
                         } else {
                             seteditdata(false), getCities(lang), setAddAddress(true) 
