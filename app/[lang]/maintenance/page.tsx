@@ -13,6 +13,7 @@ import { useSlot } from '@/app/_ctx/ClientDataRegistry';
 import { getUserData, getUserOrderDetails, getMaintainanceProductDetails } from '@/lib/footerpages/maintainance.client';
 import { postMaintenanceData } from '@/lib/footerpages/maintenance.client';
 import { ErrorTracker } from '../utils/errorTracker';
+import Link from 'next/link';
 
 const MobileHeader = dynamic(() => import('../components/MobileHeader'), { ssr: true })
 
@@ -142,7 +143,7 @@ export default function Maintenance() {
                 </div>
 
                 <div className="text-sm font-medium flex items-center gap-x-3 mb-10 md:mb-0">
-                    <button
+                    {/* <button
                         className="focus-visible:outline-none bg-[#219EBC] text-white border-[#219EBC] border py-2.5 px-6 rounded-md max-md:w-1/2"
                         type="button" aria-label={lang == 'ar' ? 'فتح تذكرة' : 'Open Ticket'}
                         onClick={() => {
@@ -150,7 +151,8 @@ export default function Maintenance() {
                         }}
                     >
                         {lang == 'ar' ? 'فتح تذكرة' : 'Open Ticket'}
-                    </button>
+                    </button> */}
+                    <Link className="focus-visible:outline-none bg-[#219EBC] text-white border-[#219EBC] border py-2.5 px-6 rounded-md max-md:w-1/2 text-center" prefetch={false} scroll={false} href={'/' + lang + '/maintenance-request'}>{lang == 'ar' ? 'فتح تذكرة' : 'Open Ticket'}</Link>
                     <button className="focus-visible:outline-none border-[#219EBC] border text-[#219EBC] py-2.5 px-5 rounded-md hover:bg-[#219EBC] hover:text-white max-md:w-1/2" type="button" aria-label={lang == 'ar' ? 'تواصل معنا' : 'Contact with Us'}
                         onClick={() => {
                             router.push(`${origin}/${lang}/contact-us`)
