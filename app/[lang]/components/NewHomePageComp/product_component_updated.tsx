@@ -911,12 +911,12 @@ export default function product_component_updated(props: any) {
         {absoluteTexts.length > 0 ? (
           <div className="flex items-center justify-center overflow-hidden whitespace-nowrap">
             {absoluteTexts.map((text, i) => (
-             <>
+             <React.Fragment key={i}>
                 {i > 0 && <div className="mx-1 h-3 border w-px border-gray-400 opacity-20" />}
                 <span className="text-xxs font-semibold line-clamp-1">{text}</span>
-              </>
+              </React.Fragment>
             ))}
-          </div>
+          </div>  
         ) : (
           <div className="h-3.5 w-full" />
         )}
