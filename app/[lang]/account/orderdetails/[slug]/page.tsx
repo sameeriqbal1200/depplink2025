@@ -628,7 +628,7 @@ export default function OrderDetails() {
                     type="button"
                     className="w-full focus-visible:outline-none border border-[#DC4E4E] bg-[#DC4E4E] text-white text-xs font-semibold px-3.5 py-3 rounded-md shadow-md hover:shadow-none"
                 >
-                    {lang == 'ar' ? 'الطلب الملغي' : 'Cancelled Order'}
+                    {lang == 'ar' ? 'إلغاء الطلب' : 'Cancel Order'}
                 </button>
                 ) : null}
             </div>
