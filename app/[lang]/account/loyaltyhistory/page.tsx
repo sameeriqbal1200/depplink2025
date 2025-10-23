@@ -10,6 +10,7 @@ import { useSlot } from "@/app/_ctx/ClientDataRegistry";
 import LoyaltyHistoryList from "../../components/LoyaltyHistoryList";
 import SARIcon from "../../components/Icons/SARIcon";
 import LottieAnimation from "../../components/LottieAnimation";
+import FullPageLoader from "../../components/FullPageLoader";
 
 const MobileHeader = dynamic(() => import("../../components/MobileHeader"), {
   ssr: true,
@@ -21,6 +22,7 @@ export default function UserLoyaltyHistory() {
   const [totalAvailablePoint, setTotalAvailablePoint] = useState<any>(0);
   const [totalAvailableAmount, setTotalAvailableAmount] = useState<any>(0);
   const [totalRedeemPoint, setTotalRedeemPoint] = useState<any>(0);
+   const [loader , setLoader] = useState<boolean>(true)
   const router = useRouter();
   const path = usePathname();
   const isArabic = lang === "ar";
@@ -31,6 +33,7 @@ export default function UserLoyaltyHistory() {
 
   const getLoyaltyHistory = async () => {
     try {
+       setLoader(true);
       const userId =
         typeof window !== "undefined" ? localStorage.getItem("userid") : null;
 
@@ -59,6 +62,9 @@ export default function UserLoyaltyHistory() {
       setLoyaltyData([]); // fallback
       // Optionally: show a toast/snackbar to the user
     }
+    finally {
+       setLoader(false);
+     }
   };
 
   useEffect(() => {
@@ -66,6 +72,8 @@ export default function UserLoyaltyHistory() {
   }, [lang]);
 
   return (
+    <>
+     {loader ?  <FullPageLoader loader={loader} /> : (
     <div>
       <MobileHeader
         type="Third"
@@ -117,5 +125,7 @@ export default function UserLoyaltyHistory() {
         )}
       </div>
     </div>
+    )}
+     </>
   );
 }
