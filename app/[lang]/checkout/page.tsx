@@ -2350,31 +2350,31 @@ export default function Checkout() {
                                                         case 'clickpay':
                                                             const monthlyPrice4 = Intl.NumberFormat('en-US').format(totalPrice / 4);
                                                             return lang == 'ar' 
-                                                            ? <>غدا تقسيط علي 4 شهور بمبلغ <span className='inline-flex items-center gap-0.5'>{monthlyPrice4} {currencySymbol} ريال في الشهر</span></>
-                                                            : <>Installments for 4 months at an amount of <span className='inline-flex items-center gap-0.5'>{monthlyPrice4} {currencySymbol} per month </span></>;
+                                                            ? <>غدا تقسيط علي 4 شهور بمبلغ <span className='inline-flex items-center gap-0.5'>{monthlyPrice4} {Number(getSummary().filter((element: any) => element?.key == 'total')[0]?.price) != 0 ? currencySymbol : null} ريال في الشهر</span></>
+                                                            : <>Installments for 4 months at an amount of <span className='inline-flex items-center gap-0.5'>{monthlyPrice4} {Number(getSummary().filter((element: any) => element?.key == 'total')[0]?.price) != 0 ? currencySymbol : null} per month </span></>;
                                                         case 'tamara':
                                                             const monthlyPrice12 = Intl.NumberFormat('en-US').format(totalPrice / 12);
                                                             return lang == 'ar' 
-                                                            ? <>غدا تقسيط علي  12 شهور بمبلغ <span className='inline-flex items-center gap-0.5'>{monthlyPrice12} {currencySymbol} ريال في الشهر</span></>
-                                                            : <>Installments for 12 months at an amount of <span className='inline-flex items-center gap-0.5'>{monthlyPrice12} {currencySymbol} per month </span></>;
+                                                            ? <>غدا تقسيط علي  12 شهور بمبلغ <span className='inline-flex items-center gap-0.5'>{monthlyPrice12} {Number(getSummary().filter((element: any) => element?.key == 'total')[0]?.price) != 0 ? currencySymbol : null} ريال في الشهر</span></>
+                                                            : <>Installments for 12 months at an amount of <span className='inline-flex items-center gap-0.5'>{monthlyPrice12} {Number(getSummary().filter((element: any) => element?.key == 'total')[0]?.price) != 0 ? currencySymbol : null} per month </span></>;
                                                         
                                                         case 'tasheel':
                                                             const monthlyPrice36 = Intl.NumberFormat('en-US').format(totalPrice / 36);
                                                             return lang == 'ar'
-                                                            ? <>غدا تقسيط علي 36 شهور بمبلغ <span className='inline-flex items-center gap-0.5'>{monthlyPrice36} {currencySymbol} ريال في الشهر</span></>
-                                                            : <>Installments for 36 months at an amount of <span className='inline-flex items-center gap-0.5'>{monthlyPrice36} {currencySymbol} per month</span></>;
+                                                            ? <>غدا تقسيط علي 36 شهور بمبلغ <span className='inline-flex items-center gap-0.5'>{monthlyPrice36} {Number(getSummary().filter((element: any) => element?.key == 'total')[0]?.price) != 0 ? currencySymbol : null} ريال في الشهر</span></>
+                                                            : <>Installments for 36 months at an amount of <span className='inline-flex items-center gap-0.5'>{monthlyPrice36} {Number(getSummary().filter((element: any) => element?.key == 'total')[0]?.price) != 0 ? currencySymbol : null} per month</span></>;
 
                                                         case 'madapay':
                                                         case 'applepay':
                                                         case 'hyperpay':
                                                             return lang == 'ar'
-                                                            ? <>الدفع النقدي <span className='inline-flex items-center gap-0.5'>{formattedPrice} {currencySymbol}</span></>
-                                                            : <>Instant pay <span className='inline-flex items-center gap-0.5'>{formattedPrice}{currencySymbol}</span></>;
+                                                            ? <>الدفع النقدي <span className='inline-flex items-center gap-0.5'>{formattedPrice} {Number(getSummary().filter((element: any) => element?.key == 'total')[0]?.price) != 0 ? currencySymbol : null}</span></>
+                                                            : <>Instant pay <span className='inline-flex items-center gap-0.5'>{formattedPrice}{Number(getSummary().filter((element: any) => element?.key == 'total')[0]?.price) != 0 ? currencySymbol : null}</span></>;
                                                         
                                                         case 'cod':
                                                             return lang == 'ar'
-                                                            ? <>الدفع عند الاستلام <span className='inline-flex items-center gap-0.5'>{formattedPrice} {currencySymbol}</span></>
-                                                            : <>Paid upon delivery <span className='inline-flex items-center gap-0.5'>{formattedPrice} {currencySymbol}</span></>;
+                                                            ? <>الدفع عند الاستلام <span className='inline-flex items-center gap-0.5'>{formattedPrice} {Number(getSummary().filter((element: any) => element?.key == 'total')[0]?.price) != 0 ? currencySymbol : null}</span></>
+                                                            : <>Paid upon delivery <span className='inline-flex items-center gap-0.5'>{formattedPrice} {Number(getSummary().filter((element: any) => element?.key == 'total')[0]?.price) != 0 ? currencySymbol : null}</span></>;
                                                         
                                                         default:
                                                             return null;

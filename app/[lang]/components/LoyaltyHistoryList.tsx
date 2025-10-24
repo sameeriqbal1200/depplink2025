@@ -10,11 +10,14 @@ export default function LoyaltyHistoryList(props: any) {
   const isArabic = props?.isArabic;
   const isDeducted = loyalData?.type == 0 ? true : false;
   const isRefunded = loyalData?.is_refund == 1 ? true : false;
+  let prefix = 'GF-'; // default
+  if (isRefunded) prefix = 'RR-';
+  else if (isDeducted) prefix = 'US-';
   const isPending = loyalData?.date ? dayjs().isBefore(dayjs(loyalData.date).add(8, "days")) : false;
   return (
     <div className="flex items-center justify-between p-3 bg-white rounded-md shadow-md mb-2 w-full">
       <div>
-        <p className="text-sm font-semibold text-dark -mb-2">{loyalData?.earning_against}</p>
+        <p className="text-sm font-semibold text-dark -mb-2">{prefix}{loyalData?.earning_against}</p>
         <span className="text-[0.65rem] font-medium text-dark/60">
           {dayjs(loyalData?.date).locale("en").format("MMM DD, YYYY")} at {dayjs(loyalData?.date).locale("en").format("hh:mm A")}
         </span>
