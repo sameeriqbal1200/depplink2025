@@ -3,15 +3,16 @@
 import React, { useEffect, useState } from 'react'
 import { useRouter, usePathname } from "next/navigation"
 import MaskedInput from 'react-text-mask'
-import Select from 'react-select';
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 import { ErrorTracker } from '../utils/errorTracker';
 import { useApp } from '@/app/_ctx/AppContext';
-import { postCheckUserTicket, postInternalTicketData } from '@/lib/maintenance/maintenance-request.client';
+import { postCheckUserTicket, postInternalTicketData, postTicketArea } from '@/lib/maintenance/maintenance-request.client';
 import dynamic from 'next/dynamic';
 
 const MobileHeader = dynamic(() => import('../components/MobileHeader'), { ssr: true })
+const Select = dynamic(() => import('react-select'), { ssr: false })
+const CreatableSelect = dynamic(() => import('react-select/creatable'), { ssr: false })
 
 export default function ServiceAppointment() {
     const { lang, origin, deviceType } = useApp();
@@ -41,6 +42,8 @@ export default function ServiceAppointment() {
     const [selectedProduct, setSelectedProduct] = useState<any>(null)
     const [selectedCity, setSelectedCity] = useState<any>(null)
     const [selectedArea, setSelectedArea] = useState<any>(null)
+    const [selectedNewArea, setSelectedNewArea] = useState<any>(null)
+    const [newArea, setNewArea] = useState<any>(false)
     const [complain, setComplain] = useState<string>('')
     const [requestor, setRequestor] = useState<any>('')
     const [purchasing, setPurchasing] = useState<any>('')
@@ -199,7 +202,7 @@ export default function ServiceAppointment() {
             last_name: lastName,
             address: address,
             city: selectedCity?.value,
-            area: selectedArea?.value,
+            area: newArea ? selectedNewArea : selectedArea?.value,
             invoice_number: invoiceNumber,
             complain: complain,
             purchasing_channel: purchasing?.value,
@@ -252,7 +255,7 @@ export default function ServiceAppointment() {
         }
 
         if (phone.length == 9) {
-            var data = {
+            var data: any = {
                 phone_number: phone,
                 lang: lang,
             }
@@ -373,6 +376,13 @@ export default function ServiceAppointment() {
                 if (!firstName || !lastName || !selectedCity || !address) {
 
                     return false;
+                }
+                data['city'] = selectedCity ? selectedCity?.value : null;
+                data['area'] = selectedArea ? selectedArea?.label : null;
+                const ticketUserRes: any = await postTicketArea(data)
+                if (ticketUserRes?.areaTicketData?.success == true) {
+                    setNewArea(true)
+                    setSelectedNewArea(ticketUserRes?.areaTicketData?.data?.id)
                 }
                 setStep(2)
             }
@@ -616,6 +626,7 @@ export default function ServiceAppointment() {
                                             <h2 className='text-xs font-semibold underline text-[#004B7A]'
                                                 onClick={() => {
                                                     setStep(0)
+                                                    setNewArea(false)
                                                 }}
                                             >
                                                 {lang === 'ar' ? 'تفاصيل العميل' : 'Edit'}
@@ -755,11 +766,12 @@ export default function ServiceAppointment() {
                                                                     label: item.label
                                                                 }));
                                                                 setUpdatedAreas(updatedareslist)
+                                                                setSelectedArea(null)
                                                             }}
                                                         />
                                                     </label>
 
-                                                    <label className='text-xs font-semibold'>
+                                                    {/* <label className='text-xs font-semibold'>
                                                         {lang === 'ar' ? 'منطقة' : 'Area'}
                                                         <Select
                                                             styles={{
@@ -808,7 +820,62 @@ export default function ServiceAppointment() {
                                                                 setSelectedArea(e)
                                                             }}
                                                         />
-                                                    </label>
+                                                    </label> */}
+
+                                                    <label className="text-xs font-semibold">
+                                                        {lang === 'ar' ? 'منطقة' : 'Area'}
+                                                        <CreatableSelect
+                                                            isClearable
+                                                            styles={{
+                                                            control: (provided: any, state: any) => ({
+                                                                ...provided,
+                                                                background: '#fff',
+                                                                borderColor: '#dfdfdf',
+                                                                borderRadius: '6px',
+                                                                display: 'flex',
+                                                                alignItems: 'center',
+                                                                justifyContent: 'center',
+                                                                boxShadow: state.isFocused ? null : null,
+                                                            }),
+                                                            valueContainer: (provided) => ({
+                                                                ...provided,
+                                                                height: '42px',
+                                                                padding: '0 0.5rem',
+                                                                overflow: 'visible',
+                                                            }),
+                                                            input: (provided) => ({
+                                                                ...provided,
+                                                                margin: '0px',
+                                                            }),
+                                                            indicatorSeparator: () => ({
+                                                                alignSelf: 'stretch',
+                                                                width: '1px',
+                                                                backgroundColor: 'hsl(0, 0%, 80%)',
+                                                                marginBottom: '12px',
+                                                                marginTop: '12px',
+                                                                boxSizing: 'border-box',
+                                                            }),
+                                                            indicatorsContainer: (provided) => ({
+                                                                ...provided,
+                                                                height: '42px',
+                                                            }),
+                                                            }}
+                                                            placeholder={lang === 'ar' ? 'حدد المنطقة' : 'Select Area'}
+                                                            options={updatedares}
+                                                            value={selectedArea}
+                                                            isSearchable={true}
+                                                            className="border w-full rounded-md focus-visible:outline-none border-primary/50 border-primary hover:border-primary text-dark mt-0.5 mb-3"
+                                                            classNamePrefix="react-select"
+                                                            onChange={(newValue: any) => {
+                                                            setSelectedArea(newValue);
+                                                            }}
+                                                            onCreateOption={(inputValue: string) => {
+                                                                const newOption = { value: inputValue, label: inputValue };
+                                                                setSelectedArea(newOption);
+                                                                setUpdatedAreas((prev: any) => [...prev, newOption]);
+                                                            }}
+                                                        />
+                                                        </label>
 
                                                     <label className='text-xs font-semibold'>
                                                         {lang === 'ar' ? 'عنوان' : 'Address'}

@@ -15,3 +15,11 @@ export async function postCheckUserTicket(data: any) {
         checkUserTicket: checkUserTicket,
     };
 }
+
+export async function postTicketArea(data: any) {
+    const areaTicketData: any = await post(`create-ticket-area`, data)
+    if (!areaTicketData) throw new Error("Failed to load ticket");
+    return {
+        areaTicketData: areaTicketData,
+    };
+}
