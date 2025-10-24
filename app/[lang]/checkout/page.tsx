@@ -2153,10 +2153,10 @@ export default function Checkout() {
                                             <div className="w-full px-3 py-2 text-white">
                                                 <p className="text-xs font-medium flex items-center gap-1"> {lang === 'ar' ? 'الرصيد المتبقي' : 'Available Balance'}:<span className="text-[#feee00de] inline-flex items-center gap-0.5">{useLoyalty ? ((Number(loyaltyAmount) - Number(usableloyaltyAmount))?.toFixed(2)) : (Number(loyaltyAmount)?.toFixed(2))} <svg className="riyal-svg shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1124.14 1256.39" width="13" height="13"><path fill="currentColor" d="M699.62,1113.02h0c-20.06,44.48-33.32,92.75-38.4,143.37l424.51-90.24c20.06-44.47,33.31-92.75,38.4-143.37l-424.51,90.24Z"></path><path fill="currentColor" d="M1085.73,895.8c20.06-44.47,33.32-92.75,38.4-143.37l-330.68,70.33v-135.2l292.27-62.11c20.06-44.47,33.32-92.75,38.4-143.37l-330.68,70.27V66.13c-50.67,28.45-95.67,66.32-132.25,110.99v403.35l-132.25,28.11V0c-50.67,28.44-95.67,66.32-132.25,110.99v525.69l-295.91,62.88c-20.06,44.47-33.33,92.75-38.42,143.37l334.33-71.05v170.26l-358.3,76.14c-20.06,44.47-33.32,92.75-38.4,143.37l375.04-79.7c30.53-6.35,56.77-24.4,73.83-49.24l68.78-101.97v-.02c7.14-10.55,11.3-23.27,11.3-36.97v-149.98l132.25-28.11v270.4l424.53-90.28Z"></path></svg></span></p>
                                             </div>
-                                                {/* <div className={`p-3 w-full ${params?.lang === 'ar' ? 'text-right' : ''}`}>
-                                                <p className="text-sm text-gray-800 font-bold">{params?.lang == 'ar' ? 'نقاط تمكين' : 'Tamkeen Points'}</p>
+                                                {/* <div className={`p-3 w-full ${lang === 'ar' ? 'text-right' : ''}`}>
+                                                <p className="text-sm text-gray-800 font-bold">{lang == 'ar' ? 'نقاط تمكين' : 'Tamkeen Points'}</p>
                                                 <p className={`text-xs text-[#007714]`}>
-                                                    {params?.lang === 'ar' ? (
+                                                    {lang === 'ar' ? (
                                                     <div className='space-x-2'>
                                                         التحويل إلى رصيد تمكين باستخدام حسابك المرتبط
                                                         &nbsp;<strong className="font-bold" dir="ltr">
@@ -2337,6 +2337,51 @@ export default function Checkout() {
                                                 <label className="font-regular text-[#5D686F]">{lang == 'ar' ? 'الدفع عن طريق' : 'Payment via'}{' '}<span className="font-bold text-[#004B7A] capitalize">{paymentMethod}</span></label>
                                                 <div className="flex items-center gap-x-2 mt-1 rtl:mt-2 text-[#004B7A] text-xs">
                                                     <label>
+                                                    {(() => {
+                                                        const totalPrice = summary?.filter((element: any) => element.key == 'total')[0]?.price;
+                                                        const formattedPrice = Intl.NumberFormat('en-US').format(totalPrice);
+                                                        console.log("totalPrice",totalPrice)
+                                                        if (!paymentMethod) return null;
+
+                                                        switch(paymentMethod) {
+                                                        case 'tabby':
+                                                        case 'madfu':
+                                                        case 'mispay':
+                                                        case 'clickpay':
+                                                            const monthlyPrice4 = Intl.NumberFormat('en-US').format(totalPrice / 4);
+                                                            return lang == 'ar' 
+                                                            ? <>غدا تقسيط علي 4 شهور بمبلغ <span className='inline-flex items-center gap-0.5'>{monthlyPrice4} {currencySymbol} ريال في الشهر</span></>
+                                                            : <>Installments for 4 months at an amount of <span className='inline-flex items-center gap-0.5'>{monthlyPrice4} {currencySymbol} per month </span></>;
+                                                        case 'tamara':
+                                                            const monthlyPrice12 = Intl.NumberFormat('en-US').format(totalPrice / 4);
+                                                            return lang == 'ar' 
+                                                            ? <>غدا تقسيط علي  12 شهور بمبلغ <span className='inline-flex items-center gap-0.5'>{monthlyPrice12} {currencySymbol} ريال في الشهر</span></>
+                                                            : <>Installments for 12 months at an amount of <span className='inline-flex items-center gap-0.5'>{monthlyPrice12} {currencySymbol} per month </span></>;
+                                                        
+                                                        case 'tasheel':
+                                                            const monthlyPrice36 = Intl.NumberFormat('en-US').format(totalPrice / 36);
+                                                            return lang == 'ar'
+                                                            ? <>غدا تقسيط علي 36 شهور بمبلغ <span className='inline-flex items-center gap-0.5'>{monthlyPrice36} {currencySymbol} ريال في الشهر</span></>
+                                                            : <>Installments for 36 months at an amount of <span className='inline-flex items-center gap-0.5'>{monthlyPrice36} {currencySymbol} per month</span></>;
+
+                                                        case 'madapay':
+                                                        case 'applepay':
+                                                        case 'hyperpay':
+                                                            return lang == 'ar'
+                                                            ? <>الدفع النقدي <span className='inline-flex items-center gap-0.5'>{formattedPrice} {currencySymbol}</span></>
+                                                            : <>Instant pay <span className='inline-flex items-center gap-0.5'>{formattedPrice}{currencySymbol}</span></>;
+                                                        
+                                                        case 'cod':
+                                                            return lang == 'ar'
+                                                            ? <>الدفع عند الاستلام <span className='inline-flex items-center gap-0.5'>{formattedPrice} {currencySymbol}</span></>
+                                                            : <>Paid upon delivery <span className='inline-flex items-center gap-0.5'>{formattedPrice} {currencySymbol}</span></>;
+                                                        
+                                                        default:
+                                                            return null;
+                                                        }
+                                                    })()}
+                                                    </label>
+                                                    {/* <label>
                                                         {
                                                             paymentMethod == 'tamara' ? lang == 'ar' ? `غدا تقسيط علي 12 شهر بمبلغ ${Intl.NumberFormat('en-US').format(summary?.filter((element: any) => element.key == 'total')[0]?.price / 12)} ريال في الشهر` : `Installments for 12 months at an amount of ${Intl.NumberFormat('en-US').format(summary?.filter((element: any) => element.key == 'total')[0]?.price / 12)} per month`
                                                                 : paymentMethod == 'tabby' ? lang == 'ar' ? `غدا تقسيط علي 4 شهر بمبلغ ${Intl.NumberFormat('en-US').format(summary?.filter((element: any) => element.key == 'total')[0]?.price / 4)} ريال في الشهر` : `Installments for 4 months at an amount of ${Intl.NumberFormat('en-US').format(summary?.filter((element: any) => element.key == 'total')[0]?.price / 4)} per month`
@@ -2351,7 +2396,7 @@ export default function Checkout() {
                                                                                                     : null
                                                         }
                                                     </label>
-                                                    {currencySymbol}
+                                                    {currencySymbol} */}
                                                 </div>
                                                 <span className='text-xs !text-orangePrice'>{lang === 'ar' ? 'جميع أسعار المنتجات شاملة الضريبة المضافة' : 'All product prices included with VAT'}</span>
                                             </div>
