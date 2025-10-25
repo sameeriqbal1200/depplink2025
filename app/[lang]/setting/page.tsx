@@ -48,28 +48,40 @@ export default function Setting() {
                 const latitude = coords.latitude;
                 const longitude = coords.longitude;
                 fetchApiData({ latitude, longitude })
-            })
+            },
+            (error) => {
+                setBtnLoader(false);
+            },
+            { timeout: 10000 } // 10 seconds timeout
+            );
+        } else {
+            setBtnLoader(false);
         }
+
         if (location) {
             fetchApiData(location);
         }
     }
 
     const fetchApiData = async ({ latitude, longitude }: { latitude: number, longitude: number }) => {
-        const res = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&language=${lang}&sensor=true&key=AIzaSyB3ekz5eMwuRZGvFy2HUADZVhxAzTWV5Ok`);
-        const data = await res?.json();
+        try {
+            const res = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&language=${lang}&sensor=true&key=AIzaSyB3ekz5eMwuRZGvFy2HUADZVhxAzTWV5Ok`);
+            const data = await res?.json();
 
-        for (var a = 0; a < data?.results[0]["address_components"]?.length; a++) {
-            if (
-                data?.results[0]["address_components"][a]?.types[0] ==
-                "administrative_area_level_2" &&
-                data?.results[0]["address_components"][a]?.types[1] == "political"
-            ) {
-                setCityData(data?.results[0]["address_components"][a]["long_name"]);
-                localStorage.setItem("globalcity", data?.results[0]["address_components"][a]["long_name"].toString());
-            }
-        };
-        setBtnLoader(false)
+            for (var a = 0; a < data?.results[0]["address_components"]?.length; a++) {
+                if (
+                    data?.results[0]["address_components"][a]?.types[0] ==
+                    "administrative_area_level_2" &&
+                    data?.results[0]["address_components"][a]?.types[1] == "political"
+                ) {
+                    setCityData(data?.results[0]["address_components"][a]["long_name"]);
+                    localStorage.setItem("globalcity", data?.results[0]["address_components"][a]["long_name"].toString());
+                }
+            };
+        } catch (err) {
+        } finally {
+            setBtnLoader(false);
+        }
     };
 
     const setGtmUserProfileAttr = (lang: any) => {
