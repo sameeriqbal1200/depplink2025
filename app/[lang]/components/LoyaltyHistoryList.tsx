@@ -27,11 +27,11 @@ export default function LoyaltyHistoryList(props: any) {
       <div>
         <p className="text-sm font-semibold text-dark -mb-2">{prefix}{loyalData?.earning_against}</p>
         <div className="inline-flex items-center gap-1">
-        <span className="text-[0.65rem] font-medium text-dark/60">
+        <span className="text-10 font-medium text-dark/60">
           {dayjs(loyalData?.date).locale("en").format("MMM DD, YYYY")} at {dayjs(loyalData?.date).locale("en").format("hh:mm A")} {!isDeducted && isPending && !isRefunded && " - "}
         </span>
         {!isDeducted && isPending && !isRefunded && (
-              <div className="text-xs text-orange-500 font-semibold">
+              <div className="text-10 text-orange-500 font-semibold">
                 {isArabic ? "قيد الانتظار" : "Pending"}
               </div>
             )}
