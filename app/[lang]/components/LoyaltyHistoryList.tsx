@@ -11,8 +11,16 @@ export default function LoyaltyHistoryList(props: any) {
   const isDeducted = loyalData?.type == 0 ? true : false;
   const isRefunded = loyalData?.is_refund == 1 ? true : false;
   let prefix = 'GF-'; // default
-  if (isRefunded) prefix = 'RR-';
-  else if (isDeducted) prefix = 'US-';
+  if (isRefunded) {
+    prefix = 'RR-';
+  } else if (isDeducted) {
+    prefix = 'US-';
+  } else if (
+    loyalData?.type == 1 &&
+    (loyalData?.earning_against?.startsWith('S') || loyalData?.earning_against?.startsWith('TKS'))
+  ) {
+    prefix = 'OR-';
+  }
   const isPending = loyalData?.date ? dayjs().isBefore(dayjs(loyalData.date).add(8, "days")) : false;
   return (
     <div className="flex items-center justify-between p-3 bg-white rounded-md shadow-md mb-2 w-full">
