@@ -21,15 +21,15 @@ export async function generateMetadata(): Promise<Metadata | null> {
 
     const metaTitle =
         lang === "en"
-            ? footer?.data?.meta_title_en ?? "Tamkeen Stores Loyalty History"
-            : footer?.data?.meta_title_ar ?? "سجل الولاء | معارض تمكين";
+            ? footer?.data?.meta_title_en ?? "Tamkeen Stores Tamkeen Nukhb"
+            : footer?.data?.meta_title_ar ?? "تمكين نُخُب | معارض تمكين";
 
     const metaDescription =
         lang === "en"
             ? footer?.data?.meta_description_en ??
-            "Tamkeen Stores Loyalty History"
+            "Tamkeen Stores Tamkeen Nukhb"
             : footer?.data?.meta_description_ar ??
-            "سجل الولاء معارض تمكين";
+            "تمكين نُخُب معارض تمكين";
 
     // In /[lang]/loyaltyhistory/[...slug], slugParts are ONLY the [...slug] bits (not "loyaltyhistory")
     const suffix = slugParts?.length ? `/${slugParts.join("/")}` : "";
@@ -45,7 +45,7 @@ export async function generateMetadata(): Promise<Metadata | null> {
             "تمكين",
             "Electronics Saudi Arabia",
             "معارض تمكين",
-            "Loyalty History",
+            "Tamkeen Nukhb",
         ],
 
         referrer: "origin-when-cross-origin",

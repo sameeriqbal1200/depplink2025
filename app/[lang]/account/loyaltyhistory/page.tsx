@@ -78,7 +78,7 @@ export default function UserLoyaltyHistory() {
       <MobileHeader
         type="Third"
         lang={lang}
-        pageTitle={isArabic ? "نشاط الولاء" : "Loyalty Activity"}
+        pageTitle={isArabic ? "تمكين نُخُب" : "Tamkeen Nukhb"}
       />
       <div className="container py-16">
         {loyaltyData.length ? (
