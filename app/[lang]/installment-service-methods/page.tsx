@@ -143,6 +143,9 @@ export default function InstallmentServiceMethods() {
                                                 <li className="my-2">- قد يتم تقسيم قيمة الفاتورة على 4 دفعات غير متساوية بناء على التاريخ الائتماني والتقييم الائتماني للعميل. يمكنك التواصل مع تمارا للمزيد من المعلومات.</li>
                                                 <li className="my-2">- يجب على العميل استخدام رقم الجوال المسجل في أبشر لإتمام عملية الشراء باستخدام تمارا.</li>
                                                 <li className="my-2">- يجب على العميل تسوية جميع الدفعات مستحقة السداد مع تمارا.</li>
+                                                <li className="my-2">- سيتم إضافة رسوم إدارية من قبل تمارا عند اختيار تقسيمها على 4 دفعات أو أكثر، ولا يتم إضافة رسوم إدارية عند تقسيم الفاتورة على 2 أو 3 دفعات. لمعرفة معلومات أكثر عن تطبيق الرسوم الإدارية يرجى التواصل مع فريق تمارا مباشرة.</li>
+                                                <li className="my-2">- تضاف الرسوم الإدارية عند الدفع على صفحة/تطبيق تمارا.</li>
+                                                <li className="my-2">- الرسوم الإدارية غير قابلة للاسترداد، حيث إنها تغطي التكاليف المرتبطة بمعالجة الطلبات وتنفيذها.</li>
                                                 <li className="my-2">- يحق للعملاء بعمر 18 عام أو أكبر الشراء باستخدام تمارا كما هو موضح أدناه:</li>
                                             </ul>
                                             <table className="border-collapse border border-[#5D686F30] my-6 w-full">
@@ -194,6 +197,9 @@ export default function InstallmentServiceMethods() {
                                                 <li className="my-2">- Payment split might be on 4 non-equal splits based one customer's credit history and credit score. You can contact Tamara for more information.</li>
                                                 <li className="my-2">- Customer must use the mobile number registered with Absher to complete the purchase using Tamara.</li>
                                                 <li className="my-2">- Customer must settle all overdue payments with Tamara.</li>
+                                                <li className="my-2">- Processing Fees will be added by Tamara when you choose to split in 4 payments or more, and no Processing Fees will be added when you choose to split in 2 or 3 payments. For more info about processing fees please contact Tamara team directly.</li>
+                                                <li className="my-2">- Processing Fees are applied on tamara’s payment page.</li>
+                                                <li className="my-2">- Processing fees are non-refundable, as they cover the costs associated with handling and processing orders.</li>
                                                 <li className="my-2">- Customers of Age 18 Years and older are Eligible to Pay with Tamara as follows:</li>
                                             </ul>
                                             <table className="border-collapse border border-[#5D686F30] my-6 w-full">

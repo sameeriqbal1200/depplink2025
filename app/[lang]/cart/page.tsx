@@ -382,16 +382,16 @@ export default function NewCart() {
                 />
                 <p className="mt-3">
                     {lang === "ar"
-                        ? `قسها على ${installments} دفعات`
-                        : `Split in ${installments} payments of `}{" "}
+                        ? `قسمها حتى ${installments} دفعه`
+                        : `Split upto ${installments} payments `}{" "}
                     <span className="font-bold inline-flex items-center gap-0.5">
                         {(price / installments).toLocaleString("en-US")}
                         <span>{currencySymbolSmall}</span>
                     </span>
                     .{" "}
                     {lang === "ar"
-                        ? "بدون فوائد و رسوم تأخير"
-                        : "No interest. No late fees"}.
+                        ? "بدون رسوم تأخير"
+                        : "No late fees"}.
                 </p>
                 <button className="nc__278mainInnerLMBtn" onClick={() => { router.push(`${origin}/${lang}/installment-service-methods`) }}>
                     {lang === "ar" ? "تعلم أكثر" : "Learn More"}
