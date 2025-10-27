@@ -22,6 +22,7 @@ import { useSlot } from '@/app/_ctx/ClientDataRegistry';
 import { getPickupFromStoreProduct, getProductExtraDataRegional } from '@/lib/productpages/product.client';
 import SARIcon from '../../components/Icons/SARIcon';
 import { ErrorTracker } from '../../utils/errorTracker';
+import RichContentWidget from '../../components/RichContentWidgetTTL';
 
 
 // const LoginSingup = dynamic(() => import('../../components/LoginSignup'), { ssr: false })
@@ -1890,6 +1891,11 @@ export default function Product() {
                     : null
             }
 
+            {/* TTL product content area */}
+            {productDataClassic?.data?.brand?.id == 256 && productDataClassic?.data?.brand?.slug == 'bissell' && productDataClassic?.data?.content_ttl_productid != null ? 
+                <RichContentWidget brand={'Bissell'} productId={productDataClassic?.data?.content_ttl_productid} language={lang} />
+            :null}
+            {/* TTL product content area */}            
 
             {productDataClassic?.data?.specs?.length >= 2 ?
                 <>
