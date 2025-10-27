@@ -21,14 +21,14 @@ export default function LoyaltyHistoryList(props: any) {
   ) {
     prefix = 'OR-';
   }
-  const isPending = loyalData?.date ? dayjs().isBefore(dayjs(loyalData.date).add(8, "days")) : false;
+  const isPending = loyalData?.created_at ? dayjs().isBefore(dayjs(loyalData.created_at).add(8, "days")) : false;
   return (
     <div className="flex items-center justify-between p-3 bg-white rounded-md shadow-md mb-2 w-full">
       <div>
         <p className="text-sm font-semibold text-dark -mb-2">{prefix}{loyalData?.earning_against}</p>
         <div className="inline-flex items-center gap-1">
         <span className="text-10 font-medium text-dark/60">
-          {dayjs(loyalData?.date).locale("en").format("MMM DD, YYYY")} at {dayjs(loyalData?.date).locale("en").format("hh:mm A")} {!isDeducted && isPending && !isRefunded && " - "}
+          {dayjs(loyalData?.created_at).locale("en").format("MMM DD, YYYY")} at {dayjs(loyalData?.created_at).locale("en").format("hh:mm A")} {!isDeducted && isPending && !isRefunded && " - "}
         </span>
         {!isDeducted && isPending && !isRefunded && (
               <div className="text-10 text-orange-500 font-semibold">
