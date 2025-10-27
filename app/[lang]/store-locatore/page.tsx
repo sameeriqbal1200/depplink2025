@@ -80,6 +80,11 @@ export default function StoreLocator(
         }
     }
 
+     const timingsDays = [
+        { morning: '(Morning) 12:30 AM - 05:00 PM', evening: '(Evening) 09:00 PM - 02:00 AM' },
+        { morning: '(Morning) 12:30 AM - 05:00 PM', evening: '(Evening) 09:00 PM - 02:00 AM' },
+        // ...
+    ];
     const FilterStores = async () => {
         if (city != null && city != '') {
             try {
@@ -317,22 +322,25 @@ export default function StoreLocator(
                                             {item?.id != 44 ?
                                                 <>
                                                     <h3 className="font-semibold text-xs mt-2 mb-1">{lang === 'ar' ? 'مواعيد عمل المعارض' : 'Showroom Timings'}</h3>
-                                                    <ul className="text-xs mb-2 ltr:ml-4 rtl:mr-4 flex items-center text-[#515567]">
-                                                        <div>
-                                                            <li className='mb-1'>{lang === 'ar' ? 'السبت' : 'Saturday'}:</li>
-                                                            <li className='mb-1'>{lang === 'ar' ? 'الأحد' : 'Sunday'}:</li>
-                                                            <li className='mb-1'>{lang === 'ar' ? 'الإثنين' : 'Monday'}:</li>
-                                                            <li className='mb-1'>{lang === 'ar' ? 'الثلاثاء' : 'Tuesday'}:</li>
-                                                            <li className='mb-1'>{lang === 'ar' ? 'الأربعاء' : 'Wednesday'}:</li>
-                                                            <li className='mb-1'>{lang === 'ar' ? 'الخميس' : 'Thursday'}:</li>
-                                                            <li className='mb-1'>{lang === 'ar' ? 'الجمعة' : 'Friday'}:</li>
-                                                        </div>
-                                                        <div className="ltr:ml-5 rtl:mr-5">
-                                                            {timings?.map((time: any, index: any) => (
-                                                                <li key={`${rowKey}-t-${index}`} className='mb-1'>{time}</li>
-                                                            ))}
-                                                        </div>
-                                                    </ul>
+                                                    <ul className="text-xs mb-2 ltr:ml-4 rtl:mr-4 text-[#515567]">
+                                                {[
+                                                    lang === 'ar' ? 'السبت' : 'Saturday',
+                                                    lang === 'ar' ? 'الأحد' : 'Sunday',
+                                                    lang === 'ar' ? 'الإثنين' : 'Monday',
+                                                    lang === 'ar' ? 'الثلاثاء' : 'Tuesday',
+                                                    lang === 'ar' ? 'الأربعاء' : 'Wednesday',
+                                                    lang === 'ar' ? 'الخميس' : 'Thursday',
+                                                    lang === 'ar' ? 'الجمعة' : 'Friday',
+                                                ].map((day, i) => (
+                                                    <li key={i} className="flex items-start gap-2 mb-2">
+                                                    <span className="min-w-[80px] font-medium">{day}:</span>
+                                                    <div className="flex flex-col">
+                                                        <span>{timingsDays?.[0]?.morning}</span>
+                                                        <span>{timingsDays?.[1]?.evening}</span>
+                                                    </div>
+                                                    </li>
+                                                ))}
+                                                </ul>
                                                 </>
                                                 : null}
                                             <p className="text-[#adafb3] font-medium text-xs">{item?.address} | {lang === 'ar' ? 'المملكة العربية السعودية' : 'Saudi Arabia'}</p>
