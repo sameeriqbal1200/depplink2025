@@ -60,7 +60,9 @@ export default function NewsLetter(props: any) {
     };
     const submitNewslatter = async () => {
         var data = {
-            email: email
+            email: email,
+            lang: lang
+            
         }
         setLoader(true)
         const dataUpd = await postSubmitNewsLetter(data);
