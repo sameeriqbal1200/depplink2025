@@ -202,7 +202,7 @@ export default function ServiceAppointment() {
             last_name: lastName,
             address: address,
             city: selectedCity?.value,
-            area: newArea ? selectedNewArea : selectedArea?.value,
+            area: selectedArea?.value,
             invoice_number: invoiceNumber,
             complain: complain,
             purchasing_channel: purchasing?.value,
@@ -376,13 +376,6 @@ export default function ServiceAppointment() {
                 if (!firstName || !lastName || !selectedCity || !address) {
 
                     return false;
-                }
-                data['city'] = selectedCity ? selectedCity?.value : null;
-                data['area'] = selectedArea ? selectedArea?.label : null;
-                const ticketUserRes: any = await postTicketArea(data)
-                if (ticketUserRes?.areaTicketData?.success == true) {
-                    setNewArea(true)
-                    setSelectedNewArea(ticketUserRes?.areaTicketData?.data?.id)
                 }
                 setStep(2)
             }
@@ -626,7 +619,6 @@ export default function ServiceAppointment() {
                                             <h2 className='text-xs font-semibold underline text-[#004B7A]'
                                                 onClick={() => {
                                                     setStep(0)
-                                                    setNewArea(false)
                                                 }}
                                             >
                                                 {lang === 'ar' ? 'تفاصيل العميل' : 'Edit'}
@@ -771,7 +763,7 @@ export default function ServiceAppointment() {
                                                         />
                                                     </label>
 
-                                                    {/* <label className='text-xs font-semibold'>
+                                                    <label className='text-xs font-semibold'>
                                                         {lang === 'ar' ? 'منطقة' : 'Area'}
                                                         <Select
                                                             styles={{
@@ -820,62 +812,7 @@ export default function ServiceAppointment() {
                                                                 setSelectedArea(e)
                                                             }}
                                                         />
-                                                    </label> */}
-
-                                                    <label className="text-xs font-semibold">
-                                                        {lang === 'ar' ? 'منطقة' : 'Area'}
-                                                        <CreatableSelect
-                                                            isClearable
-                                                            styles={{
-                                                            control: (provided: any, state: any) => ({
-                                                                ...provided,
-                                                                background: '#fff',
-                                                                borderColor: '#dfdfdf',
-                                                                borderRadius: '6px',
-                                                                display: 'flex',
-                                                                alignItems: 'center',
-                                                                justifyContent: 'center',
-                                                                boxShadow: state.isFocused ? null : null,
-                                                            }),
-                                                            valueContainer: (provided) => ({
-                                                                ...provided,
-                                                                height: '42px',
-                                                                padding: '0 0.5rem',
-                                                                overflow: 'visible',
-                                                            }),
-                                                            input: (provided) => ({
-                                                                ...provided,
-                                                                margin: '0px',
-                                                            }),
-                                                            indicatorSeparator: () => ({
-                                                                alignSelf: 'stretch',
-                                                                width: '1px',
-                                                                backgroundColor: 'hsl(0, 0%, 80%)',
-                                                                marginBottom: '12px',
-                                                                marginTop: '12px',
-                                                                boxSizing: 'border-box',
-                                                            }),
-                                                            indicatorsContainer: (provided) => ({
-                                                                ...provided,
-                                                                height: '42px',
-                                                            }),
-                                                            }}
-                                                            placeholder={lang === 'ar' ? 'حدد المنطقة' : 'Select Area'}
-                                                            options={updatedares}
-                                                            value={selectedArea}
-                                                            isSearchable={true}
-                                                            className="border w-full rounded-md focus-visible:outline-none border-primary/50 border-primary hover:border-primary text-dark mt-0.5 mb-3"
-                                                            classNamePrefix="react-select"
-                                                            onChange={(newValue: any) => {
-                                                            setSelectedArea(newValue);
-                                                            }}
-                                                            onCreateOption={(inputValue: string) => {
-                                                                const newOption = { value: inputValue, label: inputValue };
-                                                                setSelectedArea(newOption);
-                                                                setUpdatedAreas((prev: any) => [...prev, newOption]);
-                                                            }}
-                                                        />
-                                                        </label>
+                                                    </label>
 
                                                     <label className='text-xs font-semibold'>
                                                         {lang === 'ar' ? 'عنوان' : 'Address'}
