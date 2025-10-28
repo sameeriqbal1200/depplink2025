@@ -878,7 +878,8 @@ export default function Checkout() {
             } else if (response.link) {
                 window.location.href = response.link
             } else {
-                topMessageAlartDangerNew(t('paymentmethod'))
+                topMessageAlartDangerNew(lang == "ar" ? 'لا يمكننا إتمام عملية الدفع في الوقت الحالي. يرجى المحاولة لاحقًا أو استخدام طريقة دفع أخرى.' : 'We’re unable to complete your payment at the moment. Please try later or use a different payment method.');
+                // topMessageAlartDangerNew(t('paymentmethod'))
                 // alert('payment method not available')
             }
             DataLayerCheckout()
