@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import dayjs from "dayjs";
+import "dayjs/locale/en";
 import SARIcon from "./Icons/SARIcon";
 import CloseIcon from "./Icons/CloseIcon";
 
