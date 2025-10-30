@@ -41,9 +41,9 @@ export default function LoyaltyHistoryList(props: any) {
           <span className="text-10 font-medium text-dark/60">
             {dayjs(loyalData?.created_at).locale("en").format("MMM DD, YYYY")}{" "}
             at {dayjs(loyalData?.created_at).locale("en").format("hh:mm A")}{" "}
-            {!isDeducted && isPending && !isRefunded && welcomeOrder && " - "}
+            {!isDeducted && isPending && !isRefunded && !welcomeOrder && " - "}
           </span>
-          {!isDeducted && isPending && !isRefunded && welcomeOrder && (
+          {!isDeducted && isPending && !isRefunded && !welcomeOrder && (
             <button
               onClick={togglePopup}
               className="relative text-10 flex items-center gap-1 text-orange font-semibold cursorpointer outline-none"
@@ -80,7 +80,7 @@ export default function LoyaltyHistoryList(props: any) {
       </div>
       <span
         className={`text-sm leading-3.5 flex text-right font-semibold mb-1 ${
-          !isDeducted && isPending && !isRefunded && welcomeOrder
+          !isDeducted && isPending && !isRefunded && !welcomeOrder
             ? "text-orange"
             : !isDeducted
             ? "text-greenDark"
