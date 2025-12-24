@@ -4,10 +4,10 @@
   "private": true,
   "scripts": {
     "prebuild": "node scripts/bump-cache-key.cjs && node -e \"require.resolve('tailwindcss/package.json')\"",
-    "dev": "node server.cjs",
-    "build": "next build",
+    "dev": "node init && node server.cjs",
+    "build": "node init && next build",
     "predev": "node scripts/bump-cache-key.cjs",
-    "start": "NODE_ENV=production node server.cjs",
+    "start": "node init && NODE_ENV=production node server.cjs",
     "lint": "next lint",
     "analyze": "cross-env ANALYZE=true next build",
     "watch": "watch 'npm run build:css' ./layouts"

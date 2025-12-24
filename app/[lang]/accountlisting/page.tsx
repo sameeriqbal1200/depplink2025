@@ -461,7 +461,7 @@ export default function AccountListing() {
                       style={{ width: "auto", height: "auto" }}
                     />
                   </Link>
-                  <Link href="https://images.tamkeenstores.com.sa/assets/pdf/Online_COC-23Nov.pdf" target='_blank' aria-label="">
+                  <Link href="https://images.tamkeenstores.com.sa/assets/pdf/COC-24Dec-Jan07-2026.pdf" target='_blank' aria-label="">
                       <Image
                           src="https://images.tamkeenstores.com.sa/assets/new-media/12e57a08dbe89d8b6397ea6ad66488f21718877392.svg"
                           alt=''
