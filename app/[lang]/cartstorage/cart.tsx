@@ -629,7 +629,8 @@ const getDiscountes = () => {
             const amountNum = parseFloat(cleanedStr);
             const amountPrice = !isNaN(amountNum) ? amountNum.toFixed(2) : '0.00';
             // summary.push({ key: element.title, price: '- ' + amountPrice, title: element.title, title_arabic: element.title_arabic })
-            summary.push({ key: 'discountRule', price: '- ' + amountPrice, title: element.title, title_arabic: element.title_arabic })
+            if(amountNum > 0)
+                summary.push({ key: 'discountRule', price: '- ' + amountPrice, title: element.title, title_arabic: element.title_arabic })
             amount += Number(amountPrice);
         }
     }
@@ -1195,7 +1196,7 @@ const unsetcoupon = () => {
     return cartdata;
 }
 
-const setCoupon = async (city: any = false, code: any = false) => {
+const setCoupon = async (city: any = false, code: any = false, cartPage: any = false) => {
     var cartdata: any = getCart();
     var proid = getProductids(true)
     var setData: any = {
@@ -1205,6 +1206,7 @@ const setCoupon = async (city: any = false, code: any = false) => {
         productprice: proid.price,
         productqty: proid.quantity,
         coupon_code: code ? code : false,
+        cartPage: cartPage,
         paymentmethod: cartdata?.paymentMethod ? cartdata?.paymentMethod : false,
         // subtotal: getSubtotal(),
         // subtotal: getSubtotalSale(),

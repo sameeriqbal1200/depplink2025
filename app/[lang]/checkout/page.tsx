@@ -52,6 +52,7 @@ export default function Checkout() {
     const [paymentMethod, setpaymentMethod] = useState<any>(false)
     const [editdata, seteditdata] = useState<any>(false)
     const [couponcode, setcouponcode] = useState<any>('')
+    const [couponAutoApplied, setCouponAutoApplied] = useState<any>(false)
     const [expressDeliveryData, setExpressDeliveryData] = useState<any>(false)
     const [expressDeliveryDataStatus, setExpressDeliveryDataStatus] = useState<boolean>(true)
     const [doorStepData, setDoorStepData] = useState<any>(false)
@@ -361,6 +362,12 @@ export default function Checkout() {
             getDevice()
             getPickupStoreData()
         }
+        setTimeout(() => {
+        (async () => {
+            unsetcoupon();
+            await couponApplied(false, true)
+        })();
+        }, 1000)
     }, [])
 
     useEffect(() => {
@@ -468,6 +475,13 @@ export default function Checkout() {
     useEffect(() => {
         // console.log("paymentMethod", paymentMethod);
         setPaymentMethod(paymentMethod);
+        if (couponcode && getCoupon().amount && paymentMethod != false) {
+        (async () => {
+            // couponremove();
+            unsetcoupon();
+            await couponApplied(false)
+        })();
+        }
         // if (couponcode && getCoupon().amount) {
         //   (async () => {
         //     // couponremove();
@@ -719,7 +733,7 @@ export default function Checkout() {
             setdeliverydate(getdeliveryDateData())
         }
     }
-    const couponApplied = async () => {
+    const couponApplied = async (msg = true, auto = false) => {
         if (!getCoupon().amount) {
             var city = false;
             // var selectedaddres = addressData?.filter((element: any) => {
@@ -748,9 +762,14 @@ export default function Checkout() {
                     'Checkout Page'
                 );
             } else if (response) {
+                if(!couponcode)
+                    setcouponcode(getCoupon().title);
                 await setDiscountRule(city);
                 await setDiscountRuleBogo(city);
-                topMessageAlartSuccess(t('setcoupon'))
+                if(msg)
+                    topMessageAlartSuccess(t('setcoupon'))
+                if(!couponAutoApplied)
+                    setCouponAutoApplied(auto)
             }
             removeLoyalty()
             var points = getLoyalty()
@@ -2569,11 +2588,17 @@ export default function Checkout() {
                                         disabled={typeof window !== 'undefined' && getCoupon().amount ? true : false} value={couponcode || ''} onChange={(e) => { setcouponcode(e.target.value) }}
                                     />
                                 </div>
-                                {typeof window !== 'undefined' && getCoupon().amount ?
+                                {typeof window !== "undefined" && getCoupon().amount ? (
+                                    <>
+                                    {!couponAutoApplied ?
                                     <button onClick={() => couponremove()}
                                         className="focus-visible:outline-none btn bg-[#EB5757] rounded-md fill-white h-[3rem] border border-[#EB5757] w-14 flex items-center justify-center">
                                         <svg height="14" viewBox="0 0 329.26933 329" width="14" xmlns="http://www.w3.org/2000/svg" id="fi_1828778"><path d="m194.800781 164.769531 128.210938-128.214843c8.34375-8.339844 8.34375-21.824219 0-30.164063-8.339844-8.339844-21.824219-8.339844-30.164063 0l-128.214844 128.214844-128.210937-128.214844c-8.34375-8.339844-21.824219-8.339844-30.164063 0-8.34375 8.339844-8.34375 21.824219 0 30.164063l128.210938 128.214843-128.210938 128.214844c-8.34375 8.339844-8.34375 21.824219 0 30.164063 4.15625 4.160156 9.621094 6.25 15.082032 6.25 5.460937 0 10.921875-2.089844 15.082031-6.25l128.210937-128.214844 128.214844 128.214844c4.160156 4.160156 9.621094 6.25 15.082032 6.25 5.460937 0 10.921874-2.089844 15.082031-6.25 8.34375-8.339844 8.34375-21.824219 0-30.164063zm0 0"></path></svg>
                                     </button>
+
+                                    :null}
+                                    </>
+                                )
                                     :
                                     <button onClick={() => couponApplied()} className="focus-visible:outline-none btn bg-[#004B7A] rounded-md fill-white h-[3rem] border border-[#004B7A] w-14 flex items-center justify-center">
                                         <svg id="fi_9249233" enableBackground="new 0 0 24 24" height="28" viewBox="0 0 24 24" width="28" xmlns="http://www.w3.org/2000/svg"><path d="m18.7 7.2c-.4-.4-1-.4-1.4 0l-7.5 7.5-3.1-3.1c-.4-.4-1-.4-1.4 0s-.4 1 0 1.4l3.8 3.8c.2.2.4.3.7.3s.5-.1.7-.3l8.2-8.2c.4-.4.4-1 0-1.4z"></path></svg>

@@ -27,6 +27,9 @@ import {
   getExpressDeliveryCart,
   getPickupStoreCart,
   setPickupStoreCart,
+  setCoupon,
+  getCoupon,
+  unsetcoupon
 } from "../cartstorage/cart";
 import FullPageLoader from '../components/FullPageLoader';
 import GlobalContext from '../../GlobalContext'
@@ -178,6 +181,8 @@ export default function NewCart() {
         await setShipping();
         await setDiscountRule();
         await setDiscountRuleBogo();
+        unsetcoupon();
+        await setCoupon(false,false,true)
         setcartData(getCart());
         setCartCount(getCartCount())
         setSummary(getSummary())
